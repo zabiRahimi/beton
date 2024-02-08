@@ -1,0 +1,103 @@
+.continerNotFound {
+    width: 100%;
+    /* min-height: 100vh; */
+    padding: 5px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    text-align: center;
+
+}
+
+.notFoundDiv1 {
+    background-color: #f0e68c;
+    padding: 35px;
+    border-radius: 50%;
+}
+
+.notFoundDiv1 i {
+    font-size: 2rem;
+    color: #f7980a;
+}
+
+.notFoundEn {
+    direction: ltr;
+    font-family: Arial, tahoma;
+}
+
+.textNotFound {
+    padding: 5px 0;
+    font-size: 1.1rem;
+}
+
+.continerNotFound h5 {
+    margin: 10px 0;
+}
+
+.divBtnNotFoun {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+}
+
+.notFoundBtn1,
+.notFoundBtn2 {
+    height: 35px !important;
+    margin: 0 5px;
+    padding: 0 3px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.notFoundBtn1 {
+
+    display: inline-flex;
+    align-items: center;
+    background-color: #13b113;
+    color: #e9e9ed;
+    text-decoration-line: none;
+
+}
+
+.notFoundBtn1:hover {
+    background-color: #008000;
+}
+
+
+
+
+.errorNotFound {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: #a1a1a1;
+}
+
+@media only screen and (min-width:768px) {
+
+    .notFoundDiv1 {
+        padding: 65px;
+    }
+
+    .notFoundDiv1 i {
+        font-size: 2.5rem;
+    }
+
+    .textNotFound {
+        padding: 15px 0;
+        font-size: 1.35rem;
+    }
+
+    .notFoundBtn1,
+    .notFoundBtn2 {
+        height: 35px;
+        margin: 10px 20px;
+        padding: 0 9px;
+
+
+    }
+
+}

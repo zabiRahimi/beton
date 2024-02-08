@@ -1,0 +1,418 @@
+@import "../assets/icofont/icofont.min.css";
+@import "jalaali-react-date-picker/lib/styles/index.css";
+
+* {
+    font-family: IRANSansRegular;
+    /*
+    IRANSansRegular
+    IRANSansBold
+    IRANSansLight
+    IRANSansMedium 
+    */
+}
+
+html,
+body {
+    direction: rtl;
+}
+
+:root {
+    --colorMore: #7492c1;
+    /* --paddingContainer : 0 clamp(3px , 0.8vw , 15px); */
+    --paddingContainer: clamp(3px, 2vw, 20px);
+    --colorBtnUp: #fd5050;
+    --hoverLink: #0879e2;
+    --colorLink: #0c62b3;
+    --color1: #90add0;
+    --color2: #94b4d7;
+    --color3: #5382bd;
+    --color4: #c7dcf2;
+    --color5: #f6f6f9;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+* {
+    @font-face {
+        font-family: "b koodak";
+        src: url("../assets/fonts/BKoodakBold.eot");
+        src: url("../assets/fonts/BKoodakBold.eot?#") format("eot"),
+            /* IE6–8 */
+            url("../assets/fonts/BKoodakBold.woff") format("woff"),
+            url("../assets/fonts/BKoodakBold.ttf") format("truetype");
+        /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+        font-family: "b yekan";
+        src: url("../assets/fonts/BYekan.eot?#") format("eot"),
+            /* IE6–8 */
+            url("../assets/fonts/BYekan.woff") format("woff"),
+            /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+            url("../assets/fonts/BYekan.ttf") format("truetype");
+        /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+    }
+}
+
+ul,
+ol {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    font-size: 16px;
+    font-family: "b koodak";
+}
+
+/** 
+* For buttons that do not need styling
+* In fact, its content has styling
+*/
+.--styleLessBtn {
+    background-color: inherit;
+    border: none;
+}
+
+.--styleLessLink {
+    color: inherit;
+    text-decoration: none;
+}
+
+.--block {
+    display: block;
+}
+
+.--scrollHidden {
+    overflow: hidden;
+}
+
+.--displayNone {
+    display: none !important;
+}
+
+.--hidden {
+    visibility: hidden;
+}
+
+.--colorLink {
+    color: #0c62b3;
+}
+
+.--opacity0 {
+    opacity: 0;
+}
+
+.--width100 {
+    width: 100% !important;
+}
+
+.--centerText {
+    text-align: center;
+}
+
+.--pointer {
+    cursor: pointer;
+}
+
+/**
+   ********* for mySwal ********** 
+*/
+
+.--mySwalPopup {
+    width: 85%;
+    max-width: 550px;
+    padding: 10px;
+}
+
+.--mySwalHtml {
+    text-align: right !important;
+    margin: 0 !important;
+    font-size: 0.9rem !important;
+    direction: rtl;
+}
+
+.--progressBarColorBlue {
+    background-color: #6aaff0 !important;
+}
+
+/* icofont-tick-mark  */
+/*
+    <div className='--mySwalSuccessDiv1'>
+
+         <i className='icofont-tick-mark --mySwalSuccessIcon1' />
+
+    </div>
+ */
+.--mySwalSuccessDiv1,
+.--mySwalSuccessDiv2,
+.--mySwalWarningDiv {
+    margin: 0 auto 5px;
+    display: flex;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #008000;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+.--mySwalSuccessDiv2 {
+    width: auto;
+    height: auto;
+    border: none;
+}
+
+.--mySwalSuccessIcon1 {
+    color: #008000;
+    font-size: 2.8rem;
+}
+
+/* icofont-check-alt  */
+/* icofont-tick-boxed  */
+.--mySwalSuccessIcon2 {
+    color: #008000;
+    font-size: 1.8rem;
+}
+
+/*  
+  <div className='--mySwalWarningDiv'>
+     <i className='icofont-exclamation --mySwalWarningIcon' />
+  </div> 
+*/
+.--mySwalWarningDiv {
+    border-color: #fb7b04;
+    border-width: 3px;
+}
+
+.--mySwalWarningIcon {
+    font-size: 2.1rem;
+    color: #fb7b04;
+}
+
+/* iconfont-close  */
+.--errorIcon {}
+
+/* <span className='questionIcon' > ? </span> */
+.--questionIcon {}
+
+.--mySwalDivTitle {
+    margin-top: 15px;
+    /* text-align: center; */
+}
+
+.--mySwalTitle {
+    font-size: 1.2rem;
+    direction: rtl;
+    text-align: center;
+}
+
+.--mySwalColorTitleGreen {
+    color: #429e42;
+}
+
+.--mySwalColor2 {
+    color: #0a666a;
+}
+
+.--mySwalColorTitleOrange {
+    color: #e69448;
+}
+
+.--mySwalColorWarning {
+    color: #d17c2b;
+}
+
+.--mySwalContainerBtn {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.--mySwalBtn {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    direction: rtl;
+    margin-bottom: 6px;
+    text-align: right;
+    align-items: center;
+    gap: 12px;
+    color: var(--colorLink);
+}
+
+.--mySwalUl {
+    padding-right: 5px !important;
+    list-style-position: inside;
+    direction: rtl;
+    font-size: 0.9rem;
+}
+
+/* 
+    ************  useInputNumberCode css *************
+ */
+
+.--continerInputNumCode {
+    width: 100%;
+    margin: 25px 0;
+}
+
+.--lableInpuNumCode {
+    color: #2e4a58;
+    direction: rtl;
+}
+
+.--divInputNumCode {
+    width: 100%;
+    margin: 5px 0;
+    display: flex;
+    direction: ltr;
+    justify-content: space-between;
+}
+
+.--inputNumCode {
+    width: 35px;
+    display: inline-flex;
+    text-align: center;
+}
+
+/*
+    ******************      ****************
+*/
+
+.--updateCodeLink {
+    cursor: pointer;
+}
+
+.--updateCodeLink:hover {
+    color: #4386c4;
+}
+
+.--textMinutes {
+    margin-left: 4px;
+    padding: 0 4px;
+    background-color: #ffffff;
+    color: #d3d3d3;
+    text-decoration: underline;
+}
+
+.--minutesForm {
+    padding: 3px 6px;
+    display: inline-flex;
+    /* flex-direction: row-reverse; */
+    width: max-content;
+    background-color: #fff;
+    border-radius: 9px;
+    justify-content: center;
+    align-items: center;
+    direction: ltr;
+}
+
+/* ******************* alert ******************* */
+
+.--divAlert {
+    height: 45px;
+    margin: 0 auto 5px;
+    display: flex;
+    align-items: center;
+    border: 1px solid;
+}
+
+.--alertError {
+    background-color: #f8d7da;
+    color: #842029;
+    border-color: #f5c2c7;
+}
+
+.--alertWarning {
+    background-color: #fff3cd;
+    color: #856f2c;
+    border-color: #ffecb5;
+}
+
+.--alertInfo {
+    background-color: #cfe2ff;
+    color: #084298;
+    border-color: #b6d4fe;
+}
+
+.--alertPrimary {
+    background-color: #cff4fc;
+    color: #2e7381;
+    border-color: #b6effb;
+}
+
+.--alertSuccess {
+    background-color: #d1e7dd;
+    color: #377055;
+    border-color: #badbcc;
+}
+
+.--alertSecondary {
+    background-color: #e2e3e5;
+    color: #61656a;
+    border-color: #d3d6d8;
+}
+
+.--alertClose {
+    width: 50px;
+    height: inherit;
+    text-align: center;
+    border: 1px solid;
+    border-left: none;
+    border-color: inherit;
+    color: inherit;
+}
+
+.--alertIClose {
+    font-size: 1.3rem;
+    color: inherit;
+    position: relative;
+    top: 3px;
+}
+
+.--alertP {
+    width: 100%;
+    margin: 0;
+    direction: rtl;
+}
+
+@media screen and (min-width: 500px) {
+    .--mySwalPopup {
+        padding: 20px;
+    }
+
+    .--mySwalContainerBtn {
+        margin-top: 20px;
+    }
+
+    .--mySwalBtn {
+        width: 130px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+
+    .--mySwalSuccessDiv1,
+    .--mySwalWarningDiv {
+        width: 70px;
+        height: 70px;
+    }
+
+    .--mySwalSuccessIcon2,
+    .--mySwalWarningIcon {
+        font-size: 2.8rem;
+    }
+
+    .--mySwalTitle {
+        font-size: 1.6rem;
+    }
+
+    .--mySwalUl {
+        font-size: 1rem;
+    }
+}
