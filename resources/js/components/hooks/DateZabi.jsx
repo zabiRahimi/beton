@@ -1,9 +1,9 @@
 const DateZabi = () => {
-    let year = [];
+    let years = [];
     
 
     
-    const month = [
+    const months = [
         "فروردین",
         "اردیبهشت",
         "خرداد",
@@ -27,6 +27,8 @@ const DateZabi = () => {
         "جمعه",
     ];
 
+    const days=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+
     const cabise = [
         1300, 1304, 1309, 1313, 1317, 1321, 1325, 1329, 1333, 1337, 1342, 1346,
         1350, 1354, 1358, 1362, 1366, 1370, 1375, 1379, 1383, 1387, 1391, 1395,
@@ -36,13 +38,21 @@ const DateZabi = () => {
     ];
 
     for (let index = 1300; index < 1501; index++) {
-        year.push(index);
+        years.push(index);
     }
 
-    // let optionDays = days.map((day)=>{
-    //      return <option value={day}>{day}</option>
-    // })
+    let optionDays = days.map((day)=>{
+         return <option value={day}>{day}</option>
+    })
 
-    return { year,  month, days, nameDays };
+    let optionMonth = months.map((month)=>{
+        return <option value={month}>{month}</option>
+   })
+
+   let optionYears = years.map((year)=>{
+    return <option value={year}>{year}</option>
+})
+
+    return { years,  months, days, nameDays,optionDays,optionMonth,optionYears };
 };
 export default DateZabi;

@@ -48,3 +48,49 @@
     width: 250px;
     height: 180px;
 }
+
+.divDateBirth{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.divUpDateAcus{
+    width: 250px;
+    background-color: #eaeaea;
+
+    border: 1px solid #8f8f9d;
+    text-align: center;
+}
+
+
+.divDownDateAcus{
+    width: 250px;
+    /* background-color:#fff;
+    border: 1px solid #8f8f9d; */
+    text-align: center;
+}
+
+
+.inputTextDateACus{
+    width: 40px;
+    border: none;
+    background-color: #fff;
+    text-align: center;
+}
+
+
+.inputDayTDACus{
+
+}
+
+
+.inputMonthTDACus{
+    width: 67px;
+}
+
+
+.inputYearTDACus{
+    width: 45px;
+margin-left: 13px;
+}

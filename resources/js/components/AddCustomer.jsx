@@ -5,11 +5,17 @@ import "../../css/addCustomer.css";
 import DataZabi from "./hooks/DateZabi";
 import { useEffect } from "react";
 const AddCustomer = () => {
-    const {year, month, days, nameDays}= DataZabi();
-    
-    useEffect(()=>{
-        
-    })
+    const {
+        year,
+        months,
+        days,
+        nameDays,
+        optionDays,
+        optionMonth,
+        optionYears,
+    } = DataZabi();
+
+    useEffect(() => {});
     return (
         <>
             <Title title="تعریف مشتری" />
@@ -18,7 +24,11 @@ const AddCustomer = () => {
                     <div className="sectionFormACus">
                         <div className="divInputTextACus">
                             <label>نام مشتری</label>
-                            <input type="text" className="inputTextACus" autoFocus/>
+                            <input
+                                type="text"
+                                className="inputTextACus"
+                                autoFocus
+                            />
                         </div>
 
                         <div className="divInputTextACus">
@@ -36,18 +46,40 @@ const AddCustomer = () => {
                         <div className="divInputTextACus">
                             <label>تاریخ تولد </label>
                             <div className="divDateBirth">
-                            
-                                <input type="date" name="" id="" translate="fa" />
-                                <select name="" id="">
-                                    <option value="">روز</option>
-                                    {/* {optionDays} */}
-                                </select>
-                                <select name="" id="">
-                                    <option value="">ماه</option>
-                                </select>
-                                <select name="" id="">
-                                    <option value="">سال</option>
-                                </select>
+                                <div className="divUpDateAcus">
+                                    <input
+                                        type="text"
+                                        className="inputTextDateACus inputDayTDACus"
+                                        placeholder="01"
+                                    />
+                                    <span>/</span>
+                                    <input
+                                        type="text"
+                                        className="inputTextDateACus inputMonthTDACus"
+                                        placeholder="01"
+                                    />
+                                    <span>/</span>
+                                    <input
+                                        type="text"
+                                        className="inputTextDateACus inputYearTDACus"
+                                        placeholder="1300"
+                                    />
+                                </div>
+
+                                <div className="divDownDateAcus">
+                                    <select name="" id="">
+                                        <option value="">روز</option>
+                                        {optionDays}
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="">ماه</option>
+                                        {optionMonth}
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="">سال</option>
+                                        {optionYears}
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
