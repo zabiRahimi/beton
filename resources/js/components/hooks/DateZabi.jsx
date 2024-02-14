@@ -41,16 +41,16 @@ const DateZabi = () => {
         years.push(index);
     }
 
-    let optionDays = days.map((day)=>{
-         return <option value={day}>{day}</option>
+    let optionDays = days.map((day,i)=>{
+         return <option key={i} value={day}>{day}</option>
     })
 
-    let optionMonth = months.map((month)=>{
-        return <option value={month}>{month}</option>
+    let optionMonth = months.map((month,i)=>{
+        return <option key={i} value={i+1}>{month}</option>
    })
 
-   let optionYears = years.map((year)=>{
-    return <option value={year}>{year}</option>
+   let optionYears = years.map((year,i)=>{
+    return <option key={i} value={year}>{year}</option>
 })
 
     return { years,  months, days, nameDays,optionDays,optionMonth,optionYears };
