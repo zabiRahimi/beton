@@ -1,5 +1,6 @@
 import Title from "./hooks/Title";
 import { DatePicker, InputDatePicker } from "jalaali-react-date-picker";
+import Button from 'react-bootstrap/Button';
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
 import DataZabi from "./hooks/DateZabi";
@@ -68,7 +69,14 @@ const AddCustomer = () => {
         setYear(year);
     }
 
-    useEffect(() => {});
+   const deleteDate=()=>{
+    setDay();
+    setMonth();
+    setYear();
+
+   }
+
+
     return (
         <>
             <Title title="تعریف مشتری" />
@@ -185,10 +193,11 @@ const AddCustomer = () => {
                             <input type="text" className="inputTextACus" />
                         </div>
                     </div>
-                    <div className="sectionFormACus">
+                    <div className="sectionFormACus divBtnsFormACus">
                         {/* <input type="button" >ثبت</input> */}
-                        <button> ثبت </button>
-                        <input type="reset" value={'پاک کردن'} />
+                        <Button variant="success" className="btnSaveFormAcus"> ثبت </Button>
+                        <Button type="reset" variant="warning" onClick={deleteDate}> پاک کن </Button>
+                        {/* <input type="reset" value={'پاک کردن'} /> */}
                     </div>
                 </form>
             </div>

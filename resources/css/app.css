@@ -1,5 +1,6 @@
 @import "../assets/icofont/icofont.min.css";
 @import "jalaali-react-date-picker/lib/styles/index.css";
+/* @import 'bootstrap/dist/css/bootstrap.min.css'; */
 
 * {
     font-family: IRANSansRegular;

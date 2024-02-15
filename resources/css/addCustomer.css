@@ -94,3 +94,13 @@
     width: 45px;
 margin-left: 13px;
 }
+
+.divBtnsFormACus{
+    
+    justify-content: center;
+}
+
+.divBtnsFormACus .btnSaveFormAcus{
+    width: 95px;
+    margin-left: 35px;
+}
