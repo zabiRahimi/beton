@@ -1,5 +1,5 @@
 import Title from "./hooks/Title";
-import { DatePicker, InputDatePicker } from "jalaali-react-date-picker";
+// import { DatePicker, InputDatePicker } from "jalaali-react-date-picker";
 import Button from 'react-bootstrap/Button';
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
@@ -82,29 +82,33 @@ const AddCustomer = () => {
             <Title title="تعریف مشتری" />
             <div>
                 <form action="" className="formBeton">
-                    <div className="sectionFormACus">
-                        <div className="divInputTextACus">
+                    <div className="sectionFB">
+                        <div className="divInputFB">
                             <label>نام مشتری</label>
                             <input
                                 type="text"
-                                className="inputTextACus"
+                                className="inputTextFB"
                                 autoFocus
                             />
                         </div>
 
-                        <div className="divInputTextACus">
+                        <div className="divInputFB">
                             <label>نوع مشتری </label>
-                            <input type="text" className="inputTextACus" />
+                            <select name="" id="" className="selectFB">
+                                <option value="خریدار">خریدار</option>
+                                <option value="فروشنده">فروشنده</option>
+                                <option value="فروشنده-خریدار">فروشنده-خریدار</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div className="sectionFormACus">
-                        <div className="divInputTextACus">
+                    <div className="sectionFB">
+                        <div className="divInputFB">
                             <label>کد ملی </label>
-                            <input type="text" className="inputTextACus" />
+                            <input type="text" className="inputTextFB" />
                         </div>
 
-                        <div className="divInputTextACus">
+                        <div className="divInputFB">
                             <label>تاریخ تولد </label>
                             <div className="divDateBirth">
                                 <div className="divUpDateAcus">
@@ -151,51 +155,51 @@ const AddCustomer = () => {
                         </div>
                     </div>
 
-                    <div className="sectionFormACus">
-                        <div className="divRightSFACus">
-                            <div className="divInputTextACus">
+                    <div className="sectionFB">
+                        <div className="divRightFB">
+                            <div className="divInputFB">
                                 <label>موبایل</label>
-                                <input type="text" className="inputTextACus" />
+                                <input type="text" className="inputTextFB" />
                             </div>
 
-                            <div className="divInputTextACus">
+                            <div className="divInputFB">
                                 <label>تلفن </label>
-                                <input type="text" className="inputTextACus" />
+                                <input type="text" className="inputTextFB" />
                             </div>
 
-                            <div className="divInputTextACus">
+                            <div className="divInputFB">
                                 <label>کد پستی</label>
-                                <input type="text" className="inputTextACus" />
+                                <input type="text" className="inputTextFB" />
                             </div>
 
-                            <div className="divInputTextACus">
+                            <div className="divInputFB">
                                 <label>ایمیل</label>
-                                <input type="text" className="inputTextACus" />
+                                <input type="text" className="inputTextFB" />
                             </div>
                         </div>
 
-                        <div className="divLeftSFACus">
-                            <div className="divInputTextACus">
+                        <div className="divLeftFB">
+                            <div className="divInputFB">
                                 <label>آدرس</label>
-                                <textarea className="inputTextACus" />
+                                <textarea className="inputTextFB" />
                             </div>
                         </div>
                     </div>
 
-                    <div className="sectionFormACus">
-                        <div className="divInputTextACus">
+                    <div className="sectionFB">
+                        <div className="divInputFB">
                             <label>شماره حساب</label>
-                            <input type="text" className="inputTextACus" />
+                            <input type="text" className="inputTextFB" />
                         </div>
 
-                        <div className="divInputTextACus">
+                        <div className="divInputFB">
                             <label>شماره کارت</label>
-                            <input type="text" className="inputTextACus" />
+                            <input type="text" className="inputTextFB" />
                         </div>
                     </div>
-                    <div className="sectionFormACus divBtnsFormACus">
+                    <div className="sectionFB divBtnsFB">
                         {/* <input type="button" >ثبت</input> */}
-                        <Button variant="success" className="btnSaveFormAcus"> ثبت </Button>
+                        <Button variant="success" className="btnSaveFB"> ثبت </Button>
                         <Button type="reset" variant="warning" onClick={deleteDate}> پاک کن </Button>
                         {/* <input type="reset" value={'پاک کردن'} /> */}
                     </div>
