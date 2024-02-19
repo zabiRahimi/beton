@@ -45,7 +45,12 @@
 margin-left: 13px;
 }
 
-.divInputFB textarea {
-    width: 250px;
-    height: 180px;
+.divBtnsFormACus{
+    
+    justify-content: center;
+}
+
+.divBtnsFormACus .btnSaveFormAcus{
+    width: 95px;
+    margin-left: 35px;
 }
