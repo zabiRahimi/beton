@@ -6,7 +6,7 @@
 
 
 .divUpDateAcus{
-    width: 250px;
+    width: 235px;
     background-color: #eaeaea;
 
     border: 1px solid #8f8f9d;
@@ -15,7 +15,7 @@
 
 
 .divDownDateAcus{
-    width: 250px;
+    width: 235px;
     /* background-color:#fff;
     border: 1px solid #8f8f9d; */
     text-align: center;
@@ -45,12 +45,20 @@
 margin-left: 13px;
 }
 
-.divBtnsFormACus{
-    
-    justify-content: center;
+.textareaAddressACu{
+    width: 235px;
+    height: 180px;
 }
 
-.divBtnsFormACus .btnSaveFormAcus{
-    width: 95px;
-    margin-left: 35px;
+
+@media screen and (min-width:1200px) {
+    
+    
+    .divUpDateAcus,
+    .divDownDateAcus,
+    .textareaAddressACu{
+        width: 250px;
+    }
+
+   
 }

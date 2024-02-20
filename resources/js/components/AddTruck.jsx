@@ -38,36 +38,7 @@ const AddTruck=()=>{
                         
                     </div>
 
-                    <div className="sectionFB">
-                        <div className="divRightFB">
-                            <div className="divInputFB">
-                                <label>موبایل</label>
-                                <input type="text" className="inputTextFB" />
-                            </div>
-
-                            <div className="divInputFB">
-                                <label>تلفن </label>
-                                <input type="text" className="inputTextFB" />
-                            </div>
-
-                            <div className="divInputFB">
-                                <label>کد پستی</label>
-                                <input type="text" className="inputTextFB" />
-                            </div>
-
-                            <div className="divInputFB">
-                                <label>ایمیل</label>
-                                <input type="text" className="inputTextFB" />
-                            </div>
-                        </div>
-
-                        <div className="divLeftFB">
-                            <div className="divInputFB">
-                                <label>آدرس</label>
-                                <textarea className="inputTextFB" />
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <div className="sectionFB">
                         <div className="divInputFB">

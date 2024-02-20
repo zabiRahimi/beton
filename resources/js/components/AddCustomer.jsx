@@ -181,7 +181,7 @@ const AddCustomer = () => {
                         <div className="divLeftFB">
                             <div className="divInputFB">
                                 <label>آدرس</label>
-                                <textarea className="inputTextFB" />
+                                <textarea className="textareaAddressACu" />
                             </div>
                         </div>
                     </div>

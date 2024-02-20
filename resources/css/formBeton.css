@@ -1,6 +1,6 @@
 .formBeton{
-    margin: 35px 10px;
-    padding:15px 35px;
+    margin: 15px 5px;
+    padding:15px 8px;
     background-color: #f6f6f9;
     display: flex;
     flex-wrap: wrap;
@@ -20,20 +20,20 @@
 
 .divInputFB {
     width: 50%;
-    padding: 0 25px;
+    padding: 0 15px;
     display: flex;
     align-items: center;
 }
 
 .divInputFB label {
-    width: 95px;
+    width: 100px;
     display: inline-block;
-    font-size: 1.094rem;
+    font-size: 0.95rem;
     
 }
 
 .inputTextFB {
-    width: 250px;
+    width: 235px;
     height: 30px;
     padding: 0 7px;
     font-size: 0.91rem;
@@ -58,7 +58,7 @@
 
 
 .selectFB{
-    width: 250px;
+    width: 235px;
 }
 
 .divBtnsFB{
@@ -69,4 +69,32 @@
 .btnSaveFB{
     width: 95px;
     margin-left: 35px;
+
+}
+
+
+@media screen and (min-width:1200px) {
+    
+    .formBeton{
+        margin: 35px 5px;
+        padding:15px 32px;
+    
+    }
+
+    .divInputFB {
+        padding: 0 25px;
+    }
+
+    .divInputFB label {
+        width: 112px;
+        font-size: 1.094rem;
+        
+    }
+
+    .inputTextFB,
+    .selectFB {
+        width: 250px;
+    }
+
+   
 }
