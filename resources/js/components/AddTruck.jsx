@@ -45,38 +45,38 @@ const AddTruck=()=>{
                             <label> پلاک </label>
                             <input type="text" className="" />
                             <select name="" id="">
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
+                                <option value=""> الف </option>
+                                <option value=""> ب </option>
+                                <option value=""> پ </option>
+                                <option value=""> ت </option>
+                                <option value=""> ث </option>
+                                <option value=""> ج </option>
+                                <option value=""> چ </option>
+                                <option value=""> ح </option>
+                                <option value=""> خ </option>
+                                <option value=""> د </option>
+                                <option value=""> ذ </option>
+                                <option value=""> ر </option>
+                                <option value=""> ز </option>
+                                <option value=""> ژ </option>
+                                <option value=""> س </option>
+                                <option value=""> ش </option>
+                                <option value=""> ص </option>
+                                <option value=""> ض </option>
+                                <option value=""> ط </option>
+                                <option value=""> ظ </option>
+                                <option value=""> ع </option>
+                                <option value=""> غ </option>
+                                <option value=""> ف </option>
+                                <option value=""> ق </option>
+                                <option value=""> ک </option>
+                                <option value=""> گ </option>
+                                <option value=""> ل </option>
+                                <option value=""> م </option>
+                                <option value=""> ن </option>
+                                <option value=""> و </option>
+                                <option value=""> ه </option>
+                                <option value=""> ی </option>
                             </select>
                         </div>
 
