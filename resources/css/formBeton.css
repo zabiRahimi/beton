@@ -1,6 +1,6 @@
-.formBeton{
+.formBeton {
     margin: 15px 5px;
-    padding:15px 8px;
+    padding: 15px 8px;
     background-color: #f6f6f9;
     display: flex;
     flex-wrap: wrap;
@@ -29,7 +29,6 @@
     width: 100px;
     display: inline-block;
     font-size: 0.95rem;
-    
 }
 
 .inputTextFB {
@@ -44,7 +43,6 @@
     width: 50%;
     display: flex;
     flex-direction: column;
-    /* flex-wrap: wrap; */
 }
 
 .divRightFB .divInputFB,
@@ -53,49 +51,43 @@
     margin-bottom: 20px;
 }
 
-
-
-
-
-.selectFB{
+.selectFB {
     width: 235px;
 }
 
-.divBtnsFB{
-    
+.divBtnsFB {
+
     justify-content: center;
 }
 
-.btnSaveFB{
+.btnSaveFB {
     width: 95px;
     margin-left: 35px;
-
 }
 
 
 
 /**         ***** plak *****       **/
-.divExamplePlak{
+.divExamplePlak {
     width: 235px;
     height: 37px;
     display: flex;
     flex-direction: row-reverse;
     border: 1px solid #000;
-    border-radius: 2px;
+    border-radius: 4px;
 
 }
 
 
-.divIranPlak{
+.divIranPlak {
     width: 28px;
     display: flex;
     flex-direction: column;
     background-color: #0404c5;
-    /* align-items: stretch; */
     gap: 7px;
 }
 
-.iranPlakDivImg{
+.iranPlakDivImg {
     width: 100%;
     padding: 0;
     height: 10px;
@@ -103,90 +95,84 @@
 }
 
 
-.iranPlakDivImg img{
+.iranPlakDivImg img {
     width: 95%;
     margin-top: -7px;
 
 }
 
-.iranPlakDivSpans{
+.iranPlakDivSpans {
     height: min-content;
     display: flex;
     flex-direction: column;
-    font-size: 0.5rem; 
+    font-size: 0.5rem;
     color: #fff;
     direction: ltr;
-    
-    
+
+
 }
 
-.iranPlakDivSpans span{
+.iranPlakDivSpans span {
     display: inline-block;
     height: 8px;
-    
-}
-
-
-.divNamberPlak{
-display: flex;
-flex-direction: row-reverse;
-}
-
-.text2numberPlaK{
-width: 48px;
-text-align: center;
-border: none;
-
-}
-
-.selectChPlak{
-width: 67px;
-text-align: center;
-border-radius: 0;
-border: none;
-}
-
-.text3numberPlaK{
-width: 58px;
-text-align: center;
-border: none;
-
-
 
 }
 
 
-
-.divSerialPlak{
-display: flex;
-flex-direction: column;
-background-color: #fff;
-text-align: center;
-border-left: 1px solid ;
-
+.divNamberPlak {
+    display: flex;
+    flex-direction: row-reverse;
 }
 
-.divSerialPlak span{
-   height: 8px;
+.text2numberPlaK,
+.selectChPlak,
+.text3numberPlaK,
+.textSerialPlaK{
+    text-align: center;
+    border: none;
+}
+
+.text2numberPlaK {
+    width: 42px;
+}
+
+.selectChPlak {
+    width: 61px;
+    border-radius: 0;
+}
+
+.text3numberPlaK {
+    width: 58px;
+}
+
+.divSerialPlak {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    text-align: center;
+    border-left: 1px solid;
+    border-radius: 0 4px 4px 0;
+}
+
+.divSerialPlak span {
+    height: 8px;
     font-size: 0.5rem;
     z-index: 10;
 }
 
-.textSerialPlaK{
-    width: 48px;
+.textSerialPlaK {
+    width: 42px;
     height: 27px;
-    border: none;
-text-align: center;
-
+    border-radius: 0 4px 4px 0;
 }
 
 
 @media screen and (min-width:1200px) {
-    
-    .formBeton{
+
+    .formBeton {
         margin: 35px 5px;
-        padding:15px 32px;
-    
+        padding: 15px 32px;
+
     }
 
     .divInputFB {
@@ -196,7 +182,7 @@ text-align: center;
     .divInputFB label {
         width: 112px;
         font-size: 1.094rem;
-        
+
     }
 
     .inputTextFB,
@@ -205,5 +191,18 @@ text-align: center;
         width: 250px;
     }
 
-   
+    .text2numberPlaK,
+    .textSerialPlaK {
+        width: 47px;
+
+    }
+
+    .selectChPlak {
+        width: 66px;
+    }
+
+    .text3numberPlaK {
+        width: 58px;
+    }
+
 }

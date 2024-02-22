@@ -198,10 +198,8 @@ const AddCustomer = () => {
                         </div>
                     </div>
                     <div className="sectionFB divBtnsFB">
-                        {/* <input type="button" >ثبت</input> */}
                         <Button variant="success" className="btnSaveFB"> ثبت </Button>
                         <Button type="reset" variant="warning" onClick={deleteDate}> پاک کن </Button>
-                        {/* <input type="reset" value={'پاک کردن'} /> */}
                     </div>
                 </form>
             </div>
