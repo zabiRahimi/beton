@@ -25,6 +25,11 @@
     align-items: center;
 }
 
+/** این کلاس برای زمانی است که یک فرم یک ستونه میخواهیم **/
+.divInputFB2 {
+    width: 100%;
+}
+
 .divInputFB label {
     width: 100px;
     display: inline-block;
@@ -127,7 +132,7 @@
 .text2numberPlaK,
 .selectChPlak,
 .text3numberPlaK,
-.textSerialPlaK{
+.textSerialPlaK {
     text-align: center;
     border: none;
 }

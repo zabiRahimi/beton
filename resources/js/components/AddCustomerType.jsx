@@ -14,7 +14,7 @@ const AddCustomerType =()=>{
             <div className="divRightACuT">
             <form action="" className="formBeton">
                     <div className="sectionFB">
-                        <div className="divInputFB">
+                        <div className="divInputFB divInputFB2">
                             <label>نوع مشتری</label>
                             <input
                                 type="text"
@@ -36,7 +36,7 @@ const AddCustomerType =()=>{
 
             <div className="divLeftACuT">
                 <div className='divListACut'>
-                        <h3> نوع مشتری تعریف شده </h3>
+                        <h4> نوع مشتری تعریف شده </h4>
                         <div className='listACuT'>
                             <span> خریدار بتن </span>
                             <span> خریدار ضایعات </span>
