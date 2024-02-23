@@ -1,3 +1,25 @@
 .containerACuT{
     display: flex;
+    
+}
+
+.divListACut{
+    width: 500px;
+    margin: 35px 5px;
+    background-color: #f6f6f9;
+    border: 5px solid #e8e8f0;
+  border-radius: 6px;
+}
+
+.listACuT{
+    display: flex;
+    flex-direction: column;
+}
+
+.listACuT span:nth-child(even) {
+    background-color: #ececec;
+}
+
+.listACuT span:nth-child(odd) {
+    background-color: #e2e2e2;
 }

@@ -36,7 +36,7 @@ const AddCustomerType =()=>{
 
             <div className="divLeftACuT">
                 <div className='divListACut'>
-                        <h3></h3>
+                        <h3> نوع مشتری تعریف شده </h3>
                         <div className='listACuT'>
                             <span> خریدار بتن </span>
                             <span> خریدار ضایعات </span>
