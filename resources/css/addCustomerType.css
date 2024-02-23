@@ -1,20 +1,33 @@
-.containerACuT{
+.containerACuT {
     display: flex;
-    
+
 }
 
-.divListACut{
-    width: 500px;
-    margin: 35px 5px;
+.divListACut {
+
+    width: 320px;
+    margin: 15px 5px;
+    padding: 15px 8px;
     background-color: #f6f6f9;
     border: 5px solid #e8e8f0;
-  border-radius: 6px;
+    border-radius: 6px;
+}
+.divListACut h4{
+    text-align: center;
 }
 
-.listACuT{
+.listACuT {
+    padding: 0 6px;
     display: flex;
     flex-direction: column;
 }
+
+.listACuT span{
+
+padding: 3px 17px 3px 0;
+}
+
+
 
 .listACuT span:nth-child(even) {
     background-color: #ececec;
@@ -22,4 +35,15 @@
 
 .listACuT span:nth-child(odd) {
     background-color: #e2e2e2;
+}
+
+.listACuT span:hover{
+
+    background-color:#98c4ca ;
+    }
+
+@media screen and (min-width:1200px){
+    .divListACut {
+        margin: 35px 5px;
+    }
 }
