@@ -12,7 +12,7 @@
 .sectionFB {
     width: 100%;
     margin: 3px 0;
-    padding: 20px 6px;
+    padding: 30px 6px 0;
     display: flex;
     background-color: #ececec;
     flex-wrap: wrap;
@@ -20,6 +20,7 @@
 
 .divInputFB {
     width: 50%;
+    margin-bottom: 30px;
     padding: 0 15px;
     display: flex;
     align-items: center;
@@ -58,6 +59,7 @@
 
 .selectFB {
     width: 235px;
+    padding-right: 10px;
 }
 
 .divBtnsFB {
