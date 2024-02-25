@@ -37,11 +37,33 @@
     font-size: 0.95rem;
 }
 
-.inputTextFB {
+.inputTextFB,
+.inputTextUnitFB {
     width: 235px;
     height: 30px;
     padding: 0 7px;
     font-size: 0.91rem;
+}
+
+.inputTextUnitFB{
+    width: 170px;
+    border: 1px solid #8f8f9d;
+    border-left: none;
+}
+
+/* جهت نمایش واحد یک فیلد */
+.unitFB{
+    width: 65px;
+    height: 30px;
+    font-size: 0.72rem;
+    background-color: #fff;
+    display: inline-block;
+    border: 1px solid #8f8f9d;
+    border-right: none;
+    border-radius: 2px 0 0 2px;
+    text-align: center;
+    line-height: 28px;
+    color: #747474;
 }
 
 .divRightFB,
@@ -173,7 +195,52 @@
     border-radius: 0 4px 4px 0;
 }
 
+/* عدم نمایش یک عنصر در فرم */
+.hideFB{
+    display: none;
+}
 
+/* نمایش یک عنصر با مقدار فلکس */
+.showFlexFB{
+    display: flex;
+}
+
+/* نمایش یک عنصر با مقدار بلاک */
+.showBlockFB{
+    display: block;
+}
+
+/* نمایش یک عنصر با مقدار اینلاین بلاک */
+.showInlineBlockFB{
+    display: inline-block;
+}
+
+/* نمایش یک عنصر با مقدار اینلاین */
+.showInlineFB{
+    display: inline;
+}
+
+.showTotalUnitsFB{
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.span1STUFB{}
+
+.span2STUFB{
+    margin: 0 6px 0 8px;
+    color: green;
+}
+
+.span3STUFB{
+    font-size: 0.8rem;
+}
+
+.ltrFB{
+    direction: ltr;
+}
 @media screen and (min-width:1200px) {
 
     .formBeton {
@@ -196,6 +263,10 @@
     .selectFB,
     .divExamplePlak {
         width: 250px;
+    }
+
+    .inputTextUnitFB{
+        width: 185px;
     }
 
     .text2numberPlaK,

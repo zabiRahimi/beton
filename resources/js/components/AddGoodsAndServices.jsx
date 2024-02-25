@@ -1,8 +1,51 @@
+import { useEffect, useRef } from "react";
 import Title from "./hooks/Title";
 import Button from 'react-bootstrap/Button';
 
 
 const AddGoodsAndServices = () => {
+    const FormulaBetonRef=useRef(null);
+    const unitPriceAASRef= useRef(null);
+    
+    const cementRef=useRef(null);
+    const waterRef=useRef(null);
+    const sandRef=useRef(null);//ماسه
+    const gravelRef=useRef(null);//شن
+
+    const spanShowTotalRef=useRef(null);
+    useEffect(()=>{
+        // console.log(unitPriceAASRef.current);
+        // unitPriceAASRef.current.classList.add('hideFB')
+    })
+
+    const moreBetonDetails =()=>{
+
+        FormulaBetonRef.current.classList.remove('hideFB');
+        unitPriceAASRef.current.classList.remove('hideFB');
+
+    }
+
+    // هنگام انتخاب نوع کالا چنانچه قبلا نوع کالایی انتخاب شده باشد جزئیات
+    // آن کالا را می بندد
+    const hide =()=>{
+
+        FormulaBetonRef.current.classList.add('hideFB');
+        unitPriceAASRef.current.classList.add('hideFB');
+
+    }
+
+    // مجموع واحدهای فرمول بتن را محاسبه می کند
+    const totalBtonDetails =()=>{
+        const cement = cementRef.current.value?parseFloat(cementRef.current.value):0;
+        const sand = sandRef.current.value?parseInt(sandRef.current.value):0;
+        const gravel = gravelRef.current.value?parseInt(gravelRef.current.value):0;
+        const water = waterRef.current.value?parseInt(waterRef.current.value):0;
+        let total= cement + sand + gravel + water;
+        console.log(total);
+
+        spanShowTotalRef.current.textContent= total;
+    }
+
     return (
         <>
             <Title title="تعریف کالا و خدمات" />
@@ -20,9 +63,9 @@ const AddGoodsAndServices = () => {
 
                         <div className="divInputFB">
                             <label>نوع کالا </label>
-                            <select name="" id="" className="selectFB">
+                            <select name="" id="" className="selectFB" onChange={hide}>
                                 <option value=""> انتخاب </option>
-                                <option value="بتن">بتن</option>
+                                <option value="بتن" onClick={moreBetonDetails}>بتن</option>
                                 <option value="شن و ماسه">شن و ماسه</option>
                                 <option value="سیمان"> سیمان </option>
                                 <option value="آب"> آب </option>
@@ -32,28 +75,42 @@ const AddGoodsAndServices = () => {
                         </div>
                     </div>
 
-                    <div className="sectionFB">
+                    <div className="sectionFB hideFB" ref={FormulaBetonRef}>
                         <div className="divInputFB">
                             <label> مقدار سیمان </label>
-                            <input type="text" className="inputTextFB" />
+                            <input type="text" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={totalBtonDetails}/>
+                            <span className="unitFB"> کیلو گرم </span>
                         </div>
                         <div className="divInputFB">
                             <label> مقدار ماسه </label>
-                            <input type="text" className="inputTextFB" />
+                            <input type="text" className="inputTextUnitFB ltrFB" ref={sandRef} onInput={totalBtonDetails}/>
+                            <span className="unitFB"> کیلو گرم </span>
+
                         </div>
                         <div className="divInputFB">
                             <label> مقدار شن </label>
-                            <input type="text" className="inputTextFB" />
+                            <input type="text" className="inputTextUnitFB ltrFB" ref={gravelRef} onInput={totalBtonDetails}/>
+                            <span className="unitFB"> کیلو گرم </span>
+
                         </div>
                         <div className="divInputFB">
                             <label> مقدار آب </label>
-                            <input type="text" className="inputTextFB" />
-                        </div>
+                            <input type="text" className="inputTextUnitFB ltrFB" ref={waterRef} onInput={totalBtonDetails}/>
+                            <span className="unitFB"> کیلو گرم </span>
 
+                        </div>
+                        
+
+                        <div className="showTotalUnitsFB">
+                            <span className="span1STUFB">جمع کل:</span>
+                            <span className="span2STUFB" ref={spanShowTotalRef}> 0 </span>
+                            <span className="span3STUFB">کیلو گرم</span>
+
+                        </div>
 
                     </div>
 
-                    <div className="sectionFB">
+                    <div className="sectionFB hideFB" ref={unitPriceAASRef}>
 
                         <div className="divInputFB">
 
@@ -67,8 +124,10 @@ const AddGoodsAndServices = () => {
                         </div>
 
                         <div className="divInputFB">
-                            <label> قیمت واحد </label>
-                            <input type="text" className="inputTextFB" />
+                            <label for='unintPriceAAS'> قیمت واحد </label>
+                            <input type="text" id="unintPriceAAS" className="inputTextUnitFB ltrFB" />
+                            <span className="unitFB"> تومان </span>
+
                         </div>
 
 
