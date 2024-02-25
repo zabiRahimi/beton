@@ -43,7 +43,18 @@ const AddGoodsAndServices = () => {
         let total= cement + sand + gravel + water;
         console.log(total);
 
-        spanShowTotalRef.current.textContent= total;
+        spanShowTotalRef.current.textContent= total.toLocaleString();
+    }
+
+    const formatNub= (ref)=>{
+    //    if (parseFloat(ref.current.value.replace(/,/g, ''))) {
+    //     const val = parseFloat(ref.current.value.replace(/,/g, ''));
+    //     ref.current.value=val.toLocaleString()
+    //     }
+    let formattedNumber = "12,235.22";
+let originalNumber = parseFloat(formattedNumber.replace(/,/g, ''));
+console.log(originalNumber);
+        
     }
 
     return (
@@ -78,7 +89,7 @@ const AddGoodsAndServices = () => {
                     <div className="sectionFB hideFB" ref={FormulaBetonRef}>
                         <div className="divInputFB">
                             <label> مقدار سیمان </label>
-                            <input type="text" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={totalBtonDetails}/>
+                            <input type="text" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={()=>{totalBtonDetails(); formatNub(cementRef)}}/>
                             <span className="unitFB"> کیلو گرم </span>
                         </div>
                         <div className="divInputFB">
