@@ -4,21 +4,21 @@ import Button from 'react-bootstrap/Button';
 
 
 const AddGoodsAndServices = () => {
-    const FormulaBetonRef=useRef(null);
-    const unitPriceAASRef= useRef(null);
-    
-    const cementRef=useRef(null);
-    const waterRef=useRef(null);
-    const sandRef=useRef(null);//ماسه
-    const gravelRef=useRef(null);//شن
+    const FormulaBetonRef = useRef(null);
+    const unitPriceAASRef = useRef(null);
 
-    const spanShowTotalRef=useRef(null);
-    useEffect(()=>{
+    const cementRef = useRef(null);
+    const waterRef = useRef(null);
+    const sandRef = useRef(null);//ماسه
+    const gravelRef = useRef(null);//شن
+
+    const spanShowTotalRef = useRef(null);
+    useEffect(() => {
         // console.log(unitPriceAASRef.current);
         // unitPriceAASRef.current.classList.add('hideFB')
     })
 
-    const moreBetonDetails =()=>{
+    const moreBetonDetails = () => {
 
         FormulaBetonRef.current.classList.remove('hideFB');
         unitPriceAASRef.current.classList.remove('hideFB');
@@ -27,7 +27,7 @@ const AddGoodsAndServices = () => {
 
     // هنگام انتخاب نوع کالا چنانچه قبلا نوع کالایی انتخاب شده باشد جزئیات
     // آن کالا را می بندد
-    const hide =()=>{
+    const hide = () => {
 
         FormulaBetonRef.current.classList.add('hideFB');
         unitPriceAASRef.current.classList.add('hideFB');
@@ -35,26 +35,46 @@ const AddGoodsAndServices = () => {
     }
 
     // مجموع واحدهای فرمول بتن را محاسبه می کند
-    const totalBtonDetails =()=>{
-        const cement = cementRef.current.value?parseFloat(cementRef.current.value):0;
-        const sand = sandRef.current.value?parseInt(sandRef.current.value):0;
-        const gravel = gravelRef.current.value?parseInt(gravelRef.current.value):0;
-        const water = waterRef.current.value?parseInt(waterRef.current.value):0;
-        let total= cement + sand + gravel + water;
-        console.log(total);
+    const totalBtonDetails = () => {
+        const cement = cementRef.current.value ? parseFloat(cementRef.current.value) : 0;
+        const sand = sandRef.current.value ? parseInt(sandRef.current.value) : 0;
+        const gravel = gravelRef.current.value ? parseInt(gravelRef.current.value) : 0;
+        const water = waterRef.current.value ? parseInt(waterRef.current.value) : 0;
+        let total = cement + sand + gravel + water;
+        // console.log(total);
 
-        spanShowTotalRef.current.textContent= total.toLocaleString();
+        spanShowTotalRef.current.textContent = total.toLocaleString();
     }
 
-    const formatNub= (ref)=>{
-    //    if (parseFloat(ref.current.value.replace(/,/g, ''))) {
-    //     const val = parseFloat(ref.current.value.replace(/,/g, ''));
-    //     ref.current.value=val.toLocaleString()
-    //     }
-    let formattedNumber = "12,235.22";
-let originalNumber = parseFloat(formattedNumber.replace(/,/g, ''));
-console.log(originalNumber);
-        
+    const formatNub = (ref) => {
+        // let resalt = ref.current.value.replace(/[\s,]/g, "");
+        let val,
+            checkDthot,
+            resalt = ref.current.value.replace(/[\s,]/g, "");
+
+        // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
+        if (resalt.slice(-1) == '.') {
+            checkDthot = true;
+        } else {
+            checkDthot = false;
+
+        }
+        // چک می کند فقط رشته عددی باشد
+        if (parseFloat(resalt)) {
+
+            val = parseFloat(resalt);
+
+            /**
+             * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
+             * علامت را به آخر رشته اضافه می کند
+             */
+            val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
+
+            ref.current.value = val;
+
+        }
+
+
     }
 
     return (
@@ -89,28 +109,28 @@ console.log(originalNumber);
                     <div className="sectionFB hideFB" ref={FormulaBetonRef}>
                         <div className="divInputFB">
                             <label> مقدار سیمان </label>
-                            <input type="text" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={()=>{totalBtonDetails(); formatNub(cementRef)}}/>
+                            <input type="text" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={() => { totalBtonDetails(); formatNub(cementRef) }} />
                             <span className="unitFB"> کیلو گرم </span>
                         </div>
                         <div className="divInputFB">
                             <label> مقدار ماسه </label>
-                            <input type="text" className="inputTextUnitFB ltrFB" ref={sandRef} onInput={totalBtonDetails}/>
+                            <input type="text" className="inputTextUnitFB ltrFB" ref={sandRef} onInput={totalBtonDetails} />
                             <span className="unitFB"> کیلو گرم </span>
 
                         </div>
                         <div className="divInputFB">
                             <label> مقدار شن </label>
-                            <input type="text" className="inputTextUnitFB ltrFB" ref={gravelRef} onInput={totalBtonDetails}/>
+                            <input type="text" className="inputTextUnitFB ltrFB" ref={gravelRef} onInput={totalBtonDetails} />
                             <span className="unitFB"> کیلو گرم </span>
 
                         </div>
                         <div className="divInputFB">
                             <label> مقدار آب </label>
-                            <input type="text" className="inputTextUnitFB ltrFB" ref={waterRef} onInput={totalBtonDetails}/>
+                            <input type="text" className="inputTextUnitFB ltrFB" ref={waterRef} onInput={totalBtonDetails} />
                             <span className="unitFB"> کیلو گرم </span>
 
                         </div>
-                        
+
 
                         <div className="showTotalUnitsFB">
                             <span className="span1STUFB">جمع کل:</span>
