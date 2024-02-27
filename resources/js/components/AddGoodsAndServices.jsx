@@ -36,12 +36,17 @@ const AddGoodsAndServices = () => {
 
     // مجموع واحدهای فرمول بتن را محاسبه می کند
     const totalBtonDetails = () => {
-        const cement = cementRef.current.value ? parseFloat(cementRef.current.value) : 0;
-        const sand = sandRef.current.value ? parseInt(sandRef.current.value) : 0;
-        const gravel = gravelRef.current.value ? parseInt(gravelRef.current.value) : 0;
-        const water = waterRef.current.value ? parseInt(waterRef.current.value) : 0;
+        let cement = cementRef.current.value.replace(/[\s,]/g, ""),
+            sand = sandRef.current.value.replace(/[\s,]/g, ""),
+            gravel = gravelRef.current.value.replace(/[\s,]/g, ""),
+            water = waterRef.current.value.replace(/[\s,]/g, "");
+
+
+        cement = cement ? parseFloat(cement) : 0;
+        sand = sand ? parseFloat(sand) : 0;
+        gravel = gravel ? parseFloat(gravel) : 0;
+        water = water ? parseFloat(water) : 0;
         let total = cement + sand + gravel + water;
-        // console.log(total);
 
         spanShowTotalRef.current.textContent = total.toLocaleString();
     }
@@ -77,6 +82,17 @@ const AddGoodsAndServices = () => {
 
     }
 
+    /**
+     * تمام دادهای جانبی فرم را پاک می کند
+     */
+    const resetAll = () => {
+        spanShowTotalRef.current.textContent = 0
+    }
+
+    const htmlFor=(id)=>{
+        document.getElementById(id).focus()
+    }
+
     return (
         <>
             <Title title="تعریف کالا و خدمات" />
@@ -108,26 +124,26 @@ const AddGoodsAndServices = () => {
 
                     <div className="sectionFB hideFB" ref={FormulaBetonRef}>
                         <div className="divInputFB">
-                            <label> مقدار سیمان </label>
-                            <input type="text" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={() => { totalBtonDetails(); formatNub(cementRef) }} />
-                            <span className="unitFB"> کیلو گرم </span>
+                            <label htmlFor="cementAAS"> مقدار سیمان </label>
+                            <input type="text" id="cementAAS" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={() => { totalBtonDetails(); formatNub(cementRef) }} />
+                            <span className="unitFB" onClick={()=>htmlFor('cementAAS')}> کیلو گرم </span>
                         </div>
                         <div className="divInputFB">
-                            <label> مقدار ماسه </label>
-                            <input type="text" className="inputTextUnitFB ltrFB" ref={sandRef} onInput={totalBtonDetails} />
-                            <span className="unitFB"> کیلو گرم </span>
+                            <label htmlFor="sandAAS"> مقدار ماسه </label>
+                            <input type="text" id="sandAAS" className="inputTextUnitFB ltrFB" ref={sandRef} onInput={() => { totalBtonDetails(); formatNub(sandRef) }} />
+                            <span className="unitFB" onClick={()=>htmlFor('sandAAS')}> کیلو گرم </span>
 
                         </div>
                         <div className="divInputFB">
-                            <label> مقدار شن </label>
-                            <input type="text" className="inputTextUnitFB ltrFB" ref={gravelRef} onInput={totalBtonDetails} />
-                            <span className="unitFB"> کیلو گرم </span>
+                            <label htmlFor="gravelAAS"> مقدار شن </label>
+                            <input type="text" id="gravelAAS" className="inputTextUnitFB ltrFB" ref={gravelRef} onInput={() => { totalBtonDetails(); formatNub(gravelRef) }} />
+                            <span className="unitFB" onClick={()=>htmlFor('gravelAAS')}> کیلو گرم </span>
 
                         </div>
                         <div className="divInputFB">
-                            <label> مقدار آب </label>
-                            <input type="text" className="inputTextUnitFB ltrFB" ref={waterRef} onInput={totalBtonDetails} />
-                            <span className="unitFB"> کیلو گرم </span>
+                            <label htmlFor="waterAAS"> مقدار آب </label>
+                            <input type="text" id="waterAAS" className="inputTextUnitFB ltrFB" ref={waterRef} onInput={() => { totalBtonDetails(); formatNub(waterRef) }} />
+                            <span className="unitFB" onClick={()=>htmlFor('waterAAS')}> کیلو گرم </span>
 
                         </div>
 
@@ -135,7 +151,7 @@ const AddGoodsAndServices = () => {
                         <div className="showTotalUnitsFB">
                             <span className="span1STUFB">جمع کل:</span>
                             <span className="span2STUFB" ref={spanShowTotalRef}> 0 </span>
-                            <span className="span3STUFB">کیلو گرم</span>
+                            <span className="span3STUFB" >کیلو گرم</span>
 
                         </div>
 
@@ -155,9 +171,9 @@ const AddGoodsAndServices = () => {
                         </div>
 
                         <div className="divInputFB">
-                            <label for='unintPriceAAS'> قیمت واحد </label>
+                            <label htmlFor='unintPriceAAS'> قیمت واحد </label>
                             <input type="text" id="unintPriceAAS" className="inputTextUnitFB ltrFB" />
-                            <span className="unitFB"> تومان </span>
+                            <span className="unitFB" onClick={()=>htmlFor('unintPriceAAS')}> تومان </span>
 
                         </div>
 
@@ -167,7 +183,7 @@ const AddGoodsAndServices = () => {
 
                     <div className="sectionFB divBtnsFB">
                         <Button variant="success" className="btnSaveFB"> ثبت </Button>
-                        <Button type="reset" variant="warning" > پاک کن </Button>
+                        <Button type="reset" variant="warning" onClick={resetAll}> پاک کن </Button>
                     </div>
                 </form>
             </div>
