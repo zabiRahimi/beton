@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 
 import Title from "./hooks/Title";
+import "../../css/formBeton.css";
 import "../../css/addCustomerType.css";
 
 

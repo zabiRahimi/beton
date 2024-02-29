@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import Title from "./hooks/Title";
 
 import Button from 'react-bootstrap/Button';
-
+import "../../css/formBeton.css";
 
 const AddGoodsAndServices = () => {
     const divFormulaBetonRef = useRef(null);

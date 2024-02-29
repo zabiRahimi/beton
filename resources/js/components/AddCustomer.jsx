@@ -1,10 +1,11 @@
 import Title from "./hooks/Title";
 // import { DatePicker, InputDatePicker } from "jalaali-react-date-picker";
 import Button from 'react-bootstrap/Button';
-import "../../css/formBeton.scoped.css";
+import "../../css/general.css";
+import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
 import DataZabi from "./hooks/DateZabi";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 const AddCustomer = () => {
     const {
         years,
@@ -16,13 +17,40 @@ const AddCustomer = () => {
         optionYears,
     } = DataZabi();
 
-    const[day, setDay]=useState();
-    const[month, setMonth]=useState();
-    const[year, setYear]=useState();
 
 
-    const changeDay=(e)=>{
-        let day= e.target.value;
+    const btnAddGeRef = useRef(null);
+    const btnGetGeRef = useRef(null);
+
+    const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
+    const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+
+    const [day, setDay] = useState();
+    const [month, setMonth] = useState();
+    const [year, setYear] = useState();
+
+    const addCustomer = () => {
+        setDisabledBtnGetGe(false);
+        setDisabledBtnAddGe(true);
+        console.log('addCustomer');
+
+    }
+
+    const getCustomer = () => {
+        setDisabledBtnAddGe(false);
+        setDisabledBtnGetGe(true);
+        console.log('getCustomer');
+
+    }
+
+    // const changeStyleBtnAddGe =()=>{
+
+    // }
+
+
+
+    const changeDay = (e) => {
+        let day = e.target.value;
         //  switch (day) {
         //     case value:
         //         day=1;
@@ -51,35 +79,53 @@ const AddCustomer = () => {
         //         case value:
         //             day=;
         //         break;
-         
-            
+
+
         //  }
         setDay(day);
     }
 
-    const changeMonth=(e)=>{
-        let month= e.target.value;
+    const changeMonth = (e) => {
+        let month = e.target.value;
         console.log(month);
         setMonth(month);
     }
 
-    const changeYear=(e)=>{
-        let year= e.target.value;
+    const changeYear = (e) => {
+        let year = e.target.value;
         console.log(year);
         setYear(year);
     }
 
-   const deleteDate=()=>{
-    setDay();
-    setMonth();
-    setYear();
+    const deleteDate = () => {
+        setDay();
+        setMonth();
+        setYear();
 
-   }
+    }
 
 
     return (
         <>
             <Title title="تعریف مشتری" />
+            <div className="headPageGe">
+                <button
+                    className={`--styleLessBtn btnAddGe ${disabledBtnAddGe?'disabledBtnGe':'enabledBtnGe'}`}
+                    ref={btnAddGeRef} onClick={addCustomer}
+                    disabled={disabledBtnAddGe}
+                >
+                    تعریف مشتری
+                </button>
+
+                <button
+                    className={`--styleLessBtn btnGetGe ${disabledBtnGetGe?'disabledBtnGe':'enabledBtnGe'} `}
+                    ref={btnGetGeRef}
+                    onClick={getCustomer}
+                    disabled={disabledBtnGetGe}
+                >
+                    مشاهده مشتری‌ها
+                </button>
+            </div>
             <div>
                 <form action="" className="formBeton">
                     <div className="sectionFB">
@@ -117,7 +163,7 @@ const AddCustomer = () => {
                                         className="inputTextDateACus inputDayTDACus"
                                         placeholder="1"
                                         value={day}
-                                        onInput={(e)=>changeDay(e)}
+                                        onInput={(e) => changeDay(e)}
                                     />
                                     <span>/</span>
                                     <input
@@ -125,7 +171,7 @@ const AddCustomer = () => {
                                         className="inputTextDateACus inputMonthTDACus"
                                         placeholder="1"
                                         value={month}
-                                        onInput={(e)=>changeMonth(e)}
+                                        onInput={(e) => changeMonth(e)}
                                     />
                                     <span>/</span>
                                     <input
@@ -133,20 +179,20 @@ const AddCustomer = () => {
                                         className="inputTextDateACus inputYearTDACus"
                                         placeholder="1300"
                                         value={year}
-                                        onInput={(e)=>{changeYear(e)}}
+                                        onInput={(e) => { changeYear(e) }}
                                     />
                                 </div>
 
                                 <div className="divDownDateAcus">
-                                    <select name="" id="" value={day} onChange={(e)=>changeDay(e)}>
+                                    <select name="" id="" value={day} onChange={(e) => changeDay(e)}>
                                         <option value="">روز</option>
                                         {optionDays}
                                     </select>
-                                    <select name="" id="" value={month} onChange={(e)=>changeMonth(e)}>
+                                    <select name="" id="" value={month} onChange={(e) => changeMonth(e)}>
                                         <option value="">ماه</option>
                                         {optionMonth}
                                     </select>
-                                    <select name="" id="" value={year} onChange={(e)=>{changeYear(e)}}>
+                                    <select name="" id="" value={year} onChange={(e) => { changeYear(e) }}>
                                         <option value="">سال</option>
                                         {optionYears}
                                     </select>
