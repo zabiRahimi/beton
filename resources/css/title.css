@@ -5,17 +5,26 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row-reverse;
+    position: sticky;
+    top: 0;
+
 }
 
-.leftTitle{
+.divTitleHomeScroll {
+    height: 40px;
+    border: 2px solid #cacaca;
+    background-color: #b8c9df;
+}
+
+.leftTitle {
     display: flex;
     flex-direction: row-reverse;
 }
 
-.replyBtn{
+.replyBtn {
     width: 32px;
     height: 31px;
-    margin:auto 20px;
+    margin: auto 20px;
     cursor: pointer;
     font-size: 1.6rem;
     display: flex;
@@ -33,6 +42,11 @@
     font-weight: 400;
 }
 
+.titleBetonScroll{
+    font-size: 1.1rem;
+
+}
+
 .brandHome {
     padding-left: 15px;
     display: flex;
@@ -40,6 +54,10 @@
     justify-content: center;
     align-items: center;
     color: #68d968;
+}
+
+.hideBrandHome {
+    display: none;
 }
 
 .brandHome i {
@@ -51,8 +69,10 @@
     font-size: 1.2rem;
 }
 
+
+
 @media screen and (max-width: 768px) {
-    
+
 
     .divTitleHome {
         height: 40px;
@@ -65,9 +85,9 @@
     }
 
     .brandHome,
-    .replyBtn{
+    .replyBtn {
         display: none;
     }
 
-    
+
 }

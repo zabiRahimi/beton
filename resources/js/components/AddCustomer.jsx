@@ -1,7 +1,7 @@
 import Title from "./hooks/Title";
 // import { DatePicker, InputDatePicker } from "jalaali-react-date-picker";
 import Button from 'react-bootstrap/Button';
-import "../../css/formBeton.css";
+import "../../css/formBeton.scoped.css";
 import "../../css/addCustomer.css";
 import DataZabi from "./hooks/DateZabi";
 import { useEffect, useState } from "react";

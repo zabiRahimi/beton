@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 import Title from "./hooks/Title";
+
 import Button from 'react-bootstrap/Button';
 
 
 const AddGoodsAndServices = () => {
-    const FormulaBetonRef = useRef(null);
-    const unitPriceAASRef = useRef(null);
+    const divFormulaBetonRef = useRef(null);
+    const divUnitPriceAASRef = useRef(null);
 
     const cementRef = useRef(null);
     const waterRef = useRef(null);
@@ -13,15 +14,15 @@ const AddGoodsAndServices = () => {
     const gravelRef = useRef(null);//شن
 
     const spanShowTotalRef = useRef(null);
-    useEffect(() => {
-        // console.log(unitPriceAASRef.current);
-        // unitPriceAASRef.current.classList.add('hideFB')
-    })
+
+    const unitPriceAASRef = useRef(null);
+
+   
 
     const moreBetonDetails = () => {
 
-        FormulaBetonRef.current.classList.remove('hideFB');
-        unitPriceAASRef.current.classList.remove('hideFB');
+        divFormulaBetonRef.current.classList.remove('hideFB');
+        divUnitPriceAASRef.current.classList.remove('hideFB');
 
     }
 
@@ -29,13 +30,14 @@ const AddGoodsAndServices = () => {
     // آن کالا را می بندد
     const hide = () => {
 
-        FormulaBetonRef.current.classList.add('hideFB');
-        unitPriceAASRef.current.classList.add('hideFB');
+        divFormulaBetonRef.current.classList.add('hideFB');
+        divUnitPriceAASRef.current.classList.add('hideFB');
 
     }
 
     // مجموع واحدهای فرمول بتن را محاسبه می کند
     const totalBtonDetails = () => {
+
         let cement = cementRef.current.value.replace(/[\s,]/g, ""),
             sand = sandRef.current.value.replace(/[\s,]/g, ""),
             gravel = gravelRef.current.value.replace(/[\s,]/g, ""),
@@ -46,12 +48,15 @@ const AddGoodsAndServices = () => {
         sand = sand ? parseFloat(sand) : 0;
         gravel = gravel ? parseFloat(gravel) : 0;
         water = water ? parseFloat(water) : 0;
+
         let total = cement + sand + gravel + water;
 
         spanShowTotalRef.current.textContent = total.toLocaleString();
+
     }
 
     const formatNub = (ref) => {
+
         // let resalt = ref.current.value.replace(/[\s,]/g, "");
         let val,
             checkDthot,
@@ -79,14 +84,14 @@ const AddGoodsAndServices = () => {
 
         }
 
-
     }
 
     /**
      * تمام دادهای جانبی فرم را پاک می کند
      */
     const resetAll = () => {
-        spanShowTotalRef.current.textContent = 0
+        spanShowTotalRef.current.textContent = 0;
+        hide();
     }
 
     const htmlFor=(id)=>{
@@ -96,6 +101,7 @@ const AddGoodsAndServices = () => {
     return (
         <>
             <Title title="تعریف کالا و خدمات" />
+            <div className="headPageGe"></div>
             <div>
                 <form action="" className="formBeton">
                     <div className="sectionFB">
@@ -122,7 +128,7 @@ const AddGoodsAndServices = () => {
                         </div>
                     </div>
 
-                    <div className="sectionFB hideFB" ref={FormulaBetonRef}>
+                    <div className="sectionFB hideFB" ref={divFormulaBetonRef}>
                         <div className="divInputFB">
                             <label htmlFor="cementAAS"> مقدار سیمان </label>
                             <input type="text" id="cementAAS" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={() => { totalBtonDetails(); formatNub(cementRef) }} />
@@ -157,7 +163,7 @@ const AddGoodsAndServices = () => {
 
                     </div>
 
-                    <div className="sectionFB hideFB" ref={unitPriceAASRef}>
+                    <div className="sectionFB hideFB" ref={divUnitPriceAASRef}>
 
                         <div className="divInputFB">
 
@@ -171,9 +177,10 @@ const AddGoodsAndServices = () => {
                         </div>
 
                         <div className="divInputFB">
-                            <label htmlFor='unintPriceAAS'> قیمت واحد </label>
-                            <input type="text" id="unintPriceAAS" className="inputTextUnitFB ltrFB" />
-                            <span className="unitFB" onClick={()=>htmlFor('unintPriceAAS')}> تومان </span>
+                            <label htmlFor='unitPriceAAS'> قیمت واحد </label>
+                            <input type="text" id="unitPriceAAS" ref={unitPriceAASRef} className="inputTextUnitFB ltrFB"
+                             onInput={()=>{formatNub(unitPriceAASRef)}}/>
+                            <span className="unitFB" onClick={()=>htmlFor('unitPriceAAS')}> تومان </span>
 
                         </div>
 

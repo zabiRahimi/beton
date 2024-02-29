@@ -8,6 +8,7 @@
     "devDependencies": {
         "@vitejs/plugin-react": "^4.2.1",
         "axios": "^1.6.1",
+        "esbuild-plugin-babel": "^0.2.3",
         "laravel-vite-plugin": "^1.0.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -19,6 +20,7 @@
         "localforage": "^1.10.0",
         "react-bootstrap": "^2.10.1",
         "react-router-dom": "^6.21.1",
+        "react-scoped-css": "^0.0.23",
         "sweetalert2": "^11.10.2",
         "sweetalert2-react-content": "^5.0.7"
     }
