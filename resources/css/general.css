@@ -66,3 +66,70 @@ background-color: #7191b9 !important;
     border-radius: 6px;
 }
 
+.titleShowGe{
+    width: 100%;
+    text-align: center;
+    padding: 3px 0;
+    margin-bottom: 15px;
+}
+
+.rowListShowGe{
+    width: 100%;
+    padding: 5px 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.rowListShowGe:nth-child(even) {
+    background-color: #ececec;
+}
+
+.rowListShowGe:nth-child(odd) {
+    background-color: #e2e2e2;
+}
+
+.rowListShowGe:hover{
+
+    background-color:#98c4ca ;
+    }
+
+.rowNumShowGe{
+    width: 5%;
+    text-align: center;
+}
+
+.nameShowGE{
+
+    width: 30%;
+    padding: 0 30px;
+
+}
+
+.typeShowrGe{
+    width: 25%;
+    padding: 0 5px;
+
+}
+
+.btnEditGe,
+.btnDelGe{
+   
+    height: fit-content;
+    text-align: center;
+    padding: 0 8px;
+}
+
+.iEditGe{
+    color: #4783b0;
+    font-size: 1.7rem;
+}
+
+.btnDelGe{
+    margin-right: 20px;
+}
+
+.iDelGe{
+    color: #d74939;
+    font-size: 1.3rem;}
+
+

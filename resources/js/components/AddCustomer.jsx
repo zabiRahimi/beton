@@ -126,7 +126,7 @@ const AddCustomer = () => {
                     مشاهده مشتری‌ها
                 </button>
             </div>
-            <div className="containerMainAS_Ge">
+            <div className="containerMainAS_Ge flexColumnGe">
 
                 <div className="continerAddGe containerAddCustomer">
                     <form action="" className="formBeton">
@@ -253,16 +253,117 @@ const AddCustomer = () => {
                 </div>
 
                 <div className="containerShowGe containerShowCustomer">
-                        <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
-                        <div className="divListShowGe">
-                            <div className="rowListShowGe">
-                                <span></span>
-                                <Button variant="info" className="btnSaveFB"> ثبت </Button>
-                                <Button variant="danger" className="btnSaveFB"> ثبت </Button>
+                    <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
+                    <div className="divListShowGe">
 
-                                <button></button>
-                            </div>
+                    <div className="rowListShowGe">
+                            <span className="rowNumShowGe">ردیف</span>
+                            <span className="nameShowGE">نام مشتری</span>
+                            <span className="typeShowrGe">نوع مشتری</span>
+                            
+                            <span> ویرایش  </span>
+                            <span> حذف </span>
+
                         </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">1</span>
+                            <span className="nameShowGE">رحیمی</span>
+                            <span className="typeShowrGe">خریدار</span>
+                            
+                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
+                                <i className="icofont-pencil iEditGe" />
+                            </button>
+                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                <i className="icofont-trash iDelGe" />
+                            </button>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">2</span>
+                            <span className="nameShowGE">ابراهیمی</span>
+                            <span className="typeShowrGe">فروشنده شن و ماسه</span>
+                            
+                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
+                                <i className="icofont-pencil iEditGe" />
+                            </button>
+                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                <i className="icofont-trash iDelGe" />
+                            </button>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">3</span>
+                            <span className="nameShowGE">اسکندری</span>
+                            <span className="typeShowrGe">خریدار</span>
+                            
+                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
+                                <i className="icofont-pencil iEditGe" />
+                            </button>
+                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                <i className="icofont-trash iDelGe" />
+                            </button>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">4</span>
+                            <span className="nameShowGE">نعمت الهی</span>
+                            <span className="typeShowrGe">فروشنده سیمان</span>
+                            
+                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
+                                <i className="icofont-pencil iEditGe" />
+                            </button>
+                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                <i className="icofont-trash iDelGe" />
+                            </button>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">5</span>
+                            <span className="nameShowGE">مشکین فام</span>
+                            <span className="typeShowrGe">فروشنده</span>
+                            
+                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
+                                <i className="icofont-pencil iEditGe" />
+                            </button>
+                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                <i className="icofont-trash iDelGe" />
+                            </button>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">6</span>
+                            <span className="nameShowGE">مهرآور</span>
+                            <span className="typeShowrGe">راننده</span>
+                            
+                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
+                                <i className="icofont-pencil iEditGe" />
+                            </button>
+                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                <i className="icofont-trash iDelGe" />
+                            </button>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">7</span>
+                            <span className="nameShowGE">جاویدی</span>
+                            <span className="typeShowrGe">پرسنل</span>
+                            
+                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
+                                <i className="icofont-pencil iEditGe" />
+                            </button>
+                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                <i className="icofont-trash iDelGe" />
+                            </button>
+
+                        </div>
+                    </div>
                 </div>
 
             </div>
