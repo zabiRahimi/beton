@@ -30,3 +30,39 @@
 .enabledBtnGe:hover{
 background-color: #7191b9 !important;
 }
+
+.containerMainAS_Ge{
+   width: 100%;
+   display: flex;
+}
+
+.flexColumnGe{
+    flex-direction: column;
+}
+
+.flexColumnReverseGe{
+    flex-direction: column-reverse;
+}
+
+.flexRowGe{
+    flex-direction: row;
+}
+
+.flexRowReverseGe{
+    flex-direction: row-reverse;
+}
+
+.continerAddGe,
+.containerShowGe{
+
+}
+
+
+.containerShowGe{
+    margin: 15px 5px;
+    padding: 15px 8px;
+    background-color: #f6f6f9;
+    border: 5px solid #e8e8f0;
+    border-radius: 6px;
+}
+

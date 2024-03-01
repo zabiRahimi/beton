@@ -110,7 +110,7 @@ const AddCustomer = () => {
             <Title title="تعریف مشتری" />
             <div className="headPageGe">
                 <button
-                    className={`--styleLessBtn btnAddGe ${disabledBtnAddGe?'disabledBtnGe':'enabledBtnGe'}`}
+                    className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
                     ref={btnAddGeRef} onClick={addCustomer}
                     disabled={disabledBtnAddGe}
                 >
@@ -118,7 +118,7 @@ const AddCustomer = () => {
                 </button>
 
                 <button
-                    className={`--styleLessBtn btnGetGe ${disabledBtnGetGe?'disabledBtnGe':'enabledBtnGe'} `}
+                    className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
                     onClick={getCustomer}
                     disabled={disabledBtnGetGe}
@@ -126,128 +126,145 @@ const AddCustomer = () => {
                     مشاهده مشتری‌ها
                 </button>
             </div>
-            <div>
-                <form action="" className="formBeton">
-                    <div className="sectionFB">
-                        <div className="divInputFB">
-                            <label>نام مشتری</label>
-                            <input
-                                type="text"
-                                className="inputTextFB"
-                                autoFocus
-                            />
+            <div className="containerMainAS_Ge">
+
+                <div className="continerAddGe containerAddCustomer">
+                    <form action="" className="formBeton">
+                        <div className="sectionFB">
+                            <div className="divInputFB">
+                                <label>نام مشتری</label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB"
+                                    autoFocus
+                                />
+                            </div>
+
+                            <div className="divInputFB">
+                                <label>نوع مشتری </label>
+                                <select name="" id="" className="selectFB">
+                                    <option value="خریدار">خریدار</option>
+                                    <option value="فروشنده">فروشنده</option>
+                                    <option value="فروشنده-خریدار">فروشنده-خریدار</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div className="divInputFB">
-                            <label>نوع مشتری </label>
-                            <select name="" id="" className="selectFB">
-                                <option value="خریدار">خریدار</option>
-                                <option value="فروشنده">فروشنده</option>
-                                <option value="فروشنده-خریدار">فروشنده-خریدار</option>
-                            </select>
-                        </div>
-                    </div>
+                        <div className="sectionFB">
+                            <div className="divInputFB">
+                                <label>کد ملی </label>
+                                <input type="text" className="inputTextFB" />
+                            </div>
 
-                    <div className="sectionFB">
-                        <div className="divInputFB">
-                            <label>کد ملی </label>
-                            <input type="text" className="inputTextFB" />
+                            <div className="divInputFB">
+                                <label>تاریخ تولد </label>
+                                <div className="divDateBirth">
+                                    <div className="divUpDateAcus">
+                                        <input
+                                            type="text"
+                                            className="inputTextDateACus inputDayTDACus"
+                                            placeholder="1"
+                                            value={day}
+                                            onInput={(e) => changeDay(e)}
+                                        />
+                                        <span>/</span>
+                                        <input
+                                            type="text"
+                                            className="inputTextDateACus inputMonthTDACus"
+                                            placeholder="1"
+                                            value={month}
+                                            onInput={(e) => changeMonth(e)}
+                                        />
+                                        <span>/</span>
+                                        <input
+                                            type="text"
+                                            className="inputTextDateACus inputYearTDACus"
+                                            placeholder="1300"
+                                            value={year}
+                                            onInput={(e) => { changeYear(e) }}
+                                        />
+                                    </div>
+
+                                    <div className="divDownDateAcus">
+                                        <select name="" id="" value={day} onChange={(e) => changeDay(e)}>
+                                            <option value="">روز</option>
+                                            {optionDays}
+                                        </select>
+                                        <select name="" id="" value={month} onChange={(e) => changeMonth(e)}>
+                                            <option value="">ماه</option>
+                                            {optionMonth}
+                                        </select>
+                                        <select name="" id="" value={year} onChange={(e) => { changeYear(e) }}>
+                                            <option value="">سال</option>
+                                            {optionYears}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="divInputFB">
-                            <label>تاریخ تولد </label>
-                            <div className="divDateBirth">
-                                <div className="divUpDateAcus">
-                                    <input
-                                        type="text"
-                                        className="inputTextDateACus inputDayTDACus"
-                                        placeholder="1"
-                                        value={day}
-                                        onInput={(e) => changeDay(e)}
-                                    />
-                                    <span>/</span>
-                                    <input
-                                        type="text"
-                                        className="inputTextDateACus inputMonthTDACus"
-                                        placeholder="1"
-                                        value={month}
-                                        onInput={(e) => changeMonth(e)}
-                                    />
-                                    <span>/</span>
-                                    <input
-                                        type="text"
-                                        className="inputTextDateACus inputYearTDACus"
-                                        placeholder="1300"
-                                        value={year}
-                                        onInput={(e) => { changeYear(e) }}
-                                    />
+                        <div className="sectionFB">
+                            <div className="divRightFB">
+                                <div className="divInputFB">
+                                    <label>موبایل</label>
+                                    <input type="text" className="inputTextFB" />
                                 </div>
 
-                                <div className="divDownDateAcus">
-                                    <select name="" id="" value={day} onChange={(e) => changeDay(e)}>
-                                        <option value="">روز</option>
-                                        {optionDays}
-                                    </select>
-                                    <select name="" id="" value={month} onChange={(e) => changeMonth(e)}>
-                                        <option value="">ماه</option>
-                                        {optionMonth}
-                                    </select>
-                                    <select name="" id="" value={year} onChange={(e) => { changeYear(e) }}>
-                                        <option value="">سال</option>
-                                        {optionYears}
-                                    </select>
+                                <div className="divInputFB">
+                                    <label>تلفن </label>
+                                    <input type="text" className="inputTextFB" />
+                                </div>
+
+                                <div className="divInputFB">
+                                    <label>کد پستی</label>
+                                    <input type="text" className="inputTextFB" />
+                                </div>
+
+                                <div className="divInputFB">
+                                    <label>ایمیل</label>
+                                    <input type="text" className="inputTextFB" />
+                                </div>
+                            </div>
+
+                            <div className="divLeftFB">
+                                <div className="divInputFB">
+                                    <label>آدرس</label>
+                                    <textarea className="textareaAddressACu" />
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="sectionFB">
-                        <div className="divRightFB">
+                        <div className="sectionFB">
                             <div className="divInputFB">
-                                <label>موبایل</label>
+                                <label>شماره حساب</label>
                                 <input type="text" className="inputTextFB" />
                             </div>
 
                             <div className="divInputFB">
-                                <label>تلفن </label>
-                                <input type="text" className="inputTextFB" />
-                            </div>
-
-                            <div className="divInputFB">
-                                <label>کد پستی</label>
-                                <input type="text" className="inputTextFB" />
-                            </div>
-
-                            <div className="divInputFB">
-                                <label>ایمیل</label>
+                                <label>شماره کارت</label>
                                 <input type="text" className="inputTextFB" />
                             </div>
                         </div>
+                        <div className="sectionFB divBtnsFB">
+                            <Button variant="success" className="btnSaveFB"> ثبت </Button>
+                            <Button type="reset" variant="warning" onClick={deleteDate}> پاک کن </Button>
+                        </div>
+                    </form>
+                </div>
 
-                        <div className="divLeftFB">
-                            <div className="divInputFB">
-                                <label>آدرس</label>
-                                <textarea className="textareaAddressACu" />
+                <div className="containerShowGe containerShowCustomer">
+                        <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
+                        <div className="divListShowGe">
+                            <div className="rowListShowGe">
+                                <span></span>
+                                <Button variant="info" className="btnSaveFB"> ثبت </Button>
+                                <Button variant="danger" className="btnSaveFB"> ثبت </Button>
+
+                                <button></button>
                             </div>
                         </div>
-                    </div>
+                </div>
 
-                    <div className="sectionFB">
-                        <div className="divInputFB">
-                            <label>شماره حساب</label>
-                            <input type="text" className="inputTextFB" />
-                        </div>
-
-                        <div className="divInputFB">
-                            <label>شماره کارت</label>
-                            <input type="text" className="inputTextFB" />
-                        </div>
-                    </div>
-                    <div className="sectionFB divBtnsFB">
-                        <Button variant="success" className="btnSaveFB"> ثبت </Button>
-                        <Button type="reset" variant="warning" onClick={deleteDate}> پاک کن </Button>
-                    </div>
-                </form>
             </div>
         </>
     );
