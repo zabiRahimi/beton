@@ -27,38 +27,36 @@
     border-color: #d7d9dd !important;
 }
 
-.enabledBtnGe:hover{
-background-color: #7191b9 !important;
+.enabledBtnGe:hover {
+    background-color: #7191b9 !important;
 }
 
-.containerMainAS_Ge{
-   width: 100%;
-   display: flex;
+.containerMainAS_Ge {
+    width: 100%;
+    display: flex;
 }
 
-.flexColumnGe{
+.flexColumnGe {
     flex-direction: column;
 }
 
-.flexColumnReverseGe{
+.flexColumnReverseGe {
     flex-direction: column-reverse;
 }
 
-.flexRowGe{
+.flexRowGe {
     flex-direction: row;
 }
 
-.flexRowReverseGe{
+.flexRowReverseGe {
     flex-direction: row-reverse;
 }
 
 .continerAddGe,
-.containerShowGe{
-
-}
+.containerShowGe {}
 
 
-.containerShowGe{
+.containerShowGe {
     margin: 15px 5px;
     padding: 15px 8px;
     background-color: #f6f6f9;
@@ -66,7 +64,7 @@ background-color: #7191b9 !important;
     border-radius: 6px;
 }
 
-.titleShowGe{
+.titleShowGe {
     width: 100%;
     text-align: center;
     padding: 3px 0;
@@ -74,42 +72,48 @@ background-color: #7191b9 !important;
 }
 
 .headRowListShowGe,
-.rowListShowGe{
+.rowListShowGe {
     width: 100%;
     padding: 5px 8px;
     display: flex;
     justify-content: center;
 }
 
-.headRowListShowGe{
+.headRowListShowGe {
     border-radius: 4px 4px 0 0;
     background-color: #b8c9df !important;
     color: #525252;
 }
 
-.headRowNumShowGe{
+.headRowNumShowGe {}
 
+.headNameShowGE {}
+
+.headTypeShowGe {}
+
+.headEditShowGe,
+.headDelShowGe,
+.divEditGe,
+.divDelGe {
+    width: 65px;
+    text-align: center;
 }
 
-.headNameShowGE{
-
+.headDelShowGe,
+.btnDelGe {
+    margin-right: 8px;
 }
 
-.headTypeShowGe{
+.headEditShowGe {
 
-}
-
-.headEditShowGe{
     display: inline-block;
     text-align: center;
-    background-color: red;
 }
 
 
-.headDelShowGe{
+.headDelShowGe {
     display: inline-block;
     text-align: center;
-    background-color: green;
 }
 
 
@@ -121,48 +125,58 @@ background-color: #7191b9 !important;
     background-color: #e2e2e2;
 }
 
-.rowListShowGe:hover{
+.rowListShowGe:hover {
 
-    background-color:#98c4ca ;
-    }
+    background-color: #98c4ca;
+}
 
-.rowNumShowGe{
+.rowNumShowGe {
     width: 5%;
     text-align: center;
 }
 
-.nameShowGE{
+.nameShowGE {
 
     width: 30%;
     padding: 0 30px;
 
 }
 
-.typeShowrGe{
+.typeShowGe {
     width: 25%;
     padding: 0 5px;
+    font-size: 0.8rem;
+
+}
+
+.headTypeShowGe {
+    font-size: 1rem;
 
 }
 
 .btnEditGe,
-.btnDelGe{
-   
+.btnDelGe {
     height: fit-content;
     text-align: center;
-    padding: 0 8px;
+    /* padding: 0 8px; */
 }
 
-.iEditGe{
+.iEditGe {
     color: #4783b0;
     font-size: 1.7rem;
 }
 
-.btnDelGe{
+/* .btnDelGe{
     margin-right: 20px;
+} */
+
+.iDelGe {
+    color: #d74939;
+    font-size: 1.3rem;
 }
 
-.iDelGe{
-    color: #d74939;
-    font-size: 1.3rem;}
 
-
+/* عدم نمایش یک عنصر در فرم */
+.hideGe{
+    display: none;
+}
