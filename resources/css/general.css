@@ -73,12 +73,45 @@ background-color: #7191b9 !important;
     margin-bottom: 15px;
 }
 
+.headRowListShowGe,
 .rowListShowGe{
     width: 100%;
     padding: 5px 8px;
     display: flex;
     justify-content: center;
 }
+
+.headRowListShowGe{
+    border-radius: 4px 4px 0 0;
+    background-color: #b8c9df !important;
+    color: #525252;
+}
+
+.headRowNumShowGe{
+
+}
+
+.headNameShowGE{
+
+}
+
+.headTypeShowGe{
+
+}
+
+.headEditShowGe{
+    display: inline-block;
+    text-align: center;
+    background-color: red;
+}
+
+
+.headDelShowGe{
+    display: inline-block;
+    text-align: center;
+    background-color: green;
+}
+
 
 .rowListShowGe:nth-child(even) {
     background-color: #ececec;

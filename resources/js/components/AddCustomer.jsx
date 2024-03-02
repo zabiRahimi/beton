@@ -256,13 +256,13 @@ const AddCustomer = () => {
                     <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
                     <div className="divListShowGe">
 
-                    <div className="rowListShowGe">
-                            <span className="rowNumShowGe">ردیف</span>
-                            <span className="nameShowGE">نام مشتری</span>
-                            <span className="typeShowrGe">نوع مشتری</span>
+                    <div className="rowListShowGe headRowListShowGe">
+                            <span className="rowNumShowGe headRowNumShowGe">ردیف</span>
+                            <span className="nameShowGE headNameShowGE">نام مشتری</span>
+                            <span className="typeShowrGe headTypeShowGe">نوع مشتری</span>
                             
-                            <span> ویرایش  </span>
-                            <span> حذف </span>
+                            <span className="headEditShowGe"> ویرایش  </span>
+                            <span className="headDelShowGe"> حذف </span>
 
                         </div>
 
