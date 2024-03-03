@@ -9,7 +9,7 @@
 
 }
 
-.titleFormFB{
+.titleFormFB {
     width: 100%;
     text-align: center;
     color: #093e82;
@@ -51,14 +51,14 @@
     font-size: 0.91rem;
 }
 
-.inputTextUnitFB{
+.inputTextUnitFB {
     width: 170px;
     border: 1px solid #8f8f9d;
     border-left: none;
 }
 
 /* جهت نمایش واحد یک فیلد */
-.unitFB{
+.unitFB {
     width: 65px;
     height: 30px;
     font-size: 0.72rem;
@@ -91,12 +91,14 @@
 }
 
 .divBtnsFB {
-
+    padding: 15px;
     justify-content: center;
+    align-items: center;
 }
 
 .btnSaveFB {
     width: 95px;
+    margin: 0;
     margin-left: 35px;
 }
 
@@ -202,51 +204,52 @@
 }
 
 /* عدم نمایش یک عنصر در فرم */
-.hideFB{
+.hideFB {
     display: none;
 }
 
 /* نمایش یک عنصر با مقدار فلکس */
-.showFlexFB{
+.showFlexFB {
     display: flex;
 }
 
 /* نمایش یک عنصر با مقدار بلاک */
-.showBlockFB{
+.showBlockFB {
     display: block;
 }
 
 /* نمایش یک عنصر با مقدار اینلاین بلاک */
-.showInlineBlockFB{
+.showInlineBlockFB {
     display: inline-block;
 }
 
 /* نمایش یک عنصر با مقدار اینلاین */
-.showInlineFB{
+.showInlineFB {
     display: inline;
 }
 
-.showTotalUnitsFB{
+.showTotalUnitsFB {
     width: 100%;
     margin-bottom: 10px;
     font-size: 0.9rem;
     text-align: center;
 }
 
-.span1STUFB{}
+.span1STUFB {}
 
-.span2STUFB{
+.span2STUFB {
     margin: 0 6px 0 8px;
     color: green;
 }
 
-.span3STUFB{
+.span3STUFB {
     font-size: 0.8rem;
 }
 
-.ltrFB{
+.ltrFB {
     direction: ltr;
 }
+
 @media screen and (min-width:1200px) {
 
     .formBeton {
@@ -271,7 +274,7 @@
         width: 250px;
     }
 
-    .inputTextUnitFB{
+    .inputTextUnitFB {
         width: 185px;
     }
 

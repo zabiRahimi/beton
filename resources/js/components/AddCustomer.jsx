@@ -269,8 +269,10 @@ const AddCustomer = () => {
                             </div>
                         </div>
                         <div className="sectionFB divBtnsFB">
+
                             <Button variant="success" className="btnSaveFB"> {editCustomer ? 'ویرایش' : 'ثبت'} </Button>
                             <Button type="reset" variant="warning" className={editCustomer ? 'hideGe' : ''} onClick={deleteDate}> پاک کن </Button>
+                            
                         </div>
                     </form>
                 </div>

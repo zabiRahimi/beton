@@ -80,6 +80,7 @@
 }
 
 .headRowListShowGe {
+    padding: 10px 8px;
     border-radius: 4px 4px 0 0;
     background-color: #b8c9df !important;
     color: #525252;
@@ -94,12 +95,11 @@
 }
 
 .headDelShowGe,
-.btnDelGe {
+.divDelGe {
     margin-right: 8px;
 }
 
 .headEditShowGe {
-
     display: inline-block;
     text-align: center;
 }
@@ -110,7 +110,6 @@
     text-align: center;
 }
 
-
 .rowListShowGe:nth-child(even) {
     background-color: #ececec;
 }
@@ -120,12 +119,11 @@
 }
 
 .rowListShowGe:hover {
-
     background-color: #98c4ca;
 }
 
 .rowNumShowGe {
-    width: 5%;
+    width: 40px;
     text-align: center;
 }
 
@@ -137,22 +135,18 @@
 */
 
 .nameShowGE {
-
     width: 30%;
     padding: 0 30px;
-
 }
 
 .typeShowGe {
     width: 25%;
     padding: 0 5px;
     font-size: 0.8rem;
-
 }
 
 .headTypeShowGe {
     font-size: 1rem;
-
 }
 
 /*
@@ -161,9 +155,13 @@
 **
 */
 
+
+
 .licensePlateShowGe{
-    width: 20%;
-    margin-right: 25px;
+    width: 23%;
+    margin:0 13px;
+    text-align: center;
+    /* background-color: #525252; */
 }
 
 .TrackTypeShowGe{
