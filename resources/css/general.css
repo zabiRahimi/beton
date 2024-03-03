@@ -36,11 +36,11 @@
     display: flex;
 }
 
-.flexColumnGe {
+.columnGe {
     flex-direction: column;
 }
 
-.flexColumnReverseGe {
+.columnReverseGe {
     flex-direction: column-reverse;
 }
 
@@ -84,12 +84,6 @@
     background-color: #b8c9df !important;
     color: #525252;
 }
-
-.headRowNumShowGe {}
-
-.headNameShowGE {}
-
-.headTypeShowGe {}
 
 .headEditShowGe,
 .headDelShowGe,
@@ -135,6 +129,13 @@
     text-align: center;
 }
 
+
+/*
+**
+ ********* استایل مربوط به مشتری ********** 
+**
+*/
+
 .nameShowGE {
 
     width: 30%;
@@ -153,6 +154,28 @@
     font-size: 1rem;
 
 }
+
+/*
+**
+ ********* استایل مربوط به کامیون ********** 
+**
+*/
+
+.licensePlateShowGe{
+    width: 20%;
+    margin-right: 25px;
+}
+
+.TrackTypeShowGe{
+    width: 22%;
+}
+
+.truckOwnerShowGe{
+    width: 22%;
+}
+
+
+/* ******************************************************************* */
 
 .btnEditGe,
 .btnDelGe {
@@ -177,6 +200,6 @@
 
 
 /* عدم نمایش یک عنصر در فرم */
-.hideGe{
-    display: none;
+.hideGe {
+    display: none !important;
 }
