@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Title from "./hooks/Title";
 
 import Button from 'react-bootstrap/Button';
@@ -16,6 +16,20 @@ const AddGoodsAndServices = () => {
     const spanShowTotalRef = useRef(null);
 
     const unitPriceAASRef = useRef(null);
+
+    const btnAddGeRef = useRef(null);
+    const btnGetGeRef = useRef(null);
+
+    const containerShowGeRef = useRef(null);
+
+    const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
+    const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+
+    const [hideGetGAS, setHideGetGAS] = useState(true);
+    const [flexDirection, setFlexDirection] = useState('columnGe');
+
+    /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
+    const [editGAS, setEditGAS] = useState(false);
 
    
 
@@ -98,12 +112,71 @@ const AddGoodsAndServices = () => {
         document.getElementById(id).focus()
     }
 
+    const addGAS = () => {
+
+        setDisabledBtnGetGe(false);
+        setDisabledBtnAddGe(true);
+
+        setFlexDirection('columnGe');
+
+        setEditGAS(false)
+
+    }
+
+    const getGAS = () => {
+
+        setDisabledBtnAddGe(false);
+        setDisabledBtnGetGe(true);
+
+        setFlexDirection('columnReverseGe');
+
+        setHideGetGAS(false);
+
+    }
+
+    const showFormEditGAS = () => {
+
+        setDisabledBtnGetGe(false);
+        setDisabledBtnAddGe(false);
+
+        setFlexDirection('columnGe');
+
+        setEditGAS(true);
+
+    }
+
     return (
         <>
             <Title title="تعریف کالا و خدمات" />
-            <div className="headPageGe"></div>
-            <div>
+
+            <div className="headPageGe">
+
+                <button
+                    className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
+                    ref={btnAddGeRef} onClick={addGAS}
+                    disabled={disabledBtnAddGe}
+                >
+                    تعریف کالا و خدمات
+                </button>
+
+                <button
+                    className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
+                    ref={btnGetGeRef}
+                    onClick={getGAS}
+                    disabled={disabledBtnGetGe}
+                >
+                    مشاهده کالا و خدمات
+                </button>
+
+            </div>
+
+            <div className={`containerMainAS_Ge ${flexDirection}`}>
+
+            <div className="continerAddGe ">
                 <form action="" className="formBeton">
+
+                <h5 className={`titleFormFB ${editGAS ? '' : 'hideGe'}`}>ویرایش کالا و خدمات </h5>
+
                     <div className="sectionFB">
                         <div className="divInputFB">
                             <label>نام کالا</label>
@@ -193,6 +266,98 @@ const AddGoodsAndServices = () => {
                         <Button type="reset" variant="warning" onClick={resetAll}> پاک کن </Button>
                     </div>
                 </form>
+            </div>
+
+            <div
+                    className={`containerShowGe containerShowCustomer  ${hideGetGAS ? 'hideGe' : ''}`}
+                    ref={containerShowGeRef}
+                >
+
+                    <h4 className="titleShowGe"> کالا و خدمات تعریف شده</h4>
+
+                    <div className="divListShowGe">
+
+                        <div className="rowListShowGe headRowListShowGe">
+
+                            <span className="rowNumShowGe ">ردیف</span>
+                            <span className="licensePlateShowGe headLicensePlateShowGe "> پلاک خودرو </span>
+                            <span className="TrackTypeShowGe ">نوع خودرو</span>
+                            <span className="truckOwnerShowGe ">مالک خودرو</span>
+
+                            <span className="headEditShowGe"> ویرایش  </span>
+                            <span className="headDelShowGe"> حذف </span>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+
+                            <span className="rowNumShowGe">1</span>
+                            <span className="licensePlateShowGe">63 895 ب 56</span>
+                            <span className="TrackTypeShowGe">پمپ دکل</span>
+                            <span className="truckOwnerShowGe"> بازوافکن </span>
+
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                                    onClick={showFormEditGAS}
+                                >
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">2</span>
+                            <span className="licensePlateShowGe">83 329 ص 84</span>
+                            <span className="TrackTypeShowGe"> کمپرسی </span>
+                            <span className="truckOwnerShowGe"> صالحی </span>
+
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش ">
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div className="rowListShowGe">
+                            <span className="rowNumShowGe">3</span>
+                            <span className="licensePlateShowGe ">  99 453 الف 89</span>
+                            <span className="TrackTypeShowGe">میکسر</span>
+                            <span className="truckOwnerShowGe">زارع</span>
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                                    onClick={showFormEditGAS}>
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
         </>
     );

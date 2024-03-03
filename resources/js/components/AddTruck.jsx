@@ -17,7 +17,7 @@ const AddTruck = () => {
     const [hideGetTruck, setHideGetTruck] = useState(true);
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
-    /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
+    /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
     const [editTruck, setEditTruck] = useState(false);
 
     const addTruck = () => {
@@ -353,7 +353,7 @@ const AddTruck = () => {
                 </div>
 
             </div>
-            
+
         </>
     );
 };
