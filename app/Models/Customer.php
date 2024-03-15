@@ -19,4 +19,7 @@ class Customer extends Model
     // {
     //     return jDate::forge($value)->format('%Y-%m-%d %H:%M:%S');
     // }
+
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
 }
