@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('lastName')->index();
-            $table->string('nationalCode')->index()->unique()->comment('کد ملی');
-            $table->date('dateOfBirth');
-            $table->string('mobile')->index()->unique();
-            $table->string('telephone');
-            $table->string('telephone');
+            $table->string('nationalCode')->nullable()->index()->unique()->comment('کد ملی');
+            $table->date('dateOfBirth')->nullable();
+            $table->string('mobile')->nullable()->index()->unique();
+            $table->string('telephone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('postalCode')->nullable();
+            $table->mediumText('address')->nullable();
 
             $table->timestamps();
         });
