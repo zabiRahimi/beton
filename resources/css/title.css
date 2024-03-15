@@ -5,16 +5,15 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row-reverse;
-    position: sticky;
-    top: 0;
+   
 
 }
 
-.divTitleHomeScroll {
+/* .divTitleHomeScroll {
     height: 40px;
     border: 2px solid #cacaca;
     background-color: #b8c9df;
-}
+} */
 
 .leftTitle {
     display: flex;
@@ -42,10 +41,10 @@
     font-weight: 400;
 }
 
-.titleBetonScroll{
+/* .titleBetonScroll{
     font-size: 1.1rem;
 
-}
+} */
 
 .brandHome {
     padding-left: 15px;

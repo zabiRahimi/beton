@@ -17,36 +17,46 @@ const AddCustomer = () => {
         optionYears,
     } = DataZabi();
 
-
-
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
+    const containerShowGeRef = useRef(null);
+
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+
+    const [hideGetCustomer, setHideGetCustomer] = useState(true);
+    const [flexDirection, setFlexDirection] = useState('columnGe');
+
+    /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
+    const [editCustomer, setEditCustomer] = useState(false);
+
 
     const [day, setDay] = useState();
     const [month, setMonth] = useState();
     const [year, setYear] = useState();
 
     const addCustomer = () => {
+
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(true);
-        console.log('addCustomer');
+
+        setFlexDirection('columnGe');
+
+        setEditCustomer(false)
 
     }
 
     const getCustomer = () => {
+
         setDisabledBtnAddGe(false);
         setDisabledBtnGetGe(true);
-        console.log('getCustomer');
+
+        setFlexDirection('columnReverseGe');
+
+        setHideGetCustomer(false);
 
     }
-
-    // const changeStyleBtnAddGe =()=>{
-
-    // }
-
 
 
     const changeDay = (e) => {
@@ -104,6 +114,17 @@ const AddCustomer = () => {
 
     }
 
+    const showFormEditCustomer = () => {
+
+        setDisabledBtnGetGe(false);
+        setDisabledBtnAddGe(false);
+
+        setFlexDirection('columnGe');
+
+        setEditCustomer(true);
+
+    }
+
 
     return (
         <>
@@ -126,10 +147,12 @@ const AddCustomer = () => {
                     مشاهده مشتری‌ها
                 </button>
             </div>
-            <div className="containerMainAS_Ge flexColumnGe">
+            <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe containerAddCustomer">
                     <form action="" className="formBeton">
+                        <h5 className={`titleFormFB ${editCustomer ? '' : 'hideGe'}`}>ویرایش مشتری</h5>
+
                         <div className="sectionFB">
                             <div className="divInputFB">
                                 <label>نام مشتری</label>
@@ -246,21 +269,26 @@ const AddCustomer = () => {
                             </div>
                         </div>
                         <div className="sectionFB divBtnsFB">
-                            <Button variant="success" className="btnSaveFB"> ثبت </Button>
-                            <Button type="reset" variant="warning" onClick={deleteDate}> پاک کن </Button>
+
+                            <Button variant="success" className="btnSaveFB"> {editCustomer ? 'ویرایش' : 'ثبت'} </Button>
+                            <Button type="reset" variant="warning" className={editCustomer ? 'hideGe' : ''} onClick={deleteDate}> پاک کن </Button>
+                            
                         </div>
                     </form>
                 </div>
 
-                <div className="containerShowGe containerShowCustomer">
+                <div
+                    className={`containerShowGe containerShowCustomer  ${hideGetCustomer ? 'hideGe' : ''}`}
+                    ref={containerShowGeRef}
+                >
                     <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
                     <div className="divListShowGe">
 
-                    <div className="rowListShowGe headRowListShowGe">
-                            <span className="rowNumShowGe headRowNumShowGe">ردیف</span>
-                            <span className="nameShowGE headNameShowGE">نام مشتری</span>
-                            <span className="typeShowrGe headTypeShowGe">نوع مشتری</span>
-                            
+                        <div className="rowListShowGe headRowListShowGe">
+                            <span className="rowNumShowGe ">ردیف</span>
+                            <span className="nameShowGE ">نام مشتری</span>
+                            <span className="typeShowGe headTypeShowGe">نوع مشتری</span>
+
                             <span className="headEditShowGe"> ویرایش  </span>
                             <span className="headDelShowGe"> حذف </span>
 
@@ -269,98 +297,146 @@ const AddCustomer = () => {
                         <div className="rowListShowGe">
                             <span className="rowNumShowGe">1</span>
                             <span className="nameShowGE">رحیمی</span>
-                            <span className="typeShowrGe">خریدار</span>
-                            
-                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
-                                <i className="icofont-pencil iEditGe" />
-                            </button>
-                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                <i className="icofont-trash iDelGe" />
-                            </button>
+                            <span className="typeShowGe">خریدار</span>
+
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                                    onClick={showFormEditCustomer}
+                                >
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
 
                         </div>
 
                         <div className="rowListShowGe">
                             <span className="rowNumShowGe">2</span>
                             <span className="nameShowGE">ابراهیمی</span>
-                            <span className="typeShowrGe">فروشنده شن و ماسه</span>
-                            
-                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
-                                <i className="icofont-pencil iEditGe" />
-                            </button>
-                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                <i className="icofont-trash iDelGe" />
-                            </button>
+                            <span className="typeShowGe">فروشنده شن و ماسه</span>
+
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش ">
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
 
                         </div>
 
                         <div className="rowListShowGe">
                             <span className="rowNumShowGe">3</span>
                             <span className="nameShowGE">اسکندری</span>
-                            <span className="typeShowrGe">خریدار</span>
-                            
-                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
-                                <i className="icofont-pencil iEditGe" />
-                            </button>
-                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                <i className="icofont-trash iDelGe" />
-                            </button>
+                            <span className="typeShowGe">خریدار</span>
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                                    onClick={showFormEditCustomer}>
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
 
                         </div>
 
                         <div className="rowListShowGe">
                             <span className="rowNumShowGe">4</span>
                             <span className="nameShowGE">نعمت الهی</span>
-                            <span className="typeShowrGe">فروشنده سیمان</span>
-                            
-                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
-                                <i className="icofont-pencil iEditGe" />
-                            </button>
-                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                <i className="icofont-trash iDelGe" />
-                            </button>
+                            <span className="typeShowGe">فروشنده سیمان</span>
+                            <div className="divEditGe">
+                                <button
+                                    className="--styleLessBtn btnEditGe"
+                                    title=" ویرایش "
+                                    onClick={showFormEditCustomer}
+                                >
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+                                <button className="--styleLessBtn btnDelGe" title=" حذف "
+                                    onClick={showFormEditCustomer}
+                                >
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
 
                         </div>
 
                         <div className="rowListShowGe">
                             <span className="rowNumShowGe">5</span>
                             <span className="nameShowGE">مشکین فام</span>
-                            <span className="typeShowrGe">فروشنده</span>
-                            
-                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
-                                <i className="icofont-pencil iEditGe" />
-                            </button>
-                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                <i className="icofont-trash iDelGe" />
-                            </button>
+                            <span className="typeShowGe">فروشنده</span>
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                                    onClick={showFormEditCustomer}
+                                >
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
 
                         </div>
 
                         <div className="rowListShowGe">
                             <span className="rowNumShowGe">6</span>
                             <span className="nameShowGE">مهرآور</span>
-                            <span className="typeShowrGe">راننده</span>
-                            
-                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
-                                <i className="icofont-pencil iEditGe" />
-                            </button>
-                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                <i className="icofont-trash iDelGe" />
-                            </button>
+                            <span className="typeShowGe">راننده</span>
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                                    onClick={showFormEditCustomer}
+                                >
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
 
                         </div>
 
                         <div className="rowListShowGe">
+
                             <span className="rowNumShowGe">7</span>
                             <span className="nameShowGE">جاویدی</span>
-                            <span className="typeShowrGe">پرسنل</span>
-                            
-                            <button className="--styleLessBtn btnEditGe"  title=" ویرایش ">
-                                <i className="icofont-pencil iEditGe" />
-                            </button>
-                            <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                <i className="icofont-trash iDelGe" />
-                            </button>
+                            <span className="typeShowGe">پرسنل</span>
+
+                            <div className="divEditGe">
+                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                                    onClick={showFormEditCustomer}
+                                >
+                                    <i className="icofont-pencil iEditGe" />
+                                </button>
+                            </div>
+
+                            <div className="divDelGe">
+                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                                    <i className="icofont-trash iDelGe" />
+                                </button>
+                            </div>
 
                         </div>
                     </div>
