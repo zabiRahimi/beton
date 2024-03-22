@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerTypeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
+   
 });
+// Route::controller(CustomerTypeController::class)->group(function () {
+    
+//     // Route::post('/addCustomerType', 'store');
+//     Route::get('/getAllCustomerType', 'index');
+
+// });
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any','.*');
+// Route::controller(CustomerController::class)->group(function () {
+    
+//     Route::post('/addCustomer', 'store'
+// );
+// });

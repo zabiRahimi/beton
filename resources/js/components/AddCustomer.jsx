@@ -1,6 +1,7 @@
 import Title from "./hooks/Title";
 // import { DatePicker, InputDatePicker } from "jalaali-react-date-picker";
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 import "../../css/general.css";
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
@@ -27,6 +28,9 @@ const AddCustomer = () => {
 
     const [hideGetCustomer, setHideGetCustomer] = useState(true);
     const [flexDirection, setFlexDirection] = useState('columnGe');
+
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
     const [editCustomer, setEditCustomer] = useState(false);
@@ -123,6 +127,71 @@ const AddCustomer = () => {
 
         setEditCustomer(true);
 
+    }
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post(
+            '/api/v1/addCustomer',
+            // { ...input },
+            {
+                headers:
+                {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then(response => {
+
+            // const id = response.data.zabi;
+            const id = response;
+
+            console.log(id);
+
+            // form.current.reset();
+
+            // setIndex(prev => ({ ...prev, book_id: id, book: input.book }));
+
+            // setBook({ id, ...input });
+
+            // //کتاب ایجاد شده را به آرایه کتابها اضافه می‌کند
+            // valBooks.push({ id, ...input });
+
+            // setValBooks(valBooks);
+
+            // setInput({ book: '', link: '' });
+
+            // Swal.fire({
+            //     position: 'center',
+            //     icon: 'success',
+            //     title: 'ثبت کتاب با موفقیت انجام شد ',
+            //     showConfirmButton: false,
+            //     timer: 3000
+            // })
+        })
+            .catch(
+            // error => {
+            //     notify.current.innerHTML = ''
+            //     if (error.response.status == 422) {
+            //         const elementError = Object.keys(error.response.data.errors)[0];
+            //         let divError;
+            //         switch (elementError) {
+            //             case 'book':
+            //                 divError = bookError.current
+            //                 break;
+            //             case 'link':
+            //                 divError = linkError.current
+            //         }
+            //         divError.innerHTML = `<div class="error">${error.response.data.errors[elementError][0]}</div>`
+            //         divError.scrollIntoViewIfNeeded({ behavior: "smooth" });
+            //     }
+            //     else {
+            //         notify.current.innerHTML = `<div class='error'>'خطایی رخ داده است، مطمعن شوید دیتابیس فعال است.'</div>`
+            //         notify.current.scrollIntoViewIfNeeded({ behavior: "smooth" });
+            //     }
+            // }
+        )
     }
 
 
@@ -270,9 +339,23 @@ const AddCustomer = () => {
                         </div>
                         <div className="sectionFB divBtnsFB">
 
-                            <Button variant="success" className="btnSaveFB"> {editCustomer ? 'ویرایش' : 'ثبت'} </Button>
-                            <Button type="reset" variant="warning" className={editCustomer ? 'hideGe' : ''} onClick={deleteDate}> پاک کن </Button>
-                            
+                            <Button
+                                variant="success"
+                                className="btnSaveFB"
+                                onClick={handleSubmit}
+                            >
+                                {editCustomer ? 'ویرایش' : 'ثبت'}
+                            </Button>
+
+                            <Button
+                                type="reset"
+                                variant="warning"
+                                className={editCustomer ? 'hideGe' : ''}
+                                onClick={deleteDate}
+                            >
+                                پاک کن
+                            </Button>
+
                         </div>
                     </form>
                 </div>

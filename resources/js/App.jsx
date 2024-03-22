@@ -10,7 +10,11 @@ import NotFound from "./components/notFound/notFound";
 import Index from "./components/Index";
 import Home from "./components/Home";
 import AddCustomer from "./components/AddCustomer";
-import AddCustomerType from "./components/AddCustomerType";
+
+import AddCustomerType, {
+    loader as customerTypeLoader,
+  }  from "./components/AddCustomerType";
+
 import AddTruck from "./components/AddTruck";
 import AddPersonnel from "./components/AddPersonnel";
 import AddDriver from "./components/AddDriver";
@@ -30,7 +34,7 @@ function App() {
 
                 <Route path="addCustomer/:customerId?" element={<AddCustomer />} />
 
-                <Route path="addCustomerType/" element={<AddCustomerType />} />
+                <Route path="addCustomerType/" element={<AddCustomerType />}  loader={customerTypeLoader} />
 
                 <Route path="addTruck" element={<AddTruck />} />
                 <Route path="addPersonnel" element={<AddPersonnel />} />

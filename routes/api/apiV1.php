@@ -1,9 +1,9 @@
 <?php
 
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
-
+use App\Http\Controllers\CustomerTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,20 +16,19 @@ use App\Http\Controllers\CustomerController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
-
-Route::prefix('v1')->group(function () {
-    require __DIR__.'/api/apiV1.php';
+Route::controller(CustomerController::class)->group(function () {
+    
+    Route::post('/addCustomer', 'store');
 });
 
-// Route::prefix('v2')->group(function () {
-//     require __DIR__.'/api/apiV2.php';
-// });
-
-// Route::controller(CustomerController::class)->group(function () {
+Route::controller(CustomerTypeController::class)->group(function () {
     
-//     Route::post('/addCustomer', 'store');
+    Route::post('/addCustomerType', 'store');
+    Route::get('/getAllCustomerType', 'index');
+
+});
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
 // });
