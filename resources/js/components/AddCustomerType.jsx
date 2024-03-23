@@ -1,5 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import { useLoaderData, useParams } from "react-router-dom";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import Title from "./hooks/Title";
 import "../../css/formBeton.css";
@@ -8,25 +10,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 
-export async function loader({ params }) {
-    let customerTData;
 
-    // await localforage.getItem("products").then((value) => {
-    //     customerTData = value.filter((item) => item.id == params.id);
-    // });
-
-    // let val=await axios.get("/api/v1/getAllCustomerType").then((response) => {
-    //     customerTData= response.data.CustomerTypes;
-    // });
-    // // customerTData=[[id=>1, name=>'eee']]
-
-    return { customerTData };
-}
 
 
 const AddCustomerType = () => {
 
-    // const { customerTData } = useLoaderData();
     const [customerTypes, setCustomerTypes] = useState(null);
    
     console.log(customerTypes);
@@ -56,7 +44,27 @@ const AddCustomerType = () => {
 
     const showCustomerTypes= () =>{
         let value = customerTypes.map((customerType, i)=>{
-            return <span key={i}>{customerType['type']}<i>{customerType['id']}</i></span>
+            // return <span key={i}>{customerType['type']}<i>{customerType['id']}</i></span>
+            return  <div className="rowListShowGe rowListACuT" key={i}>
+            <span className="rowNumShowGe rowNumACuT">{i+1}</span>
+            <span className="typeShowGe typeACuT"> {customerType['type']} </span>
+
+            <div className="divEditGe">
+                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                    // onClick={showFormEditCustomer}
+                >
+                    <i className="icofont-pencil iEditGe" />
+                </button>
+            </div>
+
+            <div className="divDelGe">
+
+                <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                    <i className="icofont-trash iDelGe" />
+                </button>
+            </div>
+
+        </div>
 
         })
 
@@ -175,10 +183,20 @@ const AddCustomerType = () => {
                 </div>
 
                 <div className="divLeftACuT">
-                    <div className='divListACut'>
-                        <h4> نوع مشتری تعریف شده </h4>
-                        <div className='listACuT'>
-                            {customerTypes ? showCustomerTypes():''}
+                {/* divListACut */}
+                    <div className='containerShowGe divListACut '>
+                        <h4 className="titleShowGe"> نوع مشتری تعریف شده </h4>
+                        {/* <div className='listACuT'> */}
+                        <div className="divListShowGe ">
+                        <div className="rowListShowGe headRowListShowGe">
+                            <span className="rowNumShowGe ">ردیف</span>
+                            <span className="typeShowGe headTypeShowGe typeACuT">نوع مشتری</span>
+
+                            <span className="headEditShowGe"> ویرایش  </span>
+                            <span className="headDelShowGe"> حذف </span>
+
+                        </div>
+                            {customerTypes ? showCustomerTypes():<Skeleton height={30} count={8} />}
                             {/* <span> خریدار بتن </span>
                             <span> خریدار ضایعات </span>
                             <span> فروشنده شن و ماسه </span>
