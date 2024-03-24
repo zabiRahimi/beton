@@ -23,7 +23,7 @@ class StoreCustomerTypeRequest extends FormRequest
     {
         return [
             
-            'type' => 'required|string',
+            'type' => 'required|string|unique:customer_types',
             
         ];
     }

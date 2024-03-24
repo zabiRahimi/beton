@@ -60,7 +60,10 @@ class CustomerTypeController extends Controller
      */
     public function update(UpdateCustomerTypeRequest $request, CustomerType $customerType)
     {
-        //
+        $customerType->update(['type' => $request->type]);
+
+        return response()->json(['customerType'=>$customerType] ,200);
+    
     }
 
     /**
@@ -71,3 +74,4 @@ class CustomerTypeController extends Controller
         //
     }
 }
+

@@ -26,6 +26,7 @@ Route::controller(CustomerTypeController::class)->group(function () {
     
     Route::post('/addCustomerType', 'store');
     Route::get('/getAllCustomerType', 'index');
+    Route::patch('/editCustomerType/{customerType}', 'update');
 
 });
 

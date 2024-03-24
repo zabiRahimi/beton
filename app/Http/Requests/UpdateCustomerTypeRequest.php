@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCustomerTypeRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateCustomerTypeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,13 @@ class UpdateCustomerTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type' => [
+                'required',
+                'string',
+                Rule::unique('customer_types')->ignore($this->customerType)
+            ],
+
+
         ];
     }
 }

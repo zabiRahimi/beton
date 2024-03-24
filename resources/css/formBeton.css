@@ -99,7 +99,11 @@
 .btnSaveFB {
     width: 95px;
     margin: 0;
-    margin-left: 35px;
+    /* margin-left: 35px; */
+}
+
+.btnDelFB{
+    margin-right: 35px;
 }
 
 
