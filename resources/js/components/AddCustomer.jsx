@@ -223,29 +223,38 @@ const AddCustomer = () => {
                         <h5 className={`titleFormFB ${editCustomer ? '' : 'hideGe'}`}>ویرایش مشتری</h5>
 
                         <div className="sectionFB">
-                            <div className="divInputFB">
-                                <label>نام مشتری</label>
-                                <input
-                                    type="text"
-                                    className="inputTextFB"
-                                    autoFocus
-                                />
-                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label>نام مشتری</label>
+                                    <input
+                                        type="text"
+                                        className="inputTextFB"
+                                        autoFocus
+                                    />
+                                </div>
+                                <div className="errorContainerFB">خطا رخ داده است</div>
 
-                            <div className="divInputFB">
-                                <label>نوع مشتری </label>
-                                <select name="" id="" className="selectFB">
-                                    <option value="خریدار">خریدار</option>
-                                    <option value="فروشنده">فروشنده</option>
-                                    <option value="فروشنده-خریدار">فروشنده-خریدار</option>
-                                </select>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label>نوع مشتری </label>
+                                    <select name="" id="" className="selectFB">
+                                        <option value="خریدار">خریدار</option>
+                                        <option value="فروشنده">فروشنده</option>
+                                        <option value="فروشنده-خریدار">فروشنده-خریدار</option>
+                                    </select>
+                                </div>
+                                <div className="errorContainerFB">خطا رخ داده است</div>
                             </div>
                         </div>
 
                         <div className="sectionFB">
-                            <div className="divInputFB">
-                                <label>کد ملی </label>
-                                <input type="text" className="inputTextFB" />
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label>کد ملی </label>
+                                    <input type="text" className="inputTextFB" />
+                                </div>
+                                <div className="errorContainerFB">خطا رخ داده است</div>
                             </div>
 
                             <div className="divInputFB">
@@ -297,44 +306,63 @@ const AddCustomer = () => {
 
                         <div className="sectionFB">
                             <div className="divRightFB">
-                                <div className="divInputFB">
-                                    <label>موبایل</label>
-                                    <input type="text" className="inputTextFB" />
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label>موبایل</label>
+                                        <input type="text" className="inputTextFB" />
+                                    </div>
+                                    <div className="errorContainerFB">خطا رخ داده است</div>
                                 </div>
 
-                                <div className="divInputFB">
-                                    <label>تلفن </label>
-                                    <input type="text" className="inputTextFB" />
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label>تلفن </label>
+                                        <input type="text" className="inputTextFB" />
+                                    </div>
+                                    <div className="errorContainerFB">خطا رخ داده است</div>
                                 </div>
 
-                                <div className="divInputFB">
-                                    <label>کد پستی</label>
-                                    <input type="text" className="inputTextFB" />
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label>کد پستی</label>
+                                        <input type="text" className="inputTextFB" />
+                                    </div>
+                                    <div className="errorContainerFB">خطا رخ داده است</div>
                                 </div>
-
-                                <div className="divInputFB">
-                                    <label>ایمیل</label>
-                                    <input type="text" className="inputTextFB" />
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label>ایمیل</label>
+                                        <input type="text" className="inputTextFB" />
+                                    </div>
+                                    <div className="errorContainerFB">خطا رخ داده است</div>
                                 </div>
                             </div>
 
                             <div className="divLeftFB">
-                                <div className="divInputFB">
-                                    <label>آدرس</label>
-                                    <textarea className="textareaAddressACu" />
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label>آدرس</label>
+                                        <textarea className="textareaAddressACu" />
+                                    </div>
+                                    <div className="errorContainerFB">خطا رخ داده است</div>
                                 </div>
                             </div>
                         </div>
 
                         <div className="sectionFB">
-                            <div className="divInputFB">
-                                <label>شماره حساب</label>
-                                <input type="text" className="inputTextFB" />
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label>شماره حساب</label>
+                                    <input type="text" className="inputTextFB" />
+                                </div>
+                                <div className="errorContainerFB">خطا رخ داده است</div>
                             </div>
-
-                            <div className="divInputFB">
-                                <label>شماره کارت</label>
-                                <input type="text" className="inputTextFB" />
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label>شماره کارت</label>
+                                    <input type="text" className="inputTextFB" />
+                                </div>
+                                <div className="errorContainerFB">خطا رخ داده است</div>
                             </div>
                         </div>
                         <div className="sectionFB divBtnsFB">
@@ -350,7 +378,8 @@ const AddCustomer = () => {
                             <Button
                                 type="reset"
                                 variant="warning"
-                                className={editCustomer ? 'hideGe' : ''}
+                                className="btnDelFB"
+                                // className={editCustomer ? 'hideGe' : ''}
                                 onClick={deleteDate}
                             >
                                 پاک کن

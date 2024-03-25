@@ -24,10 +24,14 @@
     flex-wrap: wrap;
 }
 
-.divInputFB {
+.containerInputFB{
     width: 50%;
     margin-bottom: 30px;
     padding: 0 15px;
+}
+
+.divInputFB {
+   
     display: flex;
     align-items: center;
 }
@@ -49,12 +53,23 @@
     height: 30px;
     padding: 0 7px;
     font-size: 0.91rem;
+    border: 1px solid #8f8f9d;
+    
 }
 
 .inputTextUnitFB {
     width: 170px;
     border: 1px solid #8f8f9d;
     border-left: none;
+}
+
+/* جهت نمایش خطاهای فرم */
+.errorContainerFB{
+   
+width: 235px;
+margin-right: 100px;
+color: red;
+font-size: .75rem;
 }
 
 /* جهت نمایش واحد یک فیلد */

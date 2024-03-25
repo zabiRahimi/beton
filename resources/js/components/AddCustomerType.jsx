@@ -8,11 +8,14 @@ import "../../css/formBeton.css";
 import "../../css/addCustomerType.css";
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 
 const AddCustomerType = () => {
 
     const formRef = useRef(null);
+    const MySwal = withReactContent(Swal);
 
     const [customerTypes, setCustomerTypes] = useState(null);
     console.log(customerTypes);
@@ -86,13 +89,13 @@ const AddCustomerType = () => {
      */
     const handleChangeInput = (event, state) => {
         console.log(state);
-        const val= event.target.value;
-     if(state){
-        setType(val);
-     }else{
-        setEditType(old=>({...old, type:val}));
-     }
-        
+        const val = event.target.value;
+        if (state) {
+            setType(val);
+        } else {
+            setEditType(old => ({ ...old, type: val }));
+        }
+
 
 
     }
@@ -187,7 +190,7 @@ const AddCustomerType = () => {
 
         axios.patch(
             `/api/v1/editCustomerType/${editType['id']}`,
-            { type:editType['type'] },
+            { type: editType['type'] },
             {
                 headers:
                 {
@@ -196,63 +199,58 @@ const AddCustomerType = () => {
                 }
             }
         ).then(response => {
-            const result=response.data.customerType;
+            const result = response.data.customerType;
             console.log(result);
             // setCustomerTypes(prevTypes => [...prevTypes, response.data.CustomerTypes]);
 
             formRef.current.reset();
             setCustomerTypes(prevItems => {
                 return prevItems.map(item => {
-                  if (item.id === result['id']) {
-                    return { ...item, 'type': result['type'] };
-                  }
-                  return item;
+                    if (item.id === result['id']) {
+                        return { ...item, 'type': result['type'] };
+                    }
+                    return item;
                 });
-              });
+            });
 
-            // setIndex(prev => ({ ...prev, book_id: id, book: input.book }));
-
-            // setBook({ id, ...input });
-
-            // //کتاب ایجاد شده را به آرایه کتابها اضافه می‌کند
-            // valBooks.push({ id, ...input });
-
-            // setValBooks(valBooks);
-
-            // setInput({ book: '', link: '' });
-
-            // Swal.fire({
-            //     position: 'center',
-            //     icon: 'success',
-            //     title: 'ثبت کتاب با موفقیت انجام شد ',
-            //     showConfirmButton: false,
-            //     timer: 3000
-            // })
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ویرایش شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                }
+            })
         })
-            .catch(error =>{
+            .catch(error => {
                 console.log(error.response.data.errors);
+                if (error.response.status == 422) {
+                    
+                }
             }
-            // error => {
-            //     notify.current.innerHTML = ''
-            //     if (error.response.status == 422) {
-            //         const elementError = Object.keys(error.response.data.errors)[0];
-            //         let divError;
-            //         switch (elementError) {
-            //             case 'book':
-            //                 divError = bookError.current
-            //                 break;
-            //             case 'link':
-            //                 divError = linkError.current
-            //         }
-            //         divError.innerHTML = `<div class="error">${error.response.data.errors[elementError][0]}</div>`
-            //         divError.scrollIntoViewIfNeeded({ behavior: "smooth" });
-            //     }
-            //     else {
-            //         notify.current.innerHTML = `<div class='error'>'خطایی رخ داده است، مطمعن شوید دیتابیس فعال است.'</div>`
-            //         notify.current.scrollIntoViewIfNeeded({ behavior: "smooth" });
-            //     }
-            // }
-        )
+                // error => {
+                //     notify.current.innerHTML = ''
+                //     if (error.response.status == 422) {
+                //         const elementError = Object.keys(error.response.data.errors)[0];
+                //         let divError;
+                //         switch (elementError) {
+                //             case 'book':
+                //                 divError = bookError.current
+                //                 break;
+                //             case 'link':
+                //                 divError = linkError.current
+                //         }
+                //         divError.innerHTML = `<div class="error">${error.response.data.errors[elementError][0]}</div>`
+                //         divError.scrollIntoViewIfNeeded({ behavior: "smooth" });
+                //     }
+                //     else {
+                //         notify.current.innerHTML = `<div class='error'>'خطایی رخ داده است، مطمعن شوید دیتابیس فعال است.'</div>`
+                //         notify.current.scrollIntoViewIfNeeded({ behavior: "smooth" });
+                //     }
+                // }
+            )
     }
 
     return (
@@ -274,7 +272,7 @@ const AddCustomerType = () => {
                                     type="text"
                                     className="inputTextFB"
                                     defaultValue={editCustomerTyep ? editType['type'] : ''}
-                                    onChange={(event)=>handleChangeInput(event,!editCustomerTyep)}
+                                    onChange={(event) => handleChangeInput(event, !editCustomerTyep)}
                                     autoFocus
                                 />
                             </div>
@@ -286,7 +284,7 @@ const AddCustomerType = () => {
                             <Button
                                 variant="success"
                                 className="btnSaveFB"
-                                onClick={ handleSubmit}
+                                onClick={handleSubmit}
                             >
                                 ثبت
                             </Button>
@@ -299,18 +297,18 @@ const AddCustomerType = () => {
                                 پاک کن
                             </Button>
 
-                            
+
                         </div>
 
                         <div className={`sectionFB divBtnsFB ${!editCustomerTyep ? 'hideGe' : ''}`}>
-                            
+
 
                             <Button
                                 variant="info"
-                                className="btnSaveFB" 
-                                onClick={ handleSubmitEdit}
+                                className="btnSaveFB"
+                                onClick={handleSubmitEdit}
                             >
-                                  ویرایش
+                                ویرایش
                             </Button>
                         </div>
 
