@@ -1,11 +1,10 @@
-
-.divDateBirth{
+.divDateBirth {
     display: flex;
     flex-direction: column;
 }
 
 
-.divUpDateAcus{
+.divUpDateAcus {
     width: 235px;
     background-color: #eaeaea;
 
@@ -14,7 +13,7 @@
 }
 
 
-.divDownDateAcus{
+.divDownDateAcus {
     width: 235px;
     /* background-color:#fff;
     border: 1px solid #8f8f9d; */
@@ -22,7 +21,7 @@
 }
 
 
-.inputTextDateACus{
+.inputTextDateACus {
     width: 40px;
     border: none;
     background-color: #fff;
@@ -30,35 +29,38 @@
 }
 
 
-.inputDayTDACus{
-
-}
+.inputDayTDACus {}
 
 
-.inputMonthTDACus{
+.inputMonthTDACus {
     width: 67px;
 }
 
 
-.inputYearTDACus{
+.inputYearTDACus {
     width: 45px;
-margin-left: 13px;
+    margin-left: 13px;
 }
 
-.textareaAddressACu{
+.textareaAddressACu {
     width: 235px;
-    height: 180px;
+    height: 200px;
 }
 
 
 @media screen and (min-width:1200px) {
-    
-    
+
+
     .divUpDateAcus,
     .divDownDateAcus,
-    .textareaAddressACu{
+    .textareaAddressACu {
         width: 250px;
+
     }
 
-   
+    .textareaAddressACu {
+        height: 228px;
+    }
+
+
 }

@@ -18,22 +18,33 @@
 .sectionFB {
     width: 100%;
     margin: 3px 0;
-    padding: 30px 6px 0;
+    padding: 12px 6px 0;
     display: flex;
     background-color: #ececec;
     flex-wrap: wrap;
 }
 
-.containerInputFB{
-    width: 50%;
-    margin-bottom: 30px;
+
+
+.containerInputFB {
+    /* width: 50%; */
+    /* margin-bottom: 30px; */
     padding: 0 15px;
 }
 
 .divInputFB {
-   
     display: flex;
     align-items: center;
+    position: relative;
+}
+
+/* ستاره الزام آور */
+.starFB {
+    color: red;
+    font-size: 0.6rem;
+    position: absolute;
+    top: -4.3px;
+    left: 12px;
 }
 
 /** این کلاس برای زمانی است که یک فرم یک ستونه میخواهیم **/
@@ -54,7 +65,6 @@
     padding: 0 7px;
     font-size: 0.91rem;
     border: 1px solid #8f8f9d;
-    
 }
 
 .inputTextUnitFB {
@@ -64,12 +74,12 @@
 }
 
 /* جهت نمایش خطاهای فرم */
-.errorContainerFB{
-   
-width: 235px;
-margin-right: 100px;
-color: red;
-font-size: .75rem;
+.errorContainerFB {
+    width: 235px;
+    min-height: 17px;
+    margin-right: 100px;
+    color: red;
+    font-size: .7rem;
 }
 
 /* جهت نمایش واحد یک فیلد */
@@ -94,10 +104,13 @@ font-size: .75rem;
     flex-direction: column;
 }
 
-.divRightFB .divInputFB,
-.divLeftFB .divInputFB {
-    width: 100%;
-    margin-bottom: 20px;
+.divRightFB .containerInputFB,
+.divLeftFB .containerInputFB {
+    margin-bottom: 10px;
+}
+
+.divLeftFB .containerInputFB {
+    padding: 0 5px;
 }
 
 .selectFB {
@@ -114,13 +127,11 @@ font-size: .75rem;
 .btnSaveFB {
     width: 95px;
     margin: 0;
-    /* margin-left: 35px; */
 }
 
-.btnDelFB{
+.btnDelFB {
     margin-right: 35px;
 }
-
 
 
 /**         ***** plak *****       **/
@@ -131,9 +142,7 @@ font-size: .75rem;
     flex-direction: row-reverse;
     border: 1px solid #000;
     border-radius: 4px;
-
 }
-
 
 .divIranPlak {
     width: 28px;
@@ -154,7 +163,6 @@ font-size: .75rem;
 .iranPlakDivImg img {
     width: 95%;
     margin-top: -7px;
-
 }
 
 .iranPlakDivSpans {
@@ -164,16 +172,12 @@ font-size: .75rem;
     font-size: 0.5rem;
     color: #fff;
     direction: ltr;
-
-
 }
 
 .iranPlakDivSpans span {
     display: inline-block;
     height: 8px;
-
 }
-
 
 .divNamberPlak {
     display: flex;
@@ -254,8 +258,6 @@ font-size: .75rem;
     text-align: center;
 }
 
-.span1STUFB {}
-
 .span2STUFB {
     margin: 0 6px 0 8px;
     color: green;
@@ -274,7 +276,17 @@ font-size: .75rem;
     .formBeton {
         margin: 35px 5px;
         padding: 15px 32px;
+    }
 
+    .starFB {
+        font-size: 0.64rem;
+        top: -4.2px;
+        left: 40px;
+    }
+
+    .containerInputFB {
+        width: 50%;
+        padding: 0 calc((50% - 362px) / 2);
     }
 
     .divInputFB {
@@ -284,13 +296,19 @@ font-size: .75rem;
     .divInputFB label {
         width: 112px;
         font-size: 1.094rem;
-
     }
 
     .inputTextFB,
     .selectFB,
     .divExamplePlak {
         width: 250px;
+    }
+
+    .divRightFB .containerInputFB,
+    .divLeftFB .containerInputFB {
+        width: 100%;
+        margin-bottom: 18px;
+        padding: 0 calc((100% - 362px) / 2);
     }
 
     .inputTextUnitFB {
@@ -300,7 +318,6 @@ font-size: .75rem;
     .text2numberPlaK,
     .textSerialPlaK {
         width: 47px;
-
     }
 
     .selectChPlak {
@@ -309,6 +326,12 @@ font-size: .75rem;
 
     .text3numberPlaK {
         width: 58px;
+    }
+
+    .errorContainerFB {
+        width: 250px;
+        margin-right: 140px;
+        font-size: .72rem;
     }
 
 }

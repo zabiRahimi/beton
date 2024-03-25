@@ -23,6 +23,18 @@ const AddCustomer = () => {
 
     const containerShowGeRef = useRef(null);
 
+    const nameErrorRef = useRef(null);
+    const typeErrorRef = useRef(null);
+    const nationalCodeErrorRef = useRef(null);
+    const mobileErrorRef = useRef(null);
+    const telephoneErrorRef = useRef(null);
+    const dateOfBirthErrorRef = useRef(null);
+    const emailErrorRef = useRef(null);
+    const postalCodeErrorRef = useRef(null);
+    const addressErrorRef = useRef(null);
+    const accountNumberErrorRef= useRef(null);
+    const cardNumberErrorRef= useRef(null);
+
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
 
@@ -223,84 +235,92 @@ const AddCustomer = () => {
                         <h5 className={`titleFormFB ${editCustomer ? '' : 'hideGe'}`}>ویرایش مشتری</h5>
 
                         <div className="sectionFB">
+
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label>نام مشتری</label>
+                                    <label htmlFor="name">نام مشتری</label>
                                     <input
                                         type="text"
                                         className="inputTextFB"
+                                        id="name"
                                         autoFocus
                                     />
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB">خطا رخ داده است</div>
-
+                                <div className="errorContainerFB" ref={nameErrorRef}></div>
                             </div>
+
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label>نوع مشتری </label>
-                                    <select name="" id="" className="selectFB">
+                                    <label htmlFor="type" >نوع مشتری </label>
+                                    <select id="type" className="selectFB">
                                         <option value="خریدار">خریدار</option>
                                         <option value="فروشنده">فروشنده</option>
                                         <option value="فروشنده-خریدار">فروشنده-خریدار</option>
                                     </select>
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB">خطا رخ داده است</div>
+                                <div className="errorContainerFB" ref={typeErrorRef}></div>
                             </div>
                         </div>
 
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label>کد ملی </label>
-                                    <input type="text" className="inputTextFB" />
+                                    <label htmlFor="nationalCode">کد ملی </label>
+                                    <input type="text" id="nationalCode" className="inputTextFB" />
                                 </div>
-                                <div className="errorContainerFB">خطا رخ داده است</div>
+                                <div className="errorContainerFB" ref={nationalCodeErrorRef}></div>
                             </div>
 
-                            <div className="divInputFB">
-                                <label>تاریخ تولد </label>
-                                <div className="divDateBirth">
-                                    <div className="divUpDateAcus">
-                                        <input
-                                            type="text"
-                                            className="inputTextDateACus inputDayTDACus"
-                                            placeholder="1"
-                                            value={day}
-                                            onInput={(e) => changeDay(e)}
-                                        />
-                                        <span>/</span>
-                                        <input
-                                            type="text"
-                                            className="inputTextDateACus inputMonthTDACus"
-                                            placeholder="1"
-                                            value={month}
-                                            onInput={(e) => changeMonth(e)}
-                                        />
-                                        <span>/</span>
-                                        <input
-                                            type="text"
-                                            className="inputTextDateACus inputYearTDACus"
-                                            placeholder="1300"
-                                            value={year}
-                                            onInput={(e) => { changeYear(e) }}
-                                        />
-                                    </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="day">تاریخ تولد </label>
+                                    <div className="divDateBirth">
+                                        <div className="divUpDateAcus">
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputDayTDACus"
+                                                placeholder="1"
+                                                id="day"
+                                                value={day}
+                                                onInput={(e) => changeDay(e)}
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputMonthTDACus"
+                                                placeholder="1"
+                                                value={month}
+                                                onInput={(e) => changeMonth(e)}
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputYearTDACus"
+                                                placeholder="1300"
+                                                value={year}
+                                                onInput={(e) => { changeYear(e) }}
+                                            />
+                                        </div>
 
-                                    <div className="divDownDateAcus">
-                                        <select name="" id="" value={day} onChange={(e) => changeDay(e)}>
-                                            <option value="">روز</option>
-                                            {optionDays}
-                                        </select>
-                                        <select name="" id="" value={month} onChange={(e) => changeMonth(e)}>
-                                            <option value="">ماه</option>
-                                            {optionMonth}
-                                        </select>
-                                        <select name="" id="" value={year} onChange={(e) => { changeYear(e) }}>
-                                            <option value="">سال</option>
-                                            {optionYears}
-                                        </select>
+                                        <div className="divDownDateAcus">
+                                            <select name="" id="" value={day} onChange={(e) => changeDay(e)}>
+                                                <option value="">روز</option>
+                                                {optionDays}
+                                            </select>
+                                            <select name="" id="" value={month} onChange={(e) => changeMonth(e)}>
+                                                <option value="">ماه</option>
+                                                {optionMonth}
+                                            </select>
+                                            <select name="" id="" value={year} onChange={(e) => { changeYear(e) }}>
+                                                <option value="">سال</option>
+                                                {optionYears}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
+                                <div className="errorContainerFB" ref={ dateOfBirthErrorRef}></div>
                             </div>
                         </div>
 
@@ -308,43 +328,45 @@ const AddCustomer = () => {
                             <div className="divRightFB">
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label>موبایل</label>
-                                        <input type="text" className="inputTextFB" />
+                                        <label htmlFor="mobile">موبایل</label>
+                                        <input type="text" id="mobile" className="inputTextFB" />
                                     </div>
-                                    <div className="errorContainerFB">خطا رخ داده است</div>
+                                    <div className="errorContainerFB" ref={mobileErrorRef }></div>
+
                                 </div>
 
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label>تلفن </label>
-                                        <input type="text" className="inputTextFB" />
+                                        <label htmlFor="tel">تلفن </label>
+                                        <input type="text" id="tel" className="inputTextFB" />
                                     </div>
-                                    <div className="errorContainerFB">خطا رخ داده است</div>
+                                    <div className="errorContainerFB" ref={telephoneErrorRef }></div>
                                 </div>
 
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label>کد پستی</label>
-                                        <input type="text" className="inputTextFB" />
+                                        <label htmlFor="postalCode">کد پستی</label>
+                                        <input type="text"
+                                        id="postalCode" className="inputTextFB" />
                                     </div>
-                                    <div className="errorContainerFB">خطا رخ داده است</div>
+                                    <div className="errorContainerFB" ref={postalCodeErrorRef }></div>
                                 </div>
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label>ایمیل</label>
-                                        <input type="text" className="inputTextFB" />
+                                        <label htmlFor="email">ایمیل</label>
+                                        <input type="text" id="email" className="inputTextFB" />
                                     </div>
-                                    <div className="errorContainerFB">خطا رخ داده است</div>
+                                    <div className="errorContainerFB" ref={emailErrorRef }></div>
                                 </div>
                             </div>
 
                             <div className="divLeftFB">
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label>آدرس</label>
-                                        <textarea className="textareaAddressACu" />
+                                        <label htmlFor="address">آدرس</label>
+                                        <textarea id="address" className="textareaAddressACu" />
                                     </div>
-                                    <div className="errorContainerFB">خطا رخ داده است</div>
+                                    <div className="errorContainerFB" ref={addressErrorRef}></div>
                                 </div>
                             </div>
                         </div>
@@ -352,17 +374,18 @@ const AddCustomer = () => {
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label>شماره حساب</label>
-                                    <input type="text" className="inputTextFB" />
+                                    <label htmlFor="accountNumber">شماره حساب</label>
+                                    <input type="text" id="accountNumber"
+                                     className="inputTextFB" />
                                 </div>
-                                <div className="errorContainerFB">خطا رخ داده است</div>
+                                <div className="errorContainerFB" ref={accountNumberErrorRef }></div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label>شماره کارت</label>
-                                    <input type="text" className="inputTextFB" />
+                                    <label htmlFor="cardNumber">شماره کارت</label>
+                                    <input type="text" id="cardNumber" className="inputTextFB" />
                                 </div>
-                                <div className="errorContainerFB">خطا رخ داده است</div>
+                                <div className="errorContainerFB" ref={cardNumberErrorRef }></div>
                             </div>
                         </div>
                         <div className="sectionFB divBtnsFB">
