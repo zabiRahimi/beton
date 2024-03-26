@@ -12,10 +12,13 @@
     */
 }
 
+
 html,
 body {
     direction: rtl;
 }
+
+select > option {font-family: IRANSansMedium;}
 
 :root {
     --colorMore: #7492c1;

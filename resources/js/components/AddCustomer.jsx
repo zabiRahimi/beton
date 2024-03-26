@@ -6,7 +6,9 @@ import "../../css/general.css";
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
 import DataZabi from "./hooks/DateZabi";
-import { useEffect, useRef, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 const AddCustomer = () => {
     const {
         years,
@@ -32,14 +34,26 @@ const AddCustomer = () => {
     const emailErrorRef = useRef(null);
     const postalCodeErrorRef = useRef(null);
     const addressErrorRef = useRef(null);
-    const accountNumberErrorRef= useRef(null);
-    const cardNumberErrorRef= useRef(null);
+    const accountNumberErrorRef = useRef(null);
+    const cardNumberErrorRef = useRef(null);
+    const itemCustomerType = useRef([]);
+// console.log(itemCustomerType);
 
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
 
     const [hideGetCustomer, setHideGetCustomer] = useState(true);
     const [flexDirection, setFlexDirection] = useState('columnGe');
+
+    const [customerTypes, setCustomerTypes] = useState(null);
+    const [customerTypeSelected, setCustomerTypeSelected] = useState([])
+
+    // console.log(customerTypeSelected);
+
+    customerTypes && (itemCustomerType.current = customerTypes.map(
+        (customerType) => itemCustomerType.current[customerType['id']] ?? createRef()
+    ));
+
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -51,6 +65,10 @@ const AddCustomer = () => {
     const [day, setDay] = useState();
     const [month, setMonth] = useState();
     const [year, setYear] = useState();
+
+    useEffect(() => {
+        getCustomerType()
+    }, [])
 
     const addCustomer = () => {
 
@@ -72,6 +90,78 @@ const AddCustomer = () => {
 
         setHideGetCustomer(false);
 
+    }
+
+    /**
+     * دریافت نوع مشتری 
+     */
+    async function getCustomerType() {
+        let customerTData;
+
+        // await localforage.getItem("products").then((value) => {
+        //     customerTData = value.filter((item) => item.id == params.id);
+        // });
+
+        let val = await axios.get("/api/v1/getAllCustomerType").then((response) => {
+            customerTData = response.data.CustomerTypes;
+        });
+        // customerTData=[[id=>1, name=>'eee']]
+
+        setCustomerTypes(customerTData)
+    }
+
+    const showCustomerTypes = () => {
+        let value = customerTypes.map((customerType, i) => {
+           
+            return <div className="itemCustomerTypeFB" onClick={() => AddCustomerType(customerType['id'], customerType['type'])}
+
+                key={i}>
+                <div className="checkedItemCustomerTypeFB" ref={itemCustomerType.current[customerType['id']]}>
+                    <i className="icofont-check-alt " />
+                </div>
+                <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
+
+            </div>
+
+        })
+
+        return value;
+    }
+
+    const showCustomerTypeSelected = () => {
+        let value = customerTypeSelected.map((customerType, i) => {
+            // return <span key={i}>{customerType['type']}<i>{customerType['id']}</i></span>
+            return <div className="customerTypeSelectedFB" key={i}>
+                {/* <div className="checkedItemCustomerTypeFB" ref={itemCustomerType.current[i]}>
+                    <i className="icofont-check-alt " />
+                </div> */}
+                <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
+                <i className="icofont-trash delItemCustomerTypeFB" onClick={()=>delCustomerTypeSelected(customerType['id'])}/>
+
+            </div>
+
+        })
+
+        return value;
+    }
+
+    const AddCustomerType = (id, type) => {
+        // console.log(ref);
+        let ref=itemCustomerType.current[id];
+        let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+        if (val) {
+            setCustomerTypeSelected(old => [...old, { id, type }])
+        } else {
+            const updated = customerTypeSelected.filter(item => item.id !== id);
+            setCustomerTypeSelected(updated);
+        }
+    }
+
+    const delCustomerTypeSelected=(id)=>{
+        const updated = customerTypeSelected.filter(item => item.id !== id);
+        setCustomerTypeSelected(updated);
+        let ref=itemCustomerType.current[id];
+         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
     }
 
 
@@ -253,12 +343,26 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="type" >نوع مشتری </label>
-                                    <select id="type" className="selectFB">
-                                        <option value="خریدار">خریدار</option>
-                                        <option value="فروشنده">فروشنده</option>
-                                        <option value="فروشنده-خریدار">فروشنده-خریدار</option>
-                                    </select>
+                                    <div className="selectFB containerCustomerTypeFB">
+                                        <span> انتخاب </span>
+                                        <i className="icofont-caret-down " />
+                                    </div>
+                                    <div className="divItemCustomerTypeFB">
+                                        <div className="rigthCustomerTypeFB">
+                                            {customerTypeSelected && showCustomerTypeSelected()}
+                                        </div>
+                                        <div className="leftCustomerTypeFB">
+                                            {customerTypes ? showCustomerTypes() : <Skeleton height={35} count={8} />}
+                                        </div>
+                                    </div>
+                                    {/* <select id="type" className="selectFB">
+                                        <option value=""> انتخاب </option>
+                                        {customerTypes ? showCustomerTypes() : <Skeleton  count={8} />}
+
+                                        
+                                    </select> */}
                                     <i className="icofont-ui-rating starFB" />
+
                                 </div>
                                 <div className="errorContainerFB" ref={typeErrorRef}></div>
                             </div>
@@ -268,7 +372,7 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="nationalCode">کد ملی </label>
-                                    <input type="text" id="nationalCode" className="inputTextFB" />
+                                    <input type="text" id="nationalCode" className="inputTextFB ltrFB" />
                                 </div>
                                 <div className="errorContainerFB" ref={nationalCodeErrorRef}></div>
                             </div>
@@ -320,7 +424,7 @@ const AddCustomer = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="errorContainerFB" ref={ dateOfBirthErrorRef}></div>
+                                <div className="errorContainerFB" ref={dateOfBirthErrorRef}></div>
                             </div>
                         </div>
 
@@ -329,34 +433,34 @@ const AddCustomer = () => {
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="mobile">موبایل</label>
-                                        <input type="text" id="mobile" className="inputTextFB" />
+                                        <input type="text" id="mobile" className="inputTextFB ltrFB" />
                                     </div>
-                                    <div className="errorContainerFB" ref={mobileErrorRef }></div>
+                                    <div className="errorContainerFB" ref={mobileErrorRef}></div>
 
                                 </div>
 
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="tel">تلفن </label>
-                                        <input type="text" id="tel" className="inputTextFB" />
+                                        <input type="text" id="tel" className="inputTextFB ltrFB" />
                                     </div>
-                                    <div className="errorContainerFB" ref={telephoneErrorRef }></div>
+                                    <div className="errorContainerFB" ref={telephoneErrorRef}></div>
                                 </div>
 
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="postalCode">کد پستی</label>
                                         <input type="text"
-                                        id="postalCode" className="inputTextFB" />
+                                            id="postalCode" className="inputTextFB ltrFB" />
                                     </div>
-                                    <div className="errorContainerFB" ref={postalCodeErrorRef }></div>
+                                    <div className="errorContainerFB" ref={postalCodeErrorRef}></div>
                                 </div>
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="email">ایمیل</label>
-                                        <input type="text" id="email" className="inputTextFB" />
+                                        <input type="text" id="email" className="inputTextFB ltrFB" />
                                     </div>
-                                    <div className="errorContainerFB" ref={emailErrorRef }></div>
+                                    <div className="errorContainerFB" ref={emailErrorRef}></div>
                                 </div>
                             </div>
 
@@ -376,16 +480,16 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="accountNumber">شماره حساب</label>
                                     <input type="text" id="accountNumber"
-                                     className="inputTextFB" />
+                                        className="inputTextFB ltrFB" />
                                 </div>
-                                <div className="errorContainerFB" ref={accountNumberErrorRef }></div>
+                                <div className="errorContainerFB" ref={accountNumberErrorRef}></div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="cardNumber">شماره کارت</label>
-                                    <input type="text" id="cardNumber" className="inputTextFB" />
+                                    <input type="text" id="cardNumber" className="inputTextFB ltrFB" />
                                 </div>
-                                <div className="errorContainerFB" ref={cardNumberErrorRef }></div>
+                                <div className="errorContainerFB" ref={cardNumberErrorRef}></div>
                             </div>
                         </div>
                         <div className="sectionFB divBtnsFB">
