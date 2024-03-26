@@ -37,7 +37,7 @@ const AddCustomer = () => {
     const accountNumberErrorRef = useRef(null);
     const cardNumberErrorRef = useRef(null);
     const itemCustomerType = useRef([]);
-// console.log(itemCustomerType);
+    // console.log(itemCustomerType);
 
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
@@ -112,7 +112,7 @@ const AddCustomer = () => {
 
     const showCustomerTypes = () => {
         let value = customerTypes.map((customerType, i) => {
-           
+
             return <div className="itemCustomerTypeFB" onClick={() => AddCustomerType(customerType['id'], customerType['type'])}
 
                 key={i}>
@@ -136,7 +136,7 @@ const AddCustomer = () => {
                     <i className="icofont-check-alt " />
                 </div> */}
                 <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
-                <i className="icofont-trash delItemCustomerTypeFB" onClick={()=>delCustomerTypeSelected(customerType['id'])}/>
+                <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['id'])} />
 
             </div>
 
@@ -147,7 +147,7 @@ const AddCustomer = () => {
 
     const AddCustomerType = (id, type) => {
         // console.log(ref);
-        let ref=itemCustomerType.current[id];
+        let ref = itemCustomerType.current[id];
         let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         if (val) {
             setCustomerTypeSelected(old => [...old, { id, type }])
@@ -157,11 +157,11 @@ const AddCustomer = () => {
         }
     }
 
-    const delCustomerTypeSelected=(id)=>{
+    const delCustomerTypeSelected = (id) => {
         const updated = customerTypeSelected.filter(item => item.id !== id);
         setCustomerTypeSelected(updated);
-        let ref=itemCustomerType.current[id];
-         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+        let ref = itemCustomerType.current[id];
+        ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
     }
 
 
@@ -349,7 +349,16 @@ const AddCustomer = () => {
                                     </div>
                                     <div className="divItemCustomerTypeFB">
                                         <div className="rigthCustomerTypeFB">
-                                            {customerTypeSelected && showCustomerTypeSelected()}
+                                            <div className="RCTYitemsFB">
+                                                {customerTypeSelected && showCustomerTypeSelected()}
+                                            </div>
+                                            <div className="errorRCTYitemFB">
+
+                                            </div>
+                                        <button className="btnRCTYitemsFB"
+                                        onClick={handleSubmit}> ثبت </button>
+
+
                                         </div>
                                         <div className="leftCustomerTypeFB">
                                             {customerTypes ? showCustomerTypes() : <Skeleton height={35} count={8} />}

@@ -139,17 +139,53 @@
 }
 
 .rigthCustomerTypeFB{
-    width: 200px;
-    height: inherit;
+    width: 220px;
+    height: 100%;
+    min-height: 350px;
     margin-left: 5px;
     padding: 6px 8px;
     border: 1px solid #6d6b6b;
     background-color: #fff;
 }
 
+.RCTYitemsFB{
+    /* height: 100%; */
+    max-height:300px ;
+    min-height:300px ;
+    padding:0 0 5px 3px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.btnRCTYitemsFB{
+    width: 90%;
+    height: 40px;
+    margin: 3px auto 0;
+    border: 1px solid;
+    border-radius: 4px;
+    background-color: #4f4fb6;
+    color: #fff;
+     display: flex;
+    justify-content: center;
+    align-items: center;
+    /* cursor: pointer;  */
+}
+
+.btnRCTYitemsFB:hover{
+    background-color: #6363c6;
+    color: #eae9e9;
+}
+
+.btnRCTYitemsFB:active{
+    background-color: #333367;
+}
+
 .customerTypeSelectedFB{
     width: 100%;
-    height: 35px;
+    min-height: 35px;
     padding: 0 6px;
     border: 1px solid #cccccc;
     border-radius: 3px;
@@ -166,11 +202,15 @@
 }
 
 .delItemCustomerTypeFB:active{
-    color: #ffea00;
+    color: #c3ff00;
 }
 
 .leftCustomerTypeFB{
     width: 200px;
+    max-height: 350px;
+    overflow-x: hidden; /* حذف اسکرول افقی */
+    overflow-y: auto;
+    
 }
 .leftCustomerTypeFB div:nth-child(even) {
     background-color: #fefdfd;

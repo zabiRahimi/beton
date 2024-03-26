@@ -31,7 +31,6 @@ const AddCustomerType = () => {
         type: null
     });
 
-
     useEffect(() => {
         getData()
     }, [])
