@@ -126,6 +126,13 @@
     cursor: pointer;
 }
 
+.lableCustomerTypeFB{
+    width: max-content;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; /* نمایش سه نقطه در انتها */
+}
+
 .divItemCustomerTypeFB{
     
     padding: 5px 12px;
@@ -177,6 +184,12 @@
 .btnRCTYitemsFB:hover{
     background-color: #6363c6;
     color: #eae9e9;
+}
+
+.errorRCTYitemFB{
+    padding: 1px 3px;
+    background-color: #f5acac;
+    color: #ff0000;
 }
 
 .btnRCTYitemsFB:active{

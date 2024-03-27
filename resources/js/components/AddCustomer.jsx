@@ -36,8 +36,9 @@ const AddCustomer = () => {
     const addressErrorRef = useRef(null);
     const accountNumberErrorRef = useRef(null);
     const cardNumberErrorRef = useRef(null);
-    const itemCustomerType = useRef([]);
-    // console.log(itemCustomerType);
+    const lableCustomerType = useRef(null);
+    const divItemCustomerType = useRef(null);
+    const errorRCTYitem = useRef(null);
 
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
@@ -46,21 +47,25 @@ const AddCustomer = () => {
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
     const [customerTypes, setCustomerTypes] = useState(null);
-    const [customerTypeSelected, setCustomerTypeSelected] = useState([])
+    const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
 
-    // console.log(customerTypeSelected);
+    const [refs, setRefs] = useState({});
 
-    customerTypes && (itemCustomerType.current = customerTypes.map(
-        (customerType) => itemCustomerType.current[customerType['id']] ?? createRef()
-    ));
+    useEffect(() => {
+        if (customerTypes) {
+            const newRefs = customerTypes.reduce((acc, value) => {
+                acc[value.id] = createRef();
+                return acc;
+            }, {});
+            setRefs(newRefs);
+        }
 
+    }, [customerTypes]);
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
     const [editCustomer, setEditCustomer] = useState(false);
-
 
     const [day, setDay] = useState();
     const [month, setMonth] = useState();
@@ -96,27 +101,28 @@ const AddCustomer = () => {
      * دریافت نوع مشتری 
      */
     async function getCustomerType() {
-        let customerTData;
-
-        // await localforage.getItem("products").then((value) => {
-        //     customerTData = value.filter((item) => item.id == params.id);
-        // });
-
-        let val = await axios.get("/api/v1/getAllCustomerType").then((response) => {
-            customerTData = response.data.CustomerTypes;
+        await axios.get("/api/v1/getAllCustomerType").then((response) => {
+            setCustomerTypes(response.data.CustomerTypes);
         });
-        // customerTData=[[id=>1, name=>'eee']]
-
-        setCustomerTypes(customerTData)
     }
 
+    /**
+     * نمایش تگ بازشو برای انتخاب نوع مشتری
+     */
+    const showDivCustomerType = () => {
+        divItemCustomerType.current.classList.toggle('--hidden');
+    }
+
+    /**
+     * نمایش آیتم های نوع مشتری
+     * @returns 
+     */
     const showCustomerTypes = () => {
         let value = customerTypes.map((customerType, i) => {
 
             return <div className="itemCustomerTypeFB" onClick={() => AddCustomerType(customerType['id'], customerType['type'])}
-
                 key={i}>
-                <div className="checkedItemCustomerTypeFB" ref={itemCustomerType.current[customerType['id']]}>
+                <div className="checkedItemCustomerTypeFB" key={customerType['id']} ref={refs[customerType.id]}>
                     <i className="icofont-check-alt " />
                 </div>
                 <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
@@ -130,86 +136,66 @@ const AddCustomer = () => {
 
     const showCustomerTypeSelected = () => {
         let value = customerTypeSelected.map((customerType, i) => {
-            // return <span key={i}>{customerType['type']}<i>{customerType['id']}</i></span>
             return <div className="customerTypeSelectedFB" key={i}>
-                {/* <div className="checkedItemCustomerTypeFB" ref={itemCustomerType.current[i]}>
-                    <i className="icofont-check-alt " />
-                </div> */}
                 <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
                 <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['id'])} />
-
             </div>
-
         })
 
         return value;
     }
 
     const AddCustomerType = (id, type) => {
-        // console.log(ref);
-        let ref = itemCustomerType.current[id];
+        let ref = refs[id]
         let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         if (val) {
-            setCustomerTypeSelected(old => [...old, { id, type }])
+            setCustomerTypeSelected(old => [...old, { id, type }]);
+
+            const typesString = customerTypeSelected.map((item) => item.type).join(' , ');
+            lableCustomerType.current.textContent = typesString ? typesString + ',' + type : type;
+
+            errorRCTYitem.current.classList.add('--hidden');
         } else {
             const updated = customerTypeSelected.filter(item => item.id !== id);
             setCustomerTypeSelected(updated);
+            const typesString = updated.map((item) => item.type).join(' , ');
+
+            lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
         }
     }
 
     const delCustomerTypeSelected = (id) => {
         const updated = customerTypeSelected.filter(item => item.id !== id);
         setCustomerTypeSelected(updated);
-        let ref = itemCustomerType.current[id];
+        let ref = refs[id]
         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+
+        const typesString = updated.map((item) => item.type).join(' , ');
+
+        lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
     }
 
+    const endSelectCustomerType = (e) => {
+        e.preventDefault();
+        if (customerTypeSelected.length == 0) {
+            errorRCTYitem.current.classList.remove('--hidden');
+        } else {
+            divItemCustomerType.current.classList.add('--hidden');
+        }
+    }
 
     const changeDay = (e) => {
         let day = e.target.value;
-        //  switch (day) {
-        //     case value:
-        //         day=1;
-        //         break;
-        //         case value:
-        //             day=2;
-        //         break;
-        //         case value:
-        //             day=3;
-        //         break;
-        //         case value:
-        //             day=;
-        //         break;
-        //         case value:
-        //             day=;
-        //         break;
-        //         case value:
-        //             day=;
-        //         break;
-        //         case value:
-        //             day=;
-        //         break;
-        //         case value:
-        //             day=;
-        //         break;
-        //         case value:
-        //             day=;
-        //         break;
-
-
-        //  }
         setDay(day);
     }
 
     const changeMonth = (e) => {
         let month = e.target.value;
-        console.log(month);
         setMonth(month);
     }
 
     const changeYear = (e) => {
         let year = e.target.value;
-        console.log(year);
         setYear(year);
     }
 
@@ -248,8 +234,6 @@ const AddCustomer = () => {
 
             // const id = response.data.zabi;
             const id = response;
-
-            console.log(id);
 
             // form.current.reset();
 
@@ -343,20 +327,22 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="type" >نوع مشتری </label>
-                                    <div className="selectFB containerCustomerTypeFB">
-                                        <span> انتخاب </span>
+                                    <div className="selectFB containerCustomerTypeFB"
+                                        onClick={showDivCustomerType}
+                                    >
+                                        <span className="lableCustomerTypeFB" ref={lableCustomerType}> انتخاب </span>
                                         <i className="icofont-caret-down " />
                                     </div>
-                                    <div className="divItemCustomerTypeFB">
+                                    <div className="divItemCustomerTypeFB --hidden" ref={divItemCustomerType}>
                                         <div className="rigthCustomerTypeFB">
                                             <div className="RCTYitemsFB">
                                                 {customerTypeSelected && showCustomerTypeSelected()}
                                             </div>
-                                            <div className="errorRCTYitemFB">
-
+                                            <div className="errorRCTYitemFB --hidden" ref={errorRCTYitem}>
+                                                هیچ گزینه ای انتخاب نشده است
                                             </div>
-                                        <button className="btnRCTYitemsFB"
-                                        onClick={handleSubmit}> ثبت </button>
+                                            <button className="btnRCTYitemsFB"
+                                                onClick={endSelectCustomerType}> ثبت </button>
 
 
                                         </div>
@@ -364,12 +350,6 @@ const AddCustomer = () => {
                                             {customerTypes ? showCustomerTypes() : <Skeleton height={35} count={8} />}
                                         </div>
                                     </div>
-                                    {/* <select id="type" className="selectFB">
-                                        <option value=""> انتخاب </option>
-                                        {customerTypes ? showCustomerTypes() : <Skeleton  count={8} />}
-
-                                        
-                                    </select> */}
                                     <i className="icofont-ui-rating starFB" />
 
                                 </div>
