@@ -23,6 +23,7 @@
     display: flex;
     background-color: #ececec;
     flex-wrap: wrap;
+    position: relative;
 }
 
 
@@ -61,7 +62,8 @@
 }
 
 .inputTextFB,
-.inputTextUnitFB {
+.inputTextUnitFB,
+.inputShabaFB {
     width: 235px;
     height: 30px;
     padding: 0 7px;
@@ -69,10 +71,15 @@
     border: 1px solid #8f8f9d;
 }
 
-.inputTextUnitFB {
+.inputTextUnitFB,
+.inputShabaFB {
     width: 170px;
     border: 1px solid #8f8f9d;
     border-left: none;
+}
+
+.inputShabaFB{
+    width: 221px;
 }
 
 /* جهت نمایش خطاهای فرم */
@@ -85,7 +92,8 @@
 }
 
 /* جهت نمایش واحد یک فیلد */
-.unitFB {
+.unitFB,
+.unitShabaFB {
     width: 65px;
     height: 30px;
     font-size: 0.72rem;
@@ -99,6 +107,11 @@
     color: #747474;
 }
 
+.unitShabaFB{
+    width: 15px;
+    color: #000;
+    font-size: 1rem;
+}
 .divRightFB,
 .divLeftFB {
     width: 50%;
@@ -272,6 +285,36 @@ color: #f1f1f1;
     font-size: 1.22rem;
     /* font-family: IRANSansRegular !important; */
     font-family: 'Times New Roman', Times, serif !important;
+}
+
+.delMoreBank{
+    width: 100%;
+    margin: 0 0 4px 30px;
+    padding-bottom: 2px;
+    /* border-bottom: 1px solid #be0b0b; */
+    
+    /* position: absolute; */
+    
+    flex-grow: 1;
+    direction: ltr;
+    display: flex;
+    justify-content: space-between;
+    
+}
+.delMoreBank span{
+    cursor: pointer;
+    border-bottom: 1px solid #be0b0b;
+    color: #ff0000;
+    
+}
+
+.moreBank{
+    margin: 0 30px 6px 0;
+    padding:1px 3px;
+    font-size: .8rem;
+    color: #0404c5;
+    cursor: pointer;
+    border-bottom: 1px solid #0505a1;
 }
 
 .divBtnsFB {
@@ -460,6 +503,10 @@ color: #f1f1f1;
         width: 250px;
     }
 
+    .inputShabaFB{
+        width: 235px;
+    }
+
     .divRightFB .containerInputFB,
     .divLeftFB .containerInputFB {
         width: 100%;
@@ -486,7 +533,7 @@ color: #f1f1f1;
 
     .errorContainerFB {
         width: 250px;
-        margin-right: 140px;
+        margin-right: 120px;
         font-size: .72rem;
     }
 

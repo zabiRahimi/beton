@@ -34,8 +34,42 @@ const AddCustomer = () => {
     const emailErrorRef = useRef(null);
     const postalCodeErrorRef = useRef(null);
     const addressErrorRef = useRef(null);
-    const accountNumberErrorRef = useRef(null);
-    const cardNumberErrorRef = useRef(null);
+
+    const accountNumber1ErrorRef = useRef(null);
+    const cardNumber1ErrorRef = useRef(null);
+    const shabaNumber1ErrorRef = useRef(null);
+    const bank1ErrorRef = useRef(null);
+
+    const accountNumber2ErrorRef = useRef(null);
+    const cardNumber2ErrorRef = useRef(null);
+    const shabaNumber2ErrorRef = useRef(null);
+    const bank2ErrorRef = useRef(null);
+
+    const accountNumber3ErrorRef = useRef(null);
+    const cardNumber3ErrorRef = useRef(null);
+    const shabaNumber3ErrorRef = useRef(null);
+    const bank3ErrorRef = useRef(null);
+
+    const accountNumber4ErrorRef = useRef(null);
+    const cardNumber4ErrorRef = useRef(null);
+    const shabaNumber4ErrorRef = useRef(null);
+    const bank4ErrorRef = useRef(null);
+
+    const accountNumber5ErrorRef = useRef(null);
+    const cardNumber5ErrorRef = useRef(null);
+    const shabaNumber5ErrorRef = useRef(null);
+    const bank5ErrorRef = useRef(null);
+
+    const sectionBank2 = useRef(null);
+    const sectionBank3 = useRef(null);
+    const sectionBank4 = useRef(null);
+    const sectionBank5 = useRef(null);
+
+    const moreBank1 = useRef(null);
+    const moreBank2 = useRef(null);
+    const moreBank3 = useRef(null);
+    const moreBank4 = useRef(null);
+
     const lableCustomerType = useRef(null);
     const divItemCustomerType = useRef(null);
     const errorRCTYitem = useRef(null);
@@ -217,6 +251,15 @@ const AddCustomer = () => {
 
     }
 
+    const showSectionBank = (ref, refBtn) => {
+        ref.current.classList.toggle('--displayNone');
+        refBtn.current.classList.toggle('--displayNone');
+    }
+
+    // const delMoreBank =(ref, refBtn)=>{
+    //     ref.current.classList.toggle('--hidden');
+    //     refBtn.current.classList.toggle('--hidden');
+    // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -321,7 +364,7 @@ const AddCustomer = () => {
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB" ref={nameErrorRef}></div>
+                                <div className="errorContainerFB" ref={nameErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -353,7 +396,7 @@ const AddCustomer = () => {
                                     <i className="icofont-ui-rating starFB" />
 
                                 </div>
-                                <div className="errorContainerFB" ref={typeErrorRef}></div>
+                                <div className="errorContainerFB" ref={typeErrorRef}> </div>
                             </div>
                         </div>
 
@@ -363,7 +406,7 @@ const AddCustomer = () => {
                                     <label htmlFor="nationalCode">کد ملی </label>
                                     <input type="text" id="nationalCode" className="inputTextFB ltrFB" />
                                 </div>
-                                <div className="errorContainerFB" ref={nationalCodeErrorRef}></div>
+                                <div className="errorContainerFB" ref={nationalCodeErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -413,7 +456,7 @@ const AddCustomer = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="errorContainerFB" ref={dateOfBirthErrorRef}></div>
+                                <div className="errorContainerFB" ref={dateOfBirthErrorRef}> </div>
                             </div>
                         </div>
 
@@ -424,7 +467,7 @@ const AddCustomer = () => {
                                         <label htmlFor="mobile">موبایل</label>
                                         <input type="text" id="mobile" className="inputTextFB ltrFB" />
                                     </div>
-                                    <div className="errorContainerFB" ref={mobileErrorRef}></div>
+                                    <div className="errorContainerFB" ref={mobileErrorRef}> </div>
 
                                 </div>
 
@@ -433,7 +476,7 @@ const AddCustomer = () => {
                                         <label htmlFor="tel">تلفن </label>
                                         <input type="text" id="tel" className="inputTextFB ltrFB" />
                                     </div>
-                                    <div className="errorContainerFB" ref={telephoneErrorRef}></div>
+                                    <div className="errorContainerFB" ref={telephoneErrorRef}> </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -442,14 +485,14 @@ const AddCustomer = () => {
                                         <input type="text"
                                             id="postalCode" className="inputTextFB ltrFB" />
                                     </div>
-                                    <div className="errorContainerFB" ref={postalCodeErrorRef}></div>
+                                    <div className="errorContainerFB" ref={postalCodeErrorRef}> </div>
                                 </div>
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="email">ایمیل</label>
                                         <input type="text" id="email" className="inputTextFB ltrFB" />
                                     </div>
-                                    <div className="errorContainerFB" ref={emailErrorRef}></div>
+                                    <div className="errorContainerFB" ref={emailErrorRef}> </div>
                                 </div>
                             </div>
 
@@ -459,7 +502,7 @@ const AddCustomer = () => {
                                         <label htmlFor="address">آدرس</label>
                                         <textarea id="address" className="textareaAddressACu" />
                                     </div>
-                                    <div className="errorContainerFB" ref={addressErrorRef}></div>
+                                    <div className="errorContainerFB" ref={addressErrorRef}> </div>
                                 </div>
                             </div>
                         </div>
@@ -467,20 +510,328 @@ const AddCustomer = () => {
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="accountNumber">شماره حساب</label>
-                                    <input type="text" id="accountNumber"
+                                    <label htmlFor="accountNumber1">شماره حساب</label>
+                                    <input type="text" id="accountNumber1"
                                         className="inputTextFB ltrFB" />
                                 </div>
-                                <div className="errorContainerFB" ref={accountNumberErrorRef}></div>
+                                <div className="errorContainerFB" ref={accountNumber1ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="cardNumber">شماره کارت</label>
-                                    <input type="text" id="cardNumber" className="inputTextFB ltrFB" />
+                                    <label htmlFor="cardNumber1">شماره کارت</label>
+                                    <input type="text" id="cardNumber1" className="inputTextFB ltrFB" />
                                 </div>
-                                <div className="errorContainerFB" ref={cardNumberErrorRef}></div>
+                                <div className="errorContainerFB" ref={cardNumber1ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="shabaNumber1">شماره شبا</label>
+                                    <input type="text" id="shabaNumber1" className="inputShabaFB ltrFB" />
+                                    <span className="unitShabaFB"> IR </span>
+                                </div>
+                                <div className="errorContainerFB" ref={shabaNumber1ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="bank1">نام بانک </label>
+                                    <select name="" id="bank1" className="selectFB inputTextFB">
+                                        <option value=""> انتخاب </option>
+                                        <option value="">ملی</option>
+                                        <option value="">ملت</option>
+                                        <option value="">سپه</option>
+                                        <option value="">کشاورزی</option>
+                                        <option value="">صادرات</option>
+                                        <option value="">توسعه صادرات</option>
+                                        <option value="">رفاه</option>
+                                        <option value="">مسکن</option>
+                                        <option value="">تجارت</option>
+                                        <option value="">توسعه تعاون</option>
+                                        <option value="">پست بانک</option>
+                                        <option value="">صنعت و معدن</option>
+                                        <option value="">اقتصاد نوین</option>
+                                        <option value="">پارسیان</option>
+                                        <option value="">کارآفرین</option>
+                                        <option value="">سامان</option>
+                                        <option value="">سینا</option>
+                                        <option value="">خاورمیانه</option>
+                                        <option value="">شهر</option>
+                                        <option value="">دی</option>
+                                        <option value="">گردشگری</option>
+                                        <option value="">ایران زمین</option>
+                                        <option value="">سرمایه</option>
+                                        <option value="">پاسارگاد</option>
+
+                                    </select>
+                                </div>
+                                <div className="errorContainerFB" ref={bank1ErrorRef}> </div>
+                            </div>
+
+                            <div className="moreBank" ref={moreBank1} 
+                            onClick={()=>showSectionBank(sectionBank2, moreBank1) }> اضافه کردن اطلاعات بانکی بیشتر </div>
+                        </div>
+
+                        <div className="sectionFB --displayNone" ref={sectionBank2}>
+                            <div className="delMoreBank"> <span onClick={()=>showSectionBank(sectionBank2, moreBank1) }>حذف</span>  <b>2</b> </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="accountNumber2">شماره حساب</label>
+                                    <input type="text" id="accountNumber2"
+                                        className="inputTextFB ltrFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={accountNumber2ErrorRef}> </div>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="cardNumber2">شماره کارت</label>
+                                    <input type="text" id="cardNumber2" className="inputTextFB ltrFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={cardNumber2ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="shabaNumber2">شماره شبا</label>
+                                    <input type="text" id="shabaNumber2" className="inputShabaFB ltrFB" />
+                                    <span className="unitShabaFB"> IR </span>
+                                </div>
+                                <div className="errorContainerFB" ref={shabaNumber2ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="bank2">نام بانک </label>
+                                    <select name="" id="bank2" className="selectFB inputTextFB">
+                                        <option value=""> انتخاب </option>
+                                        <option value="">ملی</option>
+                                        <option value="">ملت</option>
+                                        <option value="">سپه</option>
+                                        <option value="">کشاورزی</option>
+                                        <option value="">صادرات</option>
+                                        <option value="">توسعه صادرات</option>
+                                        <option value="">رفاه</option>
+                                        <option value="">مسکن</option>
+                                        <option value="">تجارت</option>
+                                        <option value="">توسعه تعاون</option>
+                                        <option value="">پست بانک</option>
+                                        <option value="">صنعت و معدن</option>
+                                        <option value="">اقتصاد نوین</option>
+                                        <option value="">پارسیان</option>
+                                        <option value="">کارآفرین</option>
+                                        <option value="">سامان</option>
+                                        <option value="">سینا</option>
+                                        <option value="">خاورمیانه</option>
+                                        <option value="">شهر</option>
+                                        <option value="">دی</option>
+                                        <option value="">گردشگری</option>
+                                        <option value="">ایران زمین</option>
+                                        <option value="">سرمایه</option>
+                                        <option value="">پاسارگاد</option>
+
+                                    </select>
+                                </div>
+                                <div className="errorContainerFB" ref={bank2ErrorRef}> </div>
+                            </div>
+                            <div className="moreBank" ref={moreBank2} onClick={()=>showSectionBank(sectionBank3, moreBank2) }> اضافه کردن اطلاعات بانکی بیشتر </div>
+                        </div>
+
+                        <div className="sectionFB --displayNone" ref={sectionBank3}>
+                            <div className="delMoreBank"> <span onClick={()=>showSectionBank(sectionBank3, moreBank2) }>حذف</span> <i>3</i> </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="accountNumber3">شماره حساب</label>
+                                    <input type="text" id="accountNumber3"
+                                        className="inputTextFB ltrFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={accountNumber3ErrorRef}> </div>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="cardNumber3">شماره کارت</label>
+                                    <input type="text" id="cardNumber3" className="inputTextFB ltrFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={cardNumber3ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="shabaNumber3">شماره شبا</label>
+                                    <input type="text" id="shabaNumber3" className="inputShabaFB ltrFB" />
+                                    <span className="unitShabaFB"> IR </span>
+                                </div>
+                                <div className="errorContainerFB" ref={shabaNumber3ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="bank3">نام بانک </label>
+                                    <select name="" id="bank3" className="selectFB inputTextFB">
+                                        <option value=""> انتخاب </option>
+                                        <option value="">ملی</option>
+                                        <option value="">ملت</option>
+                                        <option value="">سپه</option>
+                                        <option value="">کشاورزی</option>
+                                        <option value="">صادرات</option>
+                                        <option value="">توسعه صادرات</option>
+                                        <option value="">رفاه</option>
+                                        <option value="">مسکن</option>
+                                        <option value="">تجارت</option>
+                                        <option value="">توسعه تعاون</option>
+                                        <option value="">پست بانک</option>
+                                        <option value="">صنعت و معدن</option>
+                                        <option value="">اقتصاد نوین</option>
+                                        <option value="">پارسیان</option>
+                                        <option value="">کارآفرین</option>
+                                        <option value="">سامان</option>
+                                        <option value="">سینا</option>
+                                        <option value="">خاورمیانه</option>
+                                        <option value="">شهر</option>
+                                        <option value="">دی</option>
+                                        <option value="">گردشگری</option>
+                                        <option value="">ایران زمین</option>
+                                        <option value="">سرمایه</option>
+                                        <option value="">پاسارگاد</option>
+
+                                    </select>
+                                </div>
+                                <div className="errorContainerFB" ref={bank3ErrorRef}> </div>
+                            </div>
+                            <div className="moreBank" ref={moreBank3} onClick={()=>showSectionBank(sectionBank4, moreBank3) }> اضافه کردن اطلاعات بانکی بیشتر </div>
+                        </div>
+
+                        <div className="sectionFB --displayNone" ref={sectionBank4}>
+                            <div className="delMoreBank"> <span onClick={()=>showSectionBank(sectionBank4, moreBank3) }>حذف</span> <b>4</b>  </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="accountNumber4">شماره حساب</label>
+                                    <input type="text" id="accountNumber4"
+                                        className="inputTextFB ltrFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={accountNumber4ErrorRef}> </div>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="cardNumber4">شماره کارت</label>
+                                    <input type="text" id="cardNumber4" className="inputTextFB ltrFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={cardNumber4ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="shabaNumber4">شماره شبا</label>
+                                    <input type="text" id="shabaNumber4" className="inputShabaFB ltrFB" />
+                                    <span className="unitShabaFB"> IR </span>
+                                </div>
+                                <div className="errorContainerFB" ref={shabaNumber4ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="bank4">نام بانک </label>
+                                    <select name="" id="bank4" className="selectFB inputTextFB">
+                                        <option value=""> انتخاب </option>
+                                        <option value="">ملی</option>
+                                        <option value="">ملت</option>
+                                        <option value="">سپه</option>
+                                        <option value="">کشاورزی</option>
+                                        <option value="">صادرات</option>
+                                        <option value="">توسعه صادرات</option>
+                                        <option value="">رفاه</option>
+                                        <option value="">مسکن</option>
+                                        <option value="">تجارت</option>
+                                        <option value="">توسعه تعاون</option>
+                                        <option value="">پست بانک</option>
+                                        <option value="">صنعت و معدن</option>
+                                        <option value="">اقتصاد نوین</option>
+                                        <option value="">پارسیان</option>
+                                        <option value="">کارآفرین</option>
+                                        <option value="">سامان</option>
+                                        <option value="">سینا</option>
+                                        <option value="">خاورمیانه</option>
+                                        <option value="">شهر</option>
+                                        <option value="">دی</option>
+                                        <option value="">گردشگری</option>
+                                        <option value="">ایران زمین</option>
+                                        <option value="">سرمایه</option>
+                                        <option value="">پاسارگاد</option>
+
+                                    </select>
+                                </div>
+                                <div className="errorContainerFB" ref={bank4ErrorRef}> </div>
+                            </div>
+                            <div className="moreBank" ref={moreBank4}
+                            onClick={()=>showSectionBank(sectionBank5, moreBank4) }
+                            > اضافه کردن اطلاعات بانکی بیشتر </div>
+                        </div>
+
+                        <div className="sectionFB --displayNone" ref={sectionBank5}>
+                            <div className="delMoreBank">
+                                <span onClick={()=>showSectionBank(sectionBank5, moreBank4) }>حذف</span>  <b>5</b>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="accountNumber5">شماره حساب</label>
+                                    <input type="text" id="accountNumber5"
+                                        className="inputTextFB ltrFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={accountNumber5ErrorRef}> </div>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="cardNumber5">شماره کارت</label>
+                                    <input type="text" id="cardNumber5" className="inputTextFB ltrFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={cardNumber5ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="shabaNumber5">شماره شبا</label>
+                                    <input type="text" id="shabaNumber5" className="inputShabaFB ltrFB" />
+                                    <span className="unitShabaFB"> IR </span>
+                                </div>
+                                <div className="errorContainerFB" ref={shabaNumber5ErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="bank5">نام بانک </label>
+                                    <select name="" id="bank5" className="selectFB inputTextFB">
+                                        <option value=""> انتخاب </option>
+                                        <option value="">ملی</option>
+                                        <option value="">ملت</option>
+                                        <option value="">سپه</option>
+                                        <option value="">کشاورزی</option>
+                                        <option value="">صادرات</option>
+                                        <option value="">توسعه صادرات</option>
+                                        <option value="">رفاه</option>
+                                        <option value="">مسکن</option>
+                                        <option value="">تجارت</option>
+                                        <option value="">توسعه تعاون</option>
+                                        <option value="">پست بانک</option>
+                                        <option value="">صنعت و معدن</option>
+                                        <option value="">اقتصاد نوین</option>
+                                        <option value="">پارسیان</option>
+                                        <option value="">کارآفرین</option>
+                                        <option value="">سامان</option>
+                                        <option value="">سینا</option>
+                                        <option value="">خاورمیانه</option>
+                                        <option value="">شهر</option>
+                                        <option value="">دی</option>
+                                        <option value="">گردشگری</option>
+                                        <option value="">ایران زمین</option>
+                                        <option value="">سرمایه</option>
+                                        <option value="">پاسارگاد</option>
+
+                                    </select>
+                                </div>
+                                <div className="errorContainerFB" ref={bank5ErrorRef}> </div>
                             </div>
                         </div>
+
+
                         <div className="sectionFB divBtnsFB">
 
                             <Button
