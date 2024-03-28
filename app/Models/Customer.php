@@ -25,7 +25,7 @@ class Customer extends Model
 
     public function customerTypes():BelongsToMany
     {
-        return $this->belongsToMany(CustomerType::class, 'customer_type_selected');
+        return $this->belongsToMany(CustomerType::class, 'customer_type_selecteds');
     }
 
 }
