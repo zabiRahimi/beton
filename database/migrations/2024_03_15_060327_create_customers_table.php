@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('lastName')->index();
+            $table->string('father')->nullable();
             $table->string('nationalCode')->nullable()->index()->unique()->comment('کد ملی');
             $table->date('dateOfBirth')->nullable();
             $table->string('mobile')->nullable()->index()->unique();

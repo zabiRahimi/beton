@@ -30,6 +30,12 @@ class CustomerController extends Controller
     // StoreCustomerRequest $request
     public function store( StoreCustomerRequest $request)
     {
+        // $customer = new Customer;
+        // $customer->fill($request->validated());
+        // $customer->save();
+    
+        // $customer->customerTypes()->sync($request->validated()['types']);
+
         return response()->json(['zabi' => 'ok'], 200);
     }
 

@@ -20,12 +20,16 @@ const AddCustomer = () => {
         optionYears,
     } = DataZabi();
 
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
     const containerShowGeRef = useRef(null);
 
     const nameErrorRef = useRef(null);
+    const lastNameErrorRef = useRef(null);
+    const fatherErrorRef = useRef(null);
     const typeErrorRef = useRef(null);
     const nationalCodeErrorRef = useRef(null);
     const mobileErrorRef = useRef(null);
@@ -73,6 +77,8 @@ const AddCustomer = () => {
     const lableCustomerType = useRef(null);
     const divItemCustomerType = useRef(null);
     const errorRCTYitem = useRef(null);
+    const [refs, setRefs] = useState({});
+
 
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
@@ -83,7 +89,32 @@ const AddCustomer = () => {
     const [customerTypes, setCustomerTypes] = useState(null);
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
 
-    const [refs, setRefs] = useState({});
+
+    /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
+    const [editCustomer, setEditCustomer] = useState(false);
+
+    const [day, setDay] = useState();
+    const [month, setMonth] = useState();
+    const [year, setYear] = useState();
+
+    const [input, setInput] = useState({
+        name: '',
+        lastName: '',
+        father: '',
+        nationalCode: '',
+        dateOfBirth: '',
+        mobile: '',
+        telephone: '',
+        email: '',
+        postalCode: '',
+        address: '',
+        types: [],
+    });
+   
+
+    useEffect(() => {
+        getCustomerType()
+    }, []);
 
     useEffect(() => {
         if (customerTypes) {
@@ -95,19 +126,6 @@ const AddCustomer = () => {
         }
 
     }, [customerTypes]);
-
-    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
-    const [editCustomer, setEditCustomer] = useState(false);
-
-    const [day, setDay] = useState();
-    const [month, setMonth] = useState();
-    const [year, setYear] = useState();
-
-    useEffect(() => {
-        getCustomerType()
-    }, [])
 
     const addCustomer = () => {
 
@@ -184,7 +202,10 @@ const AddCustomer = () => {
         let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         if (val) {
             setCustomerTypeSelected(old => [...old, { id, type }]);
-
+            setInput(prevState => ({
+                ...prevState,
+                types: [...prevState.types, id]
+            }));
             const typesString = customerTypeSelected.map((item) => item.type).join(' , ');
             lableCustomerType.current.textContent = typesString ? typesString + ',' + type : type;
 
@@ -192,6 +213,10 @@ const AddCustomer = () => {
         } else {
             const updated = customerTypeSelected.filter(item => item.id !== id);
             setCustomerTypeSelected(updated);
+            setInput(prevState => ({
+                ...prevState,
+                types: prevState.types.filter(typeId  => typeId  !== id)
+            }));
             const typesString = updated.map((item) => item.type).join(' , ');
 
             lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
@@ -201,9 +226,13 @@ const AddCustomer = () => {
     const delCustomerTypeSelected = (id) => {
         const updated = customerTypeSelected.filter(item => item.id !== id);
         setCustomerTypeSelected(updated);
+        setInput(prevState => ({
+            ...prevState,
+            types: prevState.types.filter(typeId  => typeId  !== id)
+        }));
         let ref = refs[id]
         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-
+        
         const typesString = updated.map((item) => item.type).join(' , ');
 
         lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
@@ -256,6 +285,11 @@ const AddCustomer = () => {
         refBtn.current.classList.toggle('--displayNone');
     }
 
+    const handleSaveValInput = (e, input) => {
+        let { value } = e.target;
+        setInput(prev => ({ ...prev, [input]: value }));
+    }
+
     // const delMoreBank =(ref, refBtn)=>{
     //     ref.current.classList.toggle('--hidden');
     //     refBtn.current.classList.toggle('--hidden');
@@ -265,7 +299,7 @@ const AddCustomer = () => {
         e.preventDefault();
         axios.post(
             '/api/v1/addCustomer',
-            // { ...input },
+            { ...input },
             {
                 headers:
                 {
@@ -300,6 +334,10 @@ const AddCustomer = () => {
             // })
         })
             .catch(
+                error =>{
+                    console.log('naiiiii');
+                    console.log(error.response.data);
+                }
             // error => {
             //     notify.current.innerHTML = ''
             //     if (error.response.status == 422) {
@@ -360,11 +398,40 @@ const AddCustomer = () => {
                                         type="text"
                                         className="inputTextFB"
                                         id="name"
+                                        onChange={e => handleSaveValInput(e, 'name')}
                                         autoFocus
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div className="errorContainerFB" ref={nameErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="lastName">نام خانوادگی</label>
+                                    <input
+                                        type="text"
+                                        className="inputTextFB"
+                                        id="lastName"
+                                        onChange={e => handleSaveValInput(e, '  lastName')}
+                                    />
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div className="errorContainerFB" ref={lastNameErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="father">نام پدر</label>
+                                    <input
+                                        type="text"
+                                        className="inputTextFB"
+                                        id="father"
+                                        onChange={e => handleSaveValInput(e, 'father')}
+                                    />
+                                    
+                                </div>
+                                <div className="errorContainerFB" ref={fatherErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -404,7 +471,9 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="nationalCode">کد ملی </label>
-                                    <input type="text" id="nationalCode" className="inputTextFB ltrFB" />
+                                    <input type="text" id="nationalCode" className="inputTextFB ltrFB"
+                                    onChange={e => handleSaveValInput(e, 'nationalCode')}
+                                     />
                                 </div>
                                 <div className="errorContainerFB" ref={nationalCodeErrorRef}> </div>
                             </div>
@@ -465,7 +534,8 @@ const AddCustomer = () => {
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="mobile">موبایل</label>
-                                        <input type="text" id="mobile" className="inputTextFB ltrFB" />
+                                        <input type="text" id="mobile" className="inputTextFB ltrFB" 
+                                        onChange={e => handleSaveValInput(e, 'mobile')}/>
                                     </div>
                                     <div className="errorContainerFB" ref={mobileErrorRef}> </div>
 
@@ -473,8 +543,9 @@ const AddCustomer = () => {
 
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label htmlFor="tel">تلفن </label>
-                                        <input type="text" id="tel" className="inputTextFB ltrFB" />
+                                        <label htmlFor="telephone">تلفن </label>
+                                        <input type="text" id="telephone" className="inputTextFB ltrFB"
+                                        onChange={e => handleSaveValInput(e, 'telephone')} />
                                     </div>
                                     <div className="errorContainerFB" ref={telephoneErrorRef}> </div>
                                 </div>
@@ -483,14 +554,16 @@ const AddCustomer = () => {
                                     <div className="divInputFB">
                                         <label htmlFor="postalCode">کد پستی</label>
                                         <input type="text"
-                                            id="postalCode" className="inputTextFB ltrFB" />
+                                            id="postalCode" className="inputTextFB ltrFB"
+                                            onChange={e => handleSaveValInput(e, 'postalCode')} />
                                     </div>
                                     <div className="errorContainerFB" ref={postalCodeErrorRef}> </div>
                                 </div>
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="email">ایمیل</label>
-                                        <input type="text" id="email" className="inputTextFB ltrFB" />
+                                        <input type="text" id="email" className="inputTextFB ltrFB"
+                                         onChange={e => handleSaveValInput(e, 'email')} />
                                     </div>
                                     <div className="errorContainerFB" ref={emailErrorRef}> </div>
                                 </div>
@@ -500,7 +573,8 @@ const AddCustomer = () => {
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="address">آدرس</label>
-                                        <textarea id="address" className="textareaAddressACu" />
+                                        <textarea id="address" className="textareaAddressACu"
+                                         onChange={e => handleSaveValInput(e, 'address')} />
                                     </div>
                                     <div className="errorContainerFB" ref={addressErrorRef}> </div>
                                 </div>
@@ -568,12 +642,12 @@ const AddCustomer = () => {
                                 <div className="errorContainerFB" ref={bank1ErrorRef}> </div>
                             </div>
 
-                            <div className="moreBank" ref={moreBank1} 
-                            onClick={()=>showSectionBank(sectionBank2, moreBank1) }> اضافه کردن اطلاعات بانکی بیشتر </div>
+                            <div className="moreBank" ref={moreBank1}
+                                onClick={() => showSectionBank(sectionBank2, moreBank1)}> اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
 
                         <div className="sectionFB --displayNone" ref={sectionBank2}>
-                            <div className="delMoreBank"> <span onClick={()=>showSectionBank(sectionBank2, moreBank1) }>حذف</span>  <b>2</b> </div>
+                            <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank2, moreBank1)}>حذف</span>  <b>2</b> </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="accountNumber2">شماره حساب</label>
@@ -633,11 +707,11 @@ const AddCustomer = () => {
                                 </div>
                                 <div className="errorContainerFB" ref={bank2ErrorRef}> </div>
                             </div>
-                            <div className="moreBank" ref={moreBank2} onClick={()=>showSectionBank(sectionBank3, moreBank2) }> اضافه کردن اطلاعات بانکی بیشتر </div>
+                            <div className="moreBank" ref={moreBank2} onClick={() => showSectionBank(sectionBank3, moreBank2)}> اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
 
                         <div className="sectionFB --displayNone" ref={sectionBank3}>
-                            <div className="delMoreBank"> <span onClick={()=>showSectionBank(sectionBank3, moreBank2) }>حذف</span> <i>3</i> </div>
+                            <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank3, moreBank2)}>حذف</span> <i>3</i> </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="accountNumber3">شماره حساب</label>
@@ -697,11 +771,11 @@ const AddCustomer = () => {
                                 </div>
                                 <div className="errorContainerFB" ref={bank3ErrorRef}> </div>
                             </div>
-                            <div className="moreBank" ref={moreBank3} onClick={()=>showSectionBank(sectionBank4, moreBank3) }> اضافه کردن اطلاعات بانکی بیشتر </div>
+                            <div className="moreBank" ref={moreBank3} onClick={() => showSectionBank(sectionBank4, moreBank3)}> اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
 
                         <div className="sectionFB --displayNone" ref={sectionBank4}>
-                            <div className="delMoreBank"> <span onClick={()=>showSectionBank(sectionBank4, moreBank3) }>حذف</span> <b>4</b>  </div>
+                            <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank4, moreBank3)}>حذف</span> <b>4</b>  </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="accountNumber4">شماره حساب</label>
@@ -762,13 +836,13 @@ const AddCustomer = () => {
                                 <div className="errorContainerFB" ref={bank4ErrorRef}> </div>
                             </div>
                             <div className="moreBank" ref={moreBank4}
-                            onClick={()=>showSectionBank(sectionBank5, moreBank4) }
+                                onClick={() => showSectionBank(sectionBank5, moreBank4)}
                             > اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
 
                         <div className="sectionFB --displayNone" ref={sectionBank5}>
                             <div className="delMoreBank">
-                                <span onClick={()=>showSectionBank(sectionBank5, moreBank4) }>حذف</span>  <b>5</b>
+                                <span onClick={() => showSectionBank(sectionBank5, moreBank4)}>حذف</span>  <b>5</b>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
