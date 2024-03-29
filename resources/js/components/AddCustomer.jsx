@@ -391,38 +391,77 @@ const AddCustomer = () => {
         })
             .catch(
                 error => {
-                    console.log('naiiiii');
-                    console.log(error)
-                    // if (error.response.status == 422) {
-                    // console.log(error.response.data);}
+                    // console.log('naiiiii');
+                    // console.log(error)
+                    if (error.response.status == 422) {
+                        // Object.entries(error.response.data.errors).map(([key, val]) => (
+                        //     switch (key) {
+                        //         case 'jkj':
+
+                        //             break;
+
+                        //         default:
+                        //             break;
+                        //     }
+                        // ))
+
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            console.log(key);
+                            //   `${key}`.innerText= val
+                            // switch (key) {
+                            //     case "someKey":
+                            //         // انجام عملیات مربوط به someKey
+                            //         break;
+                            //     case "anotherKey":
+                            //         // انجام عملیات مربوط به anotherKey
+                            //         break;
+                            //     default:
+                            //         // انجام عملیات پیش‌فرض
+                            //         break;
+                            // }
+                            // const myElement = ;
+                            document.getElementById(key).classList.add('borderRedFB');
+
+                            document.getElementById(key+'Error').innerHTML = val;
+                        });
+
+
+
+                    }
+                    //   console.log(ve),
+                    //     .current.innerText=val
+                    //     ))
+                    //    console.log(name);
+
+                    // error => {
+                    //     notify.current.innerHTML = ''
+                    //     if (error.response.status == 422) {
+                    //         const elementError = Object.keys(error.response.data.errors)[0];
+                    //         let divError;
+                    //         switch (elementError) {
+                    //             case 'book':
+                    //                 divError = bookError.current
+                    //                 break;
+                    //             case 'link':
+                    //                 divError = linkError.current
+                    //         }
+                    //         divError.innerHTML = `<div class="error">${error.response.data.errors[elementError][0]}</div>`
+                    //         divError.scrollIntoViewIfNeeded({ behavior: "smooth" });
+                    //     }
+                    //     else {
+                    //         notify.current.innerHTML = `<div class='error'>'خطایی رخ داده است، مطمعن شوید دیتابیس فعال است.'</div>`
+                    //         notify.current.scrollIntoViewIfNeeded({ behavior: "smooth" });
+                    //     }
+                    // }
                 }
-                // error => {
-                //     notify.current.innerHTML = ''
-                //     if (error.response.status == 422) {
-                //         const elementError = Object.keys(error.response.data.errors)[0];
-                //         let divError;
-                //         switch (elementError) {
-                //             case 'book':
-                //                 divError = bookError.current
-                //                 break;
-                //             case 'link':
-                //                 divError = linkError.current
-                //         }
-                //         divError.innerHTML = `<div class="error">${error.response.data.errors[elementError][0]}</div>`
-                //         divError.scrollIntoViewIfNeeded({ behavior: "smooth" });
-                //     }
-                //     else {
-                //         notify.current.innerHTML = `<div class='error'>'خطایی رخ داده است، مطمعن شوید دیتابیس فعال است.'</div>`
-                //         notify.current.scrollIntoViewIfNeeded({ behavior: "smooth" });
-                //     }
-                // }
             )
     }
 
-
+    
+  
     return (
         <>
-
+            
             <Title title="تعریف مشتری" />
             <div className="headPageGe">
                 <button
@@ -462,7 +501,7 @@ const AddCustomer = () => {
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB" ref={nameErrorRef}> </div>
+                                <div className="errorContainerFB" id="nameError" ref={nameErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -476,7 +515,7 @@ const AddCustomer = () => {
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB" ref={lastNameErrorRef}> </div>
+                                <div className="errorContainerFB" id="lastNameError" ref={lastNameErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -490,13 +529,14 @@ const AddCustomer = () => {
                                     />
 
                                 </div>
-                                <div className="errorContainerFB" ref={fatherErrorRef}> </div>
+                                <div className="errorContainerFB" id="fatherError" ref={fatherErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="type" >نوع مشتری </label>
+                                    <label  >نوع مشتری </label>
                                     <div className="selectFB containerCustomerTypeFB"
+                                    id="types"
                                         onClick={showDivCustomerType}
                                     >
                                         <span className="lableCustomerTypeFB" ref={lableCustomerType}> انتخاب </span>
@@ -522,7 +562,7 @@ const AddCustomer = () => {
                                     <i className="icofont-ui-rating starFB" />
 
                                 </div>
-                                <div className="errorContainerFB" ref={typeErrorRef}> </div>
+                                <div className="errorContainerFB" id="typesError" ref={typeErrorRef}> </div>
                             </div>
                         </div>
 
@@ -534,7 +574,7 @@ const AddCustomer = () => {
                                         onChange={e => handleSaveValInput(e, 'nationalCode')}
                                     />
                                 </div>
-                                <div className="errorContainerFB" ref={nationalCodeErrorRef}> </div>
+                                <div className="errorContainerFB" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -673,13 +713,13 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bank1">نام بانک </label>
-                                    <select name="" id="bank1" className="selectFB inputTextFB"
+                                    <select name="" id="bankInfo.0.bank" className="selectFB inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}>
                                         <option value=""> انتخاب </option>
                                         {optionBank}
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" ref={bank1ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.0.bankError" ref={bank1ErrorRef}> </div>
                             </div>
 
                             <div className="moreBank" ref={moreBank1}

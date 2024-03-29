@@ -10,6 +10,10 @@
 
 }
 
+.borderRedFB{
+    border-color: #ff0000 !important;
+}
+
 .titleFormFB {
     width: 100%;
     text-align: center;
