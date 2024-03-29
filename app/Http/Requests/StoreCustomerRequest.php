@@ -34,17 +34,19 @@ class StoreCustomerRequest extends FormRequest
             'email' => 'nullable|bail|email:rfc,dns|unique:customers',
             'postalCode' => 'nullable|bail|numeric|digits:10',
             'address' => 'nullable|string',
-            'bank_details' => 'nullable|array',
-            'bank_details.*' => 'nullable|array',
+            'bankInfo' => 'nullable|array',
+            'bankInfo.*' => 'nullable|array',
+            // 'bankInfo.*.bank' => 'required|string',
             // 'bank_details.*.bank' => 'required|string',
             // 'bank_details.*.account' => 'required_without_all:bank_details.*.card,bank_details.*.shaba',
             // 'bank_details.*.card' => 'required_without_all:bank_details.*.account,bank_details.*.shaba',
             // 'bank_details.*.shaba' => 'required_without_all:bank_details.*.account,bank_details.*.card',
 
-            'bank_details.*.bank' => 'required_with:bank_details.*.account,bank_details.*.card,bank_details.*.shaba|string',
-            'bank_details.*.account' => 'nullable|numeric',
-            'bank_details.*.card' => 'nullable|numeric',
-            'bank_details.*.shaba' => 'nullable|numeric',
+            'bankInfo.*.bank' => 'nullable|required_with:bankInfo.*.account,bankInfo.*.card,bankInfo.*.shaba|string',
+            
+            'bankInfo.*.account' => 'nullable|numeric',
+            'bankInfo.*.card' => 'nullable|numeric',
+            'bankInfo.*.shaba' => 'nullable|numeric',
         ];
     }
 }

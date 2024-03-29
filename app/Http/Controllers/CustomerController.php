@@ -30,69 +30,43 @@ class CustomerController extends Controller
      * Store a newly created resource in storage.
      */
     // StoreCustomerRequest $request
-    public function store( StoreCustomerRequest $request)
+    public function store(StoreCustomerRequest $request)
     {
-        DB::transaction(function () use ($request) {
+
+        try {
+            DB::beginTransaction();
+
             $customer = new Customer;
             $customer->fill($request->validated());
             $customer->save();
-        
+
             $customer->customerTypes()->sync($request->validated()['types']);
-        },3);
+            $zabi = $request->validated()['bankInfo'];
 
-        return response()->json(['zabi' => 'ok'], 200);
+            try {
 
+                if (isset($request->validated()['bankInfo']) && count($request->validated()['bankInfo']) > 0) {
+                    foreach ($request->validated()['bankInfo'] as $bankDetailData) {
 
-try {
-    DB::beginTransaction();
+                        $bankDetail = new BankInfo;
+                        $bankDetail->fill($bankDetailData);
+                        $bankDetail->customer_id = $customer->id;
+                        $bankDetail->save();
+                    }
+                }
+            } catch (\Exception $e) {
 
-    $customer = new Customer;
-    $customer->fill($request->validated());
-    $customer->save();
-
-    $customer->customerTypes()->sync($request->validated()['types']);
-
-
-    try {
-        
-    if (isset($request->validated()['bank_details']) && count($request->validated()['bank_details']) > 0) {
-        foreach ($request->validated()['bank_details'] as $bankDetailData) {
-            // Validate the bank details
-            $validator = Validator::make($bankDetailData, [
-                'bank_name' => 'required',
-                'account_number' => 'required_without_all:card_number,iban',
-                'card_number' => 'required_without_all:account_number,iban',
-                'iban' => 'required_without_all:account_number,card_number',
-            ]);
-
-            if ($validator->fails()) {
-                // Validation failed, throw an exception
-                throw new \Exception('Bank details validation failed');
+                // \Log::error($e->getMessage());
             }
 
-            // Create and insert the bank detail
-            $bankDetail = new BankInfo;
-            $bankDetail->fill($bankDetailData);
-            $bankDetail->customer_id = $customer->id;
-            $bankDetail->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            // \Log::error($e->getMessage());
+            throw $e;
         }
-    }
-    } catch (\Exception $e) {
-        
-        // \Log::error($e->getMessage());
-    }
 
-    // Commit the transaction
-    DB::commit();
-} catch (\Exception $e) {
-    // An exception occurred, rollback the transaction
-    DB::rollback();
-    // Log the exception
-    // \Log::error($e->getMessage());
-    // Rethrow the exception
-    throw $e;
-}
-
+        return response()->json(200);
     }
 
     /**

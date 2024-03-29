@@ -6,10 +6,17 @@ import "../../css/general.css";
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
 import DataZabi from "./hooks/DateZabi";
+import useBank from "./hooks/useBank";
 import { createRef, useEffect, useRef, useState } from "react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 const AddCustomer = () => {
+
+    const MySwal = withReactContent(Swal);
+
     const {
         years,
         months,
@@ -20,12 +27,15 @@ const AddCustomer = () => {
         optionYears,
     } = DataZabi();
 
+    const { optionBank } = useBank();
+
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
     const containerShowGeRef = useRef(null);
+    const form = useRef(null);
 
     const nameErrorRef = useRef(null);
     const lastNameErrorRef = useRef(null);
@@ -114,7 +124,7 @@ const AddCustomer = () => {
                 bank: '',
                 account: '',
                 card: '',
-                shaba:''
+                shaba: ''
             }
         ]
     });
@@ -292,23 +302,23 @@ const AddCustomer = () => {
     const showSectionBank = (ref, refBtn, state, index) => {
         ref.current.classList.toggle('--displayNone');
         refBtn.current.classList.toggle('--displayNone');
-        if(state){
+        if (state) {
             setInput(prevInput => {
-                let newBankInfo = [...prevInput.bankInfo]; 
+                let newBankInfo = [...prevInput.bankInfo];
                 // newBankInfo.splice(index, 0, {bank: '', account: '', card: '', shaba:''}); 
-                newBankInfo[index] = {bank: '', account: '', card: '', shaba:''};
-                return {...prevInput, bankInfo: newBankInfo};
-              });
-              
-        }else{
+                newBankInfo[index] = { bank: '', account: '', card: '', shaba: '' };
+                return { ...prevInput, bankInfo: newBankInfo };
+            });
+
+        } else {
             setInput(prevInput => {
-                let newBankInfo = [...prevInput.bankInfo]; 
+                let newBankInfo = [...prevInput.bankInfo];
                 newBankInfo[index] = {}; // یا newBankInfo[index] = {};
-                return {...prevInput, bankInfo: newBankInfo}; 
+                return { ...prevInput, bankInfo: newBankInfo };
                 // let newBankInfo = prevInput.bankInfo.filter((item, i) => i !== index); 
                 // return {...prevInput, bankInfo: newBankInfo}; 
-              });
-              
+            });
+
         }
     }
 
@@ -317,21 +327,17 @@ const AddCustomer = () => {
         setInput(prev => ({ ...prev, [input]: value }));
     }
 
-    const handleSaveBalInputBank =(e, index, input)=>{
+    const handleSaveBalInputBank = (e, index, input) => {
         let { value } = e.target;
         setInput(prevInput => {
-            let newBankInfo = [...prevInput.bankInfo]; 
-            if (newBankInfo[index]) { // اگر آبجکت با ایندکس 3 وجود دارد
-              newBankInfo[index] = {...newBankInfo[index], [input]: value}; // مقداردهی کلید account
+            let newBankInfo = [...prevInput.bankInfo];
+            if (newBankInfo[index]) {
+                newBankInfo[index] = { ...newBankInfo[index], [input]: value };
             }
-            return {...prevInput, bankInfo: newBankInfo}; 
-          });
+            return { ...prevInput, bankInfo: newBankInfo };
+        });
     }
 
-    // const delMoreBank =(ref, refBtn)=>{
-    //     ref.current.classList.toggle('--hidden');
-    //     refBtn.current.classList.toggle('--hidden');
-    // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -349,9 +355,20 @@ const AddCustomer = () => {
 
             // const id = response.data.zabi;
             const id = response;
-            console.log(response);
 
-            // form.current.reset();
+
+            form.current.reset();
+
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                }
+            })
 
             // setIndex(prev => ({ ...prev, book_id: id, book: input.book }));
 
@@ -375,7 +392,9 @@ const AddCustomer = () => {
             .catch(
                 error => {
                     console.log('naiiiii');
-                    console.log(error.response.data);
+                    console.log(error)
+                    // if (error.response.status == 422) {
+                    // console.log(error.response.data);}
                 }
                 // error => {
                 //     notify.current.innerHTML = ''
@@ -403,6 +422,7 @@ const AddCustomer = () => {
 
     return (
         <>
+
             <Title title="تعریف مشتری" />
             <div className="headPageGe">
                 <button
@@ -425,7 +445,7 @@ const AddCustomer = () => {
             <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe containerAddCustomer">
-                    <form action="" className="formBeton">
+                    <form action="" className="formBeton" ref={form}>
                         <h5 className={`titleFormFB ${editCustomer ? '' : 'hideGe'}`}>ویرایش مشتری</h5>
 
                         <div className="sectionFB">
@@ -626,7 +646,7 @@ const AddCustomer = () => {
                                     <label htmlFor="account1">شماره حساب</label>
                                     <input type="text" id="account1"
                                         className="inputTextFB ltrFB"
-                                        onChange={e=>{handleSaveBalInputBank(e, 0, 'account')}} />
+                                        onChange={e => { handleSaveBalInputBank(e, 0, 'account') }} />
                                 </div>
                                 <div className="errorContainerFB" ref={account1ErrorRef}> </div>
                             </div>
@@ -634,8 +654,8 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="card1">شماره کارت</label>
                                     <input type="text" id="card1" className="inputTextFB ltrFB"
-                                    onChange={e=>{handleSaveBalInputBank(e, 0, 'card')}}
-                                     />
+                                        onChange={e => { handleSaveBalInputBank(e, 0, 'card') }}
+                                    />
                                 </div>
                                 <div className="errorContainerFB" ref={card1ErrorRef}> </div>
                             </div>
@@ -644,7 +664,7 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="shaba1">شماره شبا</label>
                                     <input type="text" id="shaba1" className="inputShabaFB ltrFB"
-                                    onChange={e=>{handleSaveBalInputBank(e, 0, 'shaba')}} />
+                                        onChange={e => { handleSaveBalInputBank(e, 0, 'shaba') }} />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
                                 <div className="errorContainerFB" ref={shaba1ErrorRef}> </div>
@@ -654,33 +674,9 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="bank1">نام بانک </label>
                                     <select name="" id="bank1" className="selectFB inputTextFB"
-                                    onChange={e=>{handleSaveBalInputBank(e, 0, 'bank')}}>
+                                        onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}>
                                         <option value=""> انتخاب </option>
-                                        <option value="ملی">ملی</option>
-                                        <option value="ملت">ملت</option>
-                                        <option value="سپه">سپه</option>
-                                        <option value="کشاورزی">کشاورزی</option>
-                                        <option value="">صادرات</option>
-                                        <option value="">توسعه صادرات</option>
-                                        <option value="">رفاه</option>
-                                        <option value="">مسکن</option>
-                                        <option value="">تجارت</option>
-                                        <option value="">توسعه تعاون</option>
-                                        <option value="">پست بانک</option>
-                                        <option value="">صنعت و معدن</option>
-                                        <option value="">اقتصاد نوین</option>
-                                        <option value="">پارسیان</option>
-                                        <option value="">کارآفرین</option>
-                                        <option value="">سامان</option>
-                                        <option value="">سینا</option>
-                                        <option value="">خاورمیانه</option>
-                                        <option value="">شهر</option>
-                                        <option value="">دی</option>
-                                        <option value="">گردشگری</option>
-                                        <option value="">ایران زمین</option>
-                                        <option value="">سرمایه</option>
-                                        <option value="">پاسارگاد</option>
-
+                                        {optionBank}
                                     </select>
                                 </div>
                                 <div className="errorContainerFB" ref={bank1ErrorRef}> </div>
@@ -696,14 +692,16 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="account2">شماره حساب</label>
                                     <input type="text" id="account2"
-                                        className="inputTextFB ltrFB" />
+                                        className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 1, 'account') }} />
                                 </div>
                                 <div className="errorContainerFB" ref={account2ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="card2">شماره کارت</label>
-                                    <input type="text" id="card2" className="inputTextFB ltrFB" />
+                                    <input type="text" id="card2" className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 1, 'card') }} />
                                 </div>
                                 <div className="errorContainerFB" ref={card2ErrorRef}> </div>
                             </div>
@@ -711,7 +709,8 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="shaba2">شماره شبا</label>
-                                    <input type="text" id="shaba2" className="inputShabaFB ltrFB" />
+                                    <input type="text" id="shaba2" className="inputShabaFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 1, 'shaba') }} />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
                                 <div className="errorContainerFB" ref={shaba2ErrorRef}> </div>
@@ -720,32 +719,10 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bank2">نام بانک </label>
-                                    <select name="" id="bank2" className="selectFB inputTextFB">
+                                    <select name="" id="bank2" className="selectFB inputTextFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 1, 'bank') }}>
                                         <option value=""> انتخاب </option>
-                                        <option value="">ملی</option>
-                                        <option value="">ملت</option>
-                                        <option value="">سپه</option>
-                                        <option value="">کشاورزی</option>
-                                        <option value="">صادرات</option>
-                                        <option value="">توسعه صادرات</option>
-                                        <option value="">رفاه</option>
-                                        <option value="">مسکن</option>
-                                        <option value="">تجارت</option>
-                                        <option value="">توسعه تعاون</option>
-                                        <option value="">پست بانک</option>
-                                        <option value="">صنعت و معدن</option>
-                                        <option value="">اقتصاد نوین</option>
-                                        <option value="">پارسیان</option>
-                                        <option value="">کارآفرین</option>
-                                        <option value="">سامان</option>
-                                        <option value="">سینا</option>
-                                        <option value="">خاورمیانه</option>
-                                        <option value="">شهر</option>
-                                        <option value="">دی</option>
-                                        <option value="">گردشگری</option>
-                                        <option value="">ایران زمین</option>
-                                        <option value="">سرمایه</option>
-                                        <option value="">پاسارگاد</option>
+                                        {optionBank}
 
                                     </select>
                                 </div>
@@ -760,14 +737,18 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="account3">شماره حساب</label>
                                     <input type="text" id="account3"
-                                        className="inputTextFB ltrFB" />
+                                        className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 2, 'account') }}
+                                    />
                                 </div>
                                 <div className="errorContainerFB" ref={account3ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="card3">شماره کارت</label>
-                                    <input type="text" id="card3" className="inputTextFB ltrFB" />
+                                    <input type="text" id="card3" className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 2, 'card') }}
+                                    />
                                 </div>
                                 <div className="errorContainerFB" ref={card3ErrorRef}> </div>
                             </div>
@@ -775,7 +756,9 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="shaba3">شماره شبا</label>
-                                    <input type="text" id="shaba3" className="inputShabaFB ltrFB" />
+                                    <input type="text" id="shaba3" className="inputShabaFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 2, 'shaba') }}
+                                    />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
                                 <div className="errorContainerFB" ref={shaba3ErrorRef}> </div>
@@ -784,33 +767,11 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bank3">نام بانک </label>
-                                    <select name="" id="bank3" className="selectFB inputTextFB">
+                                    <select name="" id="bank3" className="selectFB inputTextFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 2, 'bank') }}
+                                    >
                                         <option value=""> انتخاب </option>
-                                        <option value="">ملی</option>
-                                        <option value="">ملت</option>
-                                        <option value="">سپه</option>
-                                        <option value="">کشاورزی</option>
-                                        <option value="">صادرات</option>
-                                        <option value="">توسعه صادرات</option>
-                                        <option value="">رفاه</option>
-                                        <option value="">مسکن</option>
-                                        <option value="">تجارت</option>
-                                        <option value="">توسعه تعاون</option>
-                                        <option value="">پست بانک</option>
-                                        <option value="">صنعت و معدن</option>
-                                        <option value="">اقتصاد نوین</option>
-                                        <option value="">پارسیان</option>
-                                        <option value="">کارآفرین</option>
-                                        <option value="">سامان</option>
-                                        <option value="">سینا</option>
-                                        <option value="">خاورمیانه</option>
-                                        <option value="">شهر</option>
-                                        <option value="">دی</option>
-                                        <option value="">گردشگری</option>
-                                        <option value="">ایران زمین</option>
-                                        <option value="">سرمایه</option>
-                                        <option value="">پاسارگاد</option>
-
+                                        {optionBank}
                                     </select>
                                 </div>
                                 <div className="errorContainerFB" ref={bank3ErrorRef}> </div>
@@ -824,14 +785,18 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="account4">شماره حساب</label>
                                     <input type="text" id="account4"
-                                        className="inputTextFB ltrFB" />
+                                        className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 3, 'account') }}
+                                    />
                                 </div>
                                 <div className="errorContainerFB" ref={account4ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="card4">شماره کارت</label>
-                                    <input type="text" id="card4" className="inputTextFB ltrFB" />
+                                    <input type="text" id="card4" className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 3, 'card') }}
+                                    />
                                 </div>
                                 <div className="errorContainerFB" ref={card4ErrorRef}> </div>
                             </div>
@@ -839,7 +804,9 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="shaba4">شماره شبا</label>
-                                    <input type="text" id="shaba4" className="inputShabaFB ltrFB" />
+                                    <input type="text" id="shaba4" className="inputShabaFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 3, 'shaba') }}
+                                    />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
                                 <div className="errorContainerFB" ref={shaba4ErrorRef}> </div>
@@ -848,33 +815,11 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bank4">نام بانک </label>
-                                    <select name="" id="bank4" className="selectFB inputTextFB">
+                                    <select name="" id="bank4" className="selectFB inputTextFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 3, 'bank') }}
+                                    >
                                         <option value=""> انتخاب </option>
-                                        <option value="">ملی</option>
-                                        <option value="">ملت</option>
-                                        <option value="">سپه</option>
-                                        <option value="">کشاورزی</option>
-                                        <option value="">صادرات</option>
-                                        <option value="">توسعه صادرات</option>
-                                        <option value="">رفاه</option>
-                                        <option value="">مسکن</option>
-                                        <option value="">تجارت</option>
-                                        <option value="">توسعه تعاون</option>
-                                        <option value="">پست بانک</option>
-                                        <option value="">صنعت و معدن</option>
-                                        <option value="">اقتصاد نوین</option>
-                                        <option value="">پارسیان</option>
-                                        <option value="">کارآفرین</option>
-                                        <option value="">سامان</option>
-                                        <option value="">سینا</option>
-                                        <option value="">خاورمیانه</option>
-                                        <option value="">شهر</option>
-                                        <option value="">دی</option>
-                                        <option value="">گردشگری</option>
-                                        <option value="">ایران زمین</option>
-                                        <option value="">سرمایه</option>
-                                        <option value="">پاسارگاد</option>
-
+                                        {optionBank}
                                     </select>
                                 </div>
                                 <div className="errorContainerFB" ref={bank4ErrorRef}> </div>
@@ -892,14 +837,18 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="account5">شماره حساب</label>
                                     <input type="text" id="account5"
-                                        className="inputTextFB ltrFB" />
+                                        className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 4, 'account') }}
+                                    />
                                 </div>
                                 <div className="errorContainerFB" ref={account5ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="card5">شماره کارت</label>
-                                    <input type="text" id="card5" className="inputTextFB ltrFB" />
+                                    <input type="text" id="card5" className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 4, 'card') }}
+                                    />
                                 </div>
                                 <div className="errorContainerFB" ref={card5ErrorRef}> </div>
                             </div>
@@ -907,7 +856,9 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="shaba5">شماره شبا</label>
-                                    <input type="text" id="shaba5" className="inputShabaFB ltrFB" />
+                                    <input type="text" id="shaba5" className="inputShabaFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 4, 'shaba') }}
+                                    />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
                                 <div className="errorContainerFB" ref={shaba5ErrorRef}> </div>
@@ -916,33 +867,11 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bank5">نام بانک </label>
-                                    <select name="" id="bank5" className="selectFB inputTextFB">
+                                    <select name="" id="bank5" className="selectFB inputTextFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 4, 'bank') }}
+                                    >
                                         <option value=""> انتخاب </option>
-                                        <option value="">ملی</option>
-                                        <option value="">ملت</option>
-                                        <option value="">سپه</option>
-                                        <option value="">کشاورزی</option>
-                                        <option value="">صادرات</option>
-                                        <option value="">توسعه صادرات</option>
-                                        <option value="">رفاه</option>
-                                        <option value="">مسکن</option>
-                                        <option value="">تجارت</option>
-                                        <option value="">توسعه تعاون</option>
-                                        <option value="">پست بانک</option>
-                                        <option value="">صنعت و معدن</option>
-                                        <option value="">اقتصاد نوین</option>
-                                        <option value="">پارسیان</option>
-                                        <option value="">کارآفرین</option>
-                                        <option value="">سامان</option>
-                                        <option value="">سینا</option>
-                                        <option value="">خاورمیانه</option>
-                                        <option value="">شهر</option>
-                                        <option value="">دی</option>
-                                        <option value="">گردشگری</option>
-                                        <option value="">ایران زمین</option>
-                                        <option value="">سرمایه</option>
-                                        <option value="">پاسارگاد</option>
-
+                                        {optionBank}
                                     </select>
                                 </div>
                                 <div className="errorContainerFB" ref={bank5ErrorRef}> </div>
