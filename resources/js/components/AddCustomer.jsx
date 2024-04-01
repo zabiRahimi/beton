@@ -37,10 +37,12 @@ const AddCustomer = () => {
     const containerShowGeRef = useRef(null);
     const form = useRef(null);
 
+    const dateOfBirth = useRef(null);
+
     const nameErrorRef = useRef(null);
     const lastNameErrorRef = useRef(null);
     const fatherErrorRef = useRef(null);
-    const typeErrorRef = useRef(null);
+    const typesErrorRef = useRef(null);
     const nationalCodeErrorRef = useRef(null);
     const mobileErrorRef = useRef(null);
     const telephoneErrorRef = useRef(null);
@@ -129,7 +131,7 @@ const AddCustomer = () => {
         ]
     });
 
-    console.log(input.bankInfo);
+
 
     useEffect(() => {
         getCustomerType()
@@ -269,16 +271,22 @@ const AddCustomer = () => {
     const changeDay = (e) => {
         let day = e.target.value;
         setDay(day);
+        console.log(year);
+        console.log(month);
     }
 
     const changeMonth = (e) => {
         let month = e.target.value;
         setMonth(month);
+        console.log(year);
+        console.log(day);
     }
 
     const changeYear = (e) => {
         let year = e.target.value;
         setYear(year);
+        console.log(day);
+        console.log(month);
     }
 
     const deleteDate = () => {
@@ -324,6 +332,10 @@ const AddCustomer = () => {
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
+
+        (input == 'mobile' ||  input == 'telephone' )&& (value = addZeroFirstStr(value))
+        console.log(value);
+
         setInput(prev => ({ ...prev, [input]: value }));
     }
 
@@ -338,6 +350,16 @@ const AddCustomer = () => {
         });
     }
 
+    /**
+     * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
+     * @param {*} e 
+     * @param {رف مربوط به تگ نمایش خطا} refErr 
+     */
+    const delErr = (e, refErr, date = false) => {
+        e.target.classList.remove('borderRedFB');
+        refErr.current && (refErr.current.innerHTML = '')
+        date && dateOfBirth.current.classList.remove('borderRedFB');
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -391,47 +413,14 @@ const AddCustomer = () => {
         })
             .catch(
                 error => {
-                    // console.log('naiiiii');
-                    // console.log(error)
                     if (error.response.status == 422) {
-                        // Object.entries(error.response.data.errors).map(([key, val]) => (
-                        //     switch (key) {
-                        //         case 'jkj':
-
-                        //             break;
-
-                        //         default:
-                        //             break;
-                        //     }
-                        // ))
 
                         Object.entries(error.response.data.errors).map(([key, val]) => {
-                            console.log(key);
-                            //   `${key}`.innerText= val
-                            // switch (key) {
-                            //     case "someKey":
-                            //         // انجام عملیات مربوط به someKey
-                            //         break;
-                            //     case "anotherKey":
-                            //         // انجام عملیات مربوط به anotherKey
-                            //         break;
-                            //     default:
-                            //         // انجام عملیات پیش‌فرض
-                            //         break;
-                            // }
-                            // const myElement = ;
                             document.getElementById(key).classList.add('borderRedFB');
 
-                            document.getElementById(key+'Error').innerHTML = val;
+                            document.getElementById(key + 'Error').innerHTML = val;
                         });
-
-
-
                     }
-                    //   console.log(ve),
-                    //     .current.innerText=val
-                    //     ))
-                    //    console.log(name);
 
                     // error => {
                     //     notify.current.innerHTML = ''
@@ -457,11 +446,22 @@ const AddCustomer = () => {
             )
     }
 
-    
-  
+    const addZeroFirstStr = (val) => {
+        // let val = e.target.value;
+
+        isFirstDigitZero(val) || (val = 0 + val);
+        return val;
+
+    }
+
+    function isFirstDigitZero(str) {
+        // اگر اولین کاراکتر رشته صفر باشد، تابع true برمی‌گرداند
+        return str.charAt(0) === '0';
+    }
+
     return (
         <>
-            
+
             <Title title="تعریف مشتری" />
             <div className="headPageGe">
                 <button
@@ -497,6 +497,7 @@ const AddCustomer = () => {
                                         className="inputTextFB"
                                         id="name"
                                         onChange={e => handleSaveValInput(e, 'name')}
+                                        onFocus={e => delErr(e, nameErrorRef)}
                                         autoFocus
                                     />
                                     <i className="icofont-ui-rating starFB" />
@@ -512,6 +513,7 @@ const AddCustomer = () => {
                                         className="inputTextFB"
                                         id="lastName"
                                         onChange={e => handleSaveValInput(e, 'lastName')}
+                                        onFocus={e => delErr(e, lastNameErrorRef)}
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
@@ -526,6 +528,7 @@ const AddCustomer = () => {
                                         className="inputTextFB"
                                         id="father"
                                         onChange={e => handleSaveValInput(e, 'father')}
+                                        onFocus={e => delErr(e, fatherErrorRef)}
                                     />
 
                                 </div>
@@ -536,8 +539,8 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label  >نوع مشتری </label>
                                     <div className="selectFB containerCustomerTypeFB"
-                                    id="types"
-                                        onClick={showDivCustomerType}
+                                        id="types"
+                                        onClick={(e) => { showDivCustomerType(); delErr(e, typesErrorRef) }}
                                     >
                                         <span className="lableCustomerTypeFB" ref={lableCustomerType}> انتخاب </span>
                                         <i className="icofont-caret-down " />
@@ -562,7 +565,7 @@ const AddCustomer = () => {
                                     <i className="icofont-ui-rating starFB" />
 
                                 </div>
-                                <div className="errorContainerFB" id="typesError" ref={typeErrorRef}> </div>
+                                <div className="errorContainerFB" id="typesError" ref={typesErrorRef}> </div>
                             </div>
                         </div>
 
@@ -572,6 +575,7 @@ const AddCustomer = () => {
                                     <label htmlFor="nationalCode">کد ملی </label>
                                     <input type="text" id="nationalCode" className="inputTextFB ltrFB"
                                         onChange={e => handleSaveValInput(e, 'nationalCode')}
+                                        onFocus={(e) => delErr(e, nationalCodeErrorRef)}
                                     />
                                 </div>
                                 <div className="errorContainerFB" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
@@ -581,50 +585,67 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="day">تاریخ تولد </label>
                                     <div className="divDateBirth">
-                                        <div className="divUpDateAcus">
+                                        <div className="divUpDateAcus" id="dateOfBirth"
+                                            ref={dateOfBirth}
+                                        >
                                             <input
                                                 type="text"
                                                 className="inputTextDateACus inputDayTDACus"
                                                 placeholder="1"
                                                 id="day"
-                                                value={day}
+                                                value={day || ''}
                                                 onInput={(e) => changeDay(e)}
+                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, true)}
+
                                             />
                                             <span>/</span>
                                             <input
                                                 type="text"
                                                 className="inputTextDateACus inputMonthTDACus"
                                                 placeholder="1"
-                                                value={month}
+                                                value={month || ''}
                                                 onInput={(e) => changeMonth(e)}
+                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, true)}
+
                                             />
                                             <span>/</span>
                                             <input
                                                 type="text"
                                                 className="inputTextDateACus inputYearTDACus"
                                                 placeholder="1300"
-                                                value={year}
+                                                value={year || ''}
                                                 onInput={(e) => { changeYear(e) }}
+                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, true)}
+
                                             />
                                         </div>
 
-                                        <div className="divDownDateAcus">
-                                            <select name="" id="" value={day} onChange={(e) => changeDay(e)}>
+                                        <div className="divDownDateAcus" >
+                                            <select name="" id="" value={day} onChange={(e) => changeDay(e)}
+                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, true)}
+
+                                            >
                                                 <option value="">روز</option>
                                                 {optionDays}
                                             </select>
-                                            <select name="" id="" value={month} onChange={(e) => changeMonth(e)}>
+                                            <select name="" id="" value={month} onChange={(e) => changeMonth(e)}
+                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, true)}
+
+                                            >
                                                 <option value="">ماه</option>
                                                 {optionMonth}
                                             </select>
-                                            <select name="" id="" value={year} onChange={(e) => { changeYear(e) }}>
+                                            <select name="" id="" value={year} onChange={(e) => { changeYear(e) }}
+                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, true)}
+
+                                            >
                                                 <option value="">سال</option>
                                                 {optionYears}
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="errorContainerFB" ref={dateOfBirthErrorRef}> </div>
+                                <div className="errorContainerFB" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
                             </div>
                         </div>
 
@@ -634,9 +655,12 @@ const AddCustomer = () => {
                                     <div className="divInputFB">
                                         <label htmlFor="mobile">موبایل</label>
                                         <input type="text" id="mobile" className="inputTextFB ltrFB"
-                                            onChange={e => handleSaveValInput(e, 'mobile')} />
+                                            onBlur={e => handleSaveValInput(e, 'mobile')}
+                                            onFocus={(e) => delErr(e, mobileErrorRef)}
+                                            
+                                        />
                                     </div>
-                                    <div className="errorContainerFB" ref={mobileErrorRef}> </div>
+                                    <div className="errorContainerFB" id="mobileError" ref={mobileErrorRef}> </div>
 
                                 </div>
 
@@ -644,9 +668,12 @@ const AddCustomer = () => {
                                     <div className="divInputFB">
                                         <label htmlFor="telephone">تلفن </label>
                                         <input type="text" id="telephone" className="inputTextFB ltrFB"
-                                            onChange={e => handleSaveValInput(e, 'telephone')} />
+                                            onBlur={e => handleSaveValInput(e, 'telephone')}
+                                            onFocus={(e) => delErr(e, telephoneErrorRef)}
+
+                                        />
                                     </div>
-                                    <div className="errorContainerFB" ref={telephoneErrorRef}> </div>
+                                    <div className="errorContainerFB" id="telephoneError" ref={telephoneErrorRef}> </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -654,17 +681,23 @@ const AddCustomer = () => {
                                         <label htmlFor="postalCode">کد پستی</label>
                                         <input type="text"
                                             id="postalCode" className="inputTextFB ltrFB"
-                                            onChange={e => handleSaveValInput(e, 'postalCode')} />
+                                            onChange={e => handleSaveValInput(e, 'postalCode')}
+                                            onFocus={(e) => delErr(e, postalCodeErrorRef)}
+
+                                        />
                                     </div>
-                                    <div className="errorContainerFB" ref={postalCodeErrorRef}> </div>
+                                    <div className="errorContainerFB" id="postalCodeError" ref={postalCodeErrorRef}> </div>
                                 </div>
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="email">ایمیل</label>
                                         <input type="text" id="email" className="inputTextFB ltrFB"
-                                            onChange={e => handleSaveValInput(e, 'email')} />
+                                            onChange={e => handleSaveValInput(e, 'email')}
+                                            onFocus={(e) => delErr(e, emailErrorRef)}
+
+                                        />
                                     </div>
-                                    <div className="errorContainerFB" ref={emailErrorRef}> </div>
+                                    <div className="errorContainerFB" id="emailError" ref={emailErrorRef}> </div>
                                 </div>
                             </div>
 
@@ -673,9 +706,12 @@ const AddCustomer = () => {
                                     <div className="divInputFB">
                                         <label htmlFor="address">آدرس</label>
                                         <textarea id="address" className="textareaAddressACu"
-                                            onChange={e => handleSaveValInput(e, 'address')} />
+                                            onChange={e => handleSaveValInput(e, 'address')}
+                                            onFocus={(e) => delErr(e, addressErrorRef)}
+
+                                        />
                                     </div>
-                                    <div className="errorContainerFB" ref={addressErrorRef}> </div>
+                                    <div className="errorContainerFB" id="addressError" ref={addressErrorRef}> </div>
                                 </div>
                             </div>
                         </div>
@@ -683,38 +719,47 @@ const AddCustomer = () => {
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="account1">شماره حساب</label>
-                                    <input type="text" id="account1"
+                                    <label htmlFor="bankInfo.0.account">شماره حساب</label>
+                                    <input type="text" id="bankInfo.0.account"
                                         className="inputTextFB ltrFB"
-                                        onChange={e => { handleSaveBalInputBank(e, 0, 'account') }} />
-                                </div>
-                                <div className="errorContainerFB" ref={account1ErrorRef}> </div>
-                            </div>
-                            <div className="containerInputFB">
-                                <div className="divInputFB">
-                                    <label htmlFor="card1">شماره کارت</label>
-                                    <input type="text" id="card1" className="inputTextFB ltrFB"
-                                        onChange={e => { handleSaveBalInputBank(e, 0, 'card') }}
+                                        onChange={e => { handleSaveBalInputBank(e, 0, 'account') }}
+                                        onFocus={(e) => delErr(e, account1ErrorRef)}
+
                                     />
                                 </div>
-                                <div className="errorContainerFB" ref={card1ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.0.accountError" ref={account1ErrorRef}> </div>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="bankInfo.0.card">شماره کارت</label>
+                                    <input type="text" id="bankInfo.0.card" className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 0, 'card') }}
+                                        onFocus={(e) => delErr(e, card1ErrorRef)}
+
+                                    />
+                                </div>
+                                <div className="errorContainerFB" id="bankInfo.0.cardError" ref={card1ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="shaba1">شماره شبا</label>
-                                    <input type="text" id="shaba1" className="inputShabaFB ltrFB"
-                                        onChange={e => { handleSaveBalInputBank(e, 0, 'shaba') }} />
+                                    <label htmlFor="bankInfo.0.shaba">شماره شبا</label>
+                                    <input type="text" id="bankInfo.0.shaba" className="inputShabaFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 0, 'shaba') }}
+                                        onFocus={(e) => delErr(e, shaba1ErrorRef)}
+                                    />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" ref={shaba1ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.0.shabaError" ref={shaba1ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="bank1">نام بانک </label>
+                                    <label htmlFor="bankInfo.0.bank">نام بانک </label>
                                     <select name="" id="bankInfo.0.bank" className="selectFB inputTextFB"
-                                        onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}>
+                                        onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}
+                                        onClick={(e) => delErr(e, bank1ErrorRef)}
+                                    >
                                         <option value=""> انتخاب </option>
                                         {optionBank}
                                     </select>
@@ -730,43 +775,51 @@ const AddCustomer = () => {
                             <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank2, moreBank1, false, 1)}>حذف</span>  <b>2</b> </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="account2">شماره حساب</label>
-                                    <input type="text" id="account2"
+                                    <label htmlFor="bankInfo.1.account">شماره حساب</label>
+                                    <input type="text" id="bankInfo.1.account"
                                         className="inputTextFB ltrFB"
-                                        onChange={e => { handleSaveBalInputBank(e, 1, 'account') }} />
+                                        onChange={e => { handleSaveBalInputBank(e, 1, 'account') }}
+                                        onFocus={(e) => delErr(e, account2ErrorRef)}
+                                    />
                                 </div>
-                                <div className="errorContainerFB" ref={account2ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.1.accountError" ref={account2ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="card2">شماره کارت</label>
-                                    <input type="text" id="card2" className="inputTextFB ltrFB"
-                                        onChange={e => { handleSaveBalInputBank(e, 1, 'card') }} />
+                                    <label htmlFor="bankInfo.1.card">شماره کارت</label>
+                                    <input type="text" id="bankInfo.1.card" className="inputTextFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 1, 'card') }}
+                                        onFocus={(e) => delErr(e, card2ErrorRef)}
+                                    />
                                 </div>
-                                <div className="errorContainerFB" ref={card2ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.1.cardError" ref={card2ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="shaba2">شماره شبا</label>
-                                    <input type="text" id="shaba2" className="inputShabaFB ltrFB"
-                                        onChange={e => { handleSaveBalInputBank(e, 1, 'shaba') }} />
+                                    <label htmlFor="bankInfo.1.shaba">شماره شبا</label>
+                                    <input type="text" id="bankInfo.1.shaba" className="inputShabaFB ltrFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 1, 'shaba') }}
+                                        onFocus={(e) => delErr(e, shaba2ErrorRef)}
+                                    />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" ref={shaba2ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.1.shabaError" ref={shaba2ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="bank2">نام بانک </label>
-                                    <select name="" id="bank2" className="selectFB inputTextFB"
-                                        onChange={e => { handleSaveBalInputBank(e, 1, 'bank') }}>
+                                    <label htmlFor="bankInfo.1.bank">نام بانک </label>
+                                    <select name="" id="bankInfo.1.bank" className="selectFB inputTextFB"
+                                        onChange={e => { handleSaveBalInputBank(e, 1, 'bank') }}
+                                        onClick={(e) => delErr(e, bank2ErrorRef)}
+                                    >
                                         <option value=""> انتخاب </option>
                                         {optionBank}
 
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" ref={bank2ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.1.bankError" ref={bank2ErrorRef}> </div>
                             </div>
                             <div className="moreBank" ref={moreBank2} onClick={() => showSectionBank(sectionBank3, moreBank2, true, 2)}> اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
@@ -775,46 +828,54 @@ const AddCustomer = () => {
                             <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank3, moreBank2, false, 2)}>حذف</span> <i>3</i> </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="account3">شماره حساب</label>
-                                    <input type="text" id="account3"
+                                    <label htmlFor="bankInfo.2.account">شماره حساب</label>
+                                    <input type="text" id="bankInfo.2.account"
                                         className="inputTextFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'account') }}
+                                        onFocus={(e) => delErr(e, account3ErrorRef)}
+
                                     />
                                 </div>
-                                <div className="errorContainerFB" ref={account3ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.2.accountError" ref={account3ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="card3">شماره کارت</label>
-                                    <input type="text" id="card3" className="inputTextFB ltrFB"
+                                    <label htmlFor="bankInfo.2.card">شماره کارت</label>
+                                    <input type="text" id="bankInfo.2.card" className="inputTextFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'card') }}
+                                        onFocus={(e) => delErr(e, card3ErrorRef)}
+
                                     />
                                 </div>
-                                <div className="errorContainerFB" ref={card3ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.2.cardError" ref={card3ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="shaba3">شماره شبا</label>
-                                    <input type="text" id="shaba3" className="inputShabaFB ltrFB"
+                                    <label htmlFor="bankInfo.2.shaba">شماره شبا</label>
+                                    <input type="text" id="bankInfo.2.shaba" className="inputShabaFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'shaba') }}
+                                        onFocus={(e) => delErr(e, shaba3ErrorRef)}
+
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" ref={shaba3ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.2.shabaError" ref={shaba3ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="bank3">نام بانک </label>
-                                    <select name="" id="bank3" className="selectFB inputTextFB"
+                                    <label htmlFor="bankInfo.2.bank">نام بانک </label>
+                                    <select name="" id="bankInfo.2.bank" className="selectFB inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'bank') }}
+                                        onClick={(e) => delErr(e, bank3ErrorRef)}
+
                                     >
                                         <option value=""> انتخاب </option>
                                         {optionBank}
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" ref={bank3ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.2.bankError" ref={bank3ErrorRef}> </div>
                             </div>
                             <div className="moreBank" ref={moreBank3} onClick={() => showSectionBank(sectionBank4, moreBank3, true, 3)}> اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
@@ -823,46 +884,54 @@ const AddCustomer = () => {
                             <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank4, moreBank3, false, 3)}>حذف</span> <b>4</b>  </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="account4">شماره حساب</label>
-                                    <input type="text" id="account4"
+                                    <label htmlFor="bankInfo.3.account">شماره حساب</label>
+                                    <input type="text" id="bankInfo.3.account"
                                         className="inputTextFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'account') }}
+                                        onFocus={(e) => delErr(e, account4ErrorRef)}
+
                                     />
                                 </div>
-                                <div className="errorContainerFB" ref={account4ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.3.accountError" ref={account4ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="card4">شماره کارت</label>
-                                    <input type="text" id="card4" className="inputTextFB ltrFB"
+                                    <label htmlFor="bankInfo.3.card">شماره کارت</label>
+                                    <input type="text" id="bankInfo.3.card" className="inputTextFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'card') }}
+                                        onFocus={(e) => delErr(e, card4ErrorRef)}
+
                                     />
                                 </div>
-                                <div className="errorContainerFB" ref={card4ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.3.cardError" ref={card4ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="shaba4">شماره شبا</label>
-                                    <input type="text" id="shaba4" className="inputShabaFB ltrFB"
+                                    <label htmlFor="bankInfo.3.shaba">شماره شبا</label>
+                                    <input type="text" id="bankInfo.3.shaba" className="inputShabaFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'shaba') }}
+                                        onFocus={(e) => delErr(e, shaba4ErrorRef)}
+
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" ref={shaba4ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.3.shabaError" ref={shaba4ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="bank4">نام بانک </label>
-                                    <select name="" id="bank4" className="selectFB inputTextFB"
+                                    <label htmlFor="bankInfo.3.bank">نام بانک </label>
+                                    <select name="" id="bankInfo.3.bank" className="selectFB inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'bank') }}
+                                        onClick={(e) => delErr(e, moreBank4)}
+
                                     >
                                         <option value=""> انتخاب </option>
                                         {optionBank}
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" ref={bank4ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.3.bankError" ref={bank4ErrorRef}> </div>
                             </div>
                             <div className="moreBank" ref={moreBank4}
                                 onClick={() => showSectionBank(sectionBank5, moreBank4, true, 4)}
@@ -875,46 +944,54 @@ const AddCustomer = () => {
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="account5">شماره حساب</label>
-                                    <input type="text" id="account5"
+                                    <label htmlFor="bankInfo.4.account">شماره حساب</label>
+                                    <input type="text" id="bankInfo.4.account"
                                         className="inputTextFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'account') }}
+                                        onFocus={(e) => delErr(e, account5ErrorRef)}
+
                                     />
                                 </div>
-                                <div className="errorContainerFB" ref={account5ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.4.accountError" ref={account5ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="card5">شماره کارت</label>
-                                    <input type="text" id="card5" className="inputTextFB ltrFB"
+                                    <label htmlFor="bankInfo.4.card">شماره کارت</label>
+                                    <input type="text" id="bankInfo.4.card" className="inputTextFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'card') }}
+                                        onFocus={(e) => delErr(e, card5ErrorRef)}
+
                                     />
                                 </div>
-                                <div className="errorContainerFB" ref={card5ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.4.cardError" ref={card5ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="shaba5">شماره شبا</label>
-                                    <input type="text" id="shaba5" className="inputShabaFB ltrFB"
+                                    <label htmlFor="bankInfo.4.shaba">شماره شبا</label>
+                                    <input type="text" id="bankInfo.4.shaba" className="inputShabaFB ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'shaba') }}
+                                        onFocus={(e) => delErr(e, shaba5ErrorRef)}
+
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" ref={shaba5ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.4.shabaError" ref={shaba5ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="bank5">نام بانک </label>
-                                    <select name="" id="bank5" className="selectFB inputTextFB"
+                                    <label htmlFor="bankInfo.4.bank">نام بانک </label>
+                                    <select name="" id="bankInfo.4.bank" className="selectFB inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'bank') }}
+                                        onClick={(e) => delErr(e, bank5ErrorRef)}
+
                                     >
                                         <option value=""> انتخاب </option>
                                         {optionBank}
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" ref={bank5ErrorRef}> </div>
+                                <div className="errorContainerFB" id="bankInfo.4.bankError" ref={bank5ErrorRef}> </div>
                             </div>
                         </div>
 

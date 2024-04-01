@@ -49,4 +49,12 @@ class StoreCustomerRequest extends FormRequest
             'bankInfo.*.shaba' => 'nullable|numeric',
         ];
     }
+
+    public function messages(): array
+{
+    return [
+        'name.required' => 'نام مشتری را وارد کنید',
+        'lastName.required' => 'نام خانوادگی مشتری را وارد کنید',
+    ];
+}
 }
