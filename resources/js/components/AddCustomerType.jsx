@@ -18,7 +18,7 @@ const AddCustomerType = () => {
     const MySwal = withReactContent(Swal);
 
     const [customerTypes, setCustomerTypes] = useState(null);
-    console.log(customerTypes);
+    
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     const [type, setType] = useState();

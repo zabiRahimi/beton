@@ -40,7 +40,7 @@ return [
     'farsi'              => ':attribute صحیح و به فارسی وارد کنید',
     'boolean'              => 'The :attribute field must be true or false.',
     'confirmed'            => 'The :attribute confirmation does not match.',
-    'date'                 => 'The :attribute is not a valid date.',
+    'date'                 => ' :attribute را صحیح وارد کنید',
     'date_format'          => 'The :attribute does not match the format :format.',
     'different'            => 'The :attribute and :other must be different.',
     'digits'               => ':attribute باید :digits رقم باشد.',

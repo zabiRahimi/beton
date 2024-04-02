@@ -36,8 +36,11 @@ const AddCustomer = () => {
 
     const containerShowGeRef = useRef(null);
     const form = useRef(null);
-
+    const typesDiv = useRef(null);
     const dateOfBirth = useRef(null);
+    const daySelect = useRef(null);
+    const monthSelect = useRef(null);
+    const yearSelect = useRef(null);
 
     const nameErrorRef = useRef(null);
     const lastNameErrorRef = useRef(null);
@@ -105,9 +108,9 @@ const AddCustomer = () => {
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
     const [editCustomer, setEditCustomer] = useState(false);
 
-    const [day, setDay] = useState();
-    const [month, setMonth] = useState();
-    const [year, setYear] = useState();
+    const [day, setDay] = useState('');
+    const [month, setMonth] = useState('');
+    const [year, setYear] = useState('');
 
     const [input, setInput] = useState({
         name: '',
@@ -130,6 +133,7 @@ const AddCustomer = () => {
             }
         ]
     });
+
 
 
 
@@ -269,26 +273,62 @@ const AddCustomer = () => {
     }
 
     const changeDay = (e) => {
-        let day = e.target.value;
-        setDay(day);
-        console.log(year);
-        console.log(month);
+        let { value } = e.target;
+        value = value.toString();
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+            setDay(value);
+        }
+        let valDate = year + '/' + month + '/' + value;
+        setInput(prev => ({ ...prev, dateOfBirth: valDate }));
+
+        // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
+        daySelect.current.classList.remove('borderRedFB');
+
     }
 
     const changeMonth = (e) => {
-        let month = e.target.value;
-        setMonth(month);
-        console.log(year);
-        console.log(day);
+        let { value } = e.target;
+        value = value.toString();
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
+            setMonth(value);
+        }
+        let valDate = year + '/' + value + '/' + day;
+        setInput(prev => ({ ...prev, dateOfBirth: valDate }));
+        // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
+        monthSelect.current.classList.remove('borderRedFB');
     }
 
     const changeYear = (e) => {
-        let year = e.target.value;
-        setYear(year);
-        console.log(day);
-        console.log(month);
+        let { value } = e.target;
+
+        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+            setYear(value);
+        }
+        let valDate = value + '/' + month + '/' + day;
+        setInput(prev => ({ ...prev, dateOfBirth: valDate }));
+        // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
+        yearSelect.current.classList.remove('borderRedFB');
+
     }
 
+    // function isValidDate(dateString) {
+    //     // تعریف یک الگو برای تاریخ با فرمت yyyy/mm/dd
+    //     const regex = /^(13|14)\d\d\/(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])$/;
+
+    //     return regex.test(dateString);
+    //     // // بررسی مطابقت رشته ورودی با الگو
+    //     // if (regex.test(dateString)) {
+    //     //     return true;
+    //     // } else {
+    //     //     return false;
+    //     // }
+    // }
     const deleteDate = () => {
         setDay();
         setMonth();
@@ -333,8 +373,7 @@ const AddCustomer = () => {
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
 
-        (input == 'mobile' ||  input == 'telephone' )&& (value = addZeroFirstStr(value))
-        console.log(value);
+        (input == 'mobile' || input == 'telephone') && (value = addZeroFirstStr(value))
 
         setInput(prev => ({ ...prev, [input]: value }));
     }
@@ -355,10 +394,12 @@ const AddCustomer = () => {
      * @param {*} e 
      * @param {رف مربوط به تگ نمایش خطا} refErr 
      */
-    const delErr = (e, refErr, date = false) => {
+    const delErr = (e, refErr, types = false, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '')
         date && dateOfBirth.current.classList.remove('borderRedFB');
+        types && typesDiv.current.classList.remove('borderRedFB');
+
     }
 
     const handleSubmit = (e) => {
@@ -380,6 +421,46 @@ const AddCustomer = () => {
 
 
             form.current.reset();
+
+            setInput({
+                name: '',
+                lastName: '',
+                father: '',
+                nationalCode: '',
+                dateOfBirth: '',
+                mobile: '',
+                telephone: '',
+                email: '',
+                postalCode: '',
+                address: '',
+                types: [],
+                bankInfo: [
+                    {
+                        bank: '',
+                        account: '',
+                        card: '',
+                        shaba: ''
+                    }
+                ]
+            });
+            customerTypeSelected.map((types) => {
+                let ref = refs[types['id']]
+                ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+            })
+            setCustomerTypeSelected([]);
+            lableCustomerType.current.textContent = 'انتخاب';
+            setDay('');
+            setMonth('');
+            setYear('');
+
+            sectionBank2.current.classList.add('--displayNone');
+            sectionBank3.current.classList.add('--displayNone');
+            sectionBank4.current.classList.add('--displayNone');
+            sectionBank5.current.classList.add('--displayNone');
+            moreBank1.current.classList.remove('--displayNone');
+            moreBank2.current.classList.remove('--displayNone');
+            moreBank3.current.classList.remove('--displayNone');
+            moreBank4.current.classList.remove('--displayNone');
 
             MySwal.fire({
                 icon: "success",
@@ -415,11 +496,26 @@ const AddCustomer = () => {
                 error => {
                     if (error.response.status == 422) {
 
+                        let id = Object.keys(error.response.data.errors)[0];
+                        const element = document.getElementById(id);
+                        console.log(element.offsetTop);
+                        window.scrollTo({
+                            top: element.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+
+
                         Object.entries(error.response.data.errors).map(([key, val]) => {
                             document.getElementById(key).classList.add('borderRedFB');
 
                             document.getElementById(key + 'Error').innerHTML = val;
+                            if (key == 'dateOfBirth') {
+                                day || daySelect.current.classList.add('borderRedFB');
+                                month || monthSelect.current.classList.add('borderRedFB');
+                                year || yearSelect.current.classList.add('borderRedFB');
+                            }
                         });
+
                     }
 
                     // error => {
@@ -540,7 +636,8 @@ const AddCustomer = () => {
                                     <label  >نوع مشتری </label>
                                     <div className="selectFB containerCustomerTypeFB"
                                         id="types"
-                                        onClick={(e) => { showDivCustomerType(); delErr(e, typesErrorRef) }}
+                                        ref={typesDiv}
+                                        onClick={(e) => { showDivCustomerType(); delErr(e, typesErrorRef, true, false) }}
                                     >
                                         <span className="lableCustomerTypeFB" ref={lableCustomerType}> انتخاب </span>
                                         <i className="icofont-caret-down " />
@@ -595,7 +692,7 @@ const AddCustomer = () => {
                                                 id="day"
                                                 value={day || ''}
                                                 onInput={(e) => changeDay(e)}
-                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, true)}
+                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
 
                                             />
                                             <span>/</span>
@@ -605,7 +702,7 @@ const AddCustomer = () => {
                                                 placeholder="1"
                                                 value={month || ''}
                                                 onInput={(e) => changeMonth(e)}
-                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, true)}
+                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
 
                                             />
                                             <span>/</span>
@@ -615,28 +712,37 @@ const AddCustomer = () => {
                                                 placeholder="1300"
                                                 value={year || ''}
                                                 onInput={(e) => { changeYear(e) }}
-                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, true)}
+                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
 
                                             />
                                         </div>
 
                                         <div className="divDownDateAcus" >
-                                            <select name="" id="" value={day} onChange={(e) => changeDay(e)}
-                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, true)}
+                                            <select
+                                                value={day}
+                                                ref={daySelect}
+                                                onChange={(e) => changeDay(e)}
+                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
 
                                             >
                                                 <option value="">روز</option>
                                                 {optionDays}
                                             </select>
-                                            <select name="" id="" value={month} onChange={(e) => changeMonth(e)}
-                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, true)}
+                                            <select
+                                                value={month}
+                                                ref={monthSelect}
+                                                onChange={(e) => changeMonth(e)}
+                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
 
                                             >
                                                 <option value="">ماه</option>
                                                 {optionMonth}
                                             </select>
-                                            <select name="" id="" value={year} onChange={(e) => { changeYear(e) }}
-                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, true)}
+                                            <select
+                                                value={year}
+                                                ref={yearSelect}
+                                                onChange={(e) => { changeYear(e) }}
+                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
 
                                             >
                                                 <option value="">سال</option>
@@ -657,7 +763,7 @@ const AddCustomer = () => {
                                         <input type="text" id="mobile" className="inputTextFB ltrFB"
                                             onBlur={e => handleSaveValInput(e, 'mobile')}
                                             onFocus={(e) => delErr(e, mobileErrorRef)}
-                                            
+
                                         />
                                     </div>
                                     <div className="errorContainerFB" id="mobileError" ref={mobileErrorRef}> </div>
