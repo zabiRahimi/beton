@@ -10,6 +10,21 @@
 
 }
 
+.mmm{
+    background-color: #6d6b6b;
+   
+    position:'fixed';
+    width:'100%';
+    height:'100vh';
+    z-index:100;
+    opacity:0.5;
+    display:'flex';
+    justify-content: center;
+    align-items: center;
+
+   
+  }
+
 .borderRedFB{
     border-color: #ff0000 !important;
 }

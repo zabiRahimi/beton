@@ -13,6 +13,9 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
+import ScaleLoader from 'react-spinners/ScaleLoader';
+import CircleLoader from 'react-spinners/CircleLoader';
+
 const AddCustomer = () => {
 
     const MySwal = withReactContent(Swal);
@@ -31,6 +34,7 @@ const AddCustomer = () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    const container = useRef(null)
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
@@ -95,6 +99,7 @@ const AddCustomer = () => {
     const [refs, setRefs] = useState({});
 
 
+    const [loading, setLoading] = useState(false);
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
 
@@ -151,6 +156,13 @@ const AddCustomer = () => {
         }
 
     }, [customerTypes]);
+
+    const[widthComponent,setWidthComponent]=useState(0) ;
+    useEffect(() => {
+        
+       let widths=container.current.offsetWidth;
+        setWidthComponent(widths)
+      }, []);
 
     const addCustomer = () => {
 
@@ -402,144 +414,154 @@ const AddCustomer = () => {
 
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post(
-            '/api/v1/addCustomer',
-            { ...input },
-            {
-                headers:
+        setLoading(true)
+        try {
+            await axios.post(
+                '/api/v1/addCustomer',
+                { ...input },
                 {
-                    'X-CSRF-TOKEN': token,
-                    'Content-Type': 'application/json; charset=utf-8'
-                }
-            }
-        ).then(response => {
-
-            // const id = response.data.zabi;
-            const id = response;
-
-
-            form.current.reset();
-
-            setInput({
-                name: '',
-                lastName: '',
-                father: '',
-                nationalCode: '',
-                dateOfBirth: '',
-                mobile: '',
-                telephone: '',
-                email: '',
-                postalCode: '',
-                address: '',
-                types: [],
-                bankInfo: [
+                    headers:
                     {
-                        bank: '',
-                        account: '',
-                        card: '',
-                        shaba: ''
+                        'X-CSRF-TOKEN': token,
+                        'Content-Type': 'application/json; charset=utf-8'
                     }
-                ]
-            });
-            customerTypeSelected.map((types) => {
-                let ref = refs[types['id']]
-                ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-            })
-            setCustomerTypeSelected([]);
-            lableCustomerType.current.textContent = 'انتخاب';
-            setDay('');
-            setMonth('');
-            setYear('');
-
-            sectionBank2.current.classList.add('--displayNone');
-            sectionBank3.current.classList.add('--displayNone');
-            sectionBank4.current.classList.add('--displayNone');
-            sectionBank5.current.classList.add('--displayNone');
-            moreBank1.current.classList.remove('--displayNone');
-            moreBank2.current.classList.remove('--displayNone');
-            moreBank3.current.classList.remove('--displayNone');
-            moreBank4.current.classList.remove('--displayNone');
-
-            MySwal.fire({
-                icon: "success",
-                title: "با موفقیت ثبت شد",
-                confirmButtonText: "  متوجه شدم  ",
-                timer: 3000,
-                timerProgressBar: true,
-                customClass: {
-                    timerProgressBar: '--progressBarColorBlue',
                 }
-            })
+            ).then(response => {
 
-            // setIndex(prev => ({ ...prev, book_id: id, book: input.book }));
-
-            // setBook({ id, ...input });
-
-            // //کتاب ایجاد شده را به آرایه کتابها اضافه می‌کند
-            // valBooks.push({ id, ...input });
-
-            // setValBooks(valBooks);
-
-            // setInput({ book: '', link: '' });
-
-            // Swal.fire({
-            //     position: 'center',
-            //     icon: 'success',
-            //     title: 'ثبت کتاب با موفقیت انجام شد ',
-            //     showConfirmButton: false,
-            //     timer: 3000
-            // })
-        })
-            .catch(
-                error => {
-                    if (error.response.status == 422) {
-
-                        let id = Object.keys(error.response.data.errors)[0];
-                        const element = document.getElementById(id);
-                        console.log(element.offsetTop);
-                        window.scrollTo({
-                            top: element.offsetTop - 20,
-                            behavior: 'smooth'
-                        });
+                // const id = response.data.zabi;
+                const id = response;
 
 
-                        Object.entries(error.response.data.errors).map(([key, val]) => {
-                            document.getElementById(key).classList.add('borderRedFB');
+                form.current.reset();
 
-                            document.getElementById(key + 'Error').innerHTML = val;
-                            if (key == 'dateOfBirth') {
-                                day || daySelect.current.classList.add('borderRedFB');
-                                month || monthSelect.current.classList.add('borderRedFB');
-                                year || yearSelect.current.classList.add('borderRedFB');
-                            }
-                        });
+                setInput({
+                    name: '',
+                    lastName: '',
+                    father: '',
+                    nationalCode: '',
+                    dateOfBirth: '',
+                    mobile: '',
+                    telephone: '',
+                    email: '',
+                    postalCode: '',
+                    address: '',
+                    types: [],
+                    bankInfo: [
+                        {
+                            bank: '',
+                            account: '',
+                            card: '',
+                            shaba: ''
+                        }
+                    ]
+                });
+                customerTypeSelected.map((types) => {
+                    let ref = refs[types['id']]
+                    ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+                })
+                setCustomerTypeSelected([]);
+                lableCustomerType.current.textContent = 'انتخاب';
+                setDay('');
+                setMonth('');
+                setYear('');
 
+                sectionBank2.current.classList.add('--displayNone');
+                sectionBank3.current.classList.add('--displayNone');
+                sectionBank4.current.classList.add('--displayNone');
+                sectionBank5.current.classList.add('--displayNone');
+                moreBank1.current.classList.remove('--displayNone');
+                moreBank2.current.classList.remove('--displayNone');
+                moreBank3.current.classList.remove('--displayNone');
+                moreBank4.current.classList.remove('--displayNone');
+
+                MySwal.fire({
+                    icon: "success",
+                    title: "با موفقیت ثبت شد",
+                    confirmButtonText: "  متوجه شدم  ",
+                    timer: 3000,
+                    timerProgressBar: true,
+                    customClass: {
+                        timerProgressBar: '--progressBarColorBlue',
                     }
+                })
 
-                    // error => {
-                    //     notify.current.innerHTML = ''
-                    //     if (error.response.status == 422) {
-                    //         const elementError = Object.keys(error.response.data.errors)[0];
-                    //         let divError;
-                    //         switch (elementError) {
-                    //             case 'book':
-                    //                 divError = bookError.current
-                    //                 break;
-                    //             case 'link':
-                    //                 divError = linkError.current
-                    //         }
-                    //         divError.innerHTML = `<div class="error">${error.response.data.errors[elementError][0]}</div>`
-                    //         divError.scrollIntoViewIfNeeded({ behavior: "smooth" });
-                    //     }
-                    //     else {
-                    //         notify.current.innerHTML = `<div class='error'>'خطایی رخ داده است، مطمعن شوید دیتابیس فعال است.'</div>`
-                    //         notify.current.scrollIntoViewIfNeeded({ behavior: "smooth" });
-                    //     }
-                    // }
-                }
-            )
+                // setIndex(prev => ({ ...prev, book_id: id, book: input.book }));
+
+                // setBook({ id, ...input });
+
+                // //کتاب ایجاد شده را به آرایه کتابها اضافه می‌کند
+                // valBooks.push({ id, ...input });
+
+                // setValBooks(valBooks);
+
+                // setInput({ book: '', link: '' });
+
+                // Swal.fire({
+                //     position: 'center',
+                //     icon: 'success',
+                //     title: 'ثبت کتاب با موفقیت انجام شد ',
+                //     showConfirmButton: false,
+                //     timer: 3000
+                // })
+            })
+                .catch(
+                    error => {
+                        if (error.response.status == 422) {
+
+                            let id = Object.keys(error.response.data.errors)[0];
+                            console.log(id);
+                            const element = document.getElementById(id);
+                            let scrollPosition = window.scrollY || window.pageYOffset;
+
+                            const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                            console.log(top);
+                            window.scrollTo({
+                                top: top,
+                                behavior: 'smooth'
+                            });
+
+
+                            Object.entries(error.response.data.errors).map(([key, val]) => {
+                                document.getElementById(key).classList.add('borderRedFB');
+
+                                document.getElementById(key + 'Error').innerHTML = val;
+                                if (key == 'dateOfBirth') {
+                                    day || daySelect.current.classList.add('borderRedFB');
+                                    month || monthSelect.current.classList.add('borderRedFB');
+                                    year || yearSelect.current.classList.add('borderRedFB');
+                                }
+                            });
+
+                        }
+
+                        // error => {
+                        //     notify.current.innerHTML = ''
+                        //     if (error.response.status == 422) {
+                        //         const elementError = Object.keys(error.response.data.errors)[0];
+                        //         let divError;
+                        //         switch (elementError) {
+                        //             case 'book':
+                        //                 divError = bookError.current
+                        //                 break;
+                        //             case 'link':
+                        //                 divError = linkError.current
+                        //         }
+                        //         divError.innerHTML = `<div class="error">${error.response.data.errors[elementError][0]}</div>`
+                        //         divError.scrollIntoViewIfNeeded({ behavior: "smooth" });
+                        //     }
+                        //     else {
+                        //         notify.current.innerHTML = `<div class='error'>'خطایی رخ داده است، مطمعن شوید دیتابیس فعال است.'</div>`
+                        //         notify.current.scrollIntoViewIfNeeded({ behavior: "smooth" });
+                        //     }
+                        // }
+                    }
+                )
+        } catch (error) {
+            // بررسی خطا
+        }
+        setLoading(false)
     }
 
     const addZeroFirstStr = (val) => {
@@ -554,9 +576,29 @@ const AddCustomer = () => {
         // اگر اولین کاراکتر رشته صفر باشد، تابع true برمی‌گرداند
         return str.charAt(0) === '0';
     }
+    
 
+     
     return (
-        <>
+        <div className="containerAddCustomer" ref={container}
+        >
+
+            {/* <ClipLoader color="#123abc" loading={true} size={150} /> */}
+            <ScaleLoader loading={true} cssOverride={{
+                backgroundColor: '#6d6b6b',
+                position: 'fixed',
+                top:0,
+                width: widthComponent+'px',
+                height: '100vh',
+                zIndex: 100,
+                opacity: 0.5,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+
+
+            }} />
+            {/* <CircleLoader color="#36d7b7" /> */}
 
             <Title title="تعریف مشتری" />
             <div className="headPageGe">
@@ -1292,7 +1334,7 @@ const AddCustomer = () => {
                 </div>
 
             </div>
-        </>
+        </div>
     );
 };
 

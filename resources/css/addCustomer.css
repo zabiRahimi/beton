@@ -1,3 +1,7 @@
+.containerAddCustomer{
+    position: relative;
+    width: 100%;
+}
 .divDateBirth {
     display: flex;
     flex-direction: column;

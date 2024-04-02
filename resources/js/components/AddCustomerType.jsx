@@ -253,7 +253,7 @@ const AddCustomerType = () => {
     }
 
     return (
-        <>
+        <div className='containerAddCustomerType'>
             <Title title="تعریف نوع مشتری" />
 
             <div className="containerACuT">
@@ -335,7 +335,7 @@ const AddCustomerType = () => {
                 </div>
 
             </div>
-        </>
+        </div>
     )
 }
 
