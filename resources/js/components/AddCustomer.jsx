@@ -12,9 +12,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
 import ScaleLoader from 'react-spinners/ScaleLoader';
-import CircleLoader from 'react-spinners/CircleLoader';
 
 const AddCustomer = () => {
 
@@ -138,7 +136,7 @@ const AddCustomer = () => {
             }
         ]
     });
-    console.log(input);
+    // console.log(input);
     useEffect(() => {
         getCustomerType()
     }, []);
@@ -382,8 +380,6 @@ const AddCustomer = () => {
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
 
-        // (input == 'mobile' || input == 'telephone') && (value = addZeroFirstStr(value))
-
         setInput(prev => ({ ...prev, [input]: value }));
     }
 
@@ -414,150 +410,64 @@ const AddCustomer = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
-        try {
-            await axios.post(
-                '/api/v1/addCustomer',
-                { ...input },
+
+        await axios.post(
+            '/api/v1/addCustomer',
+            { ...input },
+            {
+                headers:
                 {
-                    headers:
-                    {
-                        'X-CSRF-TOKEN': token,
-                        'Content-Type': 'application/json; charset=utf-8'
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then(response => {
+
+            form.current.reset();
+            resetForm();
+
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                }
+            })
+
+        })
+            .catch(
+                error => {
+                    if (error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0];
+                       
+                        const element = document.getElementById(id);
+                        let scrollPosition = window.scrollY || window.pageYOffset;
+
+                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                        window.scrollTo({
+                            top: top,
+                            behavior: 'smooth'
+                        });
+
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            document.getElementById(key).classList.add('borderRedFB');
+
+                            document.getElementById(key + 'Error').innerHTML = val;
+                            if (key == 'dateOfBirth') {
+                                day || daySelect.current.classList.add('borderRedFB');
+                                month || monthSelect.current.classList.add('borderRedFB');
+                                year || yearSelect.current.classList.add('borderRedFB');
+                            }
+                        });
+
                     }
                 }
-            ).then(response => {
+            )
 
-                // const id = response.data.zabi;
-                const id = response;
-
-
-                form.current.reset();
-
-                setInput({
-                    name: '',
-                    lastName: '',
-                    father: '',
-                    nationalCode: '',
-                    dateOfBirth: '',
-                    mobile: '',
-                    telephone: '',
-                    email: '',
-                    postalCode: '',
-                    address: '',
-                    types: [],
-                    bankInfo: [
-                        {
-                            bank: '',
-                            account: '',
-                            card: '',
-                            shaba: ''
-                        }
-                    ]
-                });
-                customerTypeSelected.map((types) => {
-                    let ref = refs[types['id']]
-                    ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-                })
-                setCustomerTypeSelected([]);
-                lableCustomerType.current.textContent = 'انتخاب';
-                setDay('');
-                setMonth('');
-                setYear('');
-
-                sectionBank2.current.classList.add('--displayNone');
-                sectionBank3.current.classList.add('--displayNone');
-                sectionBank4.current.classList.add('--displayNone');
-                sectionBank5.current.classList.add('--displayNone');
-                moreBank1.current.classList.remove('--displayNone');
-                moreBank2.current.classList.remove('--displayNone');
-                moreBank3.current.classList.remove('--displayNone');
-                moreBank4.current.classList.remove('--displayNone');
-
-                MySwal.fire({
-                    icon: "success",
-                    title: "با موفقیت ثبت شد",
-                    confirmButtonText: "  متوجه شدم  ",
-                    timer: 3000,
-                    timerProgressBar: true,
-                    customClass: {
-                        timerProgressBar: '--progressBarColorBlue',
-                    }
-                })
-
-                // setIndex(prev => ({ ...prev, book_id: id, book: input.book }));
-
-                // setBook({ id, ...input });
-
-                // //کتاب ایجاد شده را به آرایه کتابها اضافه می‌کند
-                // valBooks.push({ id, ...input });
-
-                // setValBooks(valBooks);
-
-                // setInput({ book: '', link: '' });
-
-                // Swal.fire({
-                //     position: 'center',
-                //     icon: 'success',
-                //     title: 'ثبت کتاب با موفقیت انجام شد ',
-                //     showConfirmButton: false,
-                //     timer: 3000
-                // })
-            })
-                .catch(
-                    error => {
-                        if (error.response.status == 422) {
-
-                            let id = Object.keys(error.response.data.errors)[0];
-                            console.log(id);
-                            const element = document.getElementById(id);
-                            let scrollPosition = window.scrollY || window.pageYOffset;
-
-                            const top = element.getBoundingClientRect().top + scrollPosition - 20;
-                            console.log(top);
-                            window.scrollTo({
-                                top: top,
-                                behavior: 'smooth'
-                            });
-
-
-                            Object.entries(error.response.data.errors).map(([key, val]) => {
-                                document.getElementById(key).classList.add('borderRedFB');
-
-                                document.getElementById(key + 'Error').innerHTML = val;
-                                if (key == 'dateOfBirth') {
-                                    day || daySelect.current.classList.add('borderRedFB');
-                                    month || monthSelect.current.classList.add('borderRedFB');
-                                    year || yearSelect.current.classList.add('borderRedFB');
-                                }
-                            });
-
-                        }
-
-                        // error => {
-                        //     notify.current.innerHTML = ''
-                        //     if (error.response.status == 422) {
-                        //         const elementError = Object.keys(error.response.data.errors)[0];
-                        //         let divError;
-                        //         switch (elementError) {
-                        //             case 'book':
-                        //                 divError = bookError.current
-                        //                 break;
-                        //             case 'link':
-                        //                 divError = linkError.current
-                        //         }
-                        //         divError.innerHTML = `<div class="error">${error.response.data.errors[elementError][0]}</div>`
-                        //         divError.scrollIntoViewIfNeeded({ behavior: "smooth" });
-                        //     }
-                        //     else {
-                        //         notify.current.innerHTML = `<div class='error'>'خطایی رخ داده است، مطمعن شوید دیتابیس فعال است.'</div>`
-                        //         notify.current.scrollIntoViewIfNeeded({ behavior: "smooth" });
-                        //     }
-                        // }
-                    }
-                )
-        } catch (error) {
-            // بررسی خطا
-        }
         setLoading(false)
     }
 
@@ -581,14 +491,68 @@ const AddCustomer = () => {
         return str.charAt(0) === '0';
     }
 
-   const handleSubmitEdit =()=>{
-    
-   }
+    const handleSubmitEdit = () => {
+
+    }
+
+    const resetForm = () => {
+
+        setInput({
+            name: '',
+            lastName: '',
+            father: '',
+            nationalCode: '',
+            dateOfBirth: '',
+            mobile: '',
+            telephone: '',
+            email: '',
+            postalCode: '',
+            address: '',
+            types: [],
+            bankInfo: [
+                {
+                    bank: '',
+                    account: '',
+                    card: '',
+                    shaba: ''
+                }
+            ]
+        });
+
+        customerTypeSelected.map((types) => {
+            let ref = refs[types['id']]
+            ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+        })
+        setCustomerTypeSelected([]);
+        lableCustomerType.current.textContent = 'انتخاب';
+        setDay('');
+        setMonth('');
+        setYear('');
+
+        sectionBank2.current.classList.add('--displayNone');
+        sectionBank3.current.classList.add('--displayNone');
+        sectionBank4.current.classList.add('--displayNone');
+        sectionBank5.current.classList.add('--displayNone');
+        moreBank1.current.classList.remove('--displayNone');
+        moreBank2.current.classList.remove('--displayNone');
+        moreBank3.current.classList.remove('--displayNone');
+        moreBank4.current.classList.remove('--displayNone');
+
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
+        
+
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+    }
 
     return (
         <div className="containerAddCustomer" ref={container}
         >
-
             <ScaleLoader color="#fff" width={8} height={95} margin={4} radius={50} loading={loading} cssOverride={{
                 backgroundColor: '#000',
                 position: 'fixed',
@@ -603,7 +567,6 @@ const AddCustomer = () => {
 
 
             }} />
-            {/* <CircleLoader color="#36d7b7" /> */}
 
             <Title title="تعریف مشتری" />
             <div className="headPageGe">
@@ -637,7 +600,7 @@ const AddCustomer = () => {
                                     <label htmlFor="name">نام مشتری</label>
                                     <input
                                         type="text"
-                                        className="inputTextFB"
+                                        className="inputTextFB element"
                                         id="name"
                                         onChange={e => handleSaveValInput(e, 'name')}
                                         onFocus={e => delErr(e, nameErrorRef)}
@@ -645,7 +608,7 @@ const AddCustomer = () => {
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB" id="nameError" ref={nameErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="nameError" ref={nameErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -653,14 +616,14 @@ const AddCustomer = () => {
                                     <label htmlFor="lastName">نام خانوادگی</label>
                                     <input
                                         type="text"
-                                        className="inputTextFB"
+                                        className="inputTextFB element"
                                         id="lastName"
                                         onChange={e => handleSaveValInput(e, 'lastName')}
                                         onFocus={e => delErr(e, lastNameErrorRef)}
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB" id="lastNameError" ref={lastNameErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="lastNameError" ref={lastNameErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -668,20 +631,20 @@ const AddCustomer = () => {
                                     <label htmlFor="father">نام پدر</label>
                                     <input
                                         type="text"
-                                        className="inputTextFB"
+                                        className="inputTextFB element"
                                         id="father"
                                         onChange={e => handleSaveValInput(e, 'father')}
                                         onFocus={e => delErr(e, fatherErrorRef)}
                                     />
 
                                 </div>
-                                <div className="errorContainerFB" id="fatherError" ref={fatherErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="fatherError" ref={fatherErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label  >نوع مشتری </label>
-                                    <div className="selectFB containerCustomerTypeFB"
+                                    <div className="selectFB element element containerCustomerTypeFB"
                                         id="types"
                                         ref={typesDiv}
                                         onClick={(e) => { showDivCustomerType(); delErr(e, typesErrorRef, true, false) }}
@@ -709,7 +672,7 @@ const AddCustomer = () => {
                                     <i className="icofont-ui-rating starFB" />
 
                                 </div>
-                                <div className="errorContainerFB" id="typesError" ref={typesErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="typesError" ref={typesErrorRef}> </div>
                             </div>
                         </div>
 
@@ -717,24 +680,24 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="nationalCode">کد ملی </label>
-                                    <input type="text" id="nationalCode" className="inputTextFB ltrFB"
+                                    <input type="text" id="nationalCode" className="inputTextFB ltrFB element"
                                         onChange={e => handleSaveValInput(e, 'nationalCode')}
                                         onFocus={(e) => delErr(e, nationalCodeErrorRef)}
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
-                                <div className="divInputFB">
+                                <div className="divInputFB ">
                                     <label htmlFor="day">تاریخ تولد </label>
                                     <div className="divDateBirth">
-                                        <div className="divUpDateAcus" id="dateOfBirth"
+                                        <div className="divUpDateAcus element" id="dateOfBirth"
                                             ref={dateOfBirth}
                                         >
                                             <input
                                                 type="text"
-                                                className="inputTextDateACus inputDayTDACus"
+                                                className="inputTextDateACus inputDayTDACus element"
                                                 placeholder="1"
                                                 id="day"
                                                 value={day || ''}
@@ -745,7 +708,7 @@ const AddCustomer = () => {
                                             <span>/</span>
                                             <input
                                                 type="text"
-                                                className="inputTextDateACus inputMonthTDACus"
+                                                className="inputTextDateACus inputMonthTDACus element"
                                                 placeholder="1"
                                                 value={month || ''}
                                                 onInput={(e) => changeMonth(e)}
@@ -755,7 +718,7 @@ const AddCustomer = () => {
                                             <span>/</span>
                                             <input
                                                 type="text"
-                                                className="inputTextDateACus inputYearTDACus"
+                                                className="inputTextDateACus inputYearTDACus element"
                                                 placeholder="1300"
                                                 value={year || ''}
                                                 onInput={(e) => { changeYear(e) }}
@@ -766,6 +729,7 @@ const AddCustomer = () => {
 
                                         <div className="divDownDateAcus" >
                                             <select
+                                            className="element"
                                                 value={day}
                                                 ref={daySelect}
                                                 onChange={(e) => changeDay(e)}
@@ -776,6 +740,7 @@ const AddCustomer = () => {
                                                 {optionDays}
                                             </select>
                                             <select
+                                            className="element"
                                                 value={month}
                                                 ref={monthSelect}
                                                 onChange={(e) => changeMonth(e)}
@@ -786,6 +751,7 @@ const AddCustomer = () => {
                                                 {optionMonth}
                                             </select>
                                             <select
+                                            className="element"
                                                 value={year}
                                                 ref={yearSelect}
                                                 onChange={(e) => { changeYear(e) }}
@@ -798,7 +764,7 @@ const AddCustomer = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="errorContainerFB" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
                             </div>
                         </div>
 
@@ -807,7 +773,7 @@ const AddCustomer = () => {
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="mobile">موبایل</label>
-                                        <input type="text" id="mobile" className="inputTextFB ltrFB"
+                                        <input type="text" id="mobile" className="inputTextFB ltrFB element"
                                             value={input['mobile'] || ''}
                                             onChange={e => handleSaveValInput(e, 'mobile')}
                                             onBlur={() => addZeroFirstStr('mobile')}
@@ -815,46 +781,46 @@ const AddCustomer = () => {
 
                                         />
                                     </div>
-                                    <div className="errorContainerFB" id="mobileError" ref={mobileErrorRef}> </div>
+                                    <div className="errorContainerFB elementError" id="mobileError" ref={mobileErrorRef}> </div>
 
                                 </div>
 
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="telephone">تلفن </label>
-                                        <input type="text" id="telephone" className="inputTextFB ltrFB"
+                                        <input type="text" id="telephone" className="inputTextFB ltrFB element"
                                             value={input['telephone'] || ''}
                                             onChange={e => handleSaveValInput(e, 'telephone')}
-                                            onBlur={() => addZeroFirstStr('mobile')}
+                                            onBlur={() => addZeroFirstStr('telephone')}
                                             onFocus={(e) => delErr(e, telephoneErrorRef)}
 
                                         />
                                     </div>
-                                    <div className="errorContainerFB" id="telephoneError" ref={telephoneErrorRef}> </div>
+                                    <div className="errorContainerFB elementError" id="telephoneError" ref={telephoneErrorRef}> </div>
                                 </div>
 
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="postalCode">کد پستی</label>
                                         <input type="text"
-                                            id="postalCode" className="inputTextFB ltrFB"
+                                            id="postalCode" className="inputTextFB ltrFB element"
                                             onChange={e => handleSaveValInput(e, 'postalCode')}
                                             onFocus={(e) => delErr(e, postalCodeErrorRef)}
 
                                         />
                                     </div>
-                                    <div className="errorContainerFB" id="postalCodeError" ref={postalCodeErrorRef}> </div>
+                                    <div className="errorContainerFB elementError" id="postalCodeError" ref={postalCodeErrorRef}> </div>
                                 </div>
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="email">ایمیل</label>
-                                        <input type="text" id="email" className="inputTextFB ltrFB"
+                                        <input type="text" id="email" className="inputTextFB ltrFB element"
                                             onChange={e => handleSaveValInput(e, 'email')}
                                             onFocus={(e) => delErr(e, emailErrorRef)}
 
                                         />
                                     </div>
-                                    <div className="errorContainerFB" id="emailError" ref={emailErrorRef}> </div>
+                                    <div className="errorContainerFB elementError" id="emailError" ref={emailErrorRef}> </div>
                                 </div>
                             </div>
 
@@ -868,7 +834,7 @@ const AddCustomer = () => {
 
                                         />
                                     </div>
-                                    <div className="errorContainerFB" id="addressError" ref={addressErrorRef}> </div>
+                                    <div className="errorContainerFB elementError" id="addressError" ref={addressErrorRef}> </div>
                                 </div>
                             </div>
                         </div>
@@ -878,42 +844,42 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.0.account">شماره حساب</label>
                                     <input type="text" id="bankInfo.0.account"
-                                        className="inputTextFB ltrFB"
+                                        className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'account') }}
                                         onFocus={(e) => delErr(e, account1ErrorRef)}
 
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.0.accountError" ref={account1ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.0.accountError" ref={account1ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.0.card">شماره کارت</label>
-                                    <input type="text" id="bankInfo.0.card" className="inputTextFB ltrFB"
+                                    <input type="text" id="bankInfo.0.card" className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'card') }}
                                         onFocus={(e) => delErr(e, card1ErrorRef)}
 
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.0.cardError" ref={card1ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.0.cardError" ref={card1ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.0.shaba">شماره شبا</label>
-                                    <input type="text" id="bankInfo.0.shaba" className="inputShabaFB ltrFB"
+                                    <input type="text" id="bankInfo.0.shaba" className="inputShabaFB element ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba1ErrorRef)}
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.0.shabaError" ref={shaba1ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.0.shabaError" ref={shaba1ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.0.bank">نام بانک </label>
-                                    <select name="" id="bankInfo.0.bank" className="selectFB inputTextFB"
+                                    <select name="" id="bankInfo.0.bank" className="selectFB element inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}
                                         onClick={(e) => delErr(e, bank1ErrorRef)}
                                     >
@@ -921,7 +887,7 @@ const AddCustomer = () => {
                                         {optionBank}
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.0.bankError" ref={bank1ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.0.bankError" ref={bank1ErrorRef}> </div>
                             </div>
 
                             <div className="moreBank" ref={moreBank1}
@@ -934,40 +900,40 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.1.account">شماره حساب</label>
                                     <input type="text" id="bankInfo.1.account"
-                                        className="inputTextFB ltrFB"
+                                        className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 1, 'account') }}
                                         onFocus={(e) => delErr(e, account2ErrorRef)}
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.1.accountError" ref={account2ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.1.accountError" ref={account2ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.1.card">شماره کارت</label>
-                                    <input type="text" id="bankInfo.1.card" className="inputTextFB ltrFB"
+                                    <input type="text" id="bankInfo.1.card" className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 1, 'card') }}
                                         onFocus={(e) => delErr(e, card2ErrorRef)}
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.1.cardError" ref={card2ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.1.cardError" ref={card2ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.1.shaba">شماره شبا</label>
-                                    <input type="text" id="bankInfo.1.shaba" className="inputShabaFB ltrFB"
+                                    <input type="text" id="bankInfo.1.shaba" className="inputShabaFB element ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 1, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba2ErrorRef)}
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.1.shabaError" ref={shaba2ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.1.shabaError" ref={shaba2ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.1.bank">نام بانک </label>
-                                    <select name="" id="bankInfo.1.bank" className="selectFB inputTextFB"
+                                    <select name="" id="bankInfo.1.bank" className="selectFB element inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 1, 'bank') }}
                                         onClick={(e) => delErr(e, bank2ErrorRef)}
                                     >
@@ -976,7 +942,7 @@ const AddCustomer = () => {
 
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.1.bankError" ref={bank2ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.1.bankError" ref={bank2ErrorRef}> </div>
                             </div>
                             <div className="moreBank" ref={moreBank2} onClick={() => showSectionBank(sectionBank3, moreBank2, true, 2)}> اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
@@ -987,43 +953,43 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.2.account">شماره حساب</label>
                                     <input type="text" id="bankInfo.2.account"
-                                        className="inputTextFB ltrFB"
+                                        className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'account') }}
                                         onFocus={(e) => delErr(e, account3ErrorRef)}
 
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.2.accountError" ref={account3ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.2.accountError" ref={account3ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.2.card">شماره کارت</label>
-                                    <input type="text" id="bankInfo.2.card" className="inputTextFB ltrFB"
+                                    <input type="text" id="bankInfo.2.card" className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'card') }}
                                         onFocus={(e) => delErr(e, card3ErrorRef)}
 
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.2.cardError" ref={card3ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.2.cardError" ref={card3ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.2.shaba">شماره شبا</label>
-                                    <input type="text" id="bankInfo.2.shaba" className="inputShabaFB ltrFB"
+                                    <input type="text" id="bankInfo.2.shaba" className="inputShabaFB element ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba3ErrorRef)}
 
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.2.shabaError" ref={shaba3ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.2.shabaError" ref={shaba3ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.2.bank">نام بانک </label>
-                                    <select name="" id="bankInfo.2.bank" className="selectFB inputTextFB"
+                                    <select name="" id="bankInfo.2.bank" className="selectFB element inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'bank') }}
                                         onClick={(e) => delErr(e, bank3ErrorRef)}
 
@@ -1032,7 +998,7 @@ const AddCustomer = () => {
                                         {optionBank}
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.2.bankError" ref={bank3ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.2.bankError" ref={bank3ErrorRef}> </div>
                             </div>
                             <div className="moreBank" ref={moreBank3} onClick={() => showSectionBank(sectionBank4, moreBank3, true, 3)}> اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
@@ -1043,43 +1009,43 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.3.account">شماره حساب</label>
                                     <input type="text" id="bankInfo.3.account"
-                                        className="inputTextFB ltrFB"
+                                        className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'account') }}
                                         onFocus={(e) => delErr(e, account4ErrorRef)}
 
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.3.accountError" ref={account4ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.3.accountError" ref={account4ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.3.card">شماره کارت</label>
-                                    <input type="text" id="bankInfo.3.card" className="inputTextFB ltrFB"
+                                    <input type="text" id="bankInfo.3.card" className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'card') }}
                                         onFocus={(e) => delErr(e, card4ErrorRef)}
 
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.3.cardError" ref={card4ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.3.cardError" ref={card4ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.3.shaba">شماره شبا</label>
-                                    <input type="text" id="bankInfo.3.shaba" className="inputShabaFB ltrFB"
+                                    <input type="text" id="bankInfo.3.shaba" className="inputShabaFB element ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba4ErrorRef)}
 
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.3.shabaError" ref={shaba4ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.3.shabaError" ref={shaba4ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.3.bank">نام بانک </label>
-                                    <select name="" id="bankInfo.3.bank" className="selectFB inputTextFB"
+                                    <select name="" id="bankInfo.3.bank" className="selectFB element inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'bank') }}
                                         onClick={(e) => delErr(e, moreBank4)}
 
@@ -1088,7 +1054,7 @@ const AddCustomer = () => {
                                         {optionBank}
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.3.bankError" ref={bank4ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.3.bankError" ref={bank4ErrorRef}> </div>
                             </div>
                             <div className="moreBank" ref={moreBank4}
                                 onClick={() => showSectionBank(sectionBank5, moreBank4, true, 4)}
@@ -1103,43 +1069,43 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.4.account">شماره حساب</label>
                                     <input type="text" id="bankInfo.4.account"
-                                        className="inputTextFB ltrFB"
+                                        className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'account') }}
                                         onFocus={(e) => delErr(e, account5ErrorRef)}
 
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.4.accountError" ref={account5ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.4.accountError" ref={account5ErrorRef}> </div>
                             </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.4.card">شماره کارت</label>
-                                    <input type="text" id="bankInfo.4.card" className="inputTextFB ltrFB"
+                                    <input type="text" id="bankInfo.4.card" className="inputTextFB ltrFB element"
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'card') }}
                                         onFocus={(e) => delErr(e, card5ErrorRef)}
 
                                     />
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.4.cardError" ref={card5ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.4.cardError" ref={card5ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.4.shaba">شماره شبا</label>
-                                    <input type="text" id="bankInfo.4.shaba" className="inputShabaFB ltrFB"
+                                    <input type="text" id="bankInfo.4.shaba" className="inputShabaFB element ltrFB"
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba5ErrorRef)}
 
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.4.shabaError" ref={shaba5ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.4.shabaError" ref={shaba5ErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.4.bank">نام بانک </label>
-                                    <select name="" id="bankInfo.4.bank" className="selectFB inputTextFB"
+                                    <select name="" id="bankInfo.4.bank" className="selectFB element inputTextFB"
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'bank') }}
                                         onClick={(e) => delErr(e, bank5ErrorRef)}
 
@@ -1148,7 +1114,7 @@ const AddCustomer = () => {
                                         {optionBank}
                                     </select>
                                 </div>
-                                <div className="errorContainerFB" id="bankInfo.4.bankError" ref={bank5ErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="bankInfo.4.bankError" ref={bank5ErrorRef}> </div>
                             </div>
                         </div>
 
@@ -1175,7 +1141,7 @@ const AddCustomer = () => {
 
                         </div> */}
 
-                        
+
                         <div className={`sectionFB divBtnsFB ${!editCustomer ? '' : 'hideGe'}`}>
                             <Button
                                 variant="success"
@@ -1189,6 +1155,7 @@ const AddCustomer = () => {
                                 type="reset"
                                 variant="warning"
                                 className="btnDelFB"
+                                onClick={resetForm}
                             >
                                 پاک کن
                             </Button>
