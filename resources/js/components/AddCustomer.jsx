@@ -138,10 +138,7 @@ const AddCustomer = () => {
             }
         ]
     });
-
-
-
-
+    console.log(input);
     useEffect(() => {
         getCustomerType()
     }, []);
@@ -157,12 +154,12 @@ const AddCustomer = () => {
 
     }, [customerTypes]);
 
-    const[widthComponent,setWidthComponent]=useState(0) ;
+    const [widthComponent, setWidthComponent] = useState(0);
     useEffect(() => {
-        
-       let widths=container.current.offsetWidth;
+
+        let widths = container.current.offsetWidth;
         setWidthComponent(widths)
-      }, []);
+    }, []);
 
     const addCustomer = () => {
 
@@ -385,7 +382,7 @@ const AddCustomer = () => {
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
 
-        (input == 'mobile' || input == 'telephone') && (value = addZeroFirstStr(value))
+        // (input == 'mobile' || input == 'telephone') && (value = addZeroFirstStr(value))
 
         setInput(prev => ({ ...prev, [input]: value }));
     }
@@ -564,11 +561,18 @@ const AddCustomer = () => {
         setLoading(false)
     }
 
-    const addZeroFirstStr = (val) => {
-        // let val = e.target.value;
+    const addZeroFirstStr = (element) => {
 
-        isFirstDigitZero(val) || (val = 0 + val);
-        return val;
+        let value = input[element];
+
+        if (value && value != '0') {
+            isFirstDigitZero(value) || (value = 0 + value);
+        } else {
+            value = '';
+        }
+
+        setInput(prev => ({ ...prev, [element]: value }));
+
 
     }
 
@@ -576,22 +580,23 @@ const AddCustomer = () => {
         // اگر اولین کاراکتر رشته صفر باشد، تابع true برمی‌گرداند
         return str.charAt(0) === '0';
     }
-    
 
-     
+   const handleSubmitEdit =()=>{
+    
+   }
+
     return (
         <div className="containerAddCustomer" ref={container}
         >
 
-            {/* <ClipLoader color="#123abc" loading={true} size={150} /> */}
-            <ScaleLoader loading={true} cssOverride={{
-                backgroundColor: '#6d6b6b',
+            <ScaleLoader color="#fff" width={8} height={95} margin={4} radius={50} loading={loading} cssOverride={{
+                backgroundColor: '#000',
                 position: 'fixed',
-                top:0,
-                width: widthComponent+'px',
+                top: 0,
+                width: widthComponent + 'px',
                 height: '100vh',
                 zIndex: 100,
-                opacity: 0.5,
+                opacity: 0.2,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
@@ -803,7 +808,9 @@ const AddCustomer = () => {
                                     <div className="divInputFB">
                                         <label htmlFor="mobile">موبایل</label>
                                         <input type="text" id="mobile" className="inputTextFB ltrFB"
-                                            onBlur={e => handleSaveValInput(e, 'mobile')}
+                                            value={input['mobile'] || ''}
+                                            onChange={e => handleSaveValInput(e, 'mobile')}
+                                            onBlur={() => addZeroFirstStr('mobile')}
                                             onFocus={(e) => delErr(e, mobileErrorRef)}
 
                                         />
@@ -816,7 +823,9 @@ const AddCustomer = () => {
                                     <div className="divInputFB">
                                         <label htmlFor="telephone">تلفن </label>
                                         <input type="text" id="telephone" className="inputTextFB ltrFB"
-                                            onBlur={e => handleSaveValInput(e, 'telephone')}
+                                            value={input['telephone'] || ''}
+                                            onChange={e => handleSaveValInput(e, 'telephone')}
+                                            onBlur={() => addZeroFirstStr('mobile')}
                                             onFocus={(e) => delErr(e, telephoneErrorRef)}
 
                                         />
@@ -1144,7 +1153,7 @@ const AddCustomer = () => {
                         </div>
 
 
-                        <div className="sectionFB divBtnsFB">
+                        {/* <div className="sectionFB divBtnsFB">
 
                             <Button
                                 variant="success"
@@ -1164,6 +1173,39 @@ const AddCustomer = () => {
                                 پاک کن
                             </Button>
 
+                        </div> */}
+
+                        
+                        <div className={`sectionFB divBtnsFB ${!editCustomer ? '' : 'hideGe'}`}>
+                            <Button
+                                variant="success"
+                                className="btnSaveFB"
+                                onClick={handleSubmit}
+                            >
+                                ثبت
+                            </Button>
+
+                            <Button
+                                type="reset"
+                                variant="warning"
+                                className="btnDelFB"
+                            >
+                                پاک کن
+                            </Button>
+
+
+                        </div>
+
+                        <div className={`sectionFB divBtnsFB ${!editCustomer ? 'hideGe' : ''}`}>
+
+
+                            <Button
+                                variant="info"
+                                className="btnSaveFB"
+                                onClick={handleSubmitEdit}
+                            >
+                                ویرایش
+                            </Button>
                         </div>
                     </form>
                 </div>
