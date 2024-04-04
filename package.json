@@ -22,6 +22,7 @@
         "react-loading-skeleton": "^3.4.0",
         "react-router-dom": "^6.21.1",
         "react-scoped-css": "^0.0.23",
+        "react-spinners": "^0.13.8",
         "sweetalert2": "^11.10.2",
         "sweetalert2-react-content": "^5.0.7"
     }

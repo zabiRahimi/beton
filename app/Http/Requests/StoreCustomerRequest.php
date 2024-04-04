@@ -28,7 +28,7 @@ class StoreCustomerRequest extends FormRequest
             'types' => ['required', 'array'],
             'types.*' => ['required', 'integer', 'exists:customer_types,id'],
             'nationalCode' => 'nullable|bail|numeric|digits:10|unique:customers',
-            'dateOfBirth' => 'nullable',
+            'dateOfBirth' => 'nullable|date',
             'mobile' => 'nullable|bail|mobile|unique:customers',
             'telephone' => 'nullable|bail|tel',
             'email' => 'nullable|bail|email:rfc,dns|unique:customers',
@@ -49,4 +49,12 @@ class StoreCustomerRequest extends FormRequest
             'bankInfo.*.shaba' => 'nullable|numeric',
         ];
     }
+
+    public function messages(): array
+{
+    return [
+        'name.required' => 'نام مشتری را وارد کنید',
+        'lastName.required' => 'نام خانوادگی مشتری را وارد کنید',
+    ];
+}
 }
