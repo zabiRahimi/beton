@@ -136,7 +136,7 @@ const AddCustomer = () => {
             }
         ]
     });
-    // console.log(input);
+    
     useEffect(() => {
         getCustomerType()
     }, []);
@@ -421,10 +421,9 @@ const AddCustomer = () => {
                     'Content-Type': 'application/json; charset=utf-8'
                 }
             }
-        ).then(response => {
-
+        ).then((response) => {
+            
             form.current.reset();
-            resetForm();
 
             MySwal.fire({
                 icon: "success",
@@ -434,8 +433,9 @@ const AddCustomer = () => {
                 timerProgressBar: true,
                 customClass: {
                     timerProgressBar: '--progressBarColorBlue',
-                }
-            })
+                },
+                didClose: () => resetForm(),
+            });
 
         })
             .catch(
@@ -548,6 +548,16 @@ const AddCustomer = () => {
         for (var i = 0; i < elements.length; i++) {
             elements[i].innerHTML = '';
         }
+
+        const element = form.current;
+        let scrollPosition = window.scrollY || window.pageYOffset;
+
+        const top = element.getBoundingClientRect().top + scrollPosition - 50;
+        window.scrollTo({
+            top: top,
+            behavior: 'smooth'
+        });
+
     }
 
     return (
