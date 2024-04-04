@@ -20,7 +20,9 @@ use App\Http\Controllers\CustomerTypeController;
 Route::controller(CustomerController::class)->group(function () {
     
     Route::post('/addCustomer', 'store');
+    Route::get('/getAllCustomer', 'index');
 });
+
 
 Route::controller(CustomerTypeController::class)->group(function () {
     

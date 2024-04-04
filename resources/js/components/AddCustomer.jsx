@@ -104,6 +104,9 @@ const AddCustomer = () => {
     const [hideGetCustomer, setHideGetCustomer] = useState(true);
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
+    const [customers, setCustomers] = useState(null);
+    console.log(customers);
+
     const [customerTypes, setCustomerTypes] = useState(null);
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
 
@@ -138,7 +141,8 @@ const AddCustomer = () => {
     });
     
     useEffect(() => {
-        getCustomerType()
+        getCustomerType();
+        getCustomer();
     }, []);
 
     useEffect(() => {
@@ -170,7 +174,7 @@ const AddCustomer = () => {
 
     }
 
-    const getCustomer = () => {
+    const showCustomer = () => {
 
         setDisabledBtnAddGe(false);
         setDisabledBtnGetGe(true);
@@ -187,6 +191,12 @@ const AddCustomer = () => {
     async function getCustomerType() {
         await axios.get("/api/v1/getAllCustomerType").then((response) => {
             setCustomerTypes(response.data.CustomerTypes);
+        });
+    }
+
+    async function getCustomer() {
+        await axios.get("/api/v1/getAllCustomer").then((response) => {
+            setCustomers(response.data.Customers);
         });
     }
 
@@ -591,7 +601,7 @@ const AddCustomer = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={getCustomer}
+                    onClick={showCustomer}
                     disabled={disabledBtnGetGe}
                 >
                     مشاهده مشتری‌ها
