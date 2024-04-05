@@ -134,15 +134,51 @@
 **
 */
 
-.nameShowGE {
-    width: 30%;
+.nameShowGE,
+.lastNameShowGE {
+    width: 25%;
     padding: 0 30px;
 }
+
+
 
 .typeShowGe {
     width: 25%;
     padding: 0 5px;
     font-size: 0.8rem;
+    position: relative;
+}
+
+.typeTitleShowGe{
+    height: 30px;
+    padding: 0 3px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #ecebeb;
+    border-radius: 4px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.typeTitleSpanShowGe{
+    width: 100%;
+    display: inline-block;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.TypeBodyShowGe{
+    width: calc(100% - 10px);
+    
+    position: absolute;
+    top: 32px;
+    background-color: #fff;
+    z-index: 20;
+}
+.TypeBodyItemShowGe{
+    /* margin-top: 2px; */
+    padding: 5px;
 }
 
 .headTypeShowGe {

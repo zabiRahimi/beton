@@ -13,6 +13,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+// import Skeleton from 'react-loading-skeleton';
+// import 'react-loading-skeleton/dist/skeleton.css';
 
 const AddCustomer = () => {
 
@@ -139,7 +141,7 @@ const AddCustomer = () => {
             }
         ]
     });
-    
+
     useEffect(() => {
         getCustomerType();
         getCustomer();
@@ -183,6 +185,53 @@ const AddCustomer = () => {
 
         setHideGetCustomer(false);
 
+    }
+
+    const showCustomerItems = () => {
+        let value = customers.map((customer, i) => {
+
+            return <div className="rowListShowGe" key={i}>
+                <span className="rowNumShowGe">{i + 1}</span>
+                <span className="nameShowGE">{customer['name']}</span>
+                <span className="lastNameShowGE">{customer['lastName']}</span>
+                <div className="typeShowGe">
+                    <div className="typeTitleShowGe" onClick={}>
+                        <span className="typeTitleSpanShowGe">
+                            {customer['customer_types'].map((customerType, iType) => {
+                                return (iType > 0 ? '، ' + customerType['type'] : customerType['type'])
+                            })}
+                        </span>
+                        <i className="icofont-rounded-down" />
+                        <i className="icofont-rounded-up --displayNone"/>
+                    </div>
+                    <div className="TypeBodyShowGe --displayNone">
+                        {customer['customer_types'].map((customerType, iType) => {
+                            return <div className="TypeBodyItemShowGe">{customerType['type']}</div>
+                        })}
+                    </div>
+
+                </div>
+
+                <div className="divEditGe">
+                    <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                        onClick={showFormEditCustomer}
+                    >
+                        <i className="icofont-pencil iEditGe" />
+                    </button>
+                </div>
+
+                <div className="divDelGe">
+
+                    <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                        <i className="icofont-trash iDelGe" />
+                    </button>
+                </div>
+
+            </div>
+
+        })
+
+        return value;
     }
 
     /**
@@ -432,7 +481,7 @@ const AddCustomer = () => {
                 }
             }
         ).then((response) => {
-            
+
             form.current.reset();
 
             MySwal.fire({
@@ -453,7 +502,7 @@ const AddCustomer = () => {
                     if (error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
-                       
+
                         const element = document.getElementById(id);
                         let scrollPosition = window.scrollY || window.pageYOffset;
 
@@ -552,7 +601,7 @@ const AddCustomer = () => {
         for (var i = 0; i < elements.length; i++) {
             elements[i].classList.remove('borderRedFB');
         }
-        
+
 
         var elements = document.getElementsByClassName('elementError');
         for (var i = 0; i < elements.length; i++) {
@@ -749,7 +798,7 @@ const AddCustomer = () => {
 
                                         <div className="divDownDateAcus" >
                                             <select
-                                            className="element"
+                                                className="element"
                                                 value={day}
                                                 ref={daySelect}
                                                 onChange={(e) => changeDay(e)}
@@ -760,7 +809,7 @@ const AddCustomer = () => {
                                                 {optionDays}
                                             </select>
                                             <select
-                                            className="element"
+                                                className="element"
                                                 value={month}
                                                 ref={monthSelect}
                                                 onChange={(e) => changeMonth(e)}
@@ -771,7 +820,7 @@ const AddCustomer = () => {
                                                 {optionMonth}
                                             </select>
                                             <select
-                                            className="element"
+                                                className="element"
                                                 value={year}
                                                 ref={yearSelect}
                                                 onChange={(e) => { changeYear(e) }}
@@ -1207,6 +1256,8 @@ const AddCustomer = () => {
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
                             <span className="nameShowGE ">نام مشتری</span>
+                            <span className="lastNameShowGE">نام خانوادگی</span>
+
                             <span className="typeShowGe headTypeShowGe">نوع مشتری</span>
 
                             <span className="headEditShowGe"> ویرایش  </span>
@@ -1214,7 +1265,9 @@ const AddCustomer = () => {
 
                         </div>
 
-                        <div className="rowListShowGe">
+                        {customers ? showCustomerItems() : <Skeleton height={40} count={12} />}
+
+                        {/* <div className="rowListShowGe">
                             <span className="rowNumShowGe">1</span>
                             <span className="nameShowGE">رحیمی</span>
                             <span className="typeShowGe">خریدار</span>
@@ -1234,9 +1287,9 @@ const AddCustomer = () => {
                                 </button>
                             </div>
 
-                        </div>
+                        </div> */}
 
-                        <div className="rowListShowGe">
+                        {/* <div className="rowListShowGe">
                             <span className="rowNumShowGe">2</span>
                             <span className="nameShowGE">ابراهیمی</span>
                             <span className="typeShowGe">فروشنده شن و ماسه</span>
@@ -1253,9 +1306,9 @@ const AddCustomer = () => {
                                 </button>
                             </div>
 
-                        </div>
+                        </div> */}
 
-                        <div className="rowListShowGe">
+                        {/* <div className="rowListShowGe">
                             <span className="rowNumShowGe">3</span>
                             <span className="nameShowGE">اسکندری</span>
                             <span className="typeShowGe">خریدار</span>
@@ -1272,9 +1325,9 @@ const AddCustomer = () => {
                                 </button>
                             </div>
 
-                        </div>
+                        </div> */}
 
-                        <div className="rowListShowGe">
+                        {/* <div className="rowListShowGe">
                             <span className="rowNumShowGe">4</span>
                             <span className="nameShowGE">نعمت الهی</span>
                             <span className="typeShowGe">فروشنده سیمان</span>
@@ -1296,9 +1349,9 @@ const AddCustomer = () => {
                                 </button>
                             </div>
 
-                        </div>
+                        </div> */}
 
-                        <div className="rowListShowGe">
+                        {/* <div className="rowListShowGe">
                             <span className="rowNumShowGe">5</span>
                             <span className="nameShowGE">مشکین فام</span>
                             <span className="typeShowGe">فروشنده</span>
@@ -1316,9 +1369,9 @@ const AddCustomer = () => {
                                 </button>
                             </div>
 
-                        </div>
+                        </div> */}
 
-                        <div className="rowListShowGe">
+                        {/* <div className="rowListShowGe">
                             <span className="rowNumShowGe">6</span>
                             <span className="nameShowGE">مهرآور</span>
                             <span className="typeShowGe">راننده</span>
@@ -1336,9 +1389,9 @@ const AddCustomer = () => {
                                 </button>
                             </div>
 
-                        </div>
+                        </div> */}
 
-                        <div className="rowListShowGe">
+                        {/* <div className="rowListShowGe">
 
                             <span className="rowNumShowGe">7</span>
                             <span className="nameShowGE">جاویدی</span>
@@ -1358,7 +1411,7 @@ const AddCustomer = () => {
                                 </button>
                             </div>
 
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
