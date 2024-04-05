@@ -221,10 +221,13 @@ const AddCustomer = () => {
     }
 
     const showCustomerItems = () => {
-        let value = customers.map((customer, i) => {
+        let numberRow= customers.length;
+        const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
+        console.log(`num : ${numberRow}`);
+        let value = reversedCustomers.map((customer, i) => {
 
             return <div className="rowListShowGe" key={i}>
-                <span className="rowNumShowGe">{i + 1}</span>
+                <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="nameShowGE">{customer['name']}</span>
                 <span className="lastNameShowGE">{customer['lastName']}</span>
                 <div className="typeShowGe">
@@ -537,7 +540,9 @@ const AddCustomer = () => {
                 }
             }
         ).then((response) => {
-
+            // console.log(response.data.customer);
+            setCustomers(prev => [...prev, response.data.customer]);
+           
             form.current.reset();
 
             MySwal.fire({
