@@ -97,6 +97,10 @@ const AddCustomer = () => {
     const divItemCustomerType = useRef(null);
     const errorRCTYitem = useRef(null);
     const [refs, setRefs] = useState({});
+    const [refUpIcons, setRefUpIcons] = useState({});
+    const [refDownIcons, setRefDownIcons] = useState({});
+    const [refListTypes, setRefListTypes] = useState({});
+
 
 
     const [loading, setLoading] = useState(false);
@@ -158,6 +162,35 @@ const AddCustomer = () => {
 
     }, [customerTypes]);
 
+    /**
+     * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
+     * نوع مشتری هر رکورد است
+     */
+    useEffect(() => {
+        if (customers) {
+            const upIcons = customers.reduce((acc, value) => {
+                acc['up'+value.id] = createRef();
+                return acc;
+            }, {});
+
+            const downIcons = customers.reduce((acc, value) => {
+                acc['down'+value.id] = createRef();
+                return acc;
+            }, {});
+
+            const listTypes = customers.reduce((acc, value) => {
+                acc['list'+value.id] = createRef();
+                return acc;
+            }, {});
+
+            setRefUpIcons(upIcons);
+            setRefDownIcons(downIcons);
+            setRefListTypes(listTypes);
+
+        }
+
+    }, [customers]);
+
     const [widthComponent, setWidthComponent] = useState(0);
     useEffect(() => {
 
@@ -195,18 +228,35 @@ const AddCustomer = () => {
                 <span className="nameShowGE">{customer['name']}</span>
                 <span className="lastNameShowGE">{customer['lastName']}</span>
                 <div className="typeShowGe">
-                    <div className="typeTitleShowGe" onClick={}>
+                    <div className="typeTitleShowGe" onClick={() => showListTypes(customer.id)}>
                         <span className="typeTitleSpanShowGe">
                             {customer['customer_types'].map((customerType, iType) => {
                                 return (iType > 0 ? '، ' + customerType['type'] : customerType['type'])
                             })}
                         </span>
-                        <i className="icofont-rounded-down" />
-                        <i className="icofont-rounded-up --displayNone"/>
+                        <i
+                            className="icofont-rounded-down"
+                            key={'down'+customer.id}
+                            ref={refDownIcons['down'+customer.id]}
+                        />
+                        <i
+                            className="icofont-rounded-up  --displayNone"
+                            key={'up'+customer.id}
+                            ref={refUpIcons['up'+customer.id]}
+                        />
                     </div>
-                    <div className="TypeBodyShowGe --displayNone">
+                    <div
+                        className="TypeBodyShowGe --displayNone"
+                        key={'list'+customer.id}
+                        ref={refListTypes['list'+customer.id]}
+                    >
                         {customer['customer_types'].map((customerType, iType) => {
-                            return <div className="TypeBodyItemShowGe">{customerType['type']}</div>
+                            return <div
+                                className="TypeBodyItemShowGe"
+                                key={iType}
+                            >
+                                {customerType['type']}
+                            </div>
                         })}
                     </div>
 
@@ -232,6 +282,12 @@ const AddCustomer = () => {
         })
 
         return value;
+    }
+
+    const showListTypes = (id) => {
+        refDownIcons['down'+id].current.classList.toggle('--displayNone');
+        refUpIcons['up'+id].current.classList.toggle('--displayNone');
+        refListTypes['list'+id].current.classList.toggle('--displayNone');
     }
 
     /**
