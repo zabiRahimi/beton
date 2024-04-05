@@ -149,7 +149,7 @@
     position: relative;
 }
 
-.typeTitleShowGe{
+.typeTitleShowGe {
     height: 30px;
     padding: 0 3px;
     display: flex;
@@ -160,23 +160,26 @@
     cursor: pointer;
 }
 
-.typeTitleSpanShowGe{
+.typeTitleSpanShowGe {
     width: 100%;
     display: inline-block;
-    white-space: nowrap; 
-    overflow: hidden; 
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.TypeBodyShowGe{
+.TypeBodyShowGe {
     width: calc(100% - 10px);
-    
+
     position: absolute;
     top: 32px;
     background-color: #fff;
     z-index: 20;
+    border-radius:0 0 2px 2px;
+   box-shadow: 0px 5px 9px 2px #bebebe;
 }
-.TypeBodyItemShowGe{
+
+.TypeBodyItemShowGe {
     /* margin-top: 2px; */
     padding: 5px;
 }
@@ -193,18 +196,18 @@
 
 
 
-.licensePlateShowGe{
+.licensePlateShowGe {
     width: 23%;
-    margin:0 13px;
+    margin: 0 13px;
     text-align: center;
     /* background-color: #525252; */
 }
 
-.TrackTypeShowGe{
+.TrackTypeShowGe {
     width: 22%;
 }
 
-.truckOwnerShowGe{
+.truckOwnerShowGe {
     width: 22%;
 }
 
@@ -215,12 +218,12 @@
  ********* استایل مربوط به کالا و خدمات ********** 
 **
 */
-.GASNameShowGe{
+.GASNameShowGe {
     width: 23%;
-    margin:0 8% 0 13px;
+    margin: 0 8% 0 13px;
 }
 
-.GASTypeShowGe{
+.GASTypeShowGe {
     width: 23%;
 }
 
