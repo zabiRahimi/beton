@@ -320,7 +320,7 @@ const AddCustomer = () => {
     const showCustomerTypes = () => {
         let value = customerTypes.map((customerType, i) => {
 
-            return <div className="itemCustomerTypeFB" onClick={() => AddCustomerType(customerType['id'], customerType['type'])}
+            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e,customerType['id'], customerType['type'])}
                 key={i}>
                 <div className="checkedItemCustomerTypeFB" key={customerType['id']} ref={refs[customerType.id]}>
                     <i className="icofont-check-alt " />
@@ -345,7 +345,8 @@ const AddCustomer = () => {
         return value;
     }
 
-    const AddCustomerType = (id, type) => {
+    const AddCustomerType = (e,id, type) => {
+        e.preventDefault();
         let ref = refs[id]
         let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         if (val) {
@@ -473,12 +474,30 @@ const AddCustomer = () => {
 
    const getAndSetCustomer=(id0)=>{
     let customer = customers.find(customer => customer.id === id0);
-    setCustomerTypeSelected()
+
+    
     const { id, created_at,updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
+    const { pivot, ...restTypes } = rest.customer_types;//نادیده گرفتن کلید های مشخص شده
    
-    setInput(rest)
+    setInput(rest);
+    const updatedCustomerTypes = rest.customer_types.map(obj => {
+        const { pivot, ...rest } = obj;
+        return rest;
+      });
+    console.log(updatedCustomerTypes);
+    setCustomerTypeSelected(updatedCustomerTypes);
+    lableCustomerType.current.textContent=''//حذف کلمه انتخاب از لیبل لیست
+    updatedCustomerTypes.map((type, i)=>{
+        let ref=refs[type.id];
+        ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+        lableCustomerType.current.textContent+=i == 0 ? type.type:'، '+ type.type;
+    });
+    // const typesString = updated.map((item) => item.type).join(' , ');
+
+    //     lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
+    
    }
-console.log(input);
+console.log(customerTypes);
     const showSectionBank = (ref, refBtn, state, index) => {
         ref.current.classList.toggle('--displayNone');
         refBtn.current.classList.toggle('--displayNone');
