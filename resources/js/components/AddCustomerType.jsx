@@ -115,7 +115,7 @@ const AddCustomerType = () => {
         ).then(response => {
 
             // const id = response.data.zabi;
-            const id = response;
+            // const id = response;
 
 
             setCustomerTypes(prevTypes => [...prevTypes, response.data.CustomerTypes]);
