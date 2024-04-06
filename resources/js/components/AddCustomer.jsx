@@ -111,7 +111,6 @@ const AddCustomer = () => {
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
     const [customers, setCustomers] = useState(null);
-    console.log(customers);
 
     const [customerTypes, setCustomerTypes] = useState(null);
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
@@ -223,7 +222,6 @@ const AddCustomer = () => {
     const showCustomerItems = () => {
         let numberRow= customers.length;
         const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
-        console.log(`num : ${numberRow}`);
         let value = reversedCustomers.map((customer, i) => {
 
             return <div className="rowListShowGe" key={i}>
@@ -267,7 +265,7 @@ const AddCustomer = () => {
 
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={showFormEditCustomer}
+                        onClick={()=>showFormEditCustomer(customer.id)}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -461,7 +459,7 @@ const AddCustomer = () => {
 
     }
 
-    const showFormEditCustomer = () => {
+    const showFormEditCustomer = (id) => {
 
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(false);
@@ -469,9 +467,17 @@ const AddCustomer = () => {
         setFlexDirection('columnGe');
 
         setEditCustomer(true);
+        getAndSetCustomer(id);
 
     }
 
+   const getAndSetCustomer=(id0)=>{
+    let customer = customers.find(customer => customer.id === id0);
+    const { id, created_at,updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
+    // console.log(rest);
+    setInput(rest)
+   }
+console.log(input);
     const showSectionBank = (ref, refBtn, state, index) => {
         ref.current.classList.toggle('--displayNone');
         refBtn.current.classList.toggle('--displayNone');
@@ -540,7 +546,6 @@ const AddCustomer = () => {
                 }
             }
         ).then((response) => {
-            // console.log(response.data.customer);
             setCustomers(prev => [...prev, response.data.customer]);
            
             form.current.reset();
@@ -683,8 +688,10 @@ const AddCustomer = () => {
     return (
         <div className="containerAddCustomer" ref={container}
         >
-            <ScaleLoader color="#fff" width={8} height={95} margin={4} radius={50} loading={loading} cssOverride={{
-                backgroundColor: '#000',
+
+            {/* <ClipLoader color="#123abc" loading={true} size={150} /> */}
+            <ScaleLoader loading={loading} cssOverride={{
+                backgroundColor: '#6d6b6b',
                 position: 'fixed',
                 top: 0,
                 width: widthComponent + 'px',
@@ -732,6 +739,7 @@ const AddCustomer = () => {
                                         type="text"
                                         className="inputTextFB element"
                                         id="name"
+                                        defaultValue={input.name}
                                         onChange={e => handleSaveValInput(e, 'name')}
                                         onFocus={e => delErr(e, nameErrorRef)}
                                         autoFocus
@@ -748,6 +756,7 @@ const AddCustomer = () => {
                                         type="text"
                                         className="inputTextFB element"
                                         id="lastName"
+                                        defaultValue={input.lastName}
                                         onChange={e => handleSaveValInput(e, 'lastName')}
                                         onFocus={e => delErr(e, lastNameErrorRef)}
                                     />
@@ -763,6 +772,7 @@ const AddCustomer = () => {
                                         type="text"
                                         className="inputTextFB element"
                                         id="father"
+                                        defaultValue={input.father}
                                         onChange={e => handleSaveValInput(e, 'father')}
                                         onFocus={e => delErr(e, fatherErrorRef)}
                                     />
@@ -810,7 +820,11 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="nationalCode">کد ملی </label>
-                                    <input type="text" id="nationalCode" className="inputTextFB ltrFB element"
+                                    <input 
+                                    type="text" 
+                                    id="nationalCode" 
+                                    className="inputTextFB ltrFB element"
+                                    defaultValue={input.nationalCode}
                                         onChange={e => handleSaveValInput(e, 'nationalCode')}
                                         onFocus={(e) => delErr(e, nationalCodeErrorRef)}
                                     />
@@ -932,8 +946,11 @@ const AddCustomer = () => {
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="postalCode">کد پستی</label>
-                                        <input type="text"
-                                            id="postalCode" className="inputTextFB ltrFB element"
+                                        <input
+                                         type="text"
+                                         className="inputTextFB ltrFB element"
+                                         id="postalCode"
+                                             defaultValue={input.postalCode}
                                             onChange={e => handleSaveValInput(e, 'postalCode')}
                                             onFocus={(e) => delErr(e, postalCodeErrorRef)}
 
@@ -944,7 +961,11 @@ const AddCustomer = () => {
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="email">ایمیل</label>
-                                        <input type="text" id="email" className="inputTextFB ltrFB element"
+                                        <input
+                                         type="text"
+                                          id="email" 
+                                          className="inputTextFB ltrFB element"
+                                          defaultValue={input.email}
                                             onChange={e => handleSaveValInput(e, 'email')}
                                             onFocus={(e) => delErr(e, emailErrorRef)}
 
@@ -958,7 +979,10 @@ const AddCustomer = () => {
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="address">آدرس</label>
-                                        <textarea id="address" className="textareaAddressACu"
+                                        <textarea
+                                         id="address" 
+                                         className="textareaAddressACu"
+                                         defaultValue={input.address}
                                             onChange={e => handleSaveValInput(e, 'address')}
                                             onFocus={(e) => delErr(e, addressErrorRef)}
 
@@ -973,8 +997,11 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.0.account">شماره حساب</label>
-                                    <input type="text" id="bankInfo.0.account"
+                                    <input 
+                                    type="text"
+                                     id="bankInfo.0.account"
                                         className="inputTextFB ltrFB element"
+                                        defaultValue={input.name}
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'account') }}
                                         onFocus={(e) => delErr(e, account1ErrorRef)}
 
@@ -1249,28 +1276,6 @@ const AddCustomer = () => {
                         </div>
 
 
-                        {/* <div className="sectionFB divBtnsFB">
-
-                            <Button
-                                variant="success"
-                                className="btnSaveFB"
-                                onClick={handleSubmit}
-                            >
-                                {editCustomer ? 'ویرایش' : 'ثبت'}
-                            </Button>
-
-                            <Button
-                                type="reset"
-                                variant="warning"
-                                className="btnDelFB"
-                                // className={editCustomer ? 'hideGe' : ''}
-                                onClick={deleteDate}
-                            >
-                                پاک کن
-                            </Button>
-
-                        </div> */}
-
 
                         <div className={`sectionFB divBtnsFB ${!editCustomer ? '' : 'hideGe'}`}>
                             <Button
@@ -1328,151 +1333,7 @@ const AddCustomer = () => {
 
                         {customers ? showCustomerItems() : <Skeleton height={40} count={12} />}
 
-                        {/* <div className="rowListShowGe">
-                            <span className="rowNumShowGe">1</span>
-                            <span className="nameShowGE">رحیمی</span>
-                            <span className="typeShowGe">خریدار</span>
 
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showFormEditCustomer}
-                                >
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div> */}
-
-                        {/* <div className="rowListShowGe">
-                            <span className="rowNumShowGe">2</span>
-                            <span className="nameShowGE">ابراهیمی</span>
-                            <span className="typeShowGe">فروشنده شن و ماسه</span>
-
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش ">
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div> */}
-
-                        {/* <div className="rowListShowGe">
-                            <span className="rowNumShowGe">3</span>
-                            <span className="nameShowGE">اسکندری</span>
-                            <span className="typeShowGe">خریدار</span>
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showFormEditCustomer}>
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div> */}
-
-                        {/* <div className="rowListShowGe">
-                            <span className="rowNumShowGe">4</span>
-                            <span className="nameShowGE">نعمت الهی</span>
-                            <span className="typeShowGe">فروشنده سیمان</span>
-                            <div className="divEditGe">
-                                <button
-                                    className="--styleLessBtn btnEditGe"
-                                    title=" ویرایش "
-                                    onClick={showFormEditCustomer}
-                                >
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف "
-                                    onClick={showFormEditCustomer}
-                                >
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div> */}
-
-                        {/* <div className="rowListShowGe">
-                            <span className="rowNumShowGe">5</span>
-                            <span className="nameShowGE">مشکین فام</span>
-                            <span className="typeShowGe">فروشنده</span>
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showFormEditCustomer}
-                                >
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div> */}
-
-                        {/* <div className="rowListShowGe">
-                            <span className="rowNumShowGe">6</span>
-                            <span className="nameShowGE">مهرآور</span>
-                            <span className="typeShowGe">راننده</span>
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showFormEditCustomer}
-                                >
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div> */}
-
-                        {/* <div className="rowListShowGe">
-
-                            <span className="rowNumShowGe">7</span>
-                            <span className="nameShowGE">جاویدی</span>
-                            <span className="typeShowGe">پرسنل</span>
-
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showFormEditCustomer}
-                                >
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div> */}
                     </div>
                 </div>
 
