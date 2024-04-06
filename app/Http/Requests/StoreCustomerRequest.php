@@ -31,7 +31,7 @@ class StoreCustomerRequest extends FormRequest
             'dateOfBirth' => 'nullable|date',
             'mobile' => 'nullable|bail|mobile|unique:customers',
             'telephone' => 'nullable|bail|tel',
-            'email' => 'nullable|bail|email:rfc,dns|unique:customers',
+            'email' => 'nullable|bail|email:rfc|unique:customers',
             'postalCode' => 'nullable|bail|numeric|digits:10',
             'address' => 'nullable|string',
             'bankInfo' => 'nullable|array',
