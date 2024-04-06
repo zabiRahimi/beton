@@ -584,7 +584,7 @@ const AddCustomer = () => {
         >
 
             {/* <ClipLoader color="#123abc" loading={true} size={150} /> */}
-            <ScaleLoader loading={true} cssOverride={{
+            <ScaleLoader loading={loading} cssOverride={{
                 backgroundColor: '#6d6b6b',
                 position: 'fixed',
                 top:0,
