@@ -473,8 +473,9 @@ const AddCustomer = () => {
 
    const getAndSetCustomer=(id0)=>{
     let customer = customers.find(customer => customer.id === id0);
+    setCustomerTypeSelected()
     const { id, created_at,updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
-    // console.log(rest);
+   
     setInput(rest)
    }
 console.log(input);
