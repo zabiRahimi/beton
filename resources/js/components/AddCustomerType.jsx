@@ -87,7 +87,7 @@ const AddCustomerType = () => {
      * false = state edit 
      */
     const handleChangeInput = (event, state) => {
-        console.log(state);
+       
         const val = event.target.value;
         if (state) {
             setType(val);
@@ -184,8 +184,6 @@ const AddCustomerType = () => {
     };
 
     const handleSubmitEdit = (e) => {
-        e.preventDefault();
-        console.log('edit');
 
         axios.patch(
             `/api/v1/editCustomerType/${editType['id']}`,
@@ -199,7 +197,7 @@ const AddCustomerType = () => {
             }
         ).then(response => {
             const result = response.data.customerType;
-            console.log(result);
+            
             // setCustomerTypes(prevTypes => [...prevTypes, response.data.CustomerTypes]);
 
             formRef.current.reset();
@@ -224,7 +222,7 @@ const AddCustomerType = () => {
             })
         })
             .catch(error => {
-                console.log(error.response.data.errors);
+                
                 if (error.response.status == 422) {
                     
                 }

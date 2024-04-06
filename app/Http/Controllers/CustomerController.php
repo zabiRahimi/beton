@@ -15,7 +15,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $Customers = Customer::orderBy('id')->with(['customerTypes','bankInfo'])->get();
+
+        return response()->json(['Customers' => $Customers]);
     }
 
     // /**
@@ -41,7 +43,7 @@ class CustomerController extends Controller
             $customer->save();
 
             $customer->customerTypes()->sync($request->validated()['types']);
-            $zabi = $request->validated()['bankInfo'];
+            // $zabi = $request->validated()['bankInfo'];
 
             try {
 
@@ -58,7 +60,8 @@ class CustomerController extends Controller
 
                 // \Log::error($e->getMessage());
             }
-
+            // اضافه کردن رکوردهای ذخیره شده در دو جدول دیگر به متغییر زیر
+            $customer->load('customerTypes', 'bankInfo');
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -66,7 +69,7 @@ class CustomerController extends Controller
             throw $e;
         }
 
-        return response()->json(200);
+        return response()->json(['customer'=>  $customer],200);
     }
 
     /**

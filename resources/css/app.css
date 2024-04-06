@@ -125,6 +125,7 @@ body {
 /**
    ********* for mySwal ********** 
 */
+/* html.swal2-shown,body.swal2-shown { overflow-y: hidden !important; height: auto!important;} */
 
 .--mySwalPopup {
     width: 85%;
