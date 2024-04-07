@@ -168,17 +168,17 @@ const AddCustomer = () => {
     useEffect(() => {
         if (customers) {
             const upIcons = customers.reduce((acc, value) => {
-                acc['up'+value.id] = createRef();
+                acc['up' + value.id] = createRef();
                 return acc;
             }, {});
 
             const downIcons = customers.reduce((acc, value) => {
-                acc['down'+value.id] = createRef();
+                acc['down' + value.id] = createRef();
                 return acc;
             }, {});
 
             const listTypes = customers.reduce((acc, value) => {
-                acc['list'+value.id] = createRef();
+                acc['list' + value.id] = createRef();
                 return acc;
             }, {});
 
@@ -220,7 +220,7 @@ const AddCustomer = () => {
     }
 
     const showCustomerItems = () => {
-        let numberRow= customers.length;
+        let numberRow = customers.length;
         const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedCustomers.map((customer, i) => {
 
@@ -237,19 +237,19 @@ const AddCustomer = () => {
                         </span>
                         <i
                             className="icofont-rounded-down"
-                            key={'down'+customer.id}
-                            ref={refDownIcons['down'+customer.id]}
+                            key={'down' + customer.id}
+                            ref={refDownIcons['down' + customer.id]}
                         />
                         <i
                             className="icofont-rounded-up  --displayNone"
-                            key={'up'+customer.id}
-                            ref={refUpIcons['up'+customer.id]}
+                            key={'up' + customer.id}
+                            ref={refUpIcons['up' + customer.id]}
                         />
                     </div>
                     <div
                         className="TypeBodyShowGe --displayNone"
-                        key={'list'+customer.id}
-                        ref={refListTypes['list'+customer.id]}
+                        key={'list' + customer.id}
+                        ref={refListTypes['list' + customer.id]}
                     >
                         {customer['customer_types'].map((customerType, iType) => {
                             return <div
@@ -265,7 +265,7 @@ const AddCustomer = () => {
 
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={()=>showFormEditCustomer(customer.id)}
+                        onClick={() => showFormEditCustomer(customer.id)}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -286,9 +286,9 @@ const AddCustomer = () => {
     }
 
     const showListTypes = (id) => {
-        refDownIcons['down'+id].current.classList.toggle('--displayNone');
-        refUpIcons['up'+id].current.classList.toggle('--displayNone');
-        refListTypes['list'+id].current.classList.toggle('--displayNone');
+        refDownIcons['down' + id].current.classList.toggle('--displayNone');
+        refUpIcons['up' + id].current.classList.toggle('--displayNone');
+        refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
     /**
@@ -320,7 +320,7 @@ const AddCustomer = () => {
     const showCustomerTypes = () => {
         let value = customerTypes.map((customerType, i) => {
 
-            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e,customerType['id'], customerType['type'])}
+            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e, customerType['id'], customerType['type'])}
                 key={i}>
                 <div className="checkedItemCustomerTypeFB" key={customerType['id']} ref={refs[customerType.id]}>
                     <i className="icofont-check-alt " />
@@ -345,7 +345,7 @@ const AddCustomer = () => {
         return value;
     }
 
-    const AddCustomerType = (e,id, type) => {
+    const AddCustomerType = (e, id, type) => {
         e.preventDefault();
         let ref = refs[id]
         let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
@@ -360,6 +360,7 @@ const AddCustomer = () => {
 
             errorRCTYitem.current.classList.add('--hidden');
         } else {
+
             const updated = customerTypeSelected.filter(item => item.id !== id);
             setCustomerTypeSelected(updated);
             setInput(prevState => ({
@@ -472,39 +473,68 @@ const AddCustomer = () => {
 
     }
 
-   const getAndSetCustomer=(id0)=>{
-    let customer = customers.find(customer => customer.id === id0);
+    const getAndSetCustomer = (id0) => {
+        let customer = customers.find(customer => customer.id === id0);
 
-    
-    const { id, created_at,updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
-    const { pivot, ...restTypes } = rest.customer_types;//نادیده گرفتن کلید های مشخص شده
-   
-    setInput(rest);
-    const updatedCustomerTypes = rest.customer_types.map(obj => {
-        const { pivot, ...rest } = obj;
-        return rest;
-      });
-    console.log(updatedCustomerTypes);
-    setCustomerTypeSelected(updatedCustomerTypes);
-    lableCustomerType.current.textContent=''//حذف کلمه انتخاب از لیبل لیست
-    updatedCustomerTypes.map((type, i)=>{
-        let ref=refs[type.id];
-        ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-        lableCustomerType.current.textContent+=i == 0 ? type.type:'، '+ type.type;
-    });
-    // const typesString = updated.map((item) => item.type).join(' , ');
+        const { id, created_at, updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
+        renameKey(rest, 'customer_types', 'types');
+        renameKey(rest, 'bank_info', 'bankInfo');
 
-    //     lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
-    
-   }
-console.log(customerTypes);
+        // const { pivot, ...restTypes } = rest.types;//نادیده گرفتن کلید های مشخص شده
+
+        setInput(rest);
+        const updatedCustomerTypes = rest.types.map(obj => {
+            const { pivot, ...rest } = obj;
+            return rest;
+        });
+        console.log(rest);
+        console.log(rest.dateOfBirth);
+        setCustomerTypeSelected(updatedCustomerTypes);
+
+        if (rest.dateOfBirth) {
+            let parts = rest.dateOfBirth.split("/");
+            setYear(parts[0]);
+            setMonth(parts[1]);
+            setDay(parts[2]);
+        }
+
+
+        lableCustomerType.current.textContent = ''//حذف کلمه انتخاب از لیبل لیست
+        updatedCustomerTypes.map((type, i) => {
+            let ref = refs[type.id];
+            ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+            lableCustomerType.current.textContent += i == 0 ? type.type : '، ' + type.type;
+        });
+    }
+
+    /**
+     * این متد نام کلید یک آرایه یا یک آبجکت را تغییر می دهد
+     * @param {نام آبجکت یا آرایه} obj 
+     * @param {نام کلید فعلی} oldKey 
+     * @param {نام کلید جدید} newKey 
+     */
+    function renameKey(obj, oldKey, newKey) {
+        if (oldKey !== newKey) {
+            Object.defineProperty(obj, newKey,
+                Object.getOwnPropertyDescriptor(obj, oldKey));
+            delete obj[oldKey];
+        }
+    }
+
+    /**
+     * چنانچه کاربر بخواهد چندین شماره حساب یا شماره کارت وارد کند
+     * با استفاده از این متد فیلدهای لازم برای کاربر نمایش داده می شود
+     * @param {*} ref 
+     * @param {*} refBtn 
+     * @param {*} state 
+     * @param {*} index 
+     */
     const showSectionBank = (ref, refBtn, state, index) => {
         ref.current.classList.toggle('--displayNone');
         refBtn.current.classList.toggle('--displayNone');
         if (state) {
             setInput(prevInput => {
                 let newBankInfo = [...prevInput.bankInfo];
-                // newBankInfo.splice(index, 0, {bank: '', account: '', card: '', shaba:''}); 
                 newBankInfo[index] = { bank: '', account: '', card: '', shaba: '' };
                 return { ...prevInput, bankInfo: newBankInfo };
             });
@@ -512,21 +542,23 @@ console.log(customerTypes);
         } else {
             setInput(prevInput => {
                 let newBankInfo = [...prevInput.bankInfo];
-                newBankInfo[index] = {}; // یا newBankInfo[index] = {};
+                newBankInfo[index] = {};
                 return { ...prevInput, bankInfo: newBankInfo };
-                // let newBankInfo = prevInput.bankInfo.filter((item, i) => i !== index); 
-                // return {...prevInput, bankInfo: newBankInfo}; 
             });
-
         }
     }
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-
         setInput(prev => ({ ...prev, [input]: value }));
     }
 
+    /**
+     * برای ذخیره شماره حسابها و یا شماره کارت های متعدد
+     * @param {*} e 
+     * @param {*} index 
+     * @param {*} input 
+     */
     const handleSaveBalInputBank = (e, index, input) => {
         let { value } = e.target;
         setInput(prevInput => {
@@ -567,7 +599,7 @@ console.log(customerTypes);
             }
         ).then((response) => {
             setCustomers(prev => [...prev, response.data.customer]);
-           
+
             form.current.reset();
 
             MySwal.fire({
@@ -617,20 +649,20 @@ console.log(customerTypes);
     }
 
     const addZeroFirstStr = (element) => {
-
         let value = input[element];
-
         if (value && value != '0') {
             isFirstDigitZero(value) || (value = 0 + value);
         } else {
             value = '';
         }
-
         setInput(prev => ({ ...prev, [element]: value }));
-
-
     }
 
+    /**
+     * چکت می کند که آیا اول رشته صفر است یا خیر
+     * @param {یک رشته عددی} str 
+     * @returns 
+     */
     function isFirstDigitZero(str) {
         // اگر اولین کاراکتر رشته صفر باشد، تابع true برمی‌گرداند
         return str.charAt(0) === '0';
@@ -706,8 +738,7 @@ console.log(customerTypes);
     }
 
     return (
-        <div className="containerAddCustomer" ref={container}
-        >
+        <div className="containerAddCustomer" ref={container}>
 
             {/* <ClipLoader color="#123abc" loading={true} size={150} /> */}
             <ScaleLoader loading={loading} cssOverride={{
@@ -840,11 +871,11 @@ console.log(customerTypes);
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="nationalCode">کد ملی </label>
-                                    <input 
-                                    type="text" 
-                                    id="nationalCode" 
-                                    className="inputTextFB ltrFB element"
-                                    defaultValue={input.nationalCode}
+                                    <input
+                                        type="text"
+                                        id="nationalCode"
+                                        className="inputTextFB ltrFB element"
+                                        defaultValue={input.nationalCode}
                                         onChange={e => handleSaveValInput(e, 'nationalCode')}
                                         onFocus={(e) => delErr(e, nationalCodeErrorRef)}
                                     />
@@ -967,10 +998,10 @@ console.log(customerTypes);
                                     <div className="divInputFB">
                                         <label htmlFor="postalCode">کد پستی</label>
                                         <input
-                                         type="text"
-                                         className="inputTextFB ltrFB element"
-                                         id="postalCode"
-                                             defaultValue={input.postalCode}
+                                            type="text"
+                                            className="inputTextFB ltrFB element"
+                                            id="postalCode"
+                                            defaultValue={input.postalCode}
                                             onChange={e => handleSaveValInput(e, 'postalCode')}
                                             onFocus={(e) => delErr(e, postalCodeErrorRef)}
 
@@ -982,10 +1013,10 @@ console.log(customerTypes);
                                     <div className="divInputFB">
                                         <label htmlFor="email">ایمیل</label>
                                         <input
-                                         type="text"
-                                          id="email" 
-                                          className="inputTextFB ltrFB element"
-                                          defaultValue={input.email}
+                                            type="text"
+                                            id="email"
+                                            className="inputTextFB ltrFB element"
+                                            defaultValue={input.email}
                                             onChange={e => handleSaveValInput(e, 'email')}
                                             onFocus={(e) => delErr(e, emailErrorRef)}
 
@@ -1000,9 +1031,9 @@ console.log(customerTypes);
                                     <div className="divInputFB">
                                         <label htmlFor="address">آدرس</label>
                                         <textarea
-                                         id="address" 
-                                         className="textareaAddressACu"
-                                         defaultValue={input.address}
+                                            id="address"
+                                            className="textareaAddressACu"
+                                            defaultValue={input.address}
                                             onChange={e => handleSaveValInput(e, 'address')}
                                             onFocus={(e) => delErr(e, addressErrorRef)}
 
@@ -1017,9 +1048,9 @@ console.log(customerTypes);
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.0.account">شماره حساب</label>
-                                    <input 
-                                    type="text"
-                                     id="bankInfo.0.account"
+                                    <input
+                                        type="text"
+                                        id="bankInfo.0.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.name}
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'account') }}
