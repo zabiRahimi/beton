@@ -473,6 +473,11 @@ const AddCustomer = () => {
 
     }
 
+    /**
+     * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
+     * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
+     * @param {آدی رکورد} id0 
+     */
     const getAndSetCustomer = (id0) => {
         let customer = customers.find(customer => customer.id === id0);
 
@@ -480,8 +485,10 @@ const AddCustomer = () => {
         renameKey(rest, 'customer_types', 'types');
         renameKey(rest, 'bank_info', 'bankInfo');
 
-        // const { pivot, ...restTypes } = rest.types;//نادیده گرفتن کلید های مشخص شده
-        console.log(rest.bankInfo);
+        /**
+         * چنانچه یک رکورد تعداد حاوی تعداد زیادی اطلاعات بانکی است
+         * این اطلاعات را نشان می دهد
+         */
         rest.bankInfo.map((_, i) => {
             switch (i) {
                 case 1:
@@ -1126,6 +1133,7 @@ const AddCustomer = () => {
                                         id="bankInfo.0.bank"
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[0]?.bank ?? ''}
+                                        
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}
                                         onClick={(e) => delErr(e, bank1ErrorRef)}
                                     >
@@ -1189,7 +1197,7 @@ const AddCustomer = () => {
                                         name=""
                                         id="bankInfo.1.bank"
                                         className="selectFB element inputTextFB"
-                                        defaultValue={input.bankInfo?.[1]?.bank ?? ''}
+                                        value={input.bankInfo?.[1]?.bank ?? ''}
                                         onChange={e => { handleSaveBalInputBank(e, 1, 'bank') }}
                                         onClick={(e) => delErr(e, bank2ErrorRef)}
                                     >
@@ -1256,7 +1264,7 @@ const AddCustomer = () => {
                                         name=""
                                         id="bankInfo.2.bank"
                                         className="selectFB element inputTextFB"
-                                        defaultValue={input.bankInfo?.[2]?.bank ?? ''}
+                                        value={input.bankInfo?.[2]?.bank ?? ''}
                                         onChange={e => { handleSaveBalInputBank(e, 2, 'bank') }}
                                         onClick={(e) => delErr(e, bank3ErrorRef)}
 
@@ -1320,7 +1328,7 @@ const AddCustomer = () => {
                                         name=""
                                         id="bankInfo.3.bank"
                                         className="selectFB element inputTextFB"
-                                        defaultValue={input.bankInfo?.[3]?.bank ?? ''}
+                                        value={input.bankInfo?.[3]?.bank ?? ''}
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'bank') }}
                                         onClick={(e) => delErr(e, moreBank4)}
 
@@ -1392,7 +1400,7 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.4.bank">نام بانک </label>
                                     <select name="" id="bankInfo.4.bank" className="selectFB element inputTextFB"
-                                        defaultValue={input.bankInfo?.[4]?.bank ?? ''}
+                                        value={input.bankInfo?.[4]?.bank ?? ''}
                                         onChange={e => { handleSaveBalInputBank(e, 4, 'bank') }}
                                         onClick={(e) => delErr(e, bank5ErrorRef)}
 

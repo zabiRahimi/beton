@@ -34,6 +34,19 @@ select > option {font-family: IRANSansMedium;}
     --color5: #f6f6f9;
 }
 
+/*
+ترکیب رنگی زیبا مورد استفاده در گیت هاب 
+ */
+.gitHub{
+    background-color: #161b22;
+    background-color: #0d1117;
+    background-color: #e6edf3;
+    color: #e6edf3;
+    color: #3fb950;
+    color: #848d97;
+    border-color: #30363d;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
