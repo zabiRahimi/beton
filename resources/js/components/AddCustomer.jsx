@@ -198,7 +198,8 @@ const AddCustomer = () => {
     }, []);
 
     const addCustomer = () => {
-
+        form.current.reset();
+        resetForm();
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(true);
 
@@ -209,7 +210,8 @@ const AddCustomer = () => {
     }
 
     const showCustomer = () => {
-
+        form.current.reset();
+        resetForm();
         setDisabledBtnAddGe(false);
         setDisabledBtnGetGe(true);
 
@@ -494,7 +496,7 @@ const AddCustomer = () => {
                 case 1:
                     sectionBank2.current.classList.remove('--displayNone');
                     moreBank1.current.classList.add('--displayNone');
-                    
+
                     break;
                 case 2:
                     sectionBank3.current.classList.remove('--displayNone');
@@ -773,7 +775,6 @@ const AddCustomer = () => {
     return (
         <div className="containerAddCustomer" ref={container}>
 
-            {/* <ClipLoader color="#123abc" loading={true} size={150} /> */}
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
                 backgroundColor: '#6d6b6b',
                 position: 'fixed',
@@ -1133,7 +1134,7 @@ const AddCustomer = () => {
                                         id="bankInfo.0.bank"
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[0]?.bank ?? ''}
-                                        
+
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}
                                         onClick={(e) => delErr(e, bank1ErrorRef)}
                                     >
@@ -1147,7 +1148,7 @@ const AddCustomer = () => {
                             <div className="moreBank" ref={moreBank1}
                                 onClick={() => showSectionBank(sectionBank2, moreBank1, true, 1)}> اضافه کردن اطلاعات بانکی بیشتر </div>
                         </div>
-                        {/* --displayNone */}
+
                         <div className="sectionFB --displayNone" ref={sectionBank2}>
                             <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank2, moreBank1, false, 1)}>حذف</span>  <b>2</b> </div>
                             <div className="containerInputFB">
@@ -1330,7 +1331,7 @@ const AddCustomer = () => {
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[3]?.bank ?? ''}
                                         onChange={e => { handleSaveBalInputBank(e, 3, 'bank') }}
-                                        onClick={(e) => delErr(e, moreBank4)}
+                                        onClick={(e) => delErr(e, bank4ErrorRef)}
 
                                     >
                                         <option value=""> انتخاب </option>
@@ -1341,7 +1342,9 @@ const AddCustomer = () => {
                             </div>
                             <div className="moreBank" ref={moreBank4}
                                 onClick={() => showSectionBank(sectionBank5, moreBank4, true, 4)}
-                            > اضافه کردن اطلاعات بانکی بیشتر </div>
+                            >
+                                اضافه کردن اطلاعات بانکی بیشتر
+                            </div>
                         </div>
 
                         <div className="sectionFB --displayNone" ref={sectionBank5}>
@@ -1481,3 +1484,6 @@ const AddCustomer = () => {
 };
 
 export default AddCustomer;
+
+
+
