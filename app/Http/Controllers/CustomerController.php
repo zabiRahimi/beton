@@ -43,7 +43,7 @@ class CustomerController extends Controller
             $customer->save();
 
             $customer->customerTypes()->sync($request->validated()['types']);
-            // $zabi = $request->validated()['bankInfo'];
+            
 
             try {
 
@@ -93,7 +93,21 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        // $customer->update(['type' => $request->type]);
+
+         
+    $customer->update($request->all());
+    $customer->customerTypes()->sync($request->validated()['types']);
+
+    // if ($request->has('customer_types')) {
+    //     $customer->customerTypes()->sync($request->get('customer_types'));
+    // }
+
+    //  if ($request->has('bank_info')) {
+    //     $customer->bankInfo()->update($request->get('bank_info'));
+    // }
+
+        return response()->json(['customer'=>$customer] ,200);
     }
 
     /**
