@@ -486,11 +486,16 @@ const AddCustomer = () => {
      * @param {آدی رکورد} id0 
      */
     const getAndSetCustomer = (id0) => {
+
         let customer = customers.find(customer => customer.id === id0);
+        customer && setId(id0);
 
         const { id, created_at, updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
         renameKey(rest, 'customer_types', 'types');
         renameKey(rest, 'bank_info', 'bankInfo');
+        // console.log(rest);
+        
+        
 
         /**
          * چنانچه یک رکورد تعداد حاوی تعداد زیادی اطلاعات بانکی است
@@ -522,7 +527,14 @@ const AddCustomer = () => {
 
             }
         })
-        setInput(rest);
+
+        // کپی از شی برای انجام تغییرات
+        let datas= {...rest};
+        datas['types'] = datas['types'].map(function(item) {
+            return item.id;
+        });
+      
+        setInput(datas);
         const updatedCustomerTypes = rest.types.map(obj => {
             const { pivot, ...rest } = obj;
             return rest;
@@ -538,13 +550,13 @@ const AddCustomer = () => {
             setDay(parts[2]);
         }
 
-
         lableCustomerType.current.textContent = ''//حذف کلمه انتخاب از لیبل لیست
         updatedCustomerTypes.map((type, i) => {
             let ref = refs[type.id];
             ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
             lableCustomerType.current.textContent += i == 0 ? type.type : '، ' + type.type;
         });
+        
     }
 
     /**
@@ -626,7 +638,7 @@ const AddCustomer = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
-
+        console.log(input);
         await axios.post(
             '/api/v1/addCustomer',
             { ...input },
@@ -711,9 +723,9 @@ const AddCustomer = () => {
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
         setLoading(true)
-
+        console.log(input);
         await axios.patch(
-            `/api/v1/editCustomer//${id}`,
+            `/api/v1/editCustomer/${id}`,
             { ...input },
             {
                 headers:
@@ -723,20 +735,20 @@ const AddCustomer = () => {
                 }
             }
         ).then((response) => {
-            setCustomers(prev => [...prev, response.data.customer]);
+            // setCustomers(prev => [...prev, response.data.customer]);
 
-            form.current.reset();
+            // form.current.reset();
 
             MySwal.fire({
                 icon: "success",
-                title: "با موفقیت ثبت شد",
+                title: "با موفقیت ویرایش شد",
                 confirmButtonText: "  متوجه شدم  ",
                 timer: 3000,
                 timerProgressBar: true,
                 customClass: {
                     timerProgressBar: '--progressBarColorBlue',
                 },
-                didClose: () => resetForm(),
+                // didClose: () => resetForm(),
             });
 
         })
