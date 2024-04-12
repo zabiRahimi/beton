@@ -36,14 +36,7 @@ class StoreCustomerRequest extends FormRequest
             'address' => 'nullable|string',
             'bankInfo' => 'nullable|array',
             'bankInfo.*' => 'nullable|array',
-            // 'bankInfo.*.bank' => 'required|string',
-            // 'bank_details.*.bank' => 'required|string',
-            // 'bank_details.*.account' => 'required_without_all:bank_details.*.card,bank_details.*.shaba',
-            // 'bank_details.*.card' => 'required_without_all:bank_details.*.account,bank_details.*.shaba',
-            // 'bank_details.*.shaba' => 'required_without_all:bank_details.*.account,bank_details.*.card',
-
             'bankInfo.*.bank' => 'nullable|required_with:bankInfo.*.account,bankInfo.*.card,bankInfo.*.shaba|string',
-            
             'bankInfo.*.account' => 'nullable|numeric',
             'bankInfo.*.card' => 'nullable|numeric',
             'bankInfo.*.shaba' => 'nullable|numeric',

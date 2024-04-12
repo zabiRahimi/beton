@@ -21,6 +21,8 @@ Route::controller(CustomerController::class)->group(function () {
     
     Route::post('/addCustomer', 'store');
     Route::get('/getAllCustomer', 'index');
+    Route::patch('/editCustomer/{customer}', 'update');
+
 });
 
 

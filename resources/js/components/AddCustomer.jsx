@@ -145,6 +145,11 @@ const AddCustomer = () => {
         ]
     });
 
+    /**
+     * id to edit the model
+     */
+    const [id, setId]=useState(null);
+
     useEffect(() => {
         getCustomerType();
         getCustomer();
@@ -703,8 +708,69 @@ const AddCustomer = () => {
         return str.charAt(0) === '0';
     }
 
-    const handleSubmitEdit = () => {
+    const handleSubmitEdit = async (e) => {
+        e.preventDefault();
+        setLoading(true)
 
+        await axios.patch(
+            `/api/v1/editCustomer//${id}`,
+            { ...input },
+            {
+                headers:
+                {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then((response) => {
+            setCustomers(prev => [...prev, response.data.customer]);
+
+            form.current.reset();
+
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
+                didClose: () => resetForm(),
+            });
+
+        })
+            .catch(
+                error => {
+                    if (error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0];
+
+                        const element = document.getElementById(id);
+                        let scrollPosition = window.scrollY || window.pageYOffset;
+
+                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                        window.scrollTo({
+                            top: top,
+                            behavior: 'smooth'
+                        });
+
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            document.getElementById(key).classList.add('borderRedFB');
+
+                            document.getElementById(key + 'Error').innerHTML = val;
+                            if (key == 'dateOfBirth') {
+                                day || daySelect.current.classList.add('borderRedFB');
+                                month || monthSelect.current.classList.add('borderRedFB');
+                                year || yearSelect.current.classList.add('borderRedFB');
+                            }
+                        });
+
+                    }
+                }
+            )
+
+        setLoading(false)
     }
 
     const resetForm = () => {
