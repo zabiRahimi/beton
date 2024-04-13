@@ -6,6 +6,7 @@
 
 .divLeftSide {
     flex-grow: 1;
+    width: calc(100% - 210px);
     /* position: relative; */
 }
 
@@ -133,5 +134,9 @@
     
     .divIcofontLinksHome .iLinksHome {
         font-size: 3.5rem;
+    }
+
+    .divLeftSide {
+        width: calc(100% - 260px);
     }
 }

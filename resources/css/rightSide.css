@@ -69,3 +69,10 @@
     font-size: 1rem;
     font-weight: 600;
 }
+
+@media screen and (min-width:1200px){
+    .rightSide{
+        width: 260px;
+        
+    }
+}
