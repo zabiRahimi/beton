@@ -111,6 +111,7 @@ const AddCustomer = () => {
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
     const [customers, setCustomers] = useState(null);
+    console.log(customers);
 
     const [customerTypes, setCustomerTypes] = useState(null);
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
@@ -145,12 +146,10 @@ const AddCustomer = () => {
         ]
     });
 
-    console.log(input);
-
     /**
      * id to edit the model
      */
-    const [id, setId]=useState(null);
+    const [id, setId] = useState(null);
 
     useEffect(() => {
         getCustomerType();
@@ -204,19 +203,25 @@ const AddCustomer = () => {
         setWidthComponent(widths)
     }, []);
 
-    const addCustomer = () => {
+    /**
+     * نمایش فرم افزودن مشتری
+     */
+    const showAddCustomerForm = () => {
         form.current.reset();
-        resetForm();
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(true);
 
         setFlexDirection('columnGe');
 
         setEditCustomer(false)
+        resetForm(false);
 
     }
 
-    const showCustomer = () => {
+    /**
+     * لیست مشترهای ایجاد شده را نمایش می دهد
+     */
+    const showCreatedCustomers = () => {
         form.current.reset();
         resetForm();
         setDisabledBtnAddGe(false);
@@ -228,7 +233,11 @@ const AddCustomer = () => {
 
     }
 
-    const showCustomerItems = () => {
+    /**
+     * رکوردهای مشتریان ایجاد شده را جهت نمایش بر می گرداند
+     * @returns 
+     */
+    const returnCreatedCustomerRecords = () => {
         let numberRow = customers.length;
         const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedCustomers.map((customer, i) => {
@@ -274,7 +283,7 @@ const AddCustomer = () => {
 
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={() => showFormEditCustomer(customer.id)}
+                        onClick={() => showCustomerEditForm(customer.id)}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -470,16 +479,19 @@ const AddCustomer = () => {
 
     }
 
-    const showFormEditCustomer = (id) => {
+    /**
+     * نمایش فرم ویرایش مشتری
+     * @param {number} id 
+     */
+    const showCustomerEditForm = (id) => {
 
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(false);
-
         setFlexDirection('columnGe');
-
+        window.scrollTo({ top: 60, behavior: 'smooth' });
         setEditCustomer(true);
         getAndSetCustomer(id);
-
+       
     }
 
     /**
@@ -495,9 +507,9 @@ const AddCustomer = () => {
         const { id, created_at, updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
         renameKey(rest, 'customer_types', 'types');
         renameKey(rest, 'bank_info', 'bankInfo');
-       
-        
-        
+
+
+
 
         /**
          * چنانچه یک رکورد تعداد حاوی تعداد زیادی اطلاعات بانکی است
@@ -531,17 +543,17 @@ const AddCustomer = () => {
         })
 
         // کپی از شی برای انجام تغییرات
-        let datas= {...rest};
-        datas['types'] = datas['types'].map(function(item) {
+        let datas = { ...rest };
+        datas['types'] = datas['types'].map(function (item) {
             return item.id;
         });
-      
+
         setInput(datas);
         const updatedCustomerTypes = rest.types.map(obj => {
             const { pivot, ...rest } = obj;
             return rest;
         });
-       
+
         setCustomerTypeSelected(updatedCustomerTypes);
 
         if (rest.dateOfBirth) {
@@ -557,7 +569,7 @@ const AddCustomer = () => {
             ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
             lableCustomerType.current.textContent += i == 0 ? type.type : '، ' + type.type;
         });
-        
+
     }
 
     /**
@@ -639,7 +651,7 @@ const AddCustomer = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
-       
+
         await axios.post(
             '/api/v1/addCustomer',
             { ...input },
@@ -724,7 +736,7 @@ const AddCustomer = () => {
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
         setLoading(true)
-        
+
         await axios.patch(
             `/api/v1/editCustomer/${id}`,
             { ...input },
@@ -739,6 +751,7 @@ const AddCustomer = () => {
             // setCustomers(prev => [...prev, response.data.customer]);
 
             // form.current.reset();
+            replaceObject(id, response.data.customer);
 
             MySwal.fire({
                 icon: "success",
@@ -749,7 +762,7 @@ const AddCustomer = () => {
                 customClass: {
                     timerProgressBar: '--progressBarColorBlue',
                 },
-                // didClose: () => resetForm(),
+                didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
             });
 
         })
@@ -786,7 +799,22 @@ const AddCustomer = () => {
         setLoading(false)
     }
 
-    const resetForm = () => {
+    /**
+     * هنگامی که کاربر اطلاعات یک مشتری را ویرایش می‌کند
+     * اطلاعات جدید در استیت جایگزین اطلاعات قبلی می‌شود
+     * @param {number} id 
+     * @param {object} newObject 
+     */
+    const replaceObject = (id, newObject) => {
+        setCustomers(customers.map((object) => {
+          if (object.id == id) {
+            return newObject;
+          } else {
+            return object;
+          }
+        }));
+      };
+    const resetForm = (apply=true) => {
 
         setInput({
             name: '',
@@ -840,14 +868,17 @@ const AddCustomer = () => {
             elements[i].innerHTML = '';
         }
 
-        const element = form.current;
-        let scrollPosition = window.scrollY || window.pageYOffset;
+        // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
+        if (apply) {
+            const element = form.current;
+            let scrollPosition = window.scrollY || window.pageYOffset;
+            const top = element.getBoundingClientRect().top + scrollPosition - 50;
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
+        }
 
-        const top = element.getBoundingClientRect().top + scrollPosition - 50;
-        window.scrollTo({
-            top: top,
-            behavior: 'smooth'
-        });
 
     }
 
@@ -873,7 +904,7 @@ const AddCustomer = () => {
             <div className="headPageGe">
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={addCustomer}
+                    ref={btnAddGeRef} onClick={showAddCustomerForm}
                     disabled={disabledBtnAddGe}
                 >
                     تعریف مشتری
@@ -882,7 +913,7 @@ const AddCustomer = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCustomer}
+                    onClick={showCreatedCustomers}
                     disabled={disabledBtnGetGe}
                 >
                     مشاهده مشتری‌ها
@@ -1552,7 +1583,7 @@ const AddCustomer = () => {
 
                         </div>
 
-                        {customers ? showCustomerItems() : <Skeleton height={40} count={12} />}
+                        {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
 
 
                     </div>

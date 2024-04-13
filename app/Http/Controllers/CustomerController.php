@@ -106,7 +106,7 @@ class CustomerController extends Controller
     //  if ($request->has('bank_info')) {
     //     $customer->bankInfo()->update($request->get('bank_info'));
     // }
-
+    $customer->load('customerTypes', 'bankInfo');
         return response()->json(['customer'=>$customer] ,200);
     }
 
