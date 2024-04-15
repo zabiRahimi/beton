@@ -54,12 +54,20 @@ const Home = () => {
                     <span>تعریف کالا و خدمات</span>
                 </Link>
 
-                <Link to="AddCurrentCosts" className="linksHome --styleLessLink ">
+                <Link to="addCurrentCosts" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
                         <i className="icofont-ui-v-card  iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
                     </div>
                     <span>تعریف هزینه‌های جاری</span>
+                </Link>
+
+                <Link to="customerContract" className="linksHome --styleLessLink ">
+                    <div className="divIcofontLinksHome">
+                        <i className="icofont-ui-v-card  iLinksHome iTruck " />
+                        <i className="icofont-plus Iplus" />
+                    </div>
+                    <span>ایجاد قرار داد مشتری</span>
                 </Link>
 
 

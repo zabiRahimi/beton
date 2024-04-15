@@ -897,8 +897,6 @@ const AddCustomer = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
-
-
             }} />
 
             <Title title="تعریف مشتری" />
