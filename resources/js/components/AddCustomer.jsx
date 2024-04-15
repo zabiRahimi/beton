@@ -111,7 +111,7 @@ const AddCustomer = () => {
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
     const [customers, setCustomers] = useState(null);
-    console.log(customers);
+    // console.log(customers);
 
     const [customerTypes, setCustomerTypes] = useState(null);
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
@@ -145,6 +145,7 @@ const AddCustomer = () => {
             }
         ]
     });
+    // console.log(input);
 
     /**
      * id to edit the model
@@ -749,7 +750,7 @@ const AddCustomer = () => {
             }
         ).then((response) => {
             // setCustomers(prev => [...prev, response.data.customer]);
-
+            console.log(response.data.customer);
             // form.current.reset();
             replaceObject(id, response.data.customer);
 
@@ -935,7 +936,6 @@ const AddCustomer = () => {
                                         className="inputTextFB element"
                                         id="name"
                                         defaultValue={input.name}
-                                        // onInput={()=>console.log('sssss')}
                                         onInput={e => handleSaveValInput(e, 'name')}
                                         onFocus={e => delErr(e, nameErrorRef)}
                                         autoFocus

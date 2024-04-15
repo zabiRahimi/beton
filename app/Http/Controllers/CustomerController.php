@@ -103,9 +103,26 @@ class CustomerController extends Controller
     //     $customer->customerTypes()->sync($request->get('customer_types'));
     // }
 
-    //  if ($request->has('bank_info')) {
-    //     $customer->bankInfo()->update($request->get('bank_info'));
+    //  if ($request->has('bankInfo')) {
+    //     // $customer->bankInfo()->update($request->get('bankInfo'));
+    //     // $customer->bankInfo()->sync($request->get('bankInfo'));
+    //     $customer->bankInfo()->delete();
+
+    // // ایجاد اطلاعات بانکی جدید
+    // foreach ($request->get('bankInfo') as $bankInfoData) {
+    //     $customer->bankInfo()->create($bankInfoData);
     // }
+    // }
+    if (isset($request->validated()['bankInfo']) && count($request->validated()['bankInfo']) > 0) {
+        $customer->bankInfo()->delete();
+        foreach ($request->validated()['bankInfo'] as $bankDetailData) {
+
+            $bankDetail = new BankInfo;
+            $bankDetail->fill($bankDetailData);
+            $bankDetail->customer_id = $customer->id;
+            $bankDetail->save();
+        }
+    }
     $customer->load('customerTypes', 'bankInfo');
         return response()->json(['customer'=>$customer] ,200);
     }
