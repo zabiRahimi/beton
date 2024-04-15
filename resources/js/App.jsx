@@ -11,13 +11,15 @@ import Index from "./components/Index";
 import Home from "./components/Home";
 import AddCustomer from "./components/AddCustomer";
 
-import AddCustomerType  from "./components/AddCustomerType";
+import AddCustomerType from "./components/AddCustomerType";
 
 import AddTruck from "./components/AddTruck";
 import AddPersonnel from "./components/AddPersonnel";
 import AddDriver from "./components/AddDriver";
 import AddGoodsAndServices from "./components/AddGoodsAndServices";
 import AddCurrentCosts from "./components/AddCurrentCosts";
+import AddCustomerContract from './components/AddCustomerContract';
+import CustomerContract from "./components/customerContract/CustmoerContract";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -37,9 +39,13 @@ function App() {
                 <Route path="addTruck" element={<AddTruck />} />
                 <Route path="addPersonnel" element={<AddPersonnel />} />
                 <Route path="addDriver" element={<AddDriver />} />
-                
+
                 <Route path="addGoodsAndServices" element={<AddGoodsAndServices />} />
                 <Route path="addCurrentCosts" element={<AddCurrentCosts />} />
+                <Route path="customerContract" element={<CustomerContract />} >
+                    <Route index element={<AddCurrentCosts />} />
+
+                </Route>
             </Route>
             // <Route path="/" element={<Root />} errorElement={<NotFound />}>
             //   <Route index element={<Home />} />
