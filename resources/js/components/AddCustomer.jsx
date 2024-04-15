@@ -111,6 +111,7 @@ const AddCustomer = () => {
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
     const [customers, setCustomers] = useState(null);
+    console.log(customers);
 
     const [customerTypes, setCustomerTypes] = useState(null);
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
@@ -148,7 +149,7 @@ const AddCustomer = () => {
     /**
      * id to edit the model
      */
-    const [id, setId]=useState(null);
+    const [id, setId] = useState(null);
 
     useEffect(() => {
         getCustomerType();
@@ -202,19 +203,25 @@ const AddCustomer = () => {
         setWidthComponent(widths)
     }, []);
 
-    const addCustomer = () => {
+    /**
+     * نمایش فرم افزودن مشتری
+     */
+    const showAddCustomerForm = () => {
         form.current.reset();
-        resetForm();
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(true);
 
         setFlexDirection('columnGe');
 
         setEditCustomer(false)
+        resetForm(false);
 
     }
 
-    const showCustomer = () => {
+    /**
+     * لیست مشترهای ایجاد شده را نمایش می دهد
+     */
+    const showCreatedCustomers = () => {
         form.current.reset();
         resetForm();
         setDisabledBtnAddGe(false);
@@ -226,7 +233,11 @@ const AddCustomer = () => {
 
     }
 
-    const showCustomerItems = () => {
+    /**
+     * رکوردهای مشتریان ایجاد شده را جهت نمایش بر می گرداند
+     * @returns 
+     */
+    const returnCreatedCustomerRecords = () => {
         let numberRow = customers.length;
         const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedCustomers.map((customer, i) => {
@@ -272,7 +283,7 @@ const AddCustomer = () => {
 
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={() => showFormEditCustomer(customer.id)}
+                        onClick={() => showCustomerEditForm(customer.id)}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -468,16 +479,19 @@ const AddCustomer = () => {
 
     }
 
-    const showFormEditCustomer = (id) => {
+    /**
+     * نمایش فرم ویرایش مشتری
+     * @param {number} id 
+     */
+    const showCustomerEditForm = (id) => {
 
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(false);
-
         setFlexDirection('columnGe');
-
+        window.scrollTo({ top: 60, behavior: 'smooth' });
         setEditCustomer(true);
         getAndSetCustomer(id);
-
+       
     }
 
     /**
@@ -493,9 +507,9 @@ const AddCustomer = () => {
         const { id, created_at, updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
         renameKey(rest, 'customer_types', 'types');
         renameKey(rest, 'bank_info', 'bankInfo');
-        // console.log(rest);
-        
-        
+
+
+
 
         /**
          * چنانچه یک رکورد تعداد حاوی تعداد زیادی اطلاعات بانکی است
@@ -529,18 +543,17 @@ const AddCustomer = () => {
         })
 
         // کپی از شی برای انجام تغییرات
-        let datas= {...rest};
-        datas['types'] = datas['types'].map(function(item) {
+        let datas = { ...rest };
+        datas['types'] = datas['types'].map(function (item) {
             return item.id;
         });
-      
+
         setInput(datas);
         const updatedCustomerTypes = rest.types.map(obj => {
             const { pivot, ...rest } = obj;
             return rest;
         });
-        // console.log(rest);
-        // console.log(rest.dateOfBirth);
+
         setCustomerTypeSelected(updatedCustomerTypes);
 
         if (rest.dateOfBirth) {
@@ -556,7 +569,7 @@ const AddCustomer = () => {
             ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
             lableCustomerType.current.textContent += i == 0 ? type.type : '، ' + type.type;
         });
-        
+
     }
 
     /**
@@ -638,7 +651,7 @@ const AddCustomer = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
-        console.log(input);
+
         await axios.post(
             '/api/v1/addCustomer',
             { ...input },
@@ -723,7 +736,7 @@ const AddCustomer = () => {
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
         setLoading(true)
-        console.log(input);
+
         await axios.patch(
             `/api/v1/editCustomer/${id}`,
             { ...input },
@@ -738,6 +751,7 @@ const AddCustomer = () => {
             // setCustomers(prev => [...prev, response.data.customer]);
 
             // form.current.reset();
+            replaceObject(id, response.data.customer);
 
             MySwal.fire({
                 icon: "success",
@@ -748,7 +762,7 @@ const AddCustomer = () => {
                 customClass: {
                     timerProgressBar: '--progressBarColorBlue',
                 },
-                // didClose: () => resetForm(),
+                didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
             });
 
         })
@@ -785,7 +799,22 @@ const AddCustomer = () => {
         setLoading(false)
     }
 
-    const resetForm = () => {
+    /**
+     * هنگامی که کاربر اطلاعات یک مشتری را ویرایش می‌کند
+     * اطلاعات جدید در استیت جایگزین اطلاعات قبلی می‌شود
+     * @param {number} id 
+     * @param {object} newObject 
+     */
+    const replaceObject = (id, newObject) => {
+        setCustomers(customers.map((object) => {
+          if (object.id == id) {
+            return newObject;
+          } else {
+            return object;
+          }
+        }));
+      };
+    const resetForm = (apply=true) => {
 
         setInput({
             name: '',
@@ -839,14 +868,17 @@ const AddCustomer = () => {
             elements[i].innerHTML = '';
         }
 
-        const element = form.current;
-        let scrollPosition = window.scrollY || window.pageYOffset;
+        // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
+        if (apply) {
+            const element = form.current;
+            let scrollPosition = window.scrollY || window.pageYOffset;
+            const top = element.getBoundingClientRect().top + scrollPosition - 50;
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
+        }
 
-        const top = element.getBoundingClientRect().top + scrollPosition - 50;
-        window.scrollTo({
-            top: top,
-            behavior: 'smooth'
-        });
 
     }
 
@@ -870,7 +902,7 @@ const AddCustomer = () => {
             <div className="headPageGe">
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={addCustomer}
+                    ref={btnAddGeRef} onClick={showAddCustomerForm}
                     disabled={disabledBtnAddGe}
                 >
                     تعریف مشتری
@@ -879,7 +911,7 @@ const AddCustomer = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCustomer}
+                    onClick={showCreatedCustomers}
                     disabled={disabledBtnGetGe}
                 >
                     مشاهده مشتری‌ها
@@ -901,7 +933,8 @@ const AddCustomer = () => {
                                         className="inputTextFB element"
                                         id="name"
                                         defaultValue={input.name}
-                                        onChange={e => handleSaveValInput(e, 'name')}
+                                        // onInput={()=>console.log('sssss')}
+                                        onInput={e => handleSaveValInput(e, 'name')}
                                         onFocus={e => delErr(e, nameErrorRef)}
                                         autoFocus
                                     />
@@ -918,7 +951,7 @@ const AddCustomer = () => {
                                         className="inputTextFB element"
                                         id="lastName"
                                         defaultValue={input.lastName}
-                                        onChange={e => handleSaveValInput(e, 'lastName')}
+                                        onInput={e => handleSaveValInput(e, 'lastName')}
                                         onFocus={e => delErr(e, lastNameErrorRef)}
                                     />
                                     <i className="icofont-ui-rating starFB" />
@@ -934,7 +967,7 @@ const AddCustomer = () => {
                                         className="inputTextFB element"
                                         id="father"
                                         defaultValue={input.father}
-                                        onChange={e => handleSaveValInput(e, 'father')}
+                                        onInput={e => handleSaveValInput(e, 'father')}
                                         onFocus={e => delErr(e, fatherErrorRef)}
                                     />
 
@@ -986,7 +1019,7 @@ const AddCustomer = () => {
                                         id="nationalCode"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.nationalCode}
-                                        onChange={e => handleSaveValInput(e, 'nationalCode')}
+                                        onInput={e => handleSaveValInput(e, 'nationalCode')}
                                         onFocus={(e) => delErr(e, nationalCodeErrorRef)}
                                     />
                                 </div>
@@ -1080,7 +1113,7 @@ const AddCustomer = () => {
                                         <label htmlFor="mobile">موبایل</label>
                                         <input type="text" id="mobile" className="inputTextFB ltrFB element"
                                             value={input['mobile'] || ''}
-                                            onChange={e => handleSaveValInput(e, 'mobile')}
+                                            onInput={e => handleSaveValInput(e, 'mobile')}
                                             onBlur={() => addZeroFirstStr('mobile')}
                                             onFocus={(e) => delErr(e, mobileErrorRef)}
 
@@ -1095,7 +1128,7 @@ const AddCustomer = () => {
                                         <label htmlFor="telephone">تلفن </label>
                                         <input type="text" id="telephone" className="inputTextFB ltrFB element"
                                             value={input['telephone'] || ''}
-                                            onChange={e => handleSaveValInput(e, 'telephone')}
+                                            onInput={e => handleSaveValInput(e, 'telephone')}
                                             onBlur={() => addZeroFirstStr('telephone')}
                                             onFocus={(e) => delErr(e, telephoneErrorRef)}
 
@@ -1112,7 +1145,7 @@ const AddCustomer = () => {
                                             className="inputTextFB ltrFB element"
                                             id="postalCode"
                                             defaultValue={input.postalCode}
-                                            onChange={e => handleSaveValInput(e, 'postalCode')}
+                                            onInput={e => handleSaveValInput(e, 'postalCode')}
                                             onFocus={(e) => delErr(e, postalCodeErrorRef)}
 
                                         />
@@ -1127,7 +1160,7 @@ const AddCustomer = () => {
                                             id="email"
                                             className="inputTextFB ltrFB element"
                                             defaultValue={input.email}
-                                            onChange={e => handleSaveValInput(e, 'email')}
+                                            onInput={e => handleSaveValInput(e, 'email')}
                                             onFocus={(e) => delErr(e, emailErrorRef)}
 
                                         />
@@ -1144,7 +1177,7 @@ const AddCustomer = () => {
                                             id="address"
                                             className="textareaAddressACu"
                                             defaultValue={input.address}
-                                            onChange={e => handleSaveValInput(e, 'address')}
+                                            onInput={e => handleSaveValInput(e, 'address')}
                                             onFocus={(e) => delErr(e, addressErrorRef)}
 
                                         />
@@ -1163,7 +1196,7 @@ const AddCustomer = () => {
                                         id="bankInfo.0.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[0]?.account ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 0, 'account') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 0, 'account') }}
                                         onFocus={(e) => delErr(e, account1ErrorRef)}
 
                                     />
@@ -1178,7 +1211,7 @@ const AddCustomer = () => {
                                         id="bankInfo.0.card"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[0]?.card ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 0, 'card') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 0, 'card') }}
                                         onFocus={(e) => delErr(e, card1ErrorRef)}
 
                                     />
@@ -1194,7 +1227,7 @@ const AddCustomer = () => {
                                         id="bankInfo.0.shaba"
                                         className="inputShabaFB element ltrFB"
                                         defaultValue={input.bankInfo?.[0]?.shaba ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 0, 'shaba') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 0, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba1ErrorRef)}
                                     />
                                     <span className="unitShabaFB"> IR </span>
@@ -1234,7 +1267,7 @@ const AddCustomer = () => {
                                         id="bankInfo.1.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.['1']?.account ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 1, 'account') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 1, 'account') }}
                                         onFocus={(e) => delErr(e, account2ErrorRef)}
                                     />
                                 </div>
@@ -1245,7 +1278,7 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.1.card">شماره کارت</label>
                                     <input type="text" id="bankInfo.1.card" className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[1]?.card ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 1, 'card') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 1, 'card') }}
                                         onFocus={(e) => delErr(e, card2ErrorRef)}
                                     />
                                 </div>
@@ -1259,7 +1292,7 @@ const AddCustomer = () => {
                                         // defaultValue={input.bankInfo[1]?input.bankInfo[1].shaba||'':''}
                                         defaultValue={input.bankInfo?.[1]?.shaba ?? ''}
 
-                                        onChange={e => { handleSaveBalInputBank(e, 1, 'shaba') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 1, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba2ErrorRef)}
                                     />
                                     <span className="unitShabaFB"> IR </span>
@@ -1298,7 +1331,7 @@ const AddCustomer = () => {
                                         id="bankInfo.2.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[2]?.account ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 2, 'account') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 2, 'account') }}
                                         onFocus={(e) => delErr(e, account3ErrorRef)}
 
                                     />
@@ -1310,7 +1343,7 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.2.card">شماره کارت</label>
                                     <input type="text" id="bankInfo.2.card" className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[2]?.card ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 2, 'card') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 2, 'card') }}
                                         onFocus={(e) => delErr(e, card3ErrorRef)}
 
                                     />
@@ -1325,7 +1358,7 @@ const AddCustomer = () => {
                                         type="text"
                                         id="bankInfo.2.shaba" className="inputShabaFB element ltrFB"
                                         defaultValue={input.bankInfo?.[2]?.shaba ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 2, 'shaba') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 2, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba3ErrorRef)}
 
                                     />
@@ -1365,7 +1398,7 @@ const AddCustomer = () => {
                                         id="bankInfo.3.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[3]?.account ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 3, 'account') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 3, 'account') }}
                                         onFocus={(e) => delErr(e, account4ErrorRef)}
                                     />
                                 </div>
@@ -1376,7 +1409,7 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.3.card">شماره کارت</label>
                                     <input type="text" id="bankInfo.3.card" className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[3]?.card ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 3, 'card') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 3, 'card') }}
                                         onFocus={(e) => delErr(e, card4ErrorRef)}
 
                                     />
@@ -1389,7 +1422,7 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.3.shaba">شماره شبا</label>
                                     <input type="text" id="bankInfo.3.shaba" className="inputShabaFB element ltrFB"
                                         defaultValue={input.bankInfo?.[3]?.shaba ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 3, 'shaba') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 3, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba4ErrorRef)}
 
                                     />
@@ -1435,7 +1468,7 @@ const AddCustomer = () => {
                                         id="bankInfo.4.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[4]?.account ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 4, 'account') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 4, 'account') }}
                                         onFocus={(e) => delErr(e, account5ErrorRef)}
 
                                     />
@@ -1450,7 +1483,7 @@ const AddCustomer = () => {
                                         id="bankInfo.4.card"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[4]?.card ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 4, 'card') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 4, 'card') }}
                                         onFocus={(e) => delErr(e, card5ErrorRef)}
 
                                     />
@@ -1466,7 +1499,7 @@ const AddCustomer = () => {
                                         id="bankInfo.4.shaba"
                                         className="inputShabaFB element ltrFB"
                                         defaultValue={input.bankInfo?.[4]?.shaba ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 4, 'shaba') }}
+                                        onInput={e => { handleSaveBalInputBank(e, 4, 'shaba') }}
                                         onFocus={(e) => delErr(e, shaba5ErrorRef)}
 
                                     />
@@ -1548,7 +1581,7 @@ const AddCustomer = () => {
 
                         </div>
 
-                        {customers ? showCustomerItems() : <Skeleton height={40} count={12} />}
+                        {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
 
 
                     </div>
