@@ -16,7 +16,7 @@ const Home = () => {
 
                 <Link to="addCustomerType" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
-                        <i className="icofont-truck iLinksHome iTruck " />
+                        <i className="icofont-id-card  iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
                     </div>
                     <span>تعریف نوع مشتری</span>
@@ -30,14 +30,6 @@ const Home = () => {
                     <span>تعریف کامیون</span>
                 </Link>
 
-                <Link to="addPersonnel" className="linksHome --styleLessLink ">
-                    <div className="divIcofontLinksHome">
-                        <i className="icofont-hotel-boy iLinksHome iTruck " />
-                        <i className="icofont-plus Iplus" />
-                    </div>
-                    <span>تعریف پرسنل</span>
-                </Link>
-
                 <Link to="addDriver" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
                         <i className="icofont-hotel-boy-alt  iLinksHome iTruck " />
@@ -46,20 +38,32 @@ const Home = () => {
                     <span>تعریف راننده</span>
                 </Link>
 
-                <Link to="addGoodsAndServices" className="linksHome --styleLessLink ">
+                <Link to="addPersonnel" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
-                        <i className="icofont-ui-cart   iLinksHome iTruck " />
+                        <i className="icofont-engineer  iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
                     </div>
-                    <span>تعریف کالا و خدمات</span>
+                    <span>تعریف اپراتور دکل</span>
                 </Link>
 
-                <Link to="addCurrentCosts" className="linksHome --styleLessLink ">
+                
+
+                <Link to="addGoodsAndServices" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
-                        <i className="icofont-ui-v-card  iLinksHome iTruck " />
+                        <i className="icofont-cement-mixer  iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
                     </div>
-                    <span>تعریف هزینه‌های جاری</span>
+                    <span>تعریف توع بتن</span>
+                </Link>
+
+                
+
+                <Link to="customerContract" className="linksHome --styleLessLink ">
+                    <div className="divIcofontLinksHome">
+                        <i className="icofont-id    iLinksHome iTruck " />
+                        <i className="icofont-plus Iplus" />
+                    </div>
+                    <span>ایجاد و ثبت فیش حقوقی پرسنل</span>
                 </Link>
 
                 <Link to="customerContract" className="linksHome --styleLessLink ">
@@ -67,7 +71,7 @@ const Home = () => {
                         <i className="icofont-law-document   iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
                     </div>
-                    <span>ایجاد قرار داد مشتری</span>
+                    <span>ثبت قرارداد</span>
                 </Link>
 
 
