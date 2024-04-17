@@ -34,7 +34,7 @@ const AddCustomer = () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    const container = useRef(null)
+    const container = useRef(null);
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 

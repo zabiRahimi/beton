@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 // use Morilog\Jalali\jDate;
 
 class Customer extends Model
@@ -32,6 +34,11 @@ class Customer extends Model
     public function bankInfo(): HasMany
     {
         return $this->hasMany(BankInfo::class);
+    }
+
+    public function personnelContract(): HasOne
+    {
+        return $this->hasOne(PersonnelContract::class);
     }
 
 }

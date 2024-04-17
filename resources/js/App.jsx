@@ -18,8 +18,11 @@ import AddPersonnel from "./components/AddPersonnel";
 import AddDriver from "./components/AddDriver";
 import AddGoodsAndServices from "./components/AddGoodsAndServices";
 import AddCurrentCosts from "./components/AddCurrentCosts";
-import AddCustomerContract from './components/AddCustomerContract';
+import NavigateCustmoerContract from './components/customerContract/NavigateCustomerContract';
 import CustomerContract from "./components/customerContract/CustmoerContract";
+import AddPersonnelContract from "./components/customerContract/AddPersonnelContract";
+import AddBuyerContract from "./components/customerContract/AddBuyerContract";
+import AddSellerContract from "./components/customerContract/AddSellerContract";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -43,7 +46,10 @@ function App() {
                 <Route path="addGoodsAndServices" element={<AddGoodsAndServices />} />
                 <Route path="addCurrentCosts" element={<AddCurrentCosts />} />
                 <Route path="customerContract" element={<CustomerContract />} >
-                    <Route index element={<AddCurrentCosts />} />
+                    <Route index element={<NavigateCustmoerContract />} />
+                    <Route path="addPersonnelContract" element={<AddPersonnelContract />} />
+                    <Route path="addBuyerContract" element={<AddBuyerContract />} />
+                    <Route path="addSellerContract" element={<AddSellerContract />} />
 
                 </Route>
             </Route>

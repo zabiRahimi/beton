@@ -64,7 +64,7 @@ const Home = () => {
 
                 <Link to="customerContract" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
-                        <i className="icofont-ui-v-card  iLinksHome iTruck " />
+                        <i className="icofont-law-document   iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
                     </div>
                     <span>ایجاد قرار داد مشتری</span>
