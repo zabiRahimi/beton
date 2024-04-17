@@ -38,7 +38,7 @@ const Home = () => {
                     <span>تعریف راننده</span>
                 </Link>
 
-                <Link to="addPersonnel" className="linksHome --styleLessLink ">
+                <Link to="addPumpOperator" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
                         <i className="icofont-engineer  iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
@@ -47,13 +47,13 @@ const Home = () => {
                 </Link>
 
                 
-
-                <Link to="addGoodsAndServices" className="linksHome --styleLessLink ">
+                
+                <Link to="addTypeConcrete" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
                         <i className="icofont-cement-mixer  iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
                     </div>
-                    <span>تعریف توع بتن</span>
+                    <span>تعریف نوع بتن</span>
                 </Link>
 
                 

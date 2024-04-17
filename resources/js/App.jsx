@@ -23,6 +23,8 @@ import CustomerContract from "./components/customerContract/CustmoerContract";
 import AddPersonnelContract from "./components/customerContract/AddPersonnelContract";
 import AddBuyerContract from "./components/customerContract/AddBuyerContract";
 import AddSellerContract from "./components/customerContract/AddSellerContract";
+import AddPumpOperator from "./components/AddPumpOperator";
+import AddTypeConcrete from "./components/AddTypeConcrete";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -43,8 +45,11 @@ function App() {
                 <Route path="addPersonnel" element={<AddPersonnel />} />
                 <Route path="addDriver" element={<AddDriver />} />
 
-                <Route path="addGoodsAndServices" element={<AddGoodsAndServices />} />
+                <Route path="addTypeConcrete" element={<AddTypeConcrete />} />
+                
                 <Route path="addCurrentCosts" element={<AddCurrentCosts />} />
+                <Route path="addPumpOperator" element={<AddPumpOperator />} />
+
                 <Route path="customerContract" element={<CustomerContract />} >
                     <Route index element={<NavigateCustmoerContract />} />
                     <Route path="addPersonnelContract" element={<AddPersonnelContract />} />
