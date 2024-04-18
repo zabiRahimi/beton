@@ -3,7 +3,7 @@ import Title from "./hooks/Title";
 
 import Button from 'react-bootstrap/Button';
 import "../../css/formBeton.css";
-const AddTypeConcrete=()=>{
+const AddTypeConcrete = () => {
     const divFormulaBetonRef = useRef(null);
     const divUnitPriceAASRef = useRef(null);
 
@@ -20,6 +20,15 @@ const AddTypeConcrete=()=>{
     const btnGetGeRef = useRef(null);
 
     const containerShowGeRef = useRef(null);
+
+    const concreteNameErrorRef = useRef(null);
+    const amountCementErrorRef = useRef(null);
+    const amountGravelErrorRef = useRef(null);
+    const amountSandErrorRef = useRef(null);
+    const amountWaterErrorRef = useRef(null);
+    const unitErrorRef = useRef(null);
+    const unitPriceErrorRef = useRef(null);
+
 
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
@@ -143,8 +152,16 @@ const AddTypeConcrete=()=>{
         setEditGAS(true);
 
     }
-return(
-<div className=''>
+
+    const handleSubmit = () => {
+
+    }
+
+    const handleSubmitEdit = () => {
+
+    }
+    return (
+        <div className=''>
 
             <Title title="تعریف نوع بتن" />
 
@@ -155,7 +172,7 @@ return(
                     ref={btnAddGeRef} onClick={addGAS}
                     disabled={disabledBtnAddGe}
                 >
-                    تعریف کالا و خدمات
+                    تعریف نوع بتن
                 </button>
 
                 <button
@@ -164,7 +181,7 @@ return(
                     onClick={getGAS}
                     disabled={disabledBtnGetGe}
                 >
-                    مشاهده کالا و خدمات
+                    مشاهده انواع بتن‌های ثبت شده
                 </button>
 
             </div>
@@ -174,55 +191,90 @@ return(
                 <div className="continerAddGe ">
                     <form action="" className="formBeton">
 
-                        <h5 className={`titleFormFB ${editGAS ? '' : 'hideGe'}`}>ویرایش کالا و خدمات </h5>
+                        <h5 className={`titleFormFB ${editGAS ? '' : 'hideGe'}`}>ویرایش نوع بتن </h5>
 
                         <div className="sectionFB">
-                            <div className="divInputFB">
-                                <label>نام کالا</label>
-                                <input
-                                    type="text"
-                                    className="inputTextFB"
-                                    autoFocus
-                                />
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="concreteName">نام بتن</label>
+                                    <input
+                                        type="text"
+                                        id="concreteName"
+                                        className="inputTextFB"
+                                        autoFocus
+                                    />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError" id="concreteNameError"
+                                    ref={concreteNameErrorRef}> </div>
+
                             </div>
 
-                            <div className="divInputFB">
-                                <label>نوع کالا </label>
-                                <select name="" id="" className="selectFB" onChange={hide}>
-                                    <option value=""> انتخاب </option>
-                                    <option value="بتن" onClick={moreBetonDetails}>بتن</option>
-                                    <option value="شن و ماسه">شن و ماسه</option>
-                                    <option value="سیمان"> سیمان </option>
-                                    <option value="آب"> آب </option>
-                                    <option value="خدمات"> خدمات </option>
-                                    <option value="سایر"> سایر </option>
-                                </select>
-                            </div>
+
                         </div>
 
-                        <div className="sectionFB hideFB" ref={divFormulaBetonRef}>
-                            <div className="divInputFB">
-                                <label htmlFor="cementAAS"> مقدار سیمان </label>
-                                <input type="text" id="cementAAS" className=" inputTextUnitFB ltrFB" ref={cementRef} onInput={() => { totalBtonDetails(); formatNub(cementRef) }} />
-                                <span className="unitFB" onClick={() => htmlFor('cementAAS')}> کیلو گرم </span>
-                            </div>
-                            <div className="divInputFB">
-                                <label htmlFor="sandAAS"> مقدار ماسه </label>
-                                <input type="text" id="sandAAS" className="inputTextUnitFB ltrFB" ref={sandRef} onInput={() => { totalBtonDetails(); formatNub(sandRef) }} />
-                                <span className="unitFB" onClick={() => htmlFor('sandAAS')}> کیلو گرم </span>
+                        <div className="sectionFB " ref={divFormulaBetonRef}>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label
+                                        htmlFor="cementAAS"
+                                    >
+                                        مقدار سیمان
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="cementAAS"
+                                        className=" inputTextUnitFB ltrFB"
+                                        ref={cementRef}
+                                        onInput={() => { totalBtonDetails(); formatNub(cementRef) }}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('cementAAS')}
+                                    >
+                                        کیلو گرم
+                                    </span>
+                                </div>
 
+                                <div
+                                    className="errorContainerFB elementError" id="amountCementError"
+                                    ref={amountCementErrorRef}> </div>
                             </div>
-                            <div className="divInputFB">
-                                <label htmlFor="gravelAAS"> مقدار شن </label>
-                                <input type="text" id="gravelAAS" className="inputTextUnitFB ltrFB" ref={gravelRef} onInput={() => { totalBtonDetails(); formatNub(gravelRef) }} />
-                                <span className="unitFB" onClick={() => htmlFor('gravelAAS')}> کیلو گرم </span>
 
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="sandAAS"> مقدار ماسه </label>
+                                    <input type="text" id="sandAAS" className="inputTextUnitFB ltrFB" ref={sandRef} onInput={() => { totalBtonDetails(); formatNub(sandRef) }} />
+                                    <span className="unitFB" onClick={() => htmlFor('sandAAS')}> کیلو گرم </span>
+
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError" id="amountSandError"
+                                    ref={amountSandErrorRef}> </div>
                             </div>
-                            <div className="divInputFB">
-                                <label htmlFor="waterAAS"> مقدار آب </label>
-                                <input type="text" id="waterAAS" className="inputTextUnitFB ltrFB" ref={waterRef} onInput={() => { totalBtonDetails(); formatNub(waterRef) }} />
-                                <span className="unitFB" onClick={() => htmlFor('waterAAS')}> کیلو گرم </span>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="gravelAAS"> مقدار شن </label>
+                                    <input type="text" id="gravelAAS" className="inputTextUnitFB ltrFB" ref={gravelRef} onInput={() => { totalBtonDetails(); formatNub(gravelRef) }} />
+                                    <span className="unitFB" onClick={() => htmlFor('gravelAAS')}> کیلو گرم </span>
 
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError" id="amountGravelError"
+                                    ref={amountGravelErrorRef}> </div>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="waterAAS"> مقدار آب </label>
+                                    <input type="text" id="waterAAS" className="inputTextUnitFB ltrFB" ref={waterRef} onInput={() => { totalBtonDetails(); formatNub(waterRef) }} />
+                                    <span className="unitFB" onClick={() => htmlFor('waterAAS')}> کیلو گرم </span>
+
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError" id="amountWaterError"
+                                    ref={amountWaterErrorRef}
+                                >
+                                </div>
                             </div>
 
 
@@ -235,32 +287,43 @@ return(
 
                         </div>
 
-                        <div className="sectionFB hideFB" ref={divUnitPriceAASRef}>
+                        <div className="sectionFB " ref={divUnitPriceAASRef}>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
 
-                            <div className="divInputFB">
-
-                                <label> واحد </label>
-                                <select name="" id="" className="selectFB">
-                                    <option value="">انتخاب</option>
-                                    <option value="متر مکعب">متر مکعب</option>
-                                    <option value="کیلو گرم">کیلو گرم</option>
-                                    <option value="تن"> تن </option>
-                                </select>
+                                    <label> واحد </label>
+                                    <select
+                                        name=""
+                                        id="unit"
+                                        className="selectFB element inputTextFB">
+                                        <option value="">انتخاب</option>
+                                        <option value="متر مکعب">متر مکعب</option>
+                                        <option value="کیلو گرم">کیلو گرم</option>
+                                        <option value="تن"> تن </option>
+                                    </select>
+                                </div>
+                                <div 
+                                className="errorContainerFB elementError" id="unitError"
+                                 ref={unitErrorRef}
+                                 > 
+                                 </div>
                             </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='unitPrice'> قیمت واحد </label>
+                                    <input type="text" id="unitPrice" ref={unitPriceAASRef} className="inputTextUnitFB ltrFB"
+                                        onInput={() => { formatNub(unitPriceAASRef) }} />
+                                    <span className="unitFB" onClick={() => htmlFor('unitPriceAAS')}> تومان </span>
 
-                            <div className="divInputFB">
-                                <label htmlFor='unitPriceAAS'> قیمت واحد </label>
-                                <input type="text" id="unitPriceAAS" ref={unitPriceAASRef} className="inputTextUnitFB ltrFB"
-                                    onInput={() => { formatNub(unitPriceAASRef) }} />
-                                <span className="unitFB" onClick={() => htmlFor('unitPriceAAS')}> تومان </span>
-
+                                </div>
+                                <div className="errorContainerFB elementError" id="concreteNameCodeError" ref={unitPriceErrorRef}> </div>
                             </div>
 
 
                         </div>
 
 
-                        <div className="sectionFB divBtnsFB">
+                        {/* <div className="sectionFB divBtnsFB">
                             <Button variant="success" className="btnSaveFB">
                                 {editGAS ? 'ویرایش' : 'ثبت'}
                             </Button>
@@ -268,6 +331,40 @@ return(
                                 className={editGAS ? 'hideGe' : ''}
                                 onClick={resetAll}>
                                 پاک کن
+                            </Button>
+                        </div> */}
+
+                        <div className={`sectionFB divBtnsFB ${!editGAS ? '' : 'hideGe'}`}>
+                            <Button
+                                variant="success"
+                                className="btnSaveFB"
+                                onClick={handleSubmit}
+                            >
+                                ثبت
+                            </Button>
+
+                            <Button
+                                type="reset"
+                                variant="warning"
+                                className="btnDelFB"
+                                // onClick={resetForm}
+                                onClick={resetAll}
+                            >
+                                پاک کن
+                            </Button>
+
+
+                        </div>
+
+                        <div className={`sectionFB divBtnsFB ${!editGAS ? 'hideGe' : ''}`}>
+
+
+                            <Button
+                                variant="info"
+                                className="btnSaveFB"
+                                onClick={handleSubmitEdit}
+                            >
+                                ویرایش
                             </Button>
                         </div>
                     </form>
@@ -363,8 +460,8 @@ return(
                 </div>
 
             </div>
-     
-</div>
-)
+
+        </div>
+    )
 }
 export default AddTypeConcrete;

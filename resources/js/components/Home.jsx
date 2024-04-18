@@ -74,6 +74,38 @@ const Home = () => {
                     <span>ثبت قرارداد</span>
                 </Link>
 
+                <Link to="customerContract" className="linksHome --styleLessLink ">
+                    <div className="divIcofontLinksHome">
+                        <i className="icofont-law-document   iLinksHome iTruck " />
+                        <i className="icofont-plus Iplus" />
+                    </div>
+                    <span>ثبت درآمدهای متفرقه</span>
+                </Link>
+
+                <Link to="customerContract" className="linksHome --styleLessLink ">
+                    <div className="divIcofontLinksHome">
+                        <i className="icofont-law-document   iLinksHome iTruck " />
+                        <i className="icofont-plus Iplus" />
+                    </div>
+                    <span>ثبت هزینه‌های جاری</span>
+                </Link>
+
+                <Link to="customerContract" className="linksHome --styleLessLink ">
+                    <div className="divIcofontLinksHome">
+                        <i className="icofont-law-document   iLinksHome iTruck " />
+                        <i className="icofont-plus Iplus" />
+                    </div>
+                    <span>ثبت فاکتور</span>
+                </Link>
+
+                <Link to="customerContract" className="linksHome --styleLessLink ">
+                    <div className="divIcofontLinksHome">
+                        <i className="icofont-law-document   iLinksHome iTruck " />
+                        <i className="icofont-plus Iplus" />
+                    </div>
+                    <span>آمار</span>
+                </Link>
+
 
               
             </main>

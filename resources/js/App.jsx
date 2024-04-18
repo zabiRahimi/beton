@@ -16,7 +16,7 @@ import AddCustomerType from "./components/AddCustomerType";
 import AddTruck from "./components/AddTruck";
 import AddPersonnel from "./components/AddPersonnel";
 import AddDriver from "./components/AddDriver";
-import AddGoodsAndServices from "./components/AddGoodsAndServices";
+// import AddGoodsAndServices from "./components/AddGoodsAndServices";
 import AddCurrentCosts from "./components/AddCurrentCosts";
 import NavigateCustmoerContract from './components/customerContract/NavigateCustomerContract';
 import CustomerContract from "./components/customerContract/CustmoerContract";
