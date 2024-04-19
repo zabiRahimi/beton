@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('concretes', function (Blueprint $table) {
             $table->id();
+            $table->string('concreteName');
+            $table->string('amountCement');
+            $table->string('amountSand')->comment('مقدار ماسه');
+            $table->string('amountGravel')->comment('مقدار شن');
+            $table->string('amountWater');
+            $table->string('unit')->nullable();
+            $table->string('unitPrice')->nullable();
             $table->timestamps();
         });
     }

@@ -1243,7 +1243,6 @@ const AddCustomer = () => {
                                         id="bankInfo.0.bank"
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[0]?.bank ?? ''}
-
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}
                                         onClick={(e) => delErr(e, bank1ErrorRef)}
                                     >

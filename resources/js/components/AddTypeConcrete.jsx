@@ -7,14 +7,14 @@ const AddTypeConcrete = () => {
     const divFormulaBetonRef = useRef(null);
     const divUnitPriceAASRef = useRef(null);
 
-    const cementRef = useRef(null);
-    const waterRef = useRef(null);
-    const sandRef = useRef(null);//ماسه
-    const gravelRef = useRef(null);//شن
+    const amountCementRef = useRef(null);
+    const amountWaterRef = useRef(null);
+    const amountSandRef = useRef(null);//ماسه
+    const amountGravelRef = useRef(null);//شن
 
     const spanShowTotalRef = useRef(null);
 
-    const unitPriceAASRef = useRef(null);
+    const unitPriceRef = useRef(null);
 
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
@@ -39,7 +39,15 @@ const AddTypeConcrete = () => {
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
     const [editGAS, setEditGAS] = useState(false);
 
-
+    const [input, setInput] = useState({
+        concreteName: '',
+        amountCement: '',
+        amountSand: '',
+        amountGravel: '',
+        amountWater: '',
+        unit: '',
+        unitPrice: '',
+    });
 
     const moreBetonDetails = () => {
 
@@ -60,10 +68,10 @@ const AddTypeConcrete = () => {
     // مجموع واحدهای فرمول بتن را محاسبه می کند
     const totalBtonDetails = () => {
 
-        let cement = cementRef.current.value.replace(/[\s,]/g, ""),
-            sand = sandRef.current.value.replace(/[\s,]/g, ""),
-            gravel = gravelRef.current.value.replace(/[\s,]/g, ""),
-            water = waterRef.current.value.replace(/[\s,]/g, "");
+        let cement = amountCementRef.current.value.replace(/[\s,]/g, ""),
+            sand = amountSandRef.current.value.replace(/[\s,]/g, ""),
+            gravel = amountGravelRef.current.value.replace(/[\s,]/g, ""),
+            water = amountWaterRef.current.value.replace(/[\s,]/g, "");
 
 
         cement = cement ? parseFloat(cement) : 0;
@@ -196,93 +204,138 @@ const AddTypeConcrete = () => {
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="concreteName">نام بتن</label>
+                                    <label htmlFor="concreteName">
+                                        نام بتن
+                                    </label>
                                     <input
                                         type="text"
                                         id="concreteName"
-                                        className="inputTextFB"
+                                        className="inputTextFB element"
+                                        defaultValue={input.concreteName}
                                         autoFocus
                                     />
                                 </div>
                                 <div
-                                    className="errorContainerFB elementError" id="concreteNameError"
-                                    ref={concreteNameErrorRef}> </div>
-
+                                    className="errorContainerFB elementError"
+                                    id="concreteNameError"
+                                    ref={concreteNameErrorRef}
+                                >
+                                </div>
                             </div>
-
-
                         </div>
 
                         <div className="sectionFB " ref={divFormulaBetonRef}>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label
-                                        htmlFor="cementAAS"
-                                    >
+                                    <label htmlFor="amountCement">
                                         مقدار سیمان
                                     </label>
                                     <input
                                         type="text"
-                                        id="cementAAS"
-                                        className=" inputTextUnitFB ltrFB"
-                                        ref={cementRef}
-                                        onInput={() => { totalBtonDetails(); formatNub(cementRef) }}
+                                        id="amountCement"
+                                        className=" inputTextUnitFB ltrFB element"
+                                        defaultValue={input.amountCement}
+                                        ref={amountCementRef}
+                                        onInput={() => { totalBtonDetails(); formatNub(amountCementRef) }}
                                     />
                                     <span
                                         className="unitFB"
-                                        onClick={() => htmlFor('cementAAS')}
+                                        onClick={() => htmlFor('amountCement')}
                                     >
                                         کیلو گرم
                                     </span>
                                 </div>
-
                                 <div
-                                    className="errorContainerFB elementError" id="amountCementError"
-                                    ref={amountCementErrorRef}> </div>
+                                    className="errorContainerFB elementError"
+                                    id="amountCementError"
+                                    ref={amountCementErrorRef}
+                                >
+                                </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="sandAAS"> مقدار ماسه </label>
-                                    <input type="text" id="sandAAS" className="inputTextUnitFB ltrFB" ref={sandRef} onInput={() => { totalBtonDetails(); formatNub(sandRef) }} />
-                                    <span className="unitFB" onClick={() => htmlFor('sandAAS')}> کیلو گرم </span>
-
+                                    <label htmlFor="amountSand"> مقدار ماسه </label>
+                                    <input
+                                        type="text"
+                                        id="amountSand"
+                                        className="inputTextUnitFB ltrFB element"
+                                        defaultValue={input.amountSand}
+                                        ref={amountSandRef}
+                                        onInput={() => { totalBtonDetails(); formatNub(amountSandRef) }}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('amountSand')}
+                                    >
+                                        کیلو گرم
+                                    </span>
                                 </div>
                                 <div
                                     className="errorContainerFB elementError" id="amountSandError"
                                     ref={amountSandErrorRef}> </div>
                             </div>
+
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="gravelAAS"> مقدار شن </label>
-                                    <input type="text" id="gravelAAS" className="inputTextUnitFB ltrFB" ref={gravelRef} onInput={() => { totalBtonDetails(); formatNub(gravelRef) }} />
-                                    <span className="unitFB" onClick={() => htmlFor('gravelAAS')}> کیلو گرم </span>
-
+                                    <label htmlFor="amountGravel">
+                                        مقدار شن
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="amountGravel"
+                                        className="inputTextUnitFB ltrFB element"
+                                        defaultValue={input.amountGravel}
+                                        ref={amountGravelRef}
+                                        onInput={() => { totalBtonDetails(); formatNub(amountGravelRef) }}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('amountGravel')}
+                                    >
+                                        کیلو گرم
+                                    </span>
                                 </div>
                                 <div
-                                    className="errorContainerFB elementError" id="amountGravelError"
-                                    ref={amountGravelErrorRef}> </div>
+                                    className="errorContainerFB elementError"
+                                    id="amountGravelError"
+                                    ref={amountGravelErrorRef}
+                                >
+                                </div>
                             </div>
+
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="waterAAS"> مقدار آب </label>
-                                    <input type="text" id="waterAAS" className="inputTextUnitFB ltrFB" ref={waterRef} onInput={() => { totalBtonDetails(); formatNub(waterRef) }} />
-                                    <span className="unitFB" onClick={() => htmlFor('waterAAS')}> کیلو گرم </span>
-
+                                    <label htmlFor="amountWater">
+                                        مقدار آب
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="amountWater"
+                                        className="inputTextUnitFB ltrFB element"
+                                        defaultValue={input.amountWater}
+                                        ref={amountWaterRef}
+                                        onInput={() => { totalBtonDetails(); formatNub(amountWaterRef) }}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('amountWater')}
+                                    >
+                                        کیلو گرم
+                                    </span>
                                 </div>
                                 <div
-                                    className="errorContainerFB elementError" id="amountWaterError"
+                                    className="errorContainerFB elementError"
+                                    id="amountWaterError"
                                     ref={amountWaterErrorRef}
                                 >
                                 </div>
                             </div>
 
-
                             <div className="showTotalUnitsFB">
                                 <span className="span1STUFB">جمع کل:</span>
                                 <span className="span2STUFB" ref={spanShowTotalRef}> 0 </span>
                                 <span className="span3STUFB" >کیلو گرم</span>
-
                             </div>
 
                         </div>
@@ -290,35 +343,51 @@ const AddTypeConcrete = () => {
                         <div className="sectionFB " ref={divUnitPriceAASRef}>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-
                                     <label> واحد </label>
                                     <select
                                         name=""
                                         id="unit"
-                                        className="selectFB element inputTextFB">
+                                        className="selectFB element inputTextFB"
+                                        value={input.unit||''}
+                                        >
                                         <option value="">انتخاب</option>
                                         <option value="متر مکعب">متر مکعب</option>
                                         <option value="کیلو گرم">کیلو گرم</option>
                                         <option value="تن"> تن </option>
                                     </select>
                                 </div>
-                                <div 
-                                className="errorContainerFB elementError" id="unitError"
-                                 ref={unitErrorRef}
-                                 > 
-                                 </div>
+                                <div
+                                    className="errorContainerFB elementError" id="unitError"
+                                    ref={unitErrorRef}
+                                >
+                                </div>
                             </div>
+
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor='unitPrice'> قیمت واحد </label>
-                                    <input type="text" id="unitPrice" ref={unitPriceAASRef} className="inputTextUnitFB ltrFB"
-                                        onInput={() => { formatNub(unitPriceAASRef) }} />
-                                    <span className="unitFB" onClick={() => htmlFor('unitPriceAAS')}> تومان </span>
-
+                                    <input
+                                        type="text"
+                                        id="unitPrice"
+                                        className="inputTextUnitFB ltrFB element"
+                                        defaultValue={input.unitPrice}
+                                        ref={unitPriceRef}
+                                        onInput={() => { formatNub(unitPriceRef) }}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('unitPrice')}
+                                    >
+                                        تومان
+                                    </span>
                                 </div>
-                                <div className="errorContainerFB elementError" id="concreteNameCodeError" ref={unitPriceErrorRef}> </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id="concreteNameCodeError"
+                                    ref={unitPriceErrorRef}
+                                >
+                                </div>
                             </div>
-
 
                         </div>
 
