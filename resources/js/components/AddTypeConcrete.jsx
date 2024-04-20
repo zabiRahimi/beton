@@ -303,7 +303,8 @@ const AddTypeConcrete = () => {
                                     </select>
                                 </div>
                                 <div 
-                                className="errorContainerFB elementError" id="unitError"
+                                className="errorContainerFB elementError"
+                                 id="unitError"
                                  ref={unitErrorRef}
                                  > 
                                  </div>
