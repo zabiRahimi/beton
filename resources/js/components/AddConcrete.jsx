@@ -36,7 +36,7 @@ const AddConcrete = () => {
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
-    const [editGAS, setEditGAS] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
     const [input, setInput] = useState({
         concreteName: '',
@@ -120,7 +120,7 @@ const AddConcrete = () => {
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(true);
         setFlexDirection('columnGe');
-        setEditGAS(false)
+        setEditMode(false)
     }
 
     /**
@@ -144,7 +144,7 @@ const AddConcrete = () => {
 
         setFlexDirection('columnGe');
 
-        setEditGAS(true);
+        setEditMode(true);
 
     }
 
@@ -186,7 +186,7 @@ const AddConcrete = () => {
                 <div className="continerAddGe ">
                     <form action="" className="formBeton">
 
-                        <h5 className={`titleFormFB ${editGAS ? '' : 'hideGe'}`}>ویرایش نوع بتن </h5>
+                        <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش نوع بتن </h5>
 
                         <div className="sectionFB">
                             <div className="containerInputFB">
@@ -343,20 +343,12 @@ const AddConcrete = () => {
                                         <option value="تن"> تن </option>
                                     </select>
                                 </div>
-<<<<<<< HEAD:resources/js/components/AddTypeConcrete.jsx
                                 <div 
                                 className="errorContainerFB elementError"
                                  id="unitError"
                                  ref={unitErrorRef}
                                  > 
                                  </div>
-=======
-                                <div
-                                    className="errorContainerFB elementError" id="unitError"
-                                    ref={unitErrorRef}
-                                >
-                                </div>
->>>>>>> a666003e2dc3f11557a4be1ad6ebff151ddb17e7:resources/js/components/AddConcrete.jsx
                             </div>
 
                             <div className="containerInputFB">
@@ -390,16 +382,16 @@ const AddConcrete = () => {
 
                         {/* <div className="sectionFB divBtnsFB">
                             <Button variant="success" className="btnSaveFB">
-                                {editGAS ? 'ویرایش' : 'ثبت'}
+                                {editMode ? 'ویرایش' : 'ثبت'}
                             </Button>
                             <Button type="reset" variant="warning"
-                                className={editGAS ? 'hideGe' : ''}
+                                className={editMode ? 'hideGe' : ''}
                                 onClick={resetAll}>
                                 پاک کن
                             </Button>
                         </div> */}
 
-                        <div className={`sectionFB divBtnsFB ${!editGAS ? '' : 'hideGe'}`}>
+                        <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button
                                 variant="success"
                                 className="btnSaveFB"
@@ -421,7 +413,7 @@ const AddConcrete = () => {
 
                         </div>
 
-                        <div className={`sectionFB divBtnsFB ${!editGAS ? 'hideGe' : ''}`}>
+                        <div className={`sectionFB divBtnsFB ${!editMode ? 'hideGe' : ''}`}>
 
 
                             <Button

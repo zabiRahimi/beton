@@ -118,7 +118,7 @@ const AddCustomer = () => {
 
 
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
-    const [editCustomer, setEditCustomer] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
@@ -212,7 +212,7 @@ const AddCustomer = () => {
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(true);
         setFlexDirection('columnGe');
-        setEditCustomer(false)
+        setEditMode(false)
         resetForm(false);
     }
 
@@ -484,7 +484,7 @@ const AddCustomer = () => {
         setDisabledBtnAddGe(false);
         setFlexDirection('columnGe');
         window.scrollTo({ top: 60, behavior: 'smooth' });
-        setEditCustomer(true);
+        setEditMode(true);
         getAndSetCustomer(id);
        
     }
@@ -917,7 +917,7 @@ const AddCustomer = () => {
 
                 <div className="continerAddGe containerAddCustomer">
                     <form action="" className="formBeton" ref={form}>
-                        <h5 className={`titleFormFB ${editCustomer ? '' : 'hideGe'}`}>ویرایش مشتری</h5>
+                        <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش مشتری</h5>
 
                         <div className="sectionFB">
 
@@ -1521,7 +1521,7 @@ const AddCustomer = () => {
 
 
 
-                        <div className={`sectionFB divBtnsFB ${!editCustomer ? '' : 'hideGe'}`}>
+                        <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button
                                 variant="success"
                                 className="btnSaveFB"
@@ -1542,7 +1542,7 @@ const AddCustomer = () => {
 
                         </div>
 
-                        <div className={`sectionFB divBtnsFB ${!editCustomer ? 'hideGe' : ''}`}>
+                        <div className={`sectionFB divBtnsFB ${!editMode ? 'hideGe' : ''}`}>
 
 
                             <Button
