@@ -3,9 +3,8 @@ import Title from "./hooks/Title";
 
 import Button from 'react-bootstrap/Button';
 import "../../css/formBeton.css";
-const AddTypeConcrete = () => {
+const AddConcrete = () => {
     const divFormulaBetonRef = useRef(null);
-    const divUnitPriceAASRef = useRef(null);
 
     const amountCementRef = useRef(null);
     const amountWaterRef = useRef(null);
@@ -49,21 +48,7 @@ const AddTypeConcrete = () => {
         unitPrice: '',
     });
 
-    const moreBetonDetails = () => {
-
-        divFormulaBetonRef.current.classList.remove('hideFB');
-        divUnitPriceAASRef.current.classList.remove('hideFB');
-
-    }
-
-    // هنگام انتخاب نوع کالا چنانچه قبلا نوع کالایی انتخاب شده باشد جزئیات
-    // آن کالا را می بندد
-    const hide = () => {
-
-        divFormulaBetonRef.current.classList.add('hideFB');
-        divUnitPriceAASRef.current.classList.add('hideFB');
-
-    }
+  
 
     // مجموع واحدهای فرمول بتن را محاسبه می کند
     const totalBtonDetails = () => {
@@ -128,29 +113,31 @@ const AddTypeConcrete = () => {
         document.getElementById(id).focus()
     }
 
-    const addGAS = () => {
-
+    /**
+     * نمایش فرم تعریف بتن
+     */
+    const showAddConcreteForm = () => {
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(true);
-
         setFlexDirection('columnGe');
-
         setEditGAS(false)
-
     }
 
-    const getGAS = () => {
-
+    /**
+     * نمایش لیست بتن‌های تعریف شده
+     */
+    const showCreatedConcretes = () => {
         setDisabledBtnAddGe(false);
         setDisabledBtnGetGe(true);
-
         setFlexDirection('columnReverseGe');
-
         setHideGetGAS(false);
-
     }
 
-    const showFormEditGAS = () => {
+    /**
+     * نمایش فرم ویرایش بتن
+     *  @param {number} id 
+     */
+    const showEditConcreteForm = (id) => {
 
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(false);
@@ -177,7 +164,7 @@ const AddTypeConcrete = () => {
 
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={addGAS}
+                    ref={btnAddGeRef} onClick={showAddConcreteForm}
                     disabled={disabledBtnAddGe}
                 >
                     تعریف نوع بتن
@@ -186,7 +173,7 @@ const AddTypeConcrete = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={getGAS}
+                    onClick={showCreatedConcretes}
                     disabled={disabledBtnGetGe}
                 >
                     مشاهده انواع بتن‌های ثبت شده
@@ -339,8 +326,8 @@ const AddTypeConcrete = () => {
                             </div>
 
                         </div>
-
-                        <div className="sectionFB " ref={divUnitPriceAASRef}>
+                        
+                        <div className="sectionFB " >
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label> واحد </label>
@@ -468,7 +455,7 @@ const AddTypeConcrete = () => {
 
                             <div className="divEditGe">
                                 <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showFormEditGAS}
+                                    onClick={showEditConcreteForm}
                                 >
                                     <i className="icofont-pencil iEditGe" />
                                 </button>
@@ -510,7 +497,7 @@ const AddTypeConcrete = () => {
 
                             <div className="divEditGe">
                                 <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showFormEditGAS}>
+                                    onClick={showEditConcreteForm}>
                                     <i className="icofont-pencil iEditGe" />
                                 </button>
                             </div>
@@ -533,4 +520,4 @@ const AddTypeConcrete = () => {
         </div>
     )
 }
-export default AddTypeConcrete;
+export default AddConcrete;
