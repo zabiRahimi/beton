@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateConcreteRequest extends FormRequest
 {
@@ -22,7 +23,13 @@ class UpdateConcreteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'concreteName' => ['required', 'bail','string', Rule::unique('concretes')->ignore($this->concretes)],
+            'amountCement' => ['required','bail','numeric'],
+            'amountSand' => ['required','bail','numeric'],
+            'amountGravel' => ['required','bail','numeric'],
+            'amountWater' => ['required','bail','numeric'],
+            'unit' => ['nullable','bail','string'],
+            'unitPrice' => ['nullable','bail','numeric'],
         ];
     }
 }

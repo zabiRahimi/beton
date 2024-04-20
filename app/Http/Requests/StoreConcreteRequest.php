@@ -22,7 +22,13 @@ class StoreConcreteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'concreteName' => ['required', 'bail','string','unique:concretes'],
+            'amountCement' => ['required','bail','numeric'],
+            'amountSand' => ['required','bail','numeric'],
+            'amountGravel' => ['required','bail','numeric'],
+            'amountWater' => ['required','bail','numeric'],
+            'unit' => ['nullable','bail','string'],
+            'unitPrice' => ['nullable','bail','numeric'],
         ];
     }
 }

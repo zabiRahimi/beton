@@ -16,44 +16,50 @@ class ConcreteController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    // /**
+    //  * Show the form for creating a new resource.
+    //  */
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreConcreteRequest $request)
     {
-        //
+        $concrete = new Concrete();
+        $concrete->fill($request->validated());
+        $concrete->save();
+
+        return response()->json(['concrete'=>  $concrete],200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Concrete $concrete)
-    {
-        //
-    }
+    // /**
+    //  * Display the specified resource.
+    //  */
+    // public function show(Concrete $concrete)
+    // {
+    //     //
+    // }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Concrete $concrete)
-    {
-        //
-    }
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  */
+    // public function edit(Concrete $concrete)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateConcreteRequest $request, Concrete $concrete)
     {
-        //
+        $concrete->update($request->all());
+
+        return response()->json(['concrete'=>  $concrete],200);
     }
 
     /**

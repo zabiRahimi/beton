@@ -24,7 +24,7 @@ import AddPersonnelContract from "./components/customerContract/AddPersonnelCont
 import AddBuyerContract from "./components/customerContract/AddBuyerContract";
 import AddSellerContract from "./components/customerContract/AddSellerContract";
 import AddPumpOperator from "./components/AddPumpOperator";
-import AddTypeConcrete from "./components/AddTypeConcrete";
+import AddConcrete from "./components/AddConcrete";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -45,7 +45,7 @@ function App() {
                 <Route path="addPersonnel" element={<AddPersonnel />} />
                 <Route path="addDriver" element={<AddDriver />} />
 
-                <Route path="addTypeConcrete" element={<AddTypeConcrete />} />
+                <Route path="addConcrete" element={<AddConcrete />} />
                 
                 <Route path="addCurrentCosts" element={<AddCurrentCosts />} />
                 <Route path="addPumpOperator" element={<AddPumpOperator />} />

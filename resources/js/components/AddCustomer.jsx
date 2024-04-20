@@ -211,12 +211,9 @@ const AddCustomer = () => {
         form.current.reset();
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(true);
-
         setFlexDirection('columnGe');
-
         setEditCustomer(false)
         resetForm(false);
-
     }
 
     /**
@@ -227,11 +224,8 @@ const AddCustomer = () => {
         resetForm();
         setDisabledBtnAddGe(false);
         setDisabledBtnGetGe(true);
-
         setFlexDirection('columnReverseGe');
-
         setHideGetCustomer(false);
-
     }
 
     /**
@@ -815,6 +809,7 @@ const AddCustomer = () => {
           }
         }));
       };
+      
     const resetForm = (apply=true) => {
 
         setInput({
@@ -1243,7 +1238,6 @@ const AddCustomer = () => {
                                         id="bankInfo.0.bank"
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[0]?.bank ?? ''}
-
                                         onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}
                                         onClick={(e) => delErr(e, bank1ErrorRef)}
                                     >

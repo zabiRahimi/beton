@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConcreteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
@@ -31,6 +32,14 @@ Route::controller(CustomerTypeController::class)->group(function () {
     Route::post('/addCustomerType', 'store');
     Route::get('/getAllCustomerType', 'index');
     Route::patch('/editCustomerType/{customerType}', 'update');
+
+});
+
+Route::controller(ConcreteController::class)->group(function () {
+    
+    Route::post('/addConcrete', 'store');
+    Route::get('/getAllConcrete', 'index');
+    Route::patch('/editConcrete/{concrete}', 'update');
 
 });
 

@@ -48,7 +48,7 @@ const Home = () => {
 
                 
                 
-                <Link to="addTypeConcrete" className="linksHome --styleLessLink ">
+                <Link to="addConcrete" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
                         <i className="icofont-cement-mixer  iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
