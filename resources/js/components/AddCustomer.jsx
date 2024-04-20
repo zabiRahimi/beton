@@ -608,6 +608,11 @@ const AddCustomer = () => {
         }
     }
 
+    /**
+     * ذخیره مقادیر ورودی‌های کاربر در استیت
+     * @param {*} e 
+     * @param {*} input 
+     */
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
         setInput(prev => ({ ...prev, [input]: value }));
@@ -619,7 +624,7 @@ const AddCustomer = () => {
      * @param {*} index 
      * @param {*} input 
      */
-    const handleSaveBalInputBank = (e, index, input) => {
+    const handleSaveValBankInput = (e, index, input) => {
         let { value } = e.target;
         setInput(prevInput => {
             let newBankInfo = [...prevInput.bankInfo];
@@ -635,7 +640,7 @@ const AddCustomer = () => {
      * @param {*} e 
      * @param {رف مربوط به تگ نمایش خطا} refErr 
      */
-    const delErr = (e, refErr, types = false, date = false) => {
+    const clearInputError = (e, refErr, types = false, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '')
         date && dateOfBirth.current.classList.remove('borderRedFB');
@@ -930,7 +935,7 @@ const AddCustomer = () => {
                                         id="name"
                                         defaultValue={input.name}
                                         onInput={e => handleSaveValInput(e, 'name')}
-                                        onFocus={e => delErr(e, nameErrorRef)}
+                                        onFocus={e => clearInputError(e, nameErrorRef)}
                                         autoFocus
                                     />
                                     <i className="icofont-ui-rating starFB" />
@@ -947,7 +952,7 @@ const AddCustomer = () => {
                                         id="lastName"
                                         defaultValue={input.lastName}
                                         onInput={e => handleSaveValInput(e, 'lastName')}
-                                        onFocus={e => delErr(e, lastNameErrorRef)}
+                                        onFocus={e => clearInputError(e, lastNameErrorRef)}
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
@@ -963,7 +968,7 @@ const AddCustomer = () => {
                                         id="father"
                                         defaultValue={input.father}
                                         onInput={e => handleSaveValInput(e, 'father')}
-                                        onFocus={e => delErr(e, fatherErrorRef)}
+                                        onFocus={e => clearInputError(e, fatherErrorRef)}
                                     />
 
                                 </div>
@@ -976,7 +981,7 @@ const AddCustomer = () => {
                                     <div className="selectFB element element containerCustomerTypeFB"
                                         id="types"
                                         ref={typesDiv}
-                                        onClick={(e) => { showDivCustomerType(); delErr(e, typesErrorRef, true, false) }}
+                                        onClick={(e) => { showDivCustomerType(); clearInputError(e, typesErrorRef, true, false) }}
                                     >
                                         <span className="lableCustomerTypeFB" ref={lableCustomerType}> انتخاب </span>
                                         <i className="icofont-caret-down " />
@@ -1015,7 +1020,7 @@ const AddCustomer = () => {
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.nationalCode}
                                         onInput={e => handleSaveValInput(e, 'nationalCode')}
-                                        onFocus={(e) => delErr(e, nationalCodeErrorRef)}
+                                        onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
                                     />
                                 </div>
                                 <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
@@ -1035,7 +1040,7 @@ const AddCustomer = () => {
                                                 id="day"
                                                 value={day || ''}
                                                 onInput={(e) => changeDay(e)}
-                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
+                                                onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
 
                                             />
                                             <span>/</span>
@@ -1045,7 +1050,7 @@ const AddCustomer = () => {
                                                 placeholder="1"
                                                 value={month || ''}
                                                 onInput={(e) => changeMonth(e)}
-                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
+                                                onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
 
                                             />
                                             <span>/</span>
@@ -1055,7 +1060,7 @@ const AddCustomer = () => {
                                                 placeholder="1300"
                                                 value={year || ''}
                                                 onInput={(e) => { changeYear(e) }}
-                                                onFocus={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
+                                                onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
 
                                             />
                                         </div>
@@ -1066,7 +1071,7 @@ const AddCustomer = () => {
                                                 value={day}
                                                 ref={daySelect}
                                                 onChange={(e) => changeDay(e)}
-                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
+                                                onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
 
                                             >
                                                 <option value="">روز</option>
@@ -1077,7 +1082,7 @@ const AddCustomer = () => {
                                                 value={month}
                                                 ref={monthSelect}
                                                 onChange={(e) => changeMonth(e)}
-                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
+                                                onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
 
                                             >
                                                 <option value="">ماه</option>
@@ -1088,7 +1093,7 @@ const AddCustomer = () => {
                                                 value={year}
                                                 ref={yearSelect}
                                                 onChange={(e) => { changeYear(e) }}
-                                                onClick={(e) => delErr(e, dateOfBirthErrorRef, false, true)}
+                                                onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
 
                                             >
                                                 <option value="">سال</option>
@@ -1110,7 +1115,7 @@ const AddCustomer = () => {
                                             value={input['mobile'] || ''}
                                             onInput={e => handleSaveValInput(e, 'mobile')}
                                             onBlur={() => addZeroFirstStr('mobile')}
-                                            onFocus={(e) => delErr(e, mobileErrorRef)}
+                                            onFocus={(e) => clearInputError(e, mobileErrorRef)}
 
                                         />
                                     </div>
@@ -1125,7 +1130,7 @@ const AddCustomer = () => {
                                             value={input['telephone'] || ''}
                                             onInput={e => handleSaveValInput(e, 'telephone')}
                                             onBlur={() => addZeroFirstStr('telephone')}
-                                            onFocus={(e) => delErr(e, telephoneErrorRef)}
+                                            onFocus={(e) => clearInputError(e, telephoneErrorRef)}
 
                                         />
                                     </div>
@@ -1141,7 +1146,7 @@ const AddCustomer = () => {
                                             id="postalCode"
                                             defaultValue={input.postalCode}
                                             onInput={e => handleSaveValInput(e, 'postalCode')}
-                                            onFocus={(e) => delErr(e, postalCodeErrorRef)}
+                                            onFocus={(e) => clearInputError(e, postalCodeErrorRef)}
 
                                         />
                                     </div>
@@ -1156,7 +1161,7 @@ const AddCustomer = () => {
                                             className="inputTextFB ltrFB element"
                                             defaultValue={input.email}
                                             onInput={e => handleSaveValInput(e, 'email')}
-                                            onFocus={(e) => delErr(e, emailErrorRef)}
+                                            onFocus={(e) => clearInputError(e, emailErrorRef)}
 
                                         />
                                     </div>
@@ -1173,7 +1178,7 @@ const AddCustomer = () => {
                                             className="textareaAddressACu"
                                             defaultValue={input.address}
                                             onInput={e => handleSaveValInput(e, 'address')}
-                                            onFocus={(e) => delErr(e, addressErrorRef)}
+                                            onFocus={(e) => clearInputError(e, addressErrorRef)}
 
                                         />
                                     </div>
@@ -1191,8 +1196,8 @@ const AddCustomer = () => {
                                         id="bankInfo.0.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[0]?.account ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 0, 'account') }}
-                                        onFocus={(e) => delErr(e, account1ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 0, 'account') }}
+                                        onFocus={(e) => clearInputError(e, account1ErrorRef)}
 
                                     />
                                 </div>
@@ -1206,8 +1211,8 @@ const AddCustomer = () => {
                                         id="bankInfo.0.card"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[0]?.card ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 0, 'card') }}
-                                        onFocus={(e) => delErr(e, card1ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 0, 'card') }}
+                                        onFocus={(e) => clearInputError(e, card1ErrorRef)}
 
                                     />
                                 </div>
@@ -1222,8 +1227,8 @@ const AddCustomer = () => {
                                         id="bankInfo.0.shaba"
                                         className="inputShabaFB element ltrFB"
                                         defaultValue={input.bankInfo?.[0]?.shaba ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 0, 'shaba') }}
-                                        onFocus={(e) => delErr(e, shaba1ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 0, 'shaba') }}
+                                        onFocus={(e) => clearInputError(e, shaba1ErrorRef)}
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
@@ -1238,8 +1243,8 @@ const AddCustomer = () => {
                                         id="bankInfo.0.bank"
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[0]?.bank ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 0, 'bank') }}
-                                        onClick={(e) => delErr(e, bank1ErrorRef)}
+                                        onChange={e => { handleSaveValBankInput(e, 0, 'bank') }}
+                                        onClick={(e) => clearInputError(e, bank1ErrorRef)}
                                     >
                                         <option value=""> انتخاب </option>
                                         {optionBank}
@@ -1261,8 +1266,8 @@ const AddCustomer = () => {
                                         id="bankInfo.1.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.['1']?.account ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 1, 'account') }}
-                                        onFocus={(e) => delErr(e, account2ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 1, 'account') }}
+                                        onFocus={(e) => clearInputError(e, account2ErrorRef)}
                                     />
                                 </div>
                                 <div className="errorContainerFB elementError" id="bankInfo.1.accountError" ref={account2ErrorRef}> </div>
@@ -1272,8 +1277,8 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.1.card">شماره کارت</label>
                                     <input type="text" id="bankInfo.1.card" className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[1]?.card ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 1, 'card') }}
-                                        onFocus={(e) => delErr(e, card2ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 1, 'card') }}
+                                        onFocus={(e) => clearInputError(e, card2ErrorRef)}
                                     />
                                 </div>
                                 <div className="errorContainerFB elementError" id="bankInfo.1.cardError" ref={card2ErrorRef}> </div>
@@ -1283,11 +1288,9 @@ const AddCustomer = () => {
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.1.shaba">شماره شبا</label>
                                     <input type="text" id="bankInfo.1.shaba" className="inputShabaFB element ltrFB"
-                                        // defaultValue={input.bankInfo[1]?input.bankInfo[1].shaba||'':''}
                                         defaultValue={input.bankInfo?.[1]?.shaba ?? ''}
-
-                                        onInput={e => { handleSaveBalInputBank(e, 1, 'shaba') }}
-                                        onFocus={(e) => delErr(e, shaba2ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 1, 'shaba') }}
+                                        onFocus={(e) => clearInputError(e, shaba2ErrorRef)}
                                     />
                                     <span className="unitShabaFB"> IR </span>
                                 </div>
@@ -1302,8 +1305,8 @@ const AddCustomer = () => {
                                         id="bankInfo.1.bank"
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[1]?.bank ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 1, 'bank') }}
-                                        onClick={(e) => delErr(e, bank2ErrorRef)}
+                                        onChange={e => { handleSaveValBankInput(e, 1, 'bank') }}
+                                        onClick={(e) => clearInputError(e, bank2ErrorRef)}
                                     >
                                         <option value=""> انتخاب </option>
                                         {optionBank}
@@ -1325,8 +1328,8 @@ const AddCustomer = () => {
                                         id="bankInfo.2.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[2]?.account ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 2, 'account') }}
-                                        onFocus={(e) => delErr(e, account3ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 2, 'account') }}
+                                        onFocus={(e) => clearInputError(e, account3ErrorRef)}
 
                                     />
                                 </div>
@@ -1337,8 +1340,8 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.2.card">شماره کارت</label>
                                     <input type="text" id="bankInfo.2.card" className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[2]?.card ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 2, 'card') }}
-                                        onFocus={(e) => delErr(e, card3ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 2, 'card') }}
+                                        onFocus={(e) => clearInputError(e, card3ErrorRef)}
 
                                     />
                                 </div>
@@ -1352,8 +1355,8 @@ const AddCustomer = () => {
                                         type="text"
                                         id="bankInfo.2.shaba" className="inputShabaFB element ltrFB"
                                         defaultValue={input.bankInfo?.[2]?.shaba ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 2, 'shaba') }}
-                                        onFocus={(e) => delErr(e, shaba3ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 2, 'shaba') }}
+                                        onFocus={(e) => clearInputError(e, shaba3ErrorRef)}
 
                                     />
                                     <span className="unitShabaFB"> IR </span>
@@ -1369,8 +1372,8 @@ const AddCustomer = () => {
                                         id="bankInfo.2.bank"
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[2]?.bank ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 2, 'bank') }}
-                                        onClick={(e) => delErr(e, bank3ErrorRef)}
+                                        onChange={e => { handleSaveValBankInput(e, 2, 'bank') }}
+                                        onClick={(e) => clearInputError(e, bank3ErrorRef)}
 
                                     >
                                         <option value=""> انتخاب </option>
@@ -1392,8 +1395,8 @@ const AddCustomer = () => {
                                         id="bankInfo.3.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[3]?.account ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 3, 'account') }}
-                                        onFocus={(e) => delErr(e, account4ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 3, 'account') }}
+                                        onFocus={(e) => clearInputError(e, account4ErrorRef)}
                                     />
                                 </div>
                                 <div className="errorContainerFB elementError" id="bankInfo.3.accountError" ref={account4ErrorRef}> </div>
@@ -1403,8 +1406,8 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.3.card">شماره کارت</label>
                                     <input type="text" id="bankInfo.3.card" className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[3]?.card ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 3, 'card') }}
-                                        onFocus={(e) => delErr(e, card4ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 3, 'card') }}
+                                        onFocus={(e) => clearInputError(e, card4ErrorRef)}
 
                                     />
                                 </div>
@@ -1416,8 +1419,8 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.3.shaba">شماره شبا</label>
                                     <input type="text" id="bankInfo.3.shaba" className="inputShabaFB element ltrFB"
                                         defaultValue={input.bankInfo?.[3]?.shaba ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 3, 'shaba') }}
-                                        onFocus={(e) => delErr(e, shaba4ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 3, 'shaba') }}
+                                        onFocus={(e) => clearInputError(e, shaba4ErrorRef)}
 
                                     />
                                     <span className="unitShabaFB"> IR </span>
@@ -1433,8 +1436,8 @@ const AddCustomer = () => {
                                         id="bankInfo.3.bank"
                                         className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[3]?.bank ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 3, 'bank') }}
-                                        onClick={(e) => delErr(e, bank4ErrorRef)}
+                                        onChange={e => { handleSaveValBankInput(e, 3, 'bank') }}
+                                        onClick={(e) => clearInputError(e, bank4ErrorRef)}
 
                                     >
                                         <option value=""> انتخاب </option>
@@ -1462,8 +1465,8 @@ const AddCustomer = () => {
                                         id="bankInfo.4.account"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[4]?.account ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 4, 'account') }}
-                                        onFocus={(e) => delErr(e, account5ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 4, 'account') }}
+                                        onFocus={(e) => clearInputError(e, account5ErrorRef)}
 
                                     />
                                 </div>
@@ -1477,8 +1480,8 @@ const AddCustomer = () => {
                                         id="bankInfo.4.card"
                                         className="inputTextFB ltrFB element"
                                         defaultValue={input.bankInfo?.[4]?.card ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 4, 'card') }}
-                                        onFocus={(e) => delErr(e, card5ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 4, 'card') }}
+                                        onFocus={(e) => clearInputError(e, card5ErrorRef)}
 
                                     />
                                 </div>
@@ -1493,8 +1496,8 @@ const AddCustomer = () => {
                                         id="bankInfo.4.shaba"
                                         className="inputShabaFB element ltrFB"
                                         defaultValue={input.bankInfo?.[4]?.shaba ?? ''}
-                                        onInput={e => { handleSaveBalInputBank(e, 4, 'shaba') }}
-                                        onFocus={(e) => delErr(e, shaba5ErrorRef)}
+                                        onInput={e => { handleSaveValBankInput(e, 4, 'shaba') }}
+                                        onFocus={(e) => clearInputError(e, shaba5ErrorRef)}
 
                                     />
                                     <span className="unitShabaFB"> IR </span>
@@ -1507,8 +1510,8 @@ const AddCustomer = () => {
                                     <label htmlFor="bankInfo.4.bank">نام بانک </label>
                                     <select name="" id="bankInfo.4.bank" className="selectFB element inputTextFB"
                                         value={input.bankInfo?.[4]?.bank ?? ''}
-                                        onChange={e => { handleSaveBalInputBank(e, 4, 'bank') }}
-                                        onClick={(e) => delErr(e, bank5ErrorRef)}
+                                        onChange={e => { handleSaveValBankInput(e, 4, 'bank') }}
+                                        onClick={(e) => clearInputError(e, bank5ErrorRef)}
 
                                     >
                                         <option value=""> انتخاب </option>

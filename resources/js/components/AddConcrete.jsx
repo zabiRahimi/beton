@@ -48,31 +48,32 @@ const AddConcrete = () => {
         unitPrice: '',
     });
 
-  
+    console.log(input);
 
-    // مجموع واحدهای فرمول بتن را محاسبه می کند
+
+    /**
+     * مجموع واحدهای فرمول بتن را محاسبه می کند
+     */
     const totalBtonDetails = () => {
-
         let cement = amountCementRef.current.value.replace(/[\s,]/g, ""),
             sand = amountSandRef.current.value.replace(/[\s,]/g, ""),
             gravel = amountGravelRef.current.value.replace(/[\s,]/g, ""),
-            water = amountWaterRef.current.value.replace(/[\s,]/g, "");
-
-
+            water = amountWaterRef.current.value.replace(/[\s,]/g, ""),
+            total;
         cement = cement ? parseFloat(cement) : 0;
         sand = sand ? parseFloat(sand) : 0;
         gravel = gravel ? parseFloat(gravel) : 0;
         water = water ? parseFloat(water) : 0;
-
-        let total = cement + sand + gravel + water;
-
+        total = cement + sand + gravel + water;
         spanShowTotalRef.current.textContent = total.toLocaleString();
-
     }
 
+    /**
+     * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
+     * به صورت دهگان،صدگان و ...
+     * @param {ref} ref 
+     */
     const formatNub = (ref) => {
-
-        // let resalt = ref.current.value.replace(/[\s,]/g, "");
         let val,
             checkDthot,
             resalt = ref.current.value.replace(/[\s,]/g, "");
@@ -82,23 +83,17 @@ const AddConcrete = () => {
             checkDthot = true;
         } else {
             checkDthot = false;
-
         }
         // چک می کند فقط رشته عددی باشد
         if (parseFloat(resalt)) {
-
             val = parseFloat(resalt);
-
             /**
              * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
              * علامت را به آخر رشته اضافه می کند
              */
             val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
-
             ref.current.value = val;
-
         }
-
     }
 
     /**
@@ -109,6 +104,13 @@ const AddConcrete = () => {
         hide();
     }
 
+    /**
+     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن واحدها به صورت
+     * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
+     * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
+     * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
+     * @param {number} id 
+     */
     const htmlFor = (id) => {
         document.getElementById(id).focus()
     }
@@ -138,14 +140,32 @@ const AddConcrete = () => {
      *  @param {number} id 
      */
     const showEditConcreteForm = (id) => {
-
         setDisabledBtnGetGe(false);
         setDisabledBtnAddGe(false);
-
         setFlexDirection('columnGe');
-
         setEditMode(true);
+    }
 
+    /**
+        * ذخیره مقادیر ورودی‌های کاربر در استیت
+        * @param {*} e 
+        * @param {*} input 
+        */
+    const handleSaveValInput = (e, input) => {
+        let { value } = e.target;
+        // حذف کاما از اعداد
+        let result = value.replace(/,/g, '');
+        setInput(prev => ({ ...prev, [input]: result }));
+    }
+
+    /**
+    * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
+    * @param {*} e 
+    * @param {رف مربوط به تگ نمایش خطا} refErr 
+    */
+    const clearInputError = (e, refErr, types = false, date = false) => {
+        e.target.classList.remove('borderRedFB');
+        refErr.current && (refErr.current.innerHTML = '');
     }
 
     const handleSubmit = () => {
@@ -155,6 +175,7 @@ const AddConcrete = () => {
     const handleSubmitEdit = () => {
 
     }
+
     return (
         <div className=''>
 
@@ -199,6 +220,8 @@ const AddConcrete = () => {
                                         id="concreteName"
                                         className="inputTextFB element"
                                         defaultValue={input.concreteName}
+                                        onInput={e => handleSaveValInput(e, 'concreteName')}
+                                        onFocus={e => clearInputError(e, concreteNameErrorRef)}
                                         autoFocus
                                     />
                                 </div>
@@ -223,7 +246,12 @@ const AddConcrete = () => {
                                         className=" inputTextUnitFB ltrFB element"
                                         defaultValue={input.amountCement}
                                         ref={amountCementRef}
-                                        onInput={() => { totalBtonDetails(); formatNub(amountCementRef) }}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'amountCement'); totalBtonDetails();
+                                            formatNub(amountCementRef);
+                                            }
+                                        }
+                                        onFocus={e => clearInputError(e, amountCementErrorRef)}
                                     />
                                     <span
                                         className="unitFB"
@@ -249,7 +277,12 @@ const AddConcrete = () => {
                                         className="inputTextUnitFB ltrFB element"
                                         defaultValue={input.amountSand}
                                         ref={amountSandRef}
-                                        onInput={() => { totalBtonDetails(); formatNub(amountSandRef) }}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'amountSand'); totalBtonDetails();
+                                            formatNub(amountSandRef);
+                                            }
+                                        }
+                                        onFocus={e => clearInputError(e, amountSandErrorRef)}
                                     />
                                     <span
                                         className="unitFB"
@@ -274,7 +307,12 @@ const AddConcrete = () => {
                                         className="inputTextUnitFB ltrFB element"
                                         defaultValue={input.amountGravel}
                                         ref={amountGravelRef}
-                                        onInput={() => { totalBtonDetails(); formatNub(amountGravelRef) }}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'amountGravel'); totalBtonDetails();
+                                            formatNub(amountGravelRef);
+                                            }
+                                        }
+                                        onFocus={e => clearInputError(e, amountGravelErrorRef)}
                                     />
                                     <span
                                         className="unitFB"
@@ -302,7 +340,12 @@ const AddConcrete = () => {
                                         className="inputTextUnitFB ltrFB element"
                                         defaultValue={input.amountWater}
                                         ref={amountWaterRef}
-                                        onInput={() => { totalBtonDetails(); formatNub(amountWaterRef) }}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'amountWater'); totalBtonDetails();
+                                            formatNub(amountWaterRef);
+                                            }
+                                        }
+                                        onFocus={e => clearInputError(e, amountWaterErrorRef)}
                                     />
                                     <span
                                         className="unitFB"
@@ -326,7 +369,7 @@ const AddConcrete = () => {
                             </div>
 
                         </div>
-                        
+
                         <div className="sectionFB " >
                             <div className="containerInputFB">
                                 <div className="divInputFB">
@@ -335,20 +378,22 @@ const AddConcrete = () => {
                                         name=""
                                         id="unit"
                                         className="selectFB element inputTextFB"
-                                        value={input.unit||''}
-                                        >
+                                        value={input.unit || ''}
+                                        onChange={e => { handleSaveValInput(e, 'unit') }}
+                                        onClick={(e) => clearInputError(e, unitErrorRef)}
+                                    >
                                         <option value="">انتخاب</option>
                                         <option value="متر مکعب">متر مکعب</option>
                                         <option value="کیلو گرم">کیلو گرم</option>
                                         <option value="تن"> تن </option>
                                     </select>
                                 </div>
-                                <div 
-                                className="errorContainerFB elementError"
-                                 id="unitError"
-                                 ref={unitErrorRef}
-                                 > 
-                                 </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id="unitError"
+                                    ref={unitErrorRef}
+                                >
+                                </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -360,7 +405,12 @@ const AddConcrete = () => {
                                         className="inputTextUnitFB ltrFB element"
                                         defaultValue={input.unitPrice}
                                         ref={unitPriceRef}
-                                        onInput={() => { formatNub(unitPriceRef) }}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'unitPrice'); 
+                                            formatNub(unitPriceRef);
+                                            }
+                                        }
+                                        onFocus={e => clearInputError(e, unitPriceErrorRef)}
                                     />
                                     <span
                                         className="unitFB"
@@ -409,13 +459,9 @@ const AddConcrete = () => {
                             >
                                 پاک کن
                             </Button>
-
-
                         </div>
 
                         <div className={`sectionFB divBtnsFB ${!editMode ? 'hideGe' : ''}`}>
-
-
                             <Button
                                 variant="info"
                                 className="btnSaveFB"
