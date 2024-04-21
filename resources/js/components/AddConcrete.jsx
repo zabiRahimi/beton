@@ -61,7 +61,44 @@ const AddConcrete = () => {
     });
 
     console.log(input);
-    const { showAddCustomerForm, showCreatedCustomers, flexDirection, editMode, resetForm, hideGetCustomer,containerShowGeRef } = useChangeForm({ formCurrent });
+    const resetForm = (apply = true) => {
+        setInput({
+            concreteName: '',
+            amountCement: '',
+            amountSand: '',
+            amountGravel: '',
+            amountWater: '',
+            unit: '',
+            unitPrice: '',
+        });
+
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
+
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+
+        // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
+        if (apply) {
+            const element = form.current;
+            let scrollPosition = window.scrollY || window.pageYOffset;
+            const top = element.getBoundingClientRect().top + scrollPosition - 50;
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
+        }
+
+        spanShowTotalRef.current.innerHTML=0;
+
+
+    }
+
+    const { showAddCustomerForm, showCreatedCustomers, flexDirection, editMode, hideGetCustomer, containerShowGeRef } = useChangeForm({ formCurrent, resetForm });
     /**
          * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
          */
@@ -188,6 +225,8 @@ const AddConcrete = () => {
         refErr.current && (refErr.current.innerHTML = '');
     }
 
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
@@ -216,7 +255,7 @@ const AddConcrete = () => {
                 customClass: {
                     timerProgressBar: '--progressBarColorBlue',
                 },
-                // didClose: () => resetForm(),
+                didClose: () => resetForm(),
             });
 
         })
@@ -239,7 +278,7 @@ const AddConcrete = () => {
                             document.getElementById(key).classList.add('borderRedFB');
 
                             document.getElementById(key + 'Error').innerHTML = val;
-                           
+
                         });
 
                     }
@@ -255,6 +294,7 @@ const AddConcrete = () => {
 
     return (
         <div className='' ref={container}>
+
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
                 backgroundColor: '#6d6b6b',
                 position: 'fixed',
@@ -542,8 +582,8 @@ const AddConcrete = () => {
                                 type="reset"
                                 variant="warning"
                                 className="btnDelFB"
-                                // onClick={resetForm}
-                                onClick={resetAll}
+                                onClick={resetForm}
+                            // onClick={resetAll}
                             >
                                 پاک کن
                             </Button>
