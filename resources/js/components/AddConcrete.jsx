@@ -1,9 +1,21 @@
 import { useEffect, useRef, useState } from "react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import ScaleLoader from 'react-spinners/ScaleLoader';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import Title from "./hooks/Title";
 
 import Button from 'react-bootstrap/Button';
 import "../../css/formBeton.css";
+import useChangeForm from './hooks/useChangeForm';
+
 const AddConcrete = () => {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const MySwal = withReactContent(Swal);
+    const container = useRef(null);
+    const form = useRef(null);
+    const formCurrent = form.current;
     const divFormulaBetonRef = useRef(null);
 
     const amountCementRef = useRef(null);
@@ -18,7 +30,7 @@ const AddConcrete = () => {
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
-    const containerShowGeRef = useRef(null);
+    // const containerShowGeRef = useRef(null);
 
     const concreteNameErrorRef = useRef(null);
     const amountCementErrorRef = useRef(null);
@@ -28,15 +40,15 @@ const AddConcrete = () => {
     const unitErrorRef = useRef(null);
     const unitPriceErrorRef = useRef(null);
 
-
+    const [loading, setLoading] = useState(false);
     const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
     const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
 
     const [hideGetGAS, setHideGetGAS] = useState(true);
-    const [flexDirection, setFlexDirection] = useState('columnGe');
+    // const [flexDirection, setFlexDirection] = useState('columnGe');
 
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
-    const [editMode, setEditMode] = useState(false);
+    // const [editMode, setEditMode] = useState(false);
 
     const [input, setInput] = useState({
         concreteName: '',
@@ -49,7 +61,15 @@ const AddConcrete = () => {
     });
 
     console.log(input);
-
+    const { showAddCustomerForm, showCreatedCustomers, flexDirection, editMode, resetForm, hideGetCustomer,containerShowGeRef } = useChangeForm({ formCurrent });
+    /**
+         * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
+         */
+    const [widthComponent, setWidthComponent] = useState(0);
+    useEffect(() => {
+        let widths = container.current.offsetWidth;
+        setWidthComponent(widths)
+    }, []);
 
     /**
      * مجموع واحدهای فرمول بتن را محاسبه می کند
@@ -168,8 +188,65 @@ const AddConcrete = () => {
         refErr.current && (refErr.current.innerHTML = '');
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true)
 
+        await axios.post(
+            '/api/v1/addConcrete',
+            { ...input },
+            {
+                headers:
+                {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then((response) => {
+            // setCustomers(prev => [...prev, response.data.concrete]);
+
+            form.current.reset();
+
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
+                // didClose: () => resetForm(),
+            });
+
+        })
+            .catch(
+                error => {
+                    if (error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0];
+
+                        const element = document.getElementById(id);
+                        let scrollPosition = window.scrollY || window.pageYOffset;
+
+                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                        window.scrollTo({
+                            top: top,
+                            behavior: 'smooth'
+                        });
+
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            document.getElementById(key).classList.add('borderRedFB');
+
+                            document.getElementById(key + 'Error').innerHTML = val;
+                           
+                        });
+
+                    }
+                }
+            )
+
+        setLoading(false)
     }
 
     const handleSubmitEdit = () => {
@@ -177,8 +254,19 @@ const AddConcrete = () => {
     }
 
     return (
-        <div className=''>
-
+        <div className='' ref={container}>
+            <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
+                backgroundColor: '#6d6b6b',
+                position: 'fixed',
+                top: 0,
+                width: widthComponent + 'px',
+                height: '100vh',
+                zIndex: 100,
+                opacity: 0.2,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }} />
             <Title title="تعریف نوع بتن" />
 
             <div className="headPageGe">
@@ -205,7 +293,7 @@ const AddConcrete = () => {
             <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe ">
-                    <form action="" className="formBeton">
+                    <form action="" className="formBeton" ref={form}>
 
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش نوع بتن </h5>
 
@@ -249,7 +337,7 @@ const AddConcrete = () => {
                                         onInput={e => {
                                             handleSaveValInput(e, 'amountCement'); totalBtonDetails();
                                             formatNub(amountCementRef);
-                                            }
+                                        }
                                         }
                                         onFocus={e => clearInputError(e, amountCementErrorRef)}
                                     />
@@ -280,7 +368,7 @@ const AddConcrete = () => {
                                         onInput={e => {
                                             handleSaveValInput(e, 'amountSand'); totalBtonDetails();
                                             formatNub(amountSandRef);
-                                            }
+                                        }
                                         }
                                         onFocus={e => clearInputError(e, amountSandErrorRef)}
                                     />
@@ -310,7 +398,7 @@ const AddConcrete = () => {
                                         onInput={e => {
                                             handleSaveValInput(e, 'amountGravel'); totalBtonDetails();
                                             formatNub(amountGravelRef);
-                                            }
+                                        }
                                         }
                                         onFocus={e => clearInputError(e, amountGravelErrorRef)}
                                     />
@@ -343,7 +431,7 @@ const AddConcrete = () => {
                                         onInput={e => {
                                             handleSaveValInput(e, 'amountWater'); totalBtonDetails();
                                             formatNub(amountWaterRef);
-                                            }
+                                        }
                                         }
                                         onFocus={e => clearInputError(e, amountWaterErrorRef)}
                                     />
@@ -406,9 +494,9 @@ const AddConcrete = () => {
                                         defaultValue={input.unitPrice}
                                         ref={unitPriceRef}
                                         onInput={e => {
-                                            handleSaveValInput(e, 'unitPrice'); 
+                                            handleSaveValInput(e, 'unitPrice');
                                             formatNub(unitPriceRef);
-                                            }
+                                        }
                                         }
                                         onFocus={e => clearInputError(e, unitPriceErrorRef)}
                                     />

@@ -197,9 +197,11 @@ const AddCustomer = () => {
 
     }, [customers]);
 
+    /**
+     * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
+     */
     const [widthComponent, setWidthComponent] = useState(0);
     useEffect(() => {
-
         let widths = container.current.offsetWidth;
         setWidthComponent(widths)
     }, []);

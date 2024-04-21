@@ -220,6 +220,13 @@ return [
       'bankInfo.*.shaba'=>' شماره شبا',
       'dateOfBirth'=>'تاریخ تولد',
       'telephone'=>'تلفن',
+      'concreteName'=>'نام بتن',
+      'amountCement'=>'مقدار سیمان',
+      'amountSand'=>'مقدار ماسه',
+      'amountGravel'=>'مقدار شن(بادامی)',
+      'amountWater'=>'مقدار آب',
+      'unit'=>'واحد',
+      'unitPrice'=>'قیمت واحد',
 
     ],
 
