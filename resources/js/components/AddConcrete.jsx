@@ -41,15 +41,17 @@ const AddConcrete = () => {
     const unitPriceErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
-    const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
-    const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
 
-    const [hideGetGAS, setHideGetGAS] = useState(true);
+    // const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
+    // const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+
+    // const [hideGetGAS, setHideGetGAS] = useState(true);
     // const [flexDirection, setFlexDirection] = useState('columnGe');
 
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
     // const [editMode, setEditMode] = useState(false);
-
+    const [concretes, setConcretes] = useState(null);
+    
     const [input, setInput] = useState({
         concreteName: '',
         amountCement: '',
@@ -60,7 +62,7 @@ const AddConcrete = () => {
         unitPrice: '',
     });
 
-    console.log(input);
+    // console.log(input);
     const resetForm = (apply = true) => {
         setInput({
             concreteName: '',
@@ -98,7 +100,7 @@ const AddConcrete = () => {
 
     }
 
-    const { showAddCustomerForm, showCreatedCustomers, flexDirection, editMode, hideGetCustomer, containerShowGeRef } = useChangeForm({ formCurrent, resetForm });
+    const { showAddForm, showCreatedRecord, flexDirection, editMode, disabledBtnAddGe, disabledBtnGetGe, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm });
     /**
          * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
          */
@@ -173,26 +175,6 @@ const AddConcrete = () => {
     }
 
     /**
-     * نمایش فرم تعریف بتن
-     */
-    const showAddConcreteForm = () => {
-        setDisabledBtnGetGe(false);
-        setDisabledBtnAddGe(true);
-        setFlexDirection('columnGe');
-        setEditMode(false)
-    }
-
-    /**
-     * نمایش لیست بتن‌های تعریف شده
-     */
-    const showCreatedConcretes = () => {
-        setDisabledBtnAddGe(false);
-        setDisabledBtnGetGe(true);
-        setFlexDirection('columnReverseGe');
-        setHideGetGAS(false);
-    }
-
-    /**
      * نمایش فرم ویرایش بتن
      *  @param {number} id 
      */
@@ -225,8 +207,6 @@ const AddConcrete = () => {
         refErr.current && (refErr.current.innerHTML = '');
     }
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
@@ -242,7 +222,7 @@ const AddConcrete = () => {
                 }
             }
         ).then((response) => {
-            // setCustomers(prev => [...prev, response.data.concrete]);
+            setConcretes(prev => [...prev, response.data.concrete]);
 
             form.current.reset();
 
@@ -313,7 +293,7 @@ const AddConcrete = () => {
 
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddConcreteForm}
+                    ref={btnAddGeRef} onClick={showAddForm}
                     disabled={disabledBtnAddGe}
                 >
                     تعریف نوع بتن
@@ -322,7 +302,7 @@ const AddConcrete = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCreatedConcretes}
+                    onClick={showCreatedRecord}
                     disabled={disabledBtnGetGe}
                 >
                     مشاهده انواع بتن‌های ثبت شده
@@ -602,7 +582,7 @@ const AddConcrete = () => {
                 </div>
 
                 <div
-                    className={`containerShowGe containerShowCustomer  ${hideGetGAS ? 'hideGe' : ''}`}
+                    className={`containerShowGe containerShowCustomer  ${hideCreatedRecord ? 'hideGe' : ''}`}
                     ref={containerShowGeRef}
                 >
 

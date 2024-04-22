@@ -32,22 +32,13 @@ const AddCustomerType = () => {
     });
 
     useEffect(() => {
-        getData()
+        getCustomerTypes()
     }, [])
 
-    async function getData() {
-        let customerTData;
-
-        // await localforage.getItem("products").then((value) => {
-        //     customerTData = value.filter((item) => item.id == params.id);
-        // });
-
-        let val = await axios.get("/api/v1/getAllCustomerType").then((response) => {
-            customerTData = response.data.CustomerTypes;
+    async function getCustomerTypes() {
+         await axios.get("/api/v1/getCustomerTypes").then((response) => {
+            setCustomerTypes(response.data.CustomerTypes)
         });
-        // customerTData=[[id=>1, name=>'eee']]
-
-        setCustomerTypes(customerTData)
     }
 
     const showCustomerTypes = () => {

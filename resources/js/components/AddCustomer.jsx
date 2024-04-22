@@ -153,8 +153,8 @@ const AddCustomer = () => {
     const [id, setId] = useState(null);
 
     useEffect(() => {
-        getCustomerType();
-        getCustomer();
+        getCustomerTypes();
+        getCustomers();
     }, []);
 
     useEffect(() => {
@@ -309,14 +309,14 @@ const AddCustomer = () => {
     /**
      * دریافت نوع مشتری 
      */
-    async function getCustomerType() {
-        await axios.get("/api/v1/getAllCustomerType").then((response) => {
+    async function getCustomerTypes() {
+        await axios.get("/api/v1/getCustomerTypes").then((response) => {
             setCustomerTypes(response.data.CustomerTypes);
         });
     }
 
-    async function getCustomer() {
-        await axios.get("/api/v1/getAllCustomer").then((response) => {
+    async function getCustomers() {
+        await axios.get("/api/v1/getCustomers").then((response) => {
             setCustomers(response.data.Customers);
         });
     }

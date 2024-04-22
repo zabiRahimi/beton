@@ -21,7 +21,7 @@ use App\Http\Controllers\CustomerTypeController;
 Route::controller(CustomerController::class)->group(function () {
     
     Route::post('/addCustomer', 'store');
-    Route::get('/getAllCustomer', 'index');
+    Route::get('/getCustomers', 'index');
     Route::patch('/editCustomer/{customer}', 'update');
 
 });
@@ -30,7 +30,7 @@ Route::controller(CustomerController::class)->group(function () {
 Route::controller(CustomerTypeController::class)->group(function () {
     
     Route::post('/addCustomerType', 'store');
-    Route::get('/getAllCustomerType', 'index');
+    Route::get('/getCustomerTypes', 'index');
     Route::patch('/editCustomerType/{customerType}', 'update');
 
 });
@@ -38,7 +38,7 @@ Route::controller(CustomerTypeController::class)->group(function () {
 Route::controller(ConcreteController::class)->group(function () {
     
     Route::post('/addConcrete', 'store');
-    Route::get('/getAllConcrete', 'index');
+    Route::get('/getConcretes', 'index');
     Route::patch('/editConcrete/{concrete}', 'update');
 
 });

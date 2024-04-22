@@ -1,95 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
-function useChangeForm(refs) {
-  const { formCurrent, resetForm } = refs
+function useChangeForm(args) {
+  const { formCurrent, resetForm } = args
+  const containerShowGeRef = useRef(null);
   // ایجاد state برای آرگومان‌ها
   //   const [args, setArgs] = useState(initialArgs);
 
   // ایجاد متدها
   const [flexDirection, setFlexDirection] = useState('columnGe');
-  const [hideGetCustomer, setHideGetCustomer] = useState(true);
-  const containerShowGeRef = useRef(null);
+  const [hideCreatedRecord, setHideCreatedRecord] = useState(true);
+  const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
+    const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
 
   /** ست کردن موارد لازم هنگامی که کاربر ویرایش یک رکورد را انتخاب می‌کند */
   const [editMode, setEditMode] = useState(false);
 
-  const showAddCustomerForm = () => {
+  /**
+   * نمایش فرم اضافه کردن اطلاعات و ایجاد رکورد جدید
+   */
+  const showAddForm = () => {
     formCurrent && formCurrent.reset();
-    // formCurrent.classList.toggle('--displayNone')
-    // انجام کار با args...
+    setDisabledBtnGetGe(false);
+    setDisabledBtnAddGe(true);
+    setFlexDirection('columnGe');
+    setEditMode(false)
+    resetForm(false);
   };
 
-  const showCreatedCustomers = () => {
-    // انجام کار با args...
-    resetForm()
+  const showCreatedRecord = () => {
+    formCurrent && formCurrent.reset();
+    resetForm();
+    setDisabledBtnAddGe(false);
+    setDisabledBtnGetGe(true);
+    setFlexDirection('columnReverseGe');
+    setHideCreatedRecord(false);
+    window.scrollTo({top: 0});
   };
-
-  //    const resetForm = (apply=true) => {
-
-  //     // setInput({
-  //     //     name: '',
-  //     //     lastName: '',
-  //     //     father: '',
-  //     //     nationalCode: '',
-  //     //     dateOfBirth: '',
-  //     //     mobile: '',
-  //     //     telephone: '',
-  //     //     email: '',
-  //     //     postalCode: '',
-  //     //     address: '',
-  //     //     types: [],
-  //     //     bankInfo: [
-  //     //         {
-  //     //             bank: '',
-  //     //             account: '',
-  //     //             card: '',
-  //     //             shaba: ''
-  //     //         }
-  //     //     ]
-  //     // });
-
-  //     // customerTypeSelected.map((types) => {
-  //     //     let ref = refs[types['id']]
-  //     //     ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-  //     // })
-  //     // setCustomerTypeSelected([]);
-  //     // lableCustomerType.current.textContent = 'انتخاب';
-  //     // setDay('');
-  //     // setMonth('');
-  //     // setYear('');
-
-  //     // sectionBank2.current.classList.add('--displayNone');
-  //     // sectionBank3.current.classList.add('--displayNone');
-  //     // sectionBank4.current.classList.add('--displayNone');
-  //     // sectionBank5.current.classList.add('--displayNone');
-  //     // moreBank1.current.classList.remove('--displayNone');
-  //     // moreBank2.current.classList.remove('--displayNone');
-  //     // moreBank3.current.classList.remove('--displayNone');
-  //     // moreBank4.current.classList.remove('--displayNone');
-
-  //     // var elements = document.getElementsByClassName('element');
-  //     // for (var i = 0; i < elements.length; i++) {
-  //     //     elements[i].classList.remove('borderRedFB');
-  //     // }
-
-
-  //     // var elements = document.getElementsByClassName('elementError');
-  //     // for (var i = 0; i < elements.length; i++) {
-  //     //     elements[i].innerHTML = '';
-  //     // }
-
-  //     // // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
-  //     // if (apply) {
-  //     //     const element = form.current;
-  //     //     let scrollPosition = window.scrollY || window.pageYOffset;
-  //     //     const top = element.getBoundingClientRect().top + scrollPosition - 50;
-  //     //     window.scrollTo({
-  //     //         top: top,
-  //     //         behavior: 'smooth'
-  //     //     });
-  //     // }
-
-
-  // }
 
   // استفاده از useEffect برای بروزرسانی آرگومان‌ها
   //   useEffect(() => {
@@ -97,7 +42,7 @@ function useChangeForm(refs) {
   //   }, [args]);
 
   // برگرداندن متدها و تابع بروزرسانی
-  return { showAddCustomerForm, showCreatedCustomers, flexDirection, editMode, hideGetCustomer, containerShowGeRef };
+  return { showAddForm, showCreatedRecord, flexDirection, editMode, disabledBtnAddGe, disabledBtnGetGe, hideCreatedRecord, containerShowGeRef };
 }
 
 export default useChangeForm;
