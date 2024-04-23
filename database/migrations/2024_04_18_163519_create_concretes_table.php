@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('amountSand')->comment('مقدار ماسه');
             $table->string('amountGravel')->comment('مقدار شن');
             $table->string('amountWater');
-            $table->string('unit')->nullable();
+            $table->string('unit');
             $table->string('unitPrice')->nullable();
             $table->timestamps();
         });

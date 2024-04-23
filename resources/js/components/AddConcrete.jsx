@@ -86,13 +86,10 @@ const AddConcrete = () => {
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
         if (apply) {
-            const element = form.current;
-            let scrollPosition = window.scrollY || window.pageYOffset;
-            const top = element.getBoundingClientRect().top + scrollPosition - 50;
-            window.scrollTo({
-                top: top,
-                behavior: 'smooth'
-            });
+            // const element = form.current;
+            // let scrollPosition = window.scrollY || window.pageYOffset;
+            // const top = element.getBoundingClientRect().top + scrollPosition - 50;
+            window.scrollTo({top:0});
         }
 
         spanShowTotalRef.current.innerHTML=0;
@@ -332,6 +329,7 @@ const AddConcrete = () => {
                                         onFocus={e => clearInputError(e, concreteNameErrorRef)}
                                         autoFocus
                                     />
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div
                                     className="errorContainerFB elementError"
@@ -361,6 +359,7 @@ const AddConcrete = () => {
                                         }
                                         onFocus={e => clearInputError(e, amountCementErrorRef)}
                                     />
+                                    <i className="icofont-ui-rating starFB" />
                                     <span
                                         className="unitFB"
                                         onClick={() => htmlFor('amountCement')}
@@ -392,6 +391,7 @@ const AddConcrete = () => {
                                         }
                                         onFocus={e => clearInputError(e, amountSandErrorRef)}
                                     />
+                                    <i className="icofont-ui-rating starFB" />
                                     <span
                                         className="unitFB"
                                         onClick={() => htmlFor('amountSand')}
@@ -422,6 +422,7 @@ const AddConcrete = () => {
                                         }
                                         onFocus={e => clearInputError(e, amountGravelErrorRef)}
                                     />
+                                    <i className="icofont-ui-rating starFB" />
                                     <span
                                         className="unitFB"
                                         onClick={() => htmlFor('amountGravel')}
@@ -455,6 +456,7 @@ const AddConcrete = () => {
                                         }
                                         onFocus={e => clearInputError(e, amountWaterErrorRef)}
                                     />
+                                    <i className="icofont-ui-rating starFB" />
                                     <span
                                         className="unitFB"
                                         onClick={() => htmlFor('amountWater')}
@@ -495,6 +497,7 @@ const AddConcrete = () => {
                                         <option value="کیلو گرم">کیلو گرم</option>
                                         <option value="تن"> تن </option>
                                     </select>
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div
                                     className="errorContainerFB elementError"

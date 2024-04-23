@@ -23,7 +23,7 @@ function useChangeForm(args) {
     setDisabledBtnAddGe(true);
     setFlexDirection('columnGe');
     setEditMode(false)
-    resetForm(false);
+    resetForm();
   };
 
   const showCreatedRecord = () => {
@@ -33,7 +33,7 @@ function useChangeForm(args) {
     setDisabledBtnGetGe(true);
     setFlexDirection('columnReverseGe');
     setHideCreatedRecord(false);
-    window.scrollTo({top: 0});
+    
   };
 
   // استفاده از useEffect برای بروزرسانی آرگومان‌ها

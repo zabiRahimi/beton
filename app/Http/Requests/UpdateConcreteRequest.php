@@ -28,16 +28,10 @@ class UpdateConcreteRequest extends FormRequest
             'amountSand' => ['required','bail','numeric'],
             'amountGravel' => ['required','bail','numeric'],
             'amountWater' => ['required','bail','numeric'],
-            'unit' => ['nullable','required_with:unitPrice','bail','string'],
+            'unit' => ['required','bail','string'],
             'unitPrice' => ['nullable','bail','numeric'],
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'unit.required_with' => 'هنگامی که قیمت واحد را وارد می‌کنید، لازم است واحد را نیز انتخاب کنید.',
-            
-        ];
-    }
+   
 }
