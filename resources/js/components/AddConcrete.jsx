@@ -50,8 +50,8 @@ const AddConcrete = () => {
 
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
     // const [editMode, setEditMode] = useState(false);
-    const [concretes, setConcretes] = useState(null);
-    
+    const [concretes, setConcretes] = useState([]);
+    console.log(concretes);
     const [input, setInput] = useState({
         concreteName: '',
         amountCement: '',
@@ -61,6 +61,87 @@ const AddConcrete = () => {
         unit: '',
         unitPrice: '',
     });
+
+    useEffect(() => {
+        
+        getConcretes();
+    }, []);
+
+    async function getConcretes() {
+        await axios.get("/api/v1/getConcretes").then((response) => {
+            setConcretes(response.data.Concretes);
+        });
+    }
+
+     /**
+     * رکوردهای بتن‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
+     * @returns 
+     */
+     const returnCreatedCustomerRecords = () => {
+        let numberRow = concretes.length;
+        const reversedConcretes = concretes.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
+        let value = reversedConcretes.map((concrete, i) => {
+
+            return <div className="rowListShowGe" key={i}>
+                <span className="rowNumShowGe">{numberRow - i}</span>
+                <span className="nameShowGE">{concrete['name']}</span>
+                <span className="lastNameShowGE">{concrete['lastName']}</span>
+                <div className="typeShowGe">
+                    <div className="typeTitleShowGe" onClick={() => showListTypes(concrete.id)}>
+                        <span className="typeTitleSpanShowGe">
+                            {concrete['customer_types'].map((concrete, iType) => {
+                                return (iType > 0 ? '، ' + customerType['type'] : customerType['type'])
+                            })}
+                        </span>
+                        <i
+                            className="icofont-rounded-down"
+                            key={'down' + customer.id}
+                            ref={refDownIcons['down' + customer.id]}
+                        />
+                        <i
+                            className="icofont-rounded-up  --displayNone"
+                            key={'up' + customer.id}
+                            ref={refUpIcons['up' + customer.id]}
+                        />
+                    </div>
+                    <div
+                        className="TypeBodyShowGe --displayNone"
+                        key={'list' + customer.id}
+                        ref={refListTypes['list' + customer.id]}
+                    >
+                        {customer['customer_types'].map((customerType, iType) => {
+                            return <div
+                                className="TypeBodyItemShowGe"
+                                key={iType}
+                            >
+                                {customerType['type']}
+                            </div>
+                        })}
+                    </div>
+
+                </div>
+
+                <div className="divEditGe">
+                    <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                        onClick={() => showCustomerEditForm(customer.id)}
+                    >
+                        <i className="icofont-pencil iEditGe" />
+                    </button>
+                </div>
+
+                <div className="divDelGe">
+
+                    <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                        <i className="icofont-trash iDelGe" />
+                    </button>
+                </div>
+
+            </div>
+
+        })
+
+        return value;
+    }
 
     // console.log(input);
     const resetForm = (apply = true) => {
@@ -152,16 +233,10 @@ const AddConcrete = () => {
         }
     }
 
-    /**
-     * تمام دادهای جانبی فرم را پاک می کند
-     */
-    const resetAll = () => {
-        spanShowTotalRef.current.textContent = 0;
-        hide();
-    }
+   
 
     /**
-     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن واحدها به صورت
+     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
      * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
      * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
      * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر

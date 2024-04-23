@@ -13,7 +13,9 @@ class ConcreteController extends Controller
      */
     public function index()
     {
-        //
+        $Concretes = Concrete::orderBy('id')->get();
+
+        return response()->json(['Concretes' => $Concretes]);
     }
 
     // /**
