@@ -28,8 +28,8 @@ const AddPersonnelContract = () => {
     const insuranceStatusErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
-    const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
-    const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+    const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
+    const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
 
     const [widthComponent, setWidthComponent] = useState(0);
     useEffect(() => {
@@ -58,8 +58,8 @@ const AddPersonnelContract = () => {
      */
     // const showAddCustomerForm = () => {
     //     // form.current.reset();
-    //     // setDisabledBtnGetGe(false);
-    //     // setDisabledBtnAddGe(true);
+    //     // setDisabledBtnShowRecords(false);
+    //     // setDisabledBtnShowForm(true);
 
     //     // setFlexDirection('columnGe');
 
@@ -74,8 +74,8 @@ const AddPersonnelContract = () => {
     //  const showCreatedCustomers = () => {
     //     // form.current.reset();
     //     // resetForm();
-    //     // setDisabledBtnAddGe(false);
-    //     // setDisabledBtnGetGe(true);
+    //     // setDisabledBtnShowForm(false);
+    //     // setDisabledBtnShowRecords(true);
 
     //     // setFlexDirection('columnReverseGe');
 
@@ -142,19 +142,19 @@ const AddPersonnelContract = () => {
             <Title title="ایجاد قرارداد پرسنل" />
             <div className="headPageGe">
                 <button
-                    className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
+                    className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
                     ref={btnAddGeRef}
                     onClick={() => showAddCustomerForm()}
-                // disabled={disabledBtnAddGe}
+                // disabled={disabledBtnShowForm}
                 >
                     تعریف مشتری
                 </button>
 
                 <button
-                    className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
+                    className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
                     onClick={showCreatedCustomers}
-                    disabled={disabledBtnGetGe}
+                    disabled={disabledBtnShowRecords}
                 >
                     مشاهده مشتری‌ها
                 </button>

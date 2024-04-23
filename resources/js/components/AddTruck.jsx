@@ -11,8 +11,8 @@ const AddTruck = () => {
 
     const containerShowGeRef = useRef(null);
 
-    const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
-    const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+    const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
+    const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
 
     const [hideGetTruck, setHideGetTruck] = useState(true);
     const [flexDirection, setFlexDirection] = useState('columnGe');
@@ -22,8 +22,8 @@ const AddTruck = () => {
 
     const addTruck = () => {
 
-        setDisabledBtnGetGe(false);
-        setDisabledBtnAddGe(true);
+        setDisabledBtnShowRecords(false);
+        setDisabledBtnShowForm(true);
 
         setFlexDirection('columnGe');
 
@@ -33,8 +33,8 @@ const AddTruck = () => {
 
     const getTruck = () => {
 
-        setDisabledBtnAddGe(false);
-        setDisabledBtnGetGe(true);
+        setDisabledBtnShowForm(false);
+        setDisabledBtnShowRecords(true);
 
         setFlexDirection('columnReverseGe');
 
@@ -44,8 +44,8 @@ const AddTruck = () => {
 
     const showFormEditTruck = () => {
 
-        setDisabledBtnGetGe(false);
-        setDisabledBtnAddGe(false);
+        setDisabledBtnShowRecords(false);
+        setDisabledBtnShowForm(false);
 
         setFlexDirection('columnGe');
 
@@ -61,18 +61,18 @@ const AddTruck = () => {
             <div className="headPageGe">
 
                 <button
-                    className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
+                    className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
                     ref={btnAddGeRef} onClick={addTruck}
-                    disabled={disabledBtnAddGe}
+                    disabled={disabledBtnShowForm}
                 >
                     تعریف کامیون
                 </button>
 
                 <button
-                    className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
+                    className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
                     onClick={getTruck}
-                    disabled={disabledBtnGetGe}
+                    disabled={disabledBtnShowRecords}
                 >
                     مشاهده کامیون‌ها
                 </button>

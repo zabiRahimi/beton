@@ -43,7 +43,7 @@ const AddConcrete = () => {
     const [loading, setLoading] = useState(false);
 
     // const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
-    // const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+    // const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
 
     // const [hideGetGAS, setHideGetGAS] = useState(true);
     // const [flexDirection, setFlexDirection] = useState('columnGe');
@@ -97,7 +97,7 @@ const AddConcrete = () => {
 
     }
 
-    const { showAddForm, showCreatedRecord, flexDirection, editMode, disabledBtnAddGe, disabledBtnGetGe, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm });
+    const { showAddForm, showCreatedRecord, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm });
     /**
          * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
          */
@@ -176,8 +176,8 @@ const AddConcrete = () => {
      *  @param {number} id 
      */
     const showEditConcreteForm = (id) => {
-        setDisabledBtnGetGe(false);
-        setDisabledBtnAddGe(false);
+        setDisabledBtnShowRecords(false);
+        setDisabledBtnShowForm(false);
         setFlexDirection('columnGe');
         setEditMode(true);
     }
@@ -289,18 +289,18 @@ const AddConcrete = () => {
             <div className="headPageGe">
 
                 <button
-                    className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
+                    className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
                     ref={btnAddGeRef} onClick={showAddForm}
-                    disabled={disabledBtnAddGe}
+                    disabled={disabledBtnShowForm}
                 >
                     تعریف نوع بتن
                 </button>
 
                 <button
-                    className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
+                    className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
                     onClick={showCreatedRecord}
-                    disabled={disabledBtnGetGe}
+                    disabled={disabledBtnShowRecords}
                 >
                     مشاهده انواع بتن‌های ثبت شده
                 </button>

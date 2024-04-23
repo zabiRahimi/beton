@@ -104,8 +104,8 @@ const AddCustomer = () => {
 
 
     const [loading, setLoading] = useState(false);
-    const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
-    const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+    const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
+    const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
 
     const [hideGetCustomer, setHideGetCustomer] = useState(true);
     const [flexDirection, setFlexDirection] = useState('columnGe');
@@ -211,8 +211,8 @@ const AddCustomer = () => {
      */
     const showAddCustomerForm = () => {
         form.current.reset();
-        setDisabledBtnGetGe(false);
-        setDisabledBtnAddGe(true);
+        setDisabledBtnShowRecords(false);
+        setDisabledBtnShowForm(true);
         setFlexDirection('columnGe');
         setEditMode(false)
         resetForm(false);
@@ -224,8 +224,8 @@ const AddCustomer = () => {
     const showCreatedCustomers = () => {
         form.current.reset();
         resetForm();
-        setDisabledBtnAddGe(false);
-        setDisabledBtnGetGe(true);
+        setDisabledBtnShowForm(false);
+        setDisabledBtnShowRecords(true);
         setFlexDirection('columnReverseGe');
         setHideGetCustomer(false);
     }
@@ -482,8 +482,8 @@ const AddCustomer = () => {
      */
     const showCustomerEditForm = (id) => {
 
-        setDisabledBtnGetGe(false);
-        setDisabledBtnAddGe(false);
+        setDisabledBtnShowRecords(false);
+        setDisabledBtnShowForm(false);
         setFlexDirection('columnGe');
         window.scrollTo({ top: 60, behavior: 'smooth' });
         setEditMode(true);
@@ -904,18 +904,18 @@ const AddCustomer = () => {
             <Title title="تعریف مشتری" />
             <div className="headPageGe">
                 <button
-                    className={`--styleLessBtn btnAddGe ${disabledBtnAddGe ? 'disabledBtnGe' : 'enabledBtnGe'}`}
+                    className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
                     ref={btnAddGeRef} onClick={showAddCustomerForm}
-                    disabled={disabledBtnAddGe}
+                    disabled={disabledBtnShowForm}
                 >
                     تعریف مشتری
                 </button>
 
                 <button
-                    className={`--styleLessBtn btnGetGe ${disabledBtnGetGe ? 'disabledBtnGe' : 'enabledBtnGe'} `}
+                    className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
                     onClick={showCreatedCustomers}
-                    disabled={disabledBtnGetGe}
+                    disabled={disabledBtnShowRecords}
                 >
                     مشاهده مشتری‌ها
                 </button>

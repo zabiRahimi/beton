@@ -8,8 +8,8 @@ function useChangeForm(args) {
   // ایجاد متدها
   const [flexDirection, setFlexDirection] = useState('columnGe');
   const [hideCreatedRecord, setHideCreatedRecord] = useState(true);
-  const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
-    const [disabledBtnGetGe, setDisabledBtnGetGe] = useState(false);
+  const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
+    const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
 
   /** ست کردن موارد لازم هنگامی که کاربر ویرایش یک رکورد را انتخاب می‌کند */
   const [editMode, setEditMode] = useState(false);
@@ -19,8 +19,8 @@ function useChangeForm(args) {
    */
   const showAddForm = () => {
     formCurrent && formCurrent.reset();
-    setDisabledBtnGetGe(false);
-    setDisabledBtnAddGe(true);
+    setDisabledBtnShowRecords(false);
+    setDisabledBtnShowForm(true);
     setFlexDirection('columnGe');
     setEditMode(false)
     resetForm();
@@ -29,8 +29,8 @@ function useChangeForm(args) {
   const showCreatedRecord = () => {
     formCurrent && formCurrent.reset();
     resetForm();
-    setDisabledBtnAddGe(false);
-    setDisabledBtnGetGe(true);
+    setDisabledBtnShowForm(false);
+    setDisabledBtnShowRecords(true);
     setFlexDirection('columnReverseGe');
     setHideCreatedRecord(false);
     
@@ -42,7 +42,7 @@ function useChangeForm(args) {
   //   }, [args]);
 
   // برگرداندن متدها و تابع بروزرسانی
-  return { showAddForm, showCreatedRecord, flexDirection, editMode, disabledBtnAddGe, disabledBtnGetGe, hideCreatedRecord, containerShowGeRef };
+  return { showAddForm, showCreatedRecord, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef };
 }
 
 export default useChangeForm;
