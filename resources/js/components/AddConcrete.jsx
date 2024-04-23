@@ -63,7 +63,7 @@ const AddConcrete = () => {
     });
 
     useEffect(() => {
-        
+
         getConcretes();
     }, []);
 
@@ -73,57 +73,24 @@ const AddConcrete = () => {
         });
     }
 
-     /**
-     * رکوردهای بتن‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
-     * @returns 
-     */
-     const returnCreatedCustomerRecords = () => {
+    /**
+    * رکوردهای بتن‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
+    * @returns 
+    */
+    const returnCreatedConcreteRecords = () => {
         let numberRow = concretes.length;
         const reversedConcretes = concretes.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((concrete, i) => {
 
             return <div className="rowListShowGe" key={i}>
-                <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="nameShowGE">{concrete['name']}</span>
-                <span className="lastNameShowGE">{concrete['lastName']}</span>
-                <div className="typeShowGe">
-                    <div className="typeTitleShowGe" onClick={() => showListTypes(concrete.id)}>
-                        <span className="typeTitleSpanShowGe">
-                            {concrete['customer_types'].map((concrete, iType) => {
-                                return (iType > 0 ? '، ' + customerType['type'] : customerType['type'])
-                            })}
-                        </span>
-                        <i
-                            className="icofont-rounded-down"
-                            key={'down' + customer.id}
-                            ref={refDownIcons['down' + customer.id]}
-                        />
-                        <i
-                            className="icofont-rounded-up  --displayNone"
-                            key={'up' + customer.id}
-                            ref={refUpIcons['up' + customer.id]}
-                        />
-                    </div>
-                    <div
-                        className="TypeBodyShowGe --displayNone"
-                        key={'list' + customer.id}
-                        ref={refListTypes['list' + customer.id]}
-                    >
-                        {customer['customer_types'].map((customerType, iType) => {
-                            return <div
-                                className="TypeBodyItemShowGe"
-                                key={iType}
-                            >
-                                {customerType['type']}
-                            </div>
-                        })}
-                    </div>
 
-                </div>
+                <span className="rowNumShowGe">{numberRow - i}</span>
+                <span className="GASNameShowGe"> {concrete['concreteName']} </span>
+
 
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={() => showCustomerEditForm(customer.id)}
+                        onClick={showEditConcreteForm}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -170,10 +137,10 @@ const AddConcrete = () => {
             // const element = form.current;
             // let scrollPosition = window.scrollY || window.pageYOffset;
             // const top = element.getBoundingClientRect().top + scrollPosition - 50;
-            window.scrollTo({top:0});
+            window.scrollTo({ top: 0 });
         }
 
-        spanShowTotalRef.current.innerHTML=0;
+        spanShowTotalRef.current.innerHTML = 0;
 
 
     }
@@ -233,7 +200,7 @@ const AddConcrete = () => {
         }
     }
 
-   
+
 
     /**
      * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
@@ -377,7 +344,7 @@ const AddConcrete = () => {
                     onClick={showCreatedRecord}
                     disabled={disabledBtnShowRecords}
                 >
-                    مشاهده انواع بتن‌های ثبت شده
+                    مشاهده انواع بتن‌های تعریف شده
                 </button>
 
             </div>
@@ -664,85 +631,18 @@ const AddConcrete = () => {
                     ref={containerShowGeRef}
                 >
 
-                    <h4 className="titleShowGe"> کالا و خدمات تعریف شده</h4>
+                    <h4 className="titleShowGe"> انواع بتن‌های تعریف شده</h4>
 
                     <div className="divListShowGe">
 
                         <div className="rowListShowGe headRowListShowGe">
-
                             <span className="rowNumShowGe ">ردیف</span>
-
-                            <span className="GASNameShowGe"> کالا</span>
-                            <span className="GASTypeShowGe"> نوع کالا </span>
-
+                            <span className="GASNameShowGe"> نوع بتن </span>
                             <span className="headEditShowGe"> ویرایش  </span>
                             <span className="headDelShowGe"> حذف </span>
-
                         </div>
 
-                        <div className="rowListShowGe">
-
-                            <span className="rowNumShowGe">1</span>
-                            <span className="GASNameShowGe"> ماسه </span>
-                            <span className="GASTypeShowGe"> شن و ماسه </span>
-
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showEditConcreteForm}
-                                >
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div>
-
-                        <div className="rowListShowGe">
-                            <span className="rowNumShowGe">2</span>
-                            <span className="GASNameShowGe"> سیمان </span>
-                            <span className="GASTypeShowGe"> سیمان </span>
-
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش ">
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div>
-
-                        <div className="rowListShowGe">
-                            <span className="rowNumShowGe">3</span>
-
-                            <span className="GASNameShowGe">بتن 350</span>
-                            <span className="GASTypeShowGe">بتن</span>
-
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showEditConcreteForm}>
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-
-                            </div>
-
-                        </div>
+                        {concretes ? returnCreatedConcreteRecords() : <Skeleton height={40} count={12} />}
 
                     </div>
 
