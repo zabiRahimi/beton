@@ -307,6 +307,21 @@ const AddConcrete = () => {
         setLoading(false)
     }
 
+        /**
+     * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
+     * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
+     * @param {شناسه رکورد} recordId 
+     */
+        const PasteDataForEditing = (recordId) => {
+
+            let concrete = concretes.find(concrete => concrete.id === recordId);
+            concrete && setId(recordId);
+    
+            const { id, created_at, updated_at, ...rest } = concrete;//نادیده گرفتن کلید های مشخص شده
+            
+            setInput(rest);
+        }
+
     const handleSubmitEdit = () => {
 
     }
