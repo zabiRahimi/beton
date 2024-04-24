@@ -9,7 +9,7 @@ function useChangeForm(args) {
   const [flexDirection, setFlexDirection] = useState('columnGe');
   const [hideCreatedRecord, setHideCreatedRecord] = useState(true);
   const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
-    const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
+  const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
 
   /** ست کردن موارد لازم هنگامی که کاربر ویرایش یک رکورد را انتخاب می‌کند */
   const [editMode, setEditMode] = useState(false);
@@ -26,6 +26,9 @@ function useChangeForm(args) {
     resetForm();
   };
 
+  /**
+   * نمایش لیست رکوردهای ثبت شده
+   */
   const showCreatedRecord = () => {
     formCurrent && formCurrent.reset();
     resetForm();
@@ -33,8 +36,19 @@ function useChangeForm(args) {
     setDisabledBtnShowRecords(true);
     setFlexDirection('columnReverseGe');
     setHideCreatedRecord(false);
-    
+
   };
+
+  /**
+   * نمایش فرم ویرایش رکوردهای ثبت شده
+   */
+  const showEditForm = (id) => {
+    console.log(id);
+    setDisabledBtnShowRecords(false);
+    setDisabledBtnShowForm(false);
+    setFlexDirection('columnGe');
+    setEditMode(true);
+  }
 
   // استفاده از useEffect برای بروزرسانی آرگومان‌ها
   //   useEffect(() => {
@@ -42,7 +56,7 @@ function useChangeForm(args) {
   //   }, [args]);
 
   // برگرداندن متدها و تابع بروزرسانی
-  return { showAddForm, showCreatedRecord, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef };
+  return { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef };
 }
 
 export default useChangeForm;

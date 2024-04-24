@@ -51,7 +51,7 @@ const AddConcrete = () => {
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
     // const [editMode, setEditMode] = useState(false);
     const [concretes, setConcretes] = useState([]);
-    console.log(concretes);
+    // console.log(concretes);
     const [input, setInput] = useState({
         concreteName: '',
         amountCement: '',
@@ -87,10 +87,9 @@ const AddConcrete = () => {
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="GASNameShowGe"> {concrete['concreteName']} </span>
 
-
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={showEditConcreteForm}
+                        onClick={()=>showEditForm(concrete['id'])}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -145,7 +144,7 @@ const AddConcrete = () => {
 
     }
 
-    const { showAddForm, showCreatedRecord, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm });
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm });
     /**
          * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
          */
@@ -217,12 +216,13 @@ const AddConcrete = () => {
      * نمایش فرم ویرایش بتن
      *  @param {number} id 
      */
-    const showEditConcreteForm = (id) => {
-        setDisabledBtnShowRecords(false);
-        setDisabledBtnShowForm(false);
-        setFlexDirection('columnGe');
-        setEditMode(true);
-    }
+    // const showEditForm = (id) => {
+    //     showEditForm(20)
+    //     // setDisabledBtnShowRecords(false);
+    //     // setDisabledBtnShowForm(false);
+    //     // setFlexDirection('columnGe');
+    //     // setEditMode(true);
+    // }
 
     /**
         * ذخیره مقادیر ورودی‌های کاربر در استیت
