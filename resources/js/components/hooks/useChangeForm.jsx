@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 function useChangeForm(args) {
-  const { formCurrent, resetForm, PasteDataForEditing } = args
+  const { formCurrent, resetForm, pasteDataForEditing } = args
   const containerShowGeRef = useRef(null);
   // ایجاد state برای آرگومان‌ها
   //   const [args, setArgs] = useState(initialArgs);
@@ -48,7 +48,7 @@ function useChangeForm(args) {
     setDisabledBtnShowForm(false);
     setFlexDirection('columnGe');
     setEditMode(true);
-    PasteDataForEditing(id)
+    pasteDataForEditing(id)
   }
 
   // استفاده از useEffect برای بروزرسانی آرگومان‌ها

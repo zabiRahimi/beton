@@ -62,8 +62,9 @@ const AddConcrete = () => {
         unitPrice: '',
     });
 
-    useEffect(() => {
+    const [id, setId] = useState(null);
 
+    useEffect(() => {
         getConcretes();
     }, []);
 
@@ -89,7 +90,7 @@ const AddConcrete = () => {
 
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={()=>showEditForm(concrete['id'])}
+                        onClick={() => showEditForm(concrete['id'])}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -144,7 +145,24 @@ const AddConcrete = () => {
 
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm });
+    /**
+ * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
+ * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
+ * @param {شناسه رکورد} recordId 
+ */
+    const pasteDataForEditing = (recordId) => {
+      
+
+        let concrete = concretes.find(concrete => concrete.id === recordId);
+        concrete && setId(recordId);
+
+        const { id, created_at, updated_at, ...rest } = concrete;//نادیده گرفتن کلید های مشخص شده
+
+        setInput(rest);
+        totalBtonDetails();
+    }
+
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
     /**
          * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
          */
@@ -158,16 +176,29 @@ const AddConcrete = () => {
      * مجموع واحدهای فرمول بتن را محاسبه می کند
      */
     const totalBtonDetails = () => {
-        let cement = amountCementRef.current.value.replace(/[\s,]/g, ""),
-            sand = amountSandRef.current.value.replace(/[\s,]/g, ""),
-            gravel = amountGravelRef.current.value.replace(/[\s,]/g, ""),
-            water = amountWaterRef.current.value.replace(/[\s,]/g, ""),
+        // let cement = amountCementRef.current.value.replace(/[\s,]/g, ""),
+        //     sand = amountSandRef.current.value.replace(/[\s,]/g, ""),
+        //     gravel = amountGravelRef.current.value.replace(/[\s,]/g, ""),
+        //     water = amountWaterRef.current.value.replace(/[\s,]/g, ""),
+        //     total;
+        // cement = cement ? parseFloat(cement) : 0;
+        // sand = sand ? parseFloat(sand) : 0;
+        // gravel = gravel ? parseFloat(gravel) : 0;
+        // water = water ? parseFloat(water) : 0;
+        // total = cement + sand + gravel + water;
+
+        let cement ,
+            sand ,
+            gravel ,
+            water ,
             total;
-        cement = cement ? parseFloat(cement) : 0;
-        sand = sand ? parseFloat(sand) : 0;
-        gravel = gravel ? parseFloat(gravel) : 0;
-        water = water ? parseFloat(water) : 0;
+            console.log(input.amountCement);
+        cement = input.amountCement ? parseFloat(input.amountCement) : 0;
+        sand = input.amountSand ? parseFloat(input.amountSand) : 0;
+        gravel = input.amountGravel ? parseFloat(input.amountGravel) : 0;
+        water = input.amountWater ? parseFloat(input.amountWater) : 0;
         total = cement + sand + gravel + water;
+        console.log(cement);
         spanShowTotalRef.current.textContent = total.toLocaleString();
     }
 
@@ -307,20 +338,7 @@ const AddConcrete = () => {
         setLoading(false)
     }
 
-        /**
-     * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
-     * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
-     * @param {شناسه رکورد} recordId 
-     */
-        const PasteDataForEditing = (recordId) => {
 
-            let concrete = concretes.find(concrete => concrete.id === recordId);
-            concrete && setId(recordId);
-    
-            const { id, created_at, updated_at, ...rest } = concrete;//نادیده گرفتن کلید های مشخص شده
-            
-            setInput(rest);
-        }
 
     const handleSubmitEdit = () => {
 
