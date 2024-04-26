@@ -67,6 +67,7 @@ const AddConcrete = () => {
     useEffect(() => {
         getConcretes();
     }, []);
+   
 
     async function getConcretes() {
         await axios.get("/api/v1/getConcretes").then((response) => {
@@ -159,7 +160,7 @@ const AddConcrete = () => {
         const { id, created_at, updated_at, ...rest } = concrete;//نادیده گرفتن کلید های مشخص شده
 
         setInput(rest);
-        totalBtonDetails();
+        // totalBtonDetails();
     }
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
@@ -171,6 +172,22 @@ const AddConcrete = () => {
         let widths = container.current.offsetWidth;
         setWidthComponent(widths)
     }, []);
+
+    /**
+     * فرمت‌دهی به اعداد هنگامی که کاربر اقدام به ویرایش یک رکورد می‌کند
+     */
+    useEffect(() => {
+        if (editMode) {
+            totalBtonDetails();
+
+            amountCementRef.current.value=parseFloat(input.amountCement).toLocaleString();
+            amountSandRef.current.value=parseFloat(input.amountSand).toLocaleString();
+            amountGravelRef.current.value=parseFloat(input.amountGravel).toLocaleString();
+            amountWaterRef.current.value=parseFloat(input.amountWater).toLocaleString();
+
+            input.unitPrice &&( unitPriceRef.current.value=parseFloat(input.unitPrice).toLocaleString())
+        }
+    }, [input]);
 
     /**
      * مجموع واحدهای فرمول بتن را محاسبه می کند
