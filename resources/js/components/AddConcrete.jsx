@@ -51,7 +51,7 @@ const AddConcrete = () => {
     /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
     // const [editMode, setEditMode] = useState(false);
     const [concretes, setConcretes] = useState([]);
-    // console.log(concretes);
+    
     const [input, setInput] = useState({
         concreteName: '',
         amountCement: '',
@@ -111,7 +111,7 @@ const AddConcrete = () => {
         return value;
     }
 
-    // console.log(input);
+    
     const resetForm = (apply = true) => {
         setInput({
             concreteName: '',
@@ -209,13 +209,13 @@ const AddConcrete = () => {
             gravel ,
             water ,
             total;
-            console.log(input.amountCement);
+           
         cement = input.amountCement ? parseFloat(input.amountCement) : 0;
         sand = input.amountSand ? parseFloat(input.amountSand) : 0;
         gravel = input.amountGravel ? parseFloat(input.amountGravel) : 0;
         water = input.amountWater ? parseFloat(input.amountWater) : 0;
         total = cement + sand + gravel + water;
-        console.log(cement);
+        
         spanShowTotalRef.current.textContent = total.toLocaleString();
     }
 
@@ -357,8 +357,67 @@ const AddConcrete = () => {
 
 
 
-    const handleSubmitEdit = () => {
+    const handleSubmitEdit = async (e) => {
+        e.preventDefault();
+        setLoading(true)
 
+        await axios.patch(
+            `/api/v1/editConcrete/${id}`,
+            { ...input },
+            {
+                headers:
+                {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then((response) => {
+            // setCustomers(prev => [...prev, response.data.customer]);
+            console.log(response.data.concrete);
+            // form.current.reset();
+            // replaceObject(id, response.data.concrete);
+
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ویرایش شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
+                didClose: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+            });
+
+        })
+            .catch(
+                error => {
+                    console.log(error);
+                    if (error.response && error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0];
+
+                        const element = document.getElementById(id);
+                        let scrollPosition = window.scrollY || window.pageYOffset;
+
+                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                        window.scrollTo({
+                            top: top,
+                            behavior: 'smooth'
+                        });
+
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            document.getElementById(key).classList.add('borderRedFB');
+
+                            document.getElementById(key + 'Error').innerHTML = val;
+                         
+                        });
+
+                    }
+                }
+            )
+
+        setLoading(false)
     }
 
     return (

@@ -23,7 +23,7 @@ class UpdateConcreteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'concreteName' => ['required', 'bail','string', Rule::unique('concretes')->ignore($this->concretes)],
+            'concreteName' => ['required', 'bail','string', Rule::unique('concretes')->ignore($this->concrete)],
             'amountCement' => ['required','bail','numeric'],
             'amountSand' => ['required','bail','numeric'],
             'amountGravel' => ['required','bail','numeric'],
