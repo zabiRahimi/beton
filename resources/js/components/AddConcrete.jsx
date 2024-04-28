@@ -177,8 +177,8 @@ const AddConcrete = () => {
      * فرمت‌دهی به اعداد هنگامی که کاربر اقدام به ویرایش یک رکورد می‌کند
      */
     useEffect(() => {
+        totalBtonDetails();
         if (editMode) {
-            totalBtonDetails();
 
             amountCementRef.current.value=parseFloat(input.amountCement).toLocaleString();
             amountSandRef.current.value=parseFloat(input.amountSand).toLocaleString();
@@ -260,17 +260,7 @@ const AddConcrete = () => {
         document.getElementById(id).focus()
     }
 
-    /**
-     * نمایش فرم ویرایش بتن
-     *  @param {number} id 
-     */
-    // const showEditForm = (id) => {
-    //     showEditForm(20)
-    //     // setDisabledBtnShowRecords(false);
-    //     // setDisabledBtnShowForm(false);
-    //     // setFlexDirection('columnGe');
-    //     // setEditMode(true);
-    // }
+    
 
     /**
         * ذخیره مقادیر ورودی‌های کاربر در استیت
@@ -355,6 +345,21 @@ const AddConcrete = () => {
         setLoading(false)
     }
 
+    /**
+     * هنگامی که کاربر اطلاعات یک مشتری را ویرایش می‌کند
+     * اطلاعات جدید در استیت جایگزین اطلاعات قبلی می‌شود
+     * @param {number} id 
+     * @param {object} newObject 
+     */
+    const replaceObject = (id, newObject) => {
+        setConcretes(concretes.map((object) => {
+          if (object.id == id) {
+            return newObject;
+          } else {
+            return object;
+          }
+        }));
+      };
 
 
     const handleSubmitEdit = async (e) => {
@@ -374,8 +379,8 @@ const AddConcrete = () => {
         ).then((response) => {
             // setCustomers(prev => [...prev, response.data.customer]);
             console.log(response.data.concrete);
-            // form.current.reset();
-            // replaceObject(id, response.data.concrete);
+            
+            replaceObject(id, response.data.concrete);
 
             MySwal.fire({
                 icon: "success",
