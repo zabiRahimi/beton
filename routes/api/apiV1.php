@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\DriverController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,14 @@ Route::controller(ConcreteController::class)->group(function () {
     Route::post('/addConcrete', 'store');
     Route::get('/getConcretes', 'index');
     Route::patch('/editConcrete/{concrete}', 'update');
+
+});
+
+Route::controller(DriverController::class)->group(function () {
+    
+    Route::post('/addDriver', 'store');
+    Route::get('/getDrivers', 'index');
+    Route::patch('/editDriver/{driver}', 'update');
 
 });
 

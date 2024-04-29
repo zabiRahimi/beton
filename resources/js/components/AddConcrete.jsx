@@ -5,7 +5,6 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Title from "./hooks/Title";
-
 import Button from 'react-bootstrap/Button';
 import "../../css/formBeton.css";
 import useChangeForm from './hooks/useChangeForm';
@@ -30,8 +29,6 @@ const AddConcrete = () => {
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
-    // const containerShowGeRef = useRef(null);
-
     const concreteNameErrorRef = useRef(null);
     const amountCementErrorRef = useRef(null);
     const amountGravelErrorRef = useRef(null);
@@ -41,17 +38,7 @@ const AddConcrete = () => {
     const unitPriceErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
-
-    // const [disabledBtnAddGe, setDisabledBtnAddGe] = useState(true);
-    // const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
-
-    // const [hideGetGAS, setHideGetGAS] = useState(true);
-    // const [flexDirection, setFlexDirection] = useState('columnGe');
-
-    /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
-    // const [editMode, setEditMode] = useState(false);
     const [concretes, setConcretes] = useState([]);
-    
     const [input, setInput] = useState({
         concreteName: '',
         amountCement: '',
@@ -61,13 +48,11 @@ const AddConcrete = () => {
         unit: '',
         unitPrice: '',
     });
-
     const [id, setId] = useState(null);
 
     useEffect(() => {
         getConcretes();
     }, []);
-   
 
     async function getConcretes() {
         await axios.get("/api/v1/getConcretes").then((response) => {
@@ -83,12 +68,9 @@ const AddConcrete = () => {
         let numberRow = concretes.length;
         const reversedConcretes = concretes.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((concrete, i) => {
-
             return <div className="rowListShowGe" key={i}>
-
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="GASNameShowGe"> {concrete['concreteName']} </span>
-
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
                         onClick={() => showEditForm(concrete['id'])}
@@ -96,22 +78,17 @@ const AddConcrete = () => {
                         <i className="icofont-pencil iEditGe" />
                     </button>
                 </div>
-
                 <div className="divDelGe">
-
                     <button className="--styleLessBtn btnDelGe" title=" حذف ">
                         <i className="icofont-trash iDelGe" />
                     </button>
                 </div>
-
             </div>
-
-        })
+        });
 
         return value;
     }
 
-    
     const resetForm = (apply = true) => {
         setInput({
             concreteName: '',
@@ -135,15 +112,10 @@ const AddConcrete = () => {
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
         if (apply) {
-            // const element = form.current;
-            // let scrollPosition = window.scrollY || window.pageYOffset;
-            // const top = element.getBoundingClientRect().top + scrollPosition - 50;
             window.scrollTo({ top: 0 });
         }
 
         spanShowTotalRef.current.innerHTML = 0;
-
-
     }
 
     /**
@@ -152,7 +124,6 @@ const AddConcrete = () => {
  * @param {شناسه رکورد} recordId 
  */
     const pasteDataForEditing = (recordId) => {
-      
 
         let concrete = concretes.find(concrete => concrete.id === recordId);
         concrete && setId(recordId);
@@ -160,13 +131,13 @@ const AddConcrete = () => {
         const { id, created_at, updated_at, ...rest } = concrete;//نادیده گرفتن کلید های مشخص شده
 
         setInput(rest);
-        // totalBtonDetails();
     }
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+
     /**
-         * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
-         */
+     * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
+     */
     const [widthComponent, setWidthComponent] = useState(0);
     useEffect(() => {
         let widths = container.current.offsetWidth;
@@ -179,13 +150,11 @@ const AddConcrete = () => {
     useEffect(() => {
         totalBtonDetails();
         if (editMode) {
-
-            amountCementRef.current.value=parseFloat(input.amountCement).toLocaleString();
-            amountSandRef.current.value=parseFloat(input.amountSand).toLocaleString();
-            amountGravelRef.current.value=parseFloat(input.amountGravel).toLocaleString();
-            amountWaterRef.current.value=parseFloat(input.amountWater).toLocaleString();
-
-            input.unitPrice &&( unitPriceRef.current.value=parseFloat(input.unitPrice).toLocaleString())
+            input.amountCement && (amountCementRef.current.value = parseFloat(input.amountCement).toLocaleString());
+            input.amountSand && (amountSandRef.current.value = parseFloat(input.amountSand).toLocaleString());
+            input.amountGravel && (amountGravelRef.current.value = parseFloat(input.amountGravel).toLocaleString());
+            input.amountWater && (amountWaterRef.current.value = parseFloat(input.amountWater).toLocaleString());
+            input.unitPrice && (unitPriceRef.current.value = parseFloat(input.unitPrice).toLocaleString())
         }
     }, [input]);
 
@@ -193,29 +162,17 @@ const AddConcrete = () => {
      * مجموع واحدهای فرمول بتن را محاسبه می کند
      */
     const totalBtonDetails = () => {
-        // let cement = amountCementRef.current.value.replace(/[\s,]/g, ""),
-        //     sand = amountSandRef.current.value.replace(/[\s,]/g, ""),
-        //     gravel = amountGravelRef.current.value.replace(/[\s,]/g, ""),
-        //     water = amountWaterRef.current.value.replace(/[\s,]/g, ""),
-        //     total;
-        // cement = cement ? parseFloat(cement) : 0;
-        // sand = sand ? parseFloat(sand) : 0;
-        // gravel = gravel ? parseFloat(gravel) : 0;
-        // water = water ? parseFloat(water) : 0;
-        // total = cement + sand + gravel + water;
-
-        let cement ,
-            sand ,
-            gravel ,
-            water ,
+        let cement,
+            sand,
+            gravel,
+            water,
             total;
-           
+
         cement = input.amountCement ? parseFloat(input.amountCement) : 0;
         sand = input.amountSand ? parseFloat(input.amountSand) : 0;
         gravel = input.amountGravel ? parseFloat(input.amountGravel) : 0;
         water = input.amountWater ? parseFloat(input.amountWater) : 0;
         total = cement + sand + gravel + water;
-        
         spanShowTotalRef.current.textContent = total.toLocaleString();
     }
 
@@ -247,8 +204,6 @@ const AddConcrete = () => {
         }
     }
 
-
-
     /**
      * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
      * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
@@ -259,8 +214,6 @@ const AddConcrete = () => {
     const htmlFor = (id) => {
         document.getElementById(id).focus()
     }
-
-    
 
     /**
         * ذخیره مقادیر ورودی‌های کاربر در استیت
@@ -353,13 +306,13 @@ const AddConcrete = () => {
      */
     const replaceObject = (id, newObject) => {
         setConcretes(concretes.map((object) => {
-          if (object.id == id) {
-            return newObject;
-          } else {
-            return object;
-          }
+            if (object.id == id) {
+                return newObject;
+            } else {
+                return object;
+            }
         }));
-      };
+    };
 
 
     const handleSubmitEdit = async (e) => {
@@ -377,9 +330,6 @@ const AddConcrete = () => {
                 }
             }
         ).then((response) => {
-            // setCustomers(prev => [...prev, response.data.customer]);
-            console.log(response.data.concrete);
-            
             replaceObject(id, response.data.concrete);
 
             MySwal.fire({
@@ -397,7 +347,6 @@ const AddConcrete = () => {
         })
             .catch(
                 error => {
-                    console.log(error);
                     if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
@@ -415,7 +364,7 @@ const AddConcrete = () => {
                             document.getElementById(key).classList.add('borderRedFB');
 
                             document.getElementById(key + 'Error').innerHTML = val;
-                         
+
                         });
 
                     }
@@ -696,18 +645,6 @@ const AddConcrete = () => {
 
                         </div>
 
-
-                        {/* <div className="sectionFB divBtnsFB">
-                            <Button variant="success" className="btnSaveFB">
-                                {editMode ? 'ویرایش' : 'ثبت'}
-                            </Button>
-                            <Button type="reset" variant="warning"
-                                className={editMode ? 'hideGe' : ''}
-                                onClick={resetAll}>
-                                پاک کن
-                            </Button>
-                        </div> */}
-
                         <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button
                                 variant="success"
@@ -722,7 +659,6 @@ const AddConcrete = () => {
                                 variant="warning"
                                 className="btnDelFB"
                                 onClick={resetForm}
-                            // onClick={resetAll}
                             >
                                 پاک کن
                             </Button>
