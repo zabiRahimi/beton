@@ -25,17 +25,17 @@ class UpdateDriverRequest extends FormRequest
     {
         return [
             'name' => ['required', 'bail', 'string'],
-            'lastName' => ['required', 'bail', 'numeric'],
+            'lastName' => ['required', 'bail', 'string'],
             'nationalCode' => [
-                'required', 'bail', 'numeric',
+                'nullable', 'bail', 'numeric','digits:10',
                 Rule::unique('drivers')->ignore($this->driver)
             ],
-            'dateOfBirth' => ['required', 'bail', 'numeric'],
+            'dateOfBirth' => ['nullable', 'bail', 'date'],
             'mobile' => [
-                'required', 'bail', 'string',
+                'nullable', 'bail', 'mobile',
                 Rule::unique('drivers')->ignore($this->driver)
             ],
-            'address' => ['nullable', 'bail', 'numeric'],
+            'address' => ['nullable', 'bail', 'string'],
         ];
     }
 

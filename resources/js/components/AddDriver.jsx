@@ -26,8 +26,11 @@ const AddDriver = () => {
 
     const container = useRef(null);
     const form = useRef(null);
+    const dateOfBirth = useRef(null);
+    const daySelect = useRef(null);
+    const monthSelect = useRef(null);
+    const yearSelect = useRef(null);
     const formCurrent = form.current;
-    const divFormulaBetonRef = useRef(null);
 
     const nameRef = useRef(null);
     const lastNameRef = useRef(null);
@@ -48,6 +51,7 @@ const AddDriver = () => {
 
     const [loading, setLoading] = useState(false);
     const [drivers, setDrivers] = useState([]);
+
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
@@ -222,6 +226,26 @@ const AddDriver = () => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
     }
+
+    const addZeroFirstStr = (element) => {
+        let value = input[element];
+        if (value && value != '0') {
+            isFirstDigitZero(value) || (value = 0 + value);
+        } else {
+            value = '';
+        }
+        setInput(prev => ({ ...prev, [element]: value }));
+    }
+
+     /**
+     * چکت می کند که آیا اول رشته صفر است یا خیر
+     * @param {یک رشته عددی} str 
+     * @returns 
+     */
+     function isFirstDigitZero(str) {
+        // اگر اولین کاراکتر رشته صفر باشد، تابع true برمی‌گرداند
+        return str.charAt(0) === '0';
+    } 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -408,24 +432,48 @@ const AddDriver = () => {
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="concreteName">
+                                    <label htmlFor="name">
                                         نام 
                                     </label>
                                     <input
                                         type="text"
-                                        id="concreteName"
+                                        id="name"
                                         className="inputTextFB element"
-                                        defaultValue={input.concreteName}
-                                        onInput={e => handleSaveValInput(e, 'concreteName')}
-                                        onFocus={e => clearInputError(e, concreteNameErrorRef)}
+                                        defaultValue={input.name}
+                                        onInput={e => handleSaveValInput(e, 'name')}
+                                        onFocus={e => clearInputError(e, nameErrorRef)}
                                         autoFocus
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div
                                     className="errorContainerFB elementError"
-                                    id="concreteNameError"
-                                    ref={concreteNameErrorRef}
+                                    id="nameError"
+                                    ref={nameErrorRef}
+                                >
+                                </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="lastName">
+                                        نام خانوادگی
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="lastName"
+                                        className="inputTextFB element"
+                                        defaultValue={input.lastName}
+                                        onInput={e => handleSaveValInput(e, 'lastName')}
+                                        onFocus={e => clearInputError(e, lastNameErrorRef)}
+                                        autoFocus
+                                    />
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id="lastNameError"
+                                    ref={lastNameErrorRef}
                                 >
                                 </div>
                             </div>
@@ -527,7 +575,42 @@ const AddDriver = () => {
                             </div>
                         </div>
 
-                        
+                        <div className="sectionFB">
+                            <div className="divRightFB">
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor="mobile">موبایل</label>
+                                        <input type="text" id="mobile" className="inputTextFB ltrFB element"
+                                            value={input['mobile'] || ''}
+                                            onInput={e => handleSaveValInput(e, 'mobile')}
+                                            onBlur={() => addZeroFirstStr('mobile')}
+                                            onFocus={(e) => clearInputError(e, mobileErrorRef)}
+
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id="mobileError" ref={mobileErrorRef}> </div>
+
+                                </div>
+                               
+                            </div>
+
+                            <div className="divLeftFB">
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor="address">آدرس</label>
+                                        <textarea
+                                            id="address"
+                                            className="textareaAddressACu"
+                                            defaultValue={input.address}
+                                            onInput={e => handleSaveValInput(e, 'address')}
+                                            onFocus={(e) => clearInputError(e, addressErrorRef)}
+
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id="addressError" ref={addressErrorRef}> </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button

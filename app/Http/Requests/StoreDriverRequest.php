@@ -23,11 +23,11 @@ class StoreDriverRequest extends FormRequest
     {
         return [
             'name' => ['required', 'bail','string'],
-            'lastName' => ['required','bail','numeric'],
-            'nationalCode' => ['required','bail','numeric','unique:drivers'],
-            'dateOfBirth' => ['required','bail','numeric'],
-            'mobile' => ['required','bail','string','unique:drivers'],
-            'address' => ['nullable','bail','numeric'],
+            'lastName' => ['required','bail','string'],
+            'nationalCode' => ['nullable','bail','numeric','digits:10','unique:drivers'],
+            'dateOfBirth' => ['nullable','bail','date'],
+            'mobile' => ['nullable','bail','mobile','unique:drivers'],
+            'address' => ['nullable','bail','string'],
         ];
     }
 
