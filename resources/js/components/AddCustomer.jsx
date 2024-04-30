@@ -750,9 +750,7 @@ const AddCustomer = () => {
                 }
             }
         ).then((response) => {
-            // setCustomers(prev => [...prev, response.data.customer]);
-            console.log(response.data.customer);
-            // form.current.reset();
+           
             replaceObject(id, response.data.customer);
 
             MySwal.fire({

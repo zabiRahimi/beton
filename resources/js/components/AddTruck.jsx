@@ -1,61 +1,117 @@
+import { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Title from "./hooks/Title";
 import "../../css/formBeton.css";
 import iran from "../../assets/images/iran.png";
-import { useRef, useState } from "react";
+import useChangeForm from './hooks/useChangeForm';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import ScaleLoader from 'react-spinners/ScaleLoader';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const AddTruck = () => {
 
-    const btnAddGeRef = useRef(null);
-    const btnGetGeRef = useRef(null);
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const MySwal = withReactContent(Swal);
 
-    const containerShowGeRef = useRef(null);
+    const container = useRef(null);
+    const form = useRef(null);
+    const formCurrent = form.current;
 
-    const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
-    const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [trucks, setTrucks] = useState([]);
 
-    const [hideGetTruck, setHideGetTruck] = useState(true);
-    const [flexDirection, setFlexDirection] = useState('columnGe');
+    const [id, setId] = useState(null);
+    const [input, setInput] = useState({
+        truckName: '',
+        truckType: '',
+        plaque: '',
+        owner: '',
+       
+    });
 
-    /** ست کردن موارد لازم هنگامی که کاربر ویرایش کامیون را انتخاب می‌کند */
-    const [editTruck, setEditTruck] = useState(false);
+    useEffect(() => {
+        getTrucks();
+    }, []);
 
-    const addTruck = () => {
+    async function getTrucks() {
+        await axios.get("/api/v1/getTrucks").then((response) => {
+            setTrucks(response.data.trucks);
+        });
+    }
+    
 
-        setDisabledBtnShowRecords(false);
-        setDisabledBtnShowForm(true);
+  
+    /**
+     * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
+     */
+    const [widthComponent, setWidthComponent] = useState(0);
+    useEffect(() => {
+        let widths = container.current.offsetWidth;
+        setWidthComponent(widths)
+    }, []);
 
-        setFlexDirection('columnGe');
+    const resetForm = (apply = true) => {
+        setInput({
+            truckName: '',
+            truckType: '',
+            plaque: '',
+            owner: '',
+        });
 
-        setEditTruck(false)
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
 
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+
+        // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
+        if (apply) {
+            window.scrollTo({ top: 0 });
+        }
     }
 
-    const getTruck = () => {
+      /**
+ * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
+ * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
+ * @param {شناسه رکورد} recordId 
+ */
+      const pasteDataForEditing = (recordId) => {
 
-        setDisabledBtnShowForm(false);
-        setDisabledBtnShowRecords(true);
+        let truck = trucks.find(truck => truck.id === recordId);
+        truck && setId(recordId);
 
-        setFlexDirection('columnReverseGe');
+        const { id, created_at, updated_at, ...rest } = truck;//نادیده گرفتن کلید های مشخص شده
 
-        setHideGetTruck(false);
-
+        setInput(rest);
     }
 
-    const showFormEditTruck = () => {
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
-        setDisabledBtnShowRecords(false);
-        setDisabledBtnShowForm(false);
-
-        setFlexDirection('columnGe');
-
-        setEditTruck(true);
-
-    }
+    
 
 
     return (
-        <>
+        <div  ref={container}>
+
+            <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
+                backgroundColor: '#6d6b6b',
+                position: 'fixed',
+                top: 0,
+                width: widthComponent + 'px',
+                height: '100vh',
+                zIndex: 100,
+                opacity: 0.2,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }} />
+
             <Title title="تعریف کامیون" />
 
             <div className="headPageGe">
@@ -354,7 +410,7 @@ const AddTruck = () => {
 
             </div>
 
-        </>
+        </div>
     );
 };
 

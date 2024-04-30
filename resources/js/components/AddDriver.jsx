@@ -26,11 +26,11 @@ const AddDriver = () => {
 
     const container = useRef(null);
     const form = useRef(null);
+    const formCurrent = form.current;
     const dateOfBirth = useRef(null);
     const daySelect = useRef(null);
     const monthSelect = useRef(null);
     const yearSelect = useRef(null);
-    const formCurrent = form.current;
 
     const nameRef = useRef(null);
     const lastNameRef = useRef(null);
@@ -111,11 +111,11 @@ const AddDriver = () => {
     }
 
     useEffect(() => {
-        getConcretes();
+        getDrivers();
     }, []);
 
-    async function getConcretes() {
-        await axios.get("/api/v1/getConcretes").then((response) => {
+    async function getDrivers() {
+        await axios.get("/api/v1/getDrivers").then((response) => {
             setDrivers(response.data.drivers);
         });
     }
@@ -130,7 +130,7 @@ const AddDriver = () => {
         let value = reversedConcretes.map((driver, i) => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="GASNameShowGe"> {driver['concreteName']} </span>
+                <span className="GASNameShowGe"> {driver['name']} {driver['lastName']}  </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
                         onClick={() => showEditForm(driver['id'])}
@@ -151,13 +151,12 @@ const AddDriver = () => {
 
     const resetForm = (apply = true) => {
         setInput({
-            concreteName: '',
-            amountCement: '',
-            amountSand: '',
-            amountGravel: '',
-            amountWater: '',
-            unit: '',
-            unitPrice: '',
+            name: '',
+            lastName: '',
+            nationalCode: '',
+            dateOfBirth: '',
+            mobile: '',
+            address: '',
         });
 
         var elements = document.getElementsByClassName('element');
@@ -174,8 +173,6 @@ const AddDriver = () => {
         if (apply) {
             window.scrollTo({ top: 0 });
         }
-
-        spanShowTotalRef.current.innerHTML = 0;
     }
 
     /**
@@ -237,15 +234,15 @@ const AddDriver = () => {
         setInput(prev => ({ ...prev, [element]: value }));
     }
 
-     /**
-     * چکت می کند که آیا اول رشته صفر است یا خیر
-     * @param {یک رشته عددی} str 
-     * @returns 
-     */
-     function isFirstDigitZero(str) {
+    /**
+    * چکت می کند که آیا اول رشته صفر است یا خیر
+    * @param {یک رشته عددی} str 
+    * @returns 
+    */
+    function isFirstDigitZero(str) {
         // اگر اولین کاراکتر رشته صفر باشد، تابع true برمی‌گرداند
         return str.charAt(0) === '0';
-    } 
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -433,7 +430,7 @@ const AddDriver = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="name">
-                                        نام 
+                                        نام
                                     </label>
                                     <input
                                         type="text"
@@ -591,7 +588,7 @@ const AddDriver = () => {
                                     <div className="errorContainerFB elementError" id="mobileError" ref={mobileErrorRef}> </div>
 
                                 </div>
-                               
+
                             </div>
 
                             <div className="divLeftFB">
