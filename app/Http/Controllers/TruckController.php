@@ -13,7 +13,9 @@ class TruckController extends Controller
      */
     public function index()
     {
-        //
+        $drivers = Truck::orderBy('id')->get();
+
+        return response()->json(['drivers' => $drivers]);
     }
 
     /**
@@ -29,7 +31,11 @@ class TruckController extends Controller
      */
     public function store(StoreTruckRequest $request)
     {
-        //
+        $truck = new Truck();
+        $truck->fill($request->validated());
+        $truck->save();
+
+        return response()->json(['truck'=>  $truck],200);
     }
 
     /**
@@ -53,7 +59,9 @@ class TruckController extends Controller
      */
     public function update(UpdateTruckRequest $request, Truck $truck)
     {
-        //
+        $truck->update($request->all());
+
+        return response()->json(['truck'=>  $truck],200);
     }
 
     /**

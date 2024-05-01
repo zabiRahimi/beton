@@ -28,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('tel', function ($attribute, $value, $parameters, $validator) {
             return preg_match('/^0[0-9]{10}$/', $value);
         });
+
+        Validator::extend('plaque', function ($attribute, $value, $parameters, $validator) {
+            return preg_match('/^09[0-9]{9}$/', $value);
+        });
     }
 }

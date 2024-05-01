@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\TruckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,14 @@ Route::controller(DriverController::class)->group(function () {
     Route::post('/addDriver', 'store');
     Route::get('/getDrivers', 'index');
     Route::patch('/editDriver/{driver}', 'update');
+
+});
+
+Route::controller(TruckController::class)->group(function () {
+    
+    Route::post('/addTruck', 'store');
+    Route::get('/getTrucks', 'index');
+    Route::patch('/editTruck/{truck}', 'update');
 
 });
 

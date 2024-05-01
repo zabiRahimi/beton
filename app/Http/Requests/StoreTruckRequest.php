@@ -11,7 +11,7 @@ class StoreTruckRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,15 @@ class StoreTruckRequest extends FormRequest
      */
     public function rules(): array
     {
+        
+
+
+
         return [
-            //
+            'truckName' => ['nullable', 'bail','string'],
+            'truckType' => ['required','bail','string'],
+            'plaque' => ['required','bail','unique:trucks'],
+            'owner' => ['required','bail','string'],
         ];
     }
 }
