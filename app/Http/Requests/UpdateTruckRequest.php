@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class UpdateTruckRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateTruckRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,12 @@ class UpdateTruckRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'truckName' => ['nullable', 'bail','string'],
+            'truckType' => ['required','bail','string'],
+            'numberplate' => ['required','bail','numberplate',
+            Rule::unique('trucks')->ignore($this->truck)],
+            'ownerName' => ['required','bail','string'],
+            'ownerLastName' => ['required','bail','string'],
         ];
     }
 }

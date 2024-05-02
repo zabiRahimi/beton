@@ -29,8 +29,8 @@ class AppServiceProvider extends ServiceProvider
             return preg_match('/^0[0-9]{10}$/', $value);
         });
 
-        Validator::extend('plaque', function ($attribute, $value, $parameters, $validator) {
-            return preg_match('/^09[0-9]{9}$/', $value);
+        Validator::extend('numberplate', function ($attribute, $value, $parameters, $validator) {
+            return preg_match('/^[0-9]{2}-[آ-ی]{1}-[0-9]{3}-[0-9]{2}$/u', $value);
         });
     }
 }

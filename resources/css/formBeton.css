@@ -352,8 +352,8 @@ color: #f1f1f1;
 }
 
 
-/**         ***** plak *****       **/
-.divExamplePlak {
+/**         ***** Numberplate *****       **/
+.divExampleNumberplate {
     width: 235px;
     height: 37px;
     display: flex;
@@ -362,7 +362,7 @@ color: #f1f1f1;
     border-radius: 4px;
 }
 
-.divIranPlak {
+.divIranNumberplate {
     width: 28px;
     display: flex;
     flex-direction: column;
@@ -370,7 +370,7 @@ color: #f1f1f1;
     gap: 7px;
 }
 
-.iranPlakDivImg {
+.iranNumberplateDivImg {
     width: 100%;
     padding: 0;
     height: 10px;
@@ -378,12 +378,12 @@ color: #f1f1f1;
 }
 
 
-.iranPlakDivImg img {
+.iranNumberplateDivImg img {
     width: 95%;
     margin-top: -7px;
 }
 
-.iranPlakDivSpans {
+.iranNumberplateDivSpans {
     height: min-content;
     display: flex;
     flex-direction: column;
@@ -392,38 +392,38 @@ color: #f1f1f1;
     direction: ltr;
 }
 
-.iranPlakDivSpans span {
+.iranNumberplateDivSpans span {
     display: inline-block;
     height: 8px;
 }
 
-.divNamberPlak {
+.divNumberplate {
     display: flex;
     flex-direction: row-reverse;
 }
 
-.text2numberPlaK,
-.selectChPlak,
-.text3numberPlaK,
-.textSerialPlaK {
+.text2Numberplate,
+.selectChNumberplate,
+.text3Numberplate,
+.textSerialNumberplate {
     text-align: center;
     border: none;
 }
 
-.text2numberPlaK {
+.text2Numberplate {
     width: 42px;
 }
 
-.selectChPlak {
+.selectChNumberplate {
     width: 61px;
     border-radius: 0;
 }
 
-.text3numberPlaK {
+.text3Numberplate {
     width: 58px;
 }
 
-.divSerialPlak {
+.divSerialNumberplate {
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -432,13 +432,13 @@ color: #f1f1f1;
     border-radius: 0 4px 4px 0;
 }
 
-.divSerialPlak span {
+.divSerialNumberplate span {
     height: 8px;
     font-size: 0.5rem;
     z-index: 10;
 }
 
-.textSerialPlaK {
+.textSerialNumberplate {
     width: 42px;
     height: 27px;
     border-radius: 0 4px 4px 0;
@@ -518,7 +518,7 @@ color: #f1f1f1;
 
     .inputTextFB,
     .selectFB,
-    .divExamplePlak {
+    .divExampleNumberplate {
         width: 250px;
     }
 
@@ -537,16 +537,16 @@ color: #f1f1f1;
         width: 185px;
     }
 
-    .text2numberPlaK,
-    .textSerialPlaK {
+    .text2Numberplate,
+    .textSerialNumberplate {
         width: 47px;
     }
 
-    .selectChPlak {
+    .selectChNumberplate {
         width: 66px;
     }
 
-    .text3numberPlaK {
+    .text3Numberplate {
         width: 58px;
     }
 

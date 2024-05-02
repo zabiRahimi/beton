@@ -28,8 +28,9 @@ class StoreTruckRequest extends FormRequest
         return [
             'truckName' => ['nullable', 'bail','string'],
             'truckType' => ['required','bail','string'],
-            'plaque' => ['required','bail','unique:trucks'],
-            'owner' => ['required','bail','string'],
+            'numberplate' => ['required','bail','numberplate','unique:trucks'],
+            'ownerName' => ['required','bail','string'],
+            'ownerLastName' => ['required','bail','string'],
         ];
     }
 }

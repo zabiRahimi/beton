@@ -22,6 +22,12 @@ const AddTruck = () => {
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
+    const truckNameErrorRef = useRef(null);
+    const truckTypeErrorRef = useRef(null);
+    const numberplateErrorRef = useRef(null);
+    const ownerNameErrorRef = useRef(null);
+    const ownerLastNameErrorRef = useRef(null);
+
     const [loading, setLoading] = useState(false);
     const [trucks, setTrucks] = useState([]);
 
@@ -29,10 +35,35 @@ const AddTruck = () => {
     const [input, setInput] = useState({
         truckName: '',
         truckType: '',
-        plaque: '',
-        owner: '',
-
+        numberplate: '',
+        ownerName: '',
+        ownerLastName: '',
     });
+
+    /**
+     * چهار استیت زیر مربوط به پلاک خودرو می‌باشند
+     */
+
+    /**
+     * ذخیره دو رقم سمت چپ
+     */
+    const [digitsLeftSide, setDigitsLeftSide] = useState(null);
+
+    /**
+     * ذخیره حرف الفبا
+     */
+    const [alphabet, setAlphabet] = useState(null);
+
+    /**
+     * ذخیره سه رقم میانی
+     */
+    const [digitsMiddle, setDigitsMiddle] = useState(null);
+
+    /**
+     * ذخیره دو رقم سمت راست
+     */
+    const [digitsRightSide, setDigitsRightSide] = useState(null);
+
 
     useEffect(() => {
         getTrucks();
@@ -55,12 +86,81 @@ const AddTruck = () => {
         setWidthComponent(widths)
     }, []);
 
+    /**
+     * این متد دو رقم سمت چپ پلاک را دریافت می‌کند
+     * در استیت ذخیره می کند
+     * و چنانچه رقم‌ها و حرف الفبا وارد شده باشد آنها را گرفته و با هم ادغام می‌کند
+     * و در نهایت در استیت اصلی در کلید پلاک ذخیره می‌کند
+     * @param {*} e 
+     */
+    const getDigitLeftSide = (e) => {
+        let { value } = e.target;
+        value = value.toString();
+
+        if (value.length == 2) {
+            setDigitsLeftSide(value);
+            let val = value + '-' + alphabet + '-' + digitsMiddle + '-' + digitsRightSide;
+            setInput(prev => ({ ...prev, numberplate: val }));
+        }
+    }
+
+    /**
+    * این متد دو حرف الفبای پلاک را دریافت می‌کند
+    * در استیت ذخیره می کند
+    * و چنانچه رقم‌ها وارد شده باشد آنها را گرفته و با هم ادغام می‌کند
+    * و در نهایت در استیت اصلی در کلید پلاک ذخیره می‌کند
+    * @param {*} e 
+    */
+    const getAlphabet = (e) => {
+        let { value } = e.target;
+
+        if (value != '') {
+            setAlphabet(value);
+            let val = digitsLeftSide + '-' + value + '-' + digitsMiddle + '-' + digitsRightSide;
+            setInput(prev => ({ ...prev, numberplate: val }));
+        }
+
+    }
+
+    /**
+     * به توضیحات متد بالا مراجعه کنید
+     * @param {*} e 
+     */
+    const getDigitMiddle = (e) => {
+        let { value } = e.target;
+        value = value.toString();
+
+        if (value.length == 3) {
+            setDigitsMiddle(value);
+            let val = digitsLeftSide + '-' + alphabet + '-' + value + '-' + digitsRightSide;
+            setInput(prev => ({ ...prev, numberplate: val }));
+        }
+    }
+
+    /**
+     * به توضیحات متد بالا مراجعه کنید
+     * @param {} e 
+     */
+    const getDigitRightSide = (e) => {
+        let { value } = e.target;
+        value = value.toString();
+
+        if (value.length == 2) {
+            setDigitsRightSide(value);
+            let val = digitsLeftSide + '-' + alphabet + '-' + digitsMiddle + '-' + value;
+            setInput(prev => ({ ...prev, numberplate: val }));
+        }
+    }
+
+    console.log(input);
+
     const resetForm = (apply = true) => {
         setInput({
             truckName: '',
             truckType: '',
-            plaque: '',
-            owner: '',
+            numberplate: '',
+            ownerName: '',
+            ownerLastName: '',
         });
 
         var elements = document.getElementsByClassName('element');
@@ -95,6 +195,26 @@ const AddTruck = () => {
     }
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+
+    /**
+       * ذخیره مقادیر ورودی‌های کاربر در استیت
+       * @param {*} e 
+       * @param {*} input 
+       */
+    const handleSaveValInput = (e, input) => {
+        let { value } = e.target;
+        setInput(prev => ({ ...prev, [input]: result }));
+    }
+
+    /**
+    * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
+    * @param {*} e 
+    * @param {رف مربوط به تگ نمایش خطا} refErr 
+    */
+    const clearInputError = (e, refErr, types = false, date = false) => {
+        e.target.classList.remove('borderRedFB');
+        refErr.current && (refErr.current.innerHTML = '');
+    }
 
     const handleSubmit = () => {
 
@@ -135,7 +255,7 @@ const AddTruck = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showEditForm}
+                    onClick={showCreatedRecord}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده کامیون‌های تعریف شده
@@ -144,50 +264,44 @@ const AddTruck = () => {
             </div>
 
             <div className={`containerMainAS_Ge ${flexDirection}`}>
-
                 <div className="continerAddGe ">
-
                     <form action="" className="formBeton">
-
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش کامیون</h5>
-
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-
                                     <label>نام خودرو</label>
-
                                     <select
                                         name=""
-                                        id=""
+                                        id="truckName"
                                         className="selectFB element inputTextFB"
+                                        onChange={e => handleSaveValInput(e)}
+                                        onClick={(e) => clearInputError(e, truckNameErrorRef)}
                                     >
-
                                         <option value="">انتخاب</option>
-                                        <option value="بنز">بنز</option>
                                         <option value="بنز">بنز</option>
                                         <option value="اویکو">اویکو</option>
                                         <option value="داف">داف</option>
                                         <option value="آمیکو">آمیکو</option>
                                         <option value="دانگ فانگ">دانگ فانگ</option>
                                         <option value="ولو">ولو</option>
-
+                                        <option value="سایر">سایر</option>
                                     </select>
-
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
+                                <div className="errorContainerFB elementError" id="truckNameErrorRef" ref={truckNameErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-
                                     <label>نوع خودرو </label>
-
                                     <select
                                         name=""
-                                        id=""
+                                        id="truckType"
                                         className="selectFB element inputTextFB"
+                                        onChange={e => handleSaveValInput(e)}
+                                        onClick={(e) => clearInputError(e, truckTypeErrorRef)}
                                     >
-
                                         <option value="">انتخاب</option>
                                         <option value="میکسر">میکسر</option>
                                         <option value="پمپ هوایی دکل">
@@ -196,110 +310,107 @@ const AddTruck = () => {
                                         <option value="پمپ زمینی">پمپ زمینی</option>
                                         <option value="کمپرسی">کمپرسی</option>
                                         <option value="تریلر بونکر">تریلر بونکر</option>
+                                        <option value="تریلر" >تریلر</option>
                                         <option value="لودر">لودر</option>
                                         <option value="جرثقیل">جرثقیل</option>
-
+                                        <option value="سایر" >سایر</option>
                                     </select>
-
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
-                            </div>
+                                <div className="errorContainerFB elementError" id="truckTypeError" ref={truckTypeErrorRef}> </div>
+                            </div>                            
                         </div>
 
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-
                                     <label> پلاک </label>
-
-                                    <div className="divPlak">
-
-                                        <div className="divExamplePlak">
-
-                                            <div className="divIranPlak">
-
-                                                <div className="iranPlakDivImg">
-
+                                    <div className="divNumberplate">
+                                        <div className="divExampleNumberplate">
+                                            <div className="divIranNumberplate">
+                                                <div className="iranNumberplateDivImg">
                                                     <img
                                                         className="imgNSP"
                                                         src={iran}
                                                     />
-
                                                 </div>
-
-                                                <div className="iranPlakDivSpans">
-
+                                                <div className="iranNumberplateDivSpans">
                                                     <span>I.R.</span>
                                                     <span>IRAN</span>
-
                                                 </div>
-
                                             </div>
 
-                                            <div className="divNamberPlak">
-
+                                            <div className="divNumberplate">
                                                 <input
                                                     type="text"
                                                     name=""
                                                     id=""
-                                                    className="text2numberPlaK"
+                                                    className="text2Numberplate"
                                                     placeholder="00"
+                                                    maxLength="2"
+                                                    onInput={e => getDigitLeftSide(e)}
                                                 />
 
-                                                <select name="" id="" className="selectChPlak">
-
-                                                    <option value=""> الف </option>
-                                                    <option value=""> ب </option>
-                                                    <option value=""> پ </option>
-                                                    <option value=""> ت </option>
-                                                    <option value=""> ث </option>
-                                                    <option value=""> ج </option>
-                                                    <option value=""> چ </option>
-                                                    <option value=""> ح </option>
-                                                    <option value=""> خ </option>
-                                                    <option value=""> د </option>
-                                                    <option value=""> ذ </option>
-                                                    <option value=""> ر </option>
-                                                    <option value=""> ز </option>
-                                                    <option value=""> ژ </option>
-                                                    <option value=""> س </option>
-                                                    <option value=""> ش </option>
-                                                    <option value=""> ص </option>
-                                                    <option value=""> ض </option>
-                                                    <option value=""> ط </option>
-                                                    <option value=""> ظ </option>
-                                                    <option value=""> ع </option>
-                                                    <option value=""> غ </option>
-                                                    <option value=""> ف </option>
-                                                    <option value=""> ق </option>
-                                                    <option value=""> ک </option>
-                                                    <option value=""> گ </option>
-                                                    <option value=""> ل </option>
-                                                    <option value=""> م </option>
-                                                    <option value=""> ن </option>
-                                                    <option value=""> و </option>
-                                                    <option value=""> ه </option>
-                                                    <option value=""> ی </option>
-
+                                                <select
+                                                    name=""
+                                                    id=""
+                                                    className="selectChNumberplate"
+                                                    onChange={e => getAlphabet(e)}
+                                                >
+                                                    <option value="الف"> الف </option>
+                                                    <option value="ب"> ب </option>
+                                                    <option value="پ"> پ </option>
+                                                    <option value="ت"> ت </option>
+                                                    <option value="ث"> ث </option>
+                                                    <option value="ج"> ج </option>
+                                                    <option value="چ"> چ </option>
+                                                    <option value="ح"> ح </option>
+                                                    <option value="خ"> خ </option>
+                                                    <option value="د"> د </option>
+                                                    <option value="ذ"> ذ </option>
+                                                    <option value="ر"> ر </option>
+                                                    <option value="ز"> ز </option>
+                                                    <option value="ژ"> ژ </option>
+                                                    <option value="س"> س </option>
+                                                    <option value="ش"> ش </option>
+                                                    <option value="ص"> ص </option>
+                                                    <option value="ض"> ض </option>
+                                                    <option value="ط"> ط </option>
+                                                    <option value="ظ"> ظ </option>
+                                                    <option value="ع"> ع </option>
+                                                    <option value="غ"> غ </option>
+                                                    <option value="ف"> ف </option>
+                                                    <option value="ق"> ق </option>
+                                                    <option value="ک"> ک </option>
+                                                    <option value="گ"> گ </option>
+                                                    <option value="ل"> ل </option>
+                                                    <option value="م"> م </option>
+                                                    <option value="ن"> ن </option>
+                                                    <option value="و"> و </option>
+                                                    <option value="ه"> ه </option>
+                                                    <option value="ی"> ی </option>
                                                 </select>
 
                                                 <input
                                                     type="text"
                                                     name=""
                                                     id=""
-                                                    className="text3numberPlaK"
+                                                    className="text3Numberplate"
                                                     placeholder="000"
+                                                    maxLength="3"
+                                                    onInput={e => getDigitMiddle(e)}
                                                 />
 
                                             </div>
 
-                                            <div className="divSerialPlak">
-
+                                            <div className="divSerialNumberplate">
                                                 <span>ایران</span>
-
                                                 <input
                                                     type="text"
-                                                    className="textSerialPlaK"
+                                                    className="textSerialNumberplate"
                                                     placeholder="00"
+                                                    maxLength="2"
+                                                    onInput={e => getDigitRightSide(e)}
                                                 />
 
                                             </div>
@@ -307,18 +418,43 @@ const AddTruck = () => {
                                         </div>
 
                                     </div>
-
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
+                                <div className="errorContainerFB elementError" id="numberplateError" ref={numberplateErrorRef}> </div>
                             </div>
+                            
 
                         </div>
 
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label> مالک خودرو </label>
-                                    <input type="text" className="inputTextFB" />
+                                    <label htmlFor="ownerName"> نام مالک </label>
+                                    <input
+                                        type="text"
+                                        id="ownerName"
+                                        className="inputTextFB"
+                                        onInput={e => handleSaveValInput(e)}
+                                        onFocus={(e) => clearInputError(e, ownerNameErrorRef)}
+                                    />
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
+                               <div className="errorContainerFB elementError" id="ownerNameError" ref={ownerNameErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="ownerLastName"> نام خانوادگی </label>
+                                    <input
+                                        type="text"
+                                        id="ownerLastName"
+                                        className="inputTextFB"
+                                        onInput={e => handleSaveValInput(e)}
+                                        onFocus={(e) => clearInputError(e, ownerLastNameErrorRef)}
+                                    />
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div className="errorContainerFB elementError" id="ownerLastNameError" ref={ownerLastNameErrorRef}> </div>
                             </div>
 
                         </div>

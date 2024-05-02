@@ -13,9 +13,9 @@ class TruckController extends Controller
      */
     public function index()
     {
-        $drivers = Truck::orderBy('id')->get();
+        $trucks = Truck::orderBy('id')->get();
 
-        return response()->json(['drivers' => $drivers]);
+        return response()->json(['trucks' => $trucks]);
     }
 
     /**
