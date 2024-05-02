@@ -229,6 +229,10 @@ return [
         'unit' => 'واحد',
         'unitPrice' => 'قیمت واحد',
         'numberplate' => 'شماره پلاک',
+        'truckName' => 'نام خودرو',
+        'truckType' => 'نوع خودرو',
+        'ownerName' => 'نام مالک خودرو',
+        'ownerLastName' => 'نام خانوادگی مالک خودرو',
 
     ],
 

@@ -27,6 +27,7 @@ const AddTruck = () => {
     const numberplateErrorRef = useRef(null);
     const ownerNameErrorRef = useRef(null);
     const ownerLastNameErrorRef = useRef(null);
+    const truckOwnerErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
     const [trucks, setTrucks] = useState([]);
@@ -216,9 +217,68 @@ const AddTruck = () => {
         refErr.current && (refErr.current.innerHTML = '');
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true)
 
+        await axios.post(
+            '/api/v1/addTruck',
+            { ...input },
+            {
+                headers:
+                {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then((response) => {
+            setTrucks(prev => [...prev, response.data.truck]);
+
+            form.current.reset();
+
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
+                didClose: () => resetForm(),
+            });
+
+        })
+            .catch(
+                error => {
+                    console.log(error);
+                    if (error.response && error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0];
+
+                        const element = document.getElementById(id);
+                        let scrollPosition = window.scrollY || window.pageYOffset;
+
+                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                        window.scrollTo({
+                            top: top,
+                            behavior: 'smooth'
+                        });
+
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            document.getElementById(key).classList.add('borderRedFB');
+
+                            document.getElementById(key + 'Error').innerHTML = val;
+
+                        });
+
+                    }
+                }
+            )
+
+        setLoading(false)
     }
+
     const handleSubmitEdit = () => {
 
     }
@@ -318,14 +378,14 @@ const AddTruck = () => {
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div className="errorContainerFB elementError" id="truckTypeError" ref={truckTypeErrorRef}> </div>
-                            </div>                            
+                            </div>
                         </div>
 
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label> پلاک </label>
-                                    <div className="divNumberplate">
+                                    <div className="divNumberplate" id="numberplate">
                                         <div className="divExampleNumberplate">
                                             <div className="divIranNumberplate">
                                                 <div className="iranNumberplateDivImg">
@@ -423,7 +483,7 @@ const AddTruck = () => {
                                 </div>
                                 <div className="errorContainerFB elementError" id="numberplateError" ref={numberplateErrorRef}> </div>
                             </div>
-                            
+
 
                         </div>
 
@@ -440,7 +500,7 @@ const AddTruck = () => {
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                               <div className="errorContainerFB elementError" id="ownerNameError" ref={ownerNameErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="ownerNameError" ref={ownerNameErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -457,6 +517,28 @@ const AddTruck = () => {
                                 </div>
                                 <div className="errorContainerFB elementError" id="ownerLastNameError" ref={ownerLastNameErrorRef}> </div>
                             </div>
+
+                        </div>
+
+                        <div className="sectionFB">
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="ownerName"> مالک خودرو </label>
+                                    <select
+                                        name=""
+                                        id="truckOwner"
+                                        className="selectChNumberplate"
+                                        onChange={e => getAlphabet(e)}
+                                    >
+                                        <option value=""> انتخاب </option>
+                                        
+                                       
+                                    </select>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div className="errorContainerFB elementError" id="truckOwnerError" ref={truckOwnerErrorRef}> </div>
+                            </div>
+
 
                         </div>
 
