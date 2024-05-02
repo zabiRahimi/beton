@@ -203,7 +203,7 @@ const AddTruck = () => {
        */
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-        setInput(prev => ({ ...prev, [input]: result }));
+        setInput(prev => ({ ...prev, [input]: value }));
     }
 
     /**
@@ -275,7 +275,7 @@ const AddTruck = () => {
                                         name=""
                                         id="truckName"
                                         className="selectFB element inputTextFB"
-                                        onChange={e => handleSaveValInput(e)}
+                                        onChange={e => handleSaveValInput(e, 'truckName')}
                                         onClick={(e) => clearInputError(e, truckNameErrorRef)}
                                     >
                                         <option value="">انتخاب</option>
@@ -299,7 +299,7 @@ const AddTruck = () => {
                                         name=""
                                         id="truckType"
                                         className="selectFB element inputTextFB"
-                                        onChange={e => handleSaveValInput(e)}
+                                        onChange={e => handleSaveValInput(e, 'truckType')}
                                         onClick={(e) => clearInputError(e, truckTypeErrorRef)}
                                     >
                                         <option value="">انتخاب</option>
@@ -357,6 +357,7 @@ const AddTruck = () => {
                                                     className="selectChNumberplate"
                                                     onChange={e => getAlphabet(e)}
                                                 >
+                                                    <option value=""> حرف </option>
                                                     <option value="الف"> الف </option>
                                                     <option value="ب"> ب </option>
                                                     <option value="پ"> پ </option>
@@ -434,7 +435,7 @@ const AddTruck = () => {
                                         type="text"
                                         id="ownerName"
                                         className="inputTextFB"
-                                        onInput={e => handleSaveValInput(e)}
+                                        onInput={e => handleSaveValInput(e, 'ownerName')}
                                         onFocus={(e) => clearInputError(e, ownerNameErrorRef)}
                                     />
                                     <i className="icofont-ui-rating starFB" />
@@ -449,7 +450,7 @@ const AddTruck = () => {
                                         type="text"
                                         id="ownerLastName"
                                         className="inputTextFB"
-                                        onInput={e => handleSaveValInput(e)}
+                                        onInput={e => handleSaveValInput(e, 'ownerLastName')}
                                         onFocus={(e) => clearInputError(e, ownerLastNameErrorRef)}
                                     />
                                     <i className="icofont-ui-rating starFB" />
