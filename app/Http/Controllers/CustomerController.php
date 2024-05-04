@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\BankInfo;
+use App\Models\CustomerType;
 use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
@@ -42,7 +43,16 @@ class CustomerController extends Controller
             $customer->fill($request->validated());
             $customer->save();
 
-            $customer->customerTypes()->sync($request->validated()['types']);
+            // $customer->customerTypes()->sync($request->validated()['types']);
+            // dd($request->validated()['types']);
+                foreach ($request->validated()['types'] as $typeDetailData) {
+
+                    $typeDetail = new CustomerType();
+                    $typeDetail->fill($typeDetailData);
+                    $typeDetail->customer_id = $customer->id;
+                    $typeDetail->save();
+                }
+            
             
 
             try {

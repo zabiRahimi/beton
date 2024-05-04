@@ -145,9 +145,7 @@ const AddCustomer = () => {
         email: '',
         postalCode: '',
         address: '',
-        types: [
-            {type:'', subtype:''}
-        ],
+        types: [],
         bankInfo: [
             {
                 bank: '',
@@ -382,7 +380,7 @@ const AddCustomer = () => {
         let value = customerTypeSelected.map((customerType, i) => {
             return <div className="customerTypeSelectedFB" key={i}>
                 <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']}</span>
-                <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['id'])} />
+                <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['id'], customerType['type'], customerType['subtype'])} />
             </div>
         })
 
@@ -397,7 +395,7 @@ const AddCustomer = () => {
             setCustomerTypeSelected(old => [...old, { id, type, subtype }]);
             setInput(prevState => ({
                 ...prevState,
-                types: [...prevState.types, type]
+                types: [...prevState.types, {type:type, subtype:subtype}]
             }));
             const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype}`).join(' , ');
             lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + subtype : type + ' ' + subtype;
@@ -416,13 +414,15 @@ const AddCustomer = () => {
             lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
         }
     }
-
-    const delCustomerTypeSelected = (id) => {
+console.log(customerTypeSelected);
+    const delCustomerTypeSelected = (id, type, subtype) => {
         const updated = customerTypeSelected.filter(item => item.id !== id);
         setCustomerTypeSelected(updated);
         setInput(prevState => ({
             ...prevState,
-            types: prevState.types.filter(typeId => typeId !== id)
+            // types: prevState.types.filter(typeId => typeId !== id)
+            types: prevState.types.filter(item => !(item.type.trim() === type && item.subtype.trim() === subtype))
+
         }));
         let ref = refs[id]
         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');

@@ -26,9 +26,14 @@ class Customer extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function customerTypes():BelongsToMany
+    // public function customerTypes():BelongsToMany
+    // {
+    //     return $this->belongsToMany(CustomerType::class, 'customer_type_selecteds');
+    // }
+
+    public function customerTypes():HasMany
     {
-        return $this->belongsToMany(CustomerType::class, 'customer_type_selecteds');
+        return $this->hasMany(CustomerType::class);
     }
 
     public function bankInfo(): HasMany
