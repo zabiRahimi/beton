@@ -213,7 +213,7 @@ return [
         'sentence' => 'جمله',
         'sentenceLink' => 'لینک جمله',
         'des' => 'متن',
-        'types' => 'نوع مشتری',
+        'types.*.type' => 'نوع مشتری',
         'father' => 'نام پدر',
         'bankInfo.*.bank' => 'نام بانک ',
         'bankInfo.*.account' => ' شماره حساب',

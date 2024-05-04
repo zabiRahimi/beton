@@ -145,7 +145,9 @@ const AddCustomer = () => {
         email: '',
         postalCode: '',
         address: '',
-        types: [],
+        types: [
+            {type:'', subtype:''}
+        ],
         bankInfo: [
             {
                 bank: '',
@@ -155,6 +157,7 @@ const AddCustomer = () => {
             }
         ]
     });
+    console.log(input);
     // console.log(input);
 
     /**
@@ -394,7 +397,7 @@ const AddCustomer = () => {
             setCustomerTypeSelected(old => [...old, { id, type, subtype }]);
             setInput(prevState => ({
                 ...prevState,
-                types: [...prevState.types, id]
+                types: [...prevState.types, type]
             }));
             const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype}`).join(' , ');
             lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + subtype : type + ' ' + subtype;
@@ -483,24 +486,7 @@ const AddCustomer = () => {
 
     }
 
-    // function isValidDate(dateString) {
-    //     // تعریف یک الگو برای تاریخ با فرمت yyyy/mm/dd
-    //     const regex = /^(13|14)\d\d\/(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])$/;
 
-    //     return regex.test(dateString);
-    //     // // بررسی مطابقت رشته ورودی با الگو
-    //     // if (regex.test(dateString)) {
-    //     //     return true;
-    //     // } else {
-    //     //     return false;
-    //     // }
-    // }
-    const deleteDate = () => {
-        setDay();
-        setMonth();
-        setYear();
-
-    }
 
     /**
      * نمایش فرم ویرایش مشتری
@@ -710,11 +696,15 @@ const AddCustomer = () => {
         })
             .catch(
                 error => {
-                    console.log(error);
+                    // console.log(error);
 
                     if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
+                        // console.log(error.response.data.errors);
+                        id.includes('type')&& (id='types');
+                        console.log(id.includes('type'));
+                        console.log(id);
 
                         const element = document.getElementById(id);
                         let scrollPosition = window.scrollY || window.pageYOffset;
@@ -726,6 +716,8 @@ const AddCustomer = () => {
                         });
 
                         Object.entries(error.response.data.errors).map(([key, val]) => {
+                            key.includes('type')&& (key='types');
+                            console.log(key);
                             document.getElementById(key).classList.add('borderRedFB');
 
                             document.getElementById(key + 'Error').innerHTML = val;
