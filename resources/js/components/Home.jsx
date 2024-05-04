@@ -14,13 +14,13 @@ const Home = () => {
                     <span>تعریف مشتری</span>
                 </Link>
 
-                <Link to="addCustomerType" className="linksHome --styleLessLink ">
+                {/* <Link to="addCustomerType" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
                         <i className="icofont-id-card  iLinksHome iTruck " />
                         <i className="icofont-plus Iplus" />
                     </div>
                     <span>تعریف نوع مشتری</span>
-                </Link>
+                </Link> */}
 
                 <Link to="addTruck" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">

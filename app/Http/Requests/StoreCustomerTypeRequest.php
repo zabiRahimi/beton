@@ -23,7 +23,8 @@ class StoreCustomerTypeRequest extends FormRequest
     {
         return [
             
-            'type' => 'required|string|unique:customer_types',
+            'type' => 'required|string',
+            'subtype' => 'required_if:type,خریدار,فروشنده,مالک|string',
             
         ];
     }

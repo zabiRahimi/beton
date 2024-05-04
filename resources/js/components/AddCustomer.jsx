@@ -113,7 +113,17 @@ const AddCustomer = () => {
     const [customers, setCustomers] = useState(null);
     // console.log(customers);
 
-    const [customerTypes, setCustomerTypes] = useState(null);
+    const [customerTypes, setCustomerTypes] = useState([
+        { id: 1, type: 'خریدار', subtype: 'بتن' },
+        { id: 2, type: 'فروشنده', subtype: 'شن و ماسه' },
+        { id: 3, type: 'فروشنده', subtype: 'سیمان' },
+        { id: 4, type: 'فروشنده', subtype: 'آب' },
+        { id: 5, type: 'مالک', subtype: 'میکسر' },
+        { id: 6, type: 'مالک', subtype: 'پمپ دکل' },
+        { id: 7, type: 'مالک', subtype: 'پمپ زمینی' },
+        { id: 8, type: 'مالک', subtype: 'کمپرسی' },
+        { id: 9, type: 'پرسنل', subtype: '' },
+    ]);
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
 
 
@@ -153,7 +163,7 @@ const AddCustomer = () => {
     const [id, setId] = useState(null);
 
     useEffect(() => {
-        getCustomerTypes();
+        // getCustomerTypes();
         getCustomers();
     }, []);
 
@@ -166,7 +176,7 @@ const AddCustomer = () => {
             setRefs(newRefs);
         }
 
-    }, [customerTypes]);
+    }, []);
 
     /**
      * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -306,14 +316,14 @@ const AddCustomer = () => {
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-    /**
-     * دریافت نوع مشتری 
-     */
-    async function getCustomerTypes() {
-        await axios.get("/api/v1/getCustomerTypes").then((response) => {
-            setCustomerTypes(response.data.CustomerTypes);
-        });
-    }
+    // /**
+    //  * دریافت نوع مشتری 
+    //  */
+    // async function getCustomerTypes() {
+    //     await axios.get("/api/v1/getCustomerTypes").then((response) => {
+    //         setCustomerTypes(response.data.CustomerTypes);
+    //     });
+    // }
 
     async function getCustomers() {
         await axios.get("/api/v1/getCustomers").then((response) => {
@@ -335,12 +345,12 @@ const AddCustomer = () => {
     const showCustomerTypes = () => {
         let value = customerTypes.map((customerType, i) => {
 
-            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e, customerType['id'], customerType['type'])}
+            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e, customerType['id'], customerType['type'], customerType['subtype'])}
                 key={i}>
                 <div className="checkedItemCustomerTypeFB" key={customerType['id']} ref={refs[customerType.id]}>
                     <i className="icofont-check-alt " />
                 </div>
-                <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
+                <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']} </span>
 
             </div>
 
@@ -348,11 +358,27 @@ const AddCustomer = () => {
 
         return value;
     }
+    // const showCustomerTypes = () => {
+    //     let value = customerTypes.map((customerType, i) => {
+
+    //         return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e, customerType['id'], customerType['type'])}
+    //             key={i}>
+    //             <div className="checkedItemCustomerTypeFB" key={customerType['id']} ref={refs[customerType.id]}>
+    //                 <i className="icofont-check-alt " />
+    //             </div>
+    //             <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
+
+    //         </div>
+
+    //     })
+
+    //     return value;
+    // }
 
     const showCustomerTypeSelected = () => {
         let value = customerTypeSelected.map((customerType, i) => {
             return <div className="customerTypeSelectedFB" key={i}>
-                <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
+                <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']}</span>
                 <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['id'])} />
             </div>
         })
@@ -360,18 +386,18 @@ const AddCustomer = () => {
         return value;
     }
 
-    const AddCustomerType = (e, id, type) => {
+    const AddCustomerType = (e, id, type, subtype) => {
         e.preventDefault();
         let ref = refs[id]
         let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         if (val) {
-            setCustomerTypeSelected(old => [...old, { id, type }]);
+            setCustomerTypeSelected(old => [...old, { id, type, subtype }]);
             setInput(prevState => ({
                 ...prevState,
                 types: [...prevState.types, id]
             }));
-            const typesString = customerTypeSelected.map((item) => item.type).join(' , ');
-            lableCustomerType.current.textContent = typesString ? typesString + ',' + type : type;
+            const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype}`).join(' , ');
+            lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + subtype : type + ' ' + subtype;
 
             errorRCTYitem.current.classList.add('--hidden');
         } else {
@@ -488,7 +514,7 @@ const AddCustomer = () => {
         window.scrollTo({ top: 60, behavior: 'smooth' });
         setEditMode(true);
         getAndSetCustomer(id);
-       
+
     }
 
     /**
@@ -684,7 +710,9 @@ const AddCustomer = () => {
         })
             .catch(
                 error => {
-                    if (error.response.status == 422) {
+                    console.log(error);
+
+                    if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
 
@@ -750,7 +778,7 @@ const AddCustomer = () => {
                 }
             }
         ).then((response) => {
-           
+
             replaceObject(id, response.data.customer);
 
             MySwal.fire({
@@ -807,15 +835,15 @@ const AddCustomer = () => {
      */
     const replaceObject = (id, newObject) => {
         setCustomers(customers.map((object) => {
-          if (object.id == id) {
-            return newObject;
-          } else {
-            return object;
-          }
+            if (object.id == id) {
+                return newObject;
+            } else {
+                return object;
+            }
         }));
-      };
-      
-    const resetForm = (apply=true) => {
+    };
+
+    const resetForm = (apply = true) => {
 
         setInput({
             name: '',

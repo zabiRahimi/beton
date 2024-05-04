@@ -23,13 +23,8 @@ class UpdateCustomerTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => [
-                'required',
-                'string',
-                Rule::unique('customer_types')->ignore($this->customerType)
-            ],
-
-
+            'type' => 'required|string',
+            'subtype' => 'required_if:type,خریدار,فروشنده,مالک|string',
         ];
     }
 }
