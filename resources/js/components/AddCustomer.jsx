@@ -111,7 +111,6 @@ const AddCustomer = () => {
     const [flexDirection, setFlexDirection] = useState('columnGe');
 
     const [customers, setCustomers] = useState(null);
-    // console.log(customers);
 
     const [customerTypes, setCustomerTypes] = useState([
         { id: 1, type: 'خریدار', subtype: 'بتن' },
@@ -155,8 +154,6 @@ const AddCustomer = () => {
             }
         ]
     });
-    console.log(input);
-    // console.log(input);
 
     /**
      * id to edit the model
@@ -409,7 +406,7 @@ const AddCustomer = () => {
                 ...prevState,
                 types: prevState.types.filter(typeId => typeId !== id)
             }));
-            const typesString = updated.map((item) => item.type).join(' , ');
+            const typesString = updated.map((item) => `${item.type} ${item.subtype}`).join(' , ');
 
             lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
         }
@@ -427,7 +424,7 @@ console.log(customerTypeSelected);
         let ref = refs[id]
         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
 
-        const typesString = updated.map((item) => item.type).join(' , ');
+        const typesString = updated.map((item) => `${item.type} ${item.subtype}`).join(' , ');
 
         lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
     }
@@ -696,15 +693,11 @@ console.log(customerTypeSelected);
         })
             .catch(
                 error => {
-                    // console.log(error);
 
                     if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
-                        // console.log(error.response.data.errors);
                         id.includes('type')&& (id='types');
-                        console.log(id.includes('type'));
-                        console.log(id);
 
                         const element = document.getElementById(id);
                         let scrollPosition = window.scrollY || window.pageYOffset;
@@ -717,7 +710,6 @@ console.log(customerTypeSelected);
 
                         Object.entries(error.response.data.errors).map(([key, val]) => {
                             key.includes('type')&& (key='types');
-                            console.log(key);
                             document.getElementById(key).classList.add('borderRedFB');
 
                             document.getElementById(key + 'Error').innerHTML = val;
