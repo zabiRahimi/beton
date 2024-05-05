@@ -14,20 +14,26 @@ class CustomerType extends Model
     public $timestamps = false;
     
     protected $guarded = ['id'];
-
-    public function customers():BelongsToMany
-    {
-        return $this->belongsToMany(Customer::class, 'customer_type_selecteds');
-    }
+    // protected $fillable = ['type', 'subtype'];
 
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function customerType(): BelongsTo
-    {
-        return $this->belongsTo(CustomerType::class);
-    }
+    // public function customers():BelongsToMany
+    // {
+    //     return $this->belongsToMany(Customer::class, 'customer_type_selecteds');
+    // }
+
+    // public function customer(): BelongsTo
+    // {
+    //     return $this->belongsTo(Customer::class);
+    // }
+
+    // public function customerType(): BelongsTo
+    // {
+    //     return $this->belongsTo(CustomerType::class);
+    // }
 
 }

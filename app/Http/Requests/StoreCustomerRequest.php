@@ -26,7 +26,9 @@ class StoreCustomerRequest extends FormRequest
             'lastName' => 'required|string',
             'father' => 'nullable|string',
             'types' => ['required', 'array'],
-            'types.*' => ['required', 'integer', 'exists:customer_types,id'],
+            // 'types.*' => ['required', 'integer', 'exists:customer_types,id'],
+            'types.*.type' => ['required', 'string'],
+            'types.*.subtype' => ['nullable', 'string'],
             'nationalCode' => 'nullable|bail|numeric|digits:10|unique:customers',
             'dateOfBirth' => 'nullable|date',
             'mobile' => 'nullable|bail|mobile|unique:customers',
@@ -48,6 +50,7 @@ class StoreCustomerRequest extends FormRequest
     return [
         'name.required' => 'نام مشتری را وارد کنید',
         'lastName.required' => 'نام خانوادگی مشتری را وارد کنید',
+        'types.required' => 'نوع مشتری را انتخاب کنید',
     ];
 }
 }
