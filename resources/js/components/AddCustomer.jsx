@@ -255,7 +255,7 @@ const AddCustomer = () => {
                     <div className="typeTitleShowGe" onClick={() => showListTypes(customer.id)}>
                         <span className="typeTitleSpanShowGe">
                             {customer['customer_types'].map((customerType, iType) => {
-                                return (iType > 0 ? '، ' + customerType['type'] : customerType['type'])
+                                return (iType > 0 ? '، ' + customerType['type'] + ' ' + customerType['subtype'] : customerType['type'] + ' ' + customerType['subtype'])
                             })}
                         </span>
                         <i
@@ -279,7 +279,7 @@ const AddCustomer = () => {
                                 className="TypeBodyItemShowGe"
                                 key={iType}
                             >
-                                {customerType['type']}
+                                {customerType['type']} {customerType['subtype']}
                             </div>
                         })}
                     </div>
@@ -384,6 +384,13 @@ const AddCustomer = () => {
         return value;
     }
 
+    /**
+     * فرآیند انتخاب نوع مشتری
+     * @param {*} e 
+     * @param {*} id 
+     * @param {*} type 
+     * @param {*} subtype 
+     */
     const AddCustomerType = (e, id, type, subtype) => {
         e.preventDefault();
         let ref = refs[id]
@@ -411,7 +418,7 @@ const AddCustomer = () => {
             lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
         }
     }
-console.log(customerTypeSelected);
+
     const delCustomerTypeSelected = (id, type, subtype) => {
         const updated = customerTypeSelected.filter(item => item.id !== id);
         setCustomerTypeSelected(updated);
@@ -514,9 +521,6 @@ console.log(customerTypeSelected);
         renameKey(rest, 'customer_types', 'types');
         renameKey(rest, 'bank_info', 'bankInfo');
 
-
-
-
         /**
          * چنانچه یک رکورد تعداد حاوی تعداد زیادی اطلاعات بانکی است
          * این اطلاعات را نشان می دهد
@@ -526,25 +530,19 @@ console.log(customerTypeSelected);
                 case 1:
                     sectionBank2.current.classList.remove('--displayNone');
                     moreBank1.current.classList.add('--displayNone');
-
                     break;
                 case 2:
                     sectionBank3.current.classList.remove('--displayNone');
                     moreBank2.current.classList.add('--displayNone');
-
                     break;
                 case 3:
                     sectionBank4.current.classList.remove('--displayNone');
                     moreBank3.current.classList.add('--displayNone');
-
                     break;
                 case 4:
                     sectionBank5.current.classList.remove('--displayNone');
                     moreBank4.current.classList.add('--displayNone');
-
                     break;
-
-
             }
         })
 
@@ -573,7 +571,7 @@ console.log(customerTypeSelected);
         updatedCustomerTypes.map((type, i) => {
             let ref = refs[type.id];
             ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-            lableCustomerType.current.textContent += i == 0 ? type.type : '، ' + type.type;
+            lableCustomerType.current.textContent += i == 0 ? type.type + ' ' + type.subtype : '، ' + type.type;
         });
 
     }
