@@ -113,15 +113,15 @@ const AddCustomer = () => {
     const [customers, setCustomers] = useState(null);
 
     const [customerTypes, setCustomerTypes] = useState([
-        { id: 1, type: 'خریدار', subtype: 'بتن' },
-        { id: 2, type: 'فروشنده', subtype: 'شن و ماسه' },
-        { id: 3, type: 'فروشنده', subtype: 'سیمان' },
-        { id: 4, type: 'فروشنده', subtype: 'آب' },
-        { id: 5, type: 'مالک', subtype: 'میکسر' },
-        { id: 6, type: 'مالک', subtype: 'پمپ دکل' },
-        { id: 7, type: 'مالک', subtype: 'پمپ زمینی' },
-        { id: 8, type: 'مالک', subtype: 'کمپرسی' },
-        { id: 9, type: 'پرسنل', subtype: '' },
+        { code: 1, type: 'خریدار', subtype: 'بتن' },
+        { code: 2, type: 'فروشنده', subtype: 'شن و ماسه' },
+        { code: 3, type: 'فروشنده', subtype: 'سیمان' },
+        { code: 4, type: 'فروشنده', subtype: 'آب' },
+        { code: 5, type: 'مالک', subtype: 'میکسر' },
+        { code: 6, type: 'مالک', subtype: 'پمپ دکل' },
+        { code: 7, type: 'مالک', subtype: 'پمپ زمینی' },
+        { code: 8, type: 'مالک', subtype: 'کمپرسی' },
+        { code: 9, type: 'پرسنل', subtype: '' },
     ]);
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
 
@@ -168,7 +168,8 @@ const AddCustomer = () => {
     useEffect(() => {
         if (customerTypes) {
             const newRefs = customerTypes.reduce((acc, value) => {
-                acc[value.id] = createRef();
+                
+                acc[value.code] = createRef();
                 return acc;
             }, {});
             setRefs(newRefs);
@@ -343,9 +344,9 @@ const AddCustomer = () => {
     const showCustomerTypes = () => {
         let value = customerTypes.map((customerType, i) => {
 
-            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e, customerType['id'], customerType['type'], customerType['subtype'])}
+            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e, customerType['code'], customerType['type'], customerType['subtype'])}
                 key={i}>
-                <div className="checkedItemCustomerTypeFB" key={customerType['id']} ref={refs[customerType.id]}>
+                <div className="checkedItemCustomerTypeFB" key={customerType['code']} ref={refs[customerType.code]}>
                     <i className="icofont-check-alt " />
                 </div>
                 <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']} </span>
@@ -377,29 +378,29 @@ const AddCustomer = () => {
         let value = customerTypeSelected.map((customerType, i) => {
             return <div className="customerTypeSelectedFB" key={i}>
                 <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']}</span>
-                <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['id'], customerType['type'], customerType['subtype'])} />
+                <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['code'], customerType['type'], customerType['subtype'])} />
             </div>
         })
 
         return value;
     }
-
+console.log(input);
     /**
      * فرآیند انتخاب نوع مشتری
      * @param {*} e 
-     * @param {*} id 
+     * @param {*} code 
      * @param {*} type 
      * @param {*} subtype 
      */
-    const AddCustomerType = (e, id, type, subtype) => {
+    const AddCustomerType = (e, code, type, subtype) => {
         e.preventDefault();
-        let ref = refs[id]
+        let ref = refs[code]
         let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         if (val) {
-            setCustomerTypeSelected(old => [...old, { id, type, subtype }]);
+            setCustomerTypeSelected(old => [...old, { code, type, subtype }]);
             setInput(prevState => ({
                 ...prevState,
-                types: [...prevState.types, {type:type, subtype:subtype}]
+                types: [...prevState.types, {code, type, subtype}]
             }));
             const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype}`).join(' , ');
             lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + subtype : type + ' ' + subtype;
@@ -407,11 +408,11 @@ const AddCustomer = () => {
             errorRCTYitem.current.classList.add('--hidden');
         } else {
 
-            const updated = customerTypeSelected.filter(item => item.id !== id);
+            const updated = customerTypeSelected.filter(item => item.code !== code);
             setCustomerTypeSelected(updated);
             setInput(prevState => ({
                 ...prevState,
-                types: prevState.types.filter(typeId => typeId !== id)
+                types: prevState.types.filter(type => type.code !== code)
             }));
             const typesString = updated.map((item) => `${item.type} ${item.subtype}`).join(' , ');
 
@@ -419,8 +420,8 @@ const AddCustomer = () => {
         }
     }
 
-    const delCustomerTypeSelected = (id, type, subtype) => {
-        const updated = customerTypeSelected.filter(item => item.id !== id);
+    const delCustomerTypeSelected = (code, type, subtype) => {
+        const updated = customerTypeSelected.filter(item => item.code !== code);
         setCustomerTypeSelected(updated);
         setInput(prevState => ({
             ...prevState,
@@ -428,7 +429,7 @@ const AddCustomer = () => {
             types: prevState.types.filter(item => !(item.type.trim() === type && item.subtype.trim() === subtype))
 
         }));
-        let ref = refs[id]
+        let ref = refs[code]
         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
 
         const typesString = updated.map((item) => `${item.type} ${item.subtype}`).join(' , ');
@@ -522,7 +523,7 @@ const AddCustomer = () => {
         renameKey(rest, 'bank_info', 'bankInfo');
 
         /**
-         * چنانچه یک رکورد تعداد حاوی تعداد زیادی اطلاعات بانکی است
+         * چنانچه یک رکورد حاوی تعداد زیادی اطلاعات بانکی است
          * این اطلاعات را نشان می دهد
          */
         rest.bankInfo.map((_, i) => {
@@ -549,7 +550,7 @@ const AddCustomer = () => {
         // کپی از شی برای انجام تغییرات
         let datas = { ...rest };
         datas['types'] = datas['types'].map(function (item) {
-            return item.id;
+            return item.code;
         });
 
         setInput(datas);
@@ -557,7 +558,7 @@ const AddCustomer = () => {
             const { pivot, ...rest } = obj;
             return rest;
         });
-
+        // console.log(updatedCustomerTypes);
         setCustomerTypeSelected(updatedCustomerTypes);
 
         if (rest.dateOfBirth) {
@@ -569,9 +570,11 @@ const AddCustomer = () => {
 
         lableCustomerType.current.textContent = ''//حذف کلمه انتخاب از لیبل لیست
         updatedCustomerTypes.map((type, i) => {
-            let ref = refs[type.id];
-            ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+           
             lableCustomerType.current.textContent += i == 0 ? type.type + ' ' + type.subtype : '، ' + type.type;
+           
+             let ref = refs[type.code];
+            ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         });
 
     }
@@ -850,7 +853,7 @@ const AddCustomer = () => {
         });
 
         customerTypeSelected.map((types) => {
-            let ref = refs[types['id']]
+            let ref = refs[types['code']]
             ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         })
         setCustomerTypeSelected([]);

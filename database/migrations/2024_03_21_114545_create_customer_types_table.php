@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('customer_types', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->tinyInteger('code');
             $table->string('type');
             $table->string('subtype')->nullable()->commetn('زیر شاخه نوع مشتری');
         });

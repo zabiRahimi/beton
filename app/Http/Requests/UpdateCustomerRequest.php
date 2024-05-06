@@ -28,7 +28,9 @@ class UpdateCustomerRequest extends FormRequest
             'lastName' => 'required|string',
             'father' => 'nullable|string',
             'types' => ['required', 'array'],
-            'types.*' => ['required', 'integer', 'exists:customer_types,id'],
+            'types.*.type' => ['required', 'string'],
+            'types.*.code' => ['required', 'integer'],
+            'types.*.subtype' => ['nullable', 'string'],
             'nationalCode' => [
                 'nullable', 'bail', 'numeric', 'digits:10',
                 Rule::unique('customers')->ignore($this->customer)
