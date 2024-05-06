@@ -384,7 +384,6 @@ const AddCustomer = () => {
 
         return value;
     }
-console.log(input);
     /**
      * فرآیند انتخاب نوع مشتری
      * @param {*} e 
@@ -549,16 +548,19 @@ console.log(input);
 
         // کپی از شی برای انجام تغییرات
         let datas = { ...rest };
-        datas['types'] = datas['types'].map(function (item) {
-            return item.code;
-        });
+        // console.log(datas);
+        // console.log(1);
+        const { customer_id, ...types } = datas['types'];//نادیده گرفتن کلید های مشخص شده
+        // datas['types'] = datas['types'].map(function (item) {
+        //     return item.code;
+        // });
+        console.log({...types});
 
         setInput(datas);
         const updatedCustomerTypes = rest.types.map(obj => {
             const { pivot, ...rest } = obj;
             return rest;
         });
-        // console.log(updatedCustomerTypes);
         setCustomerTypeSelected(updatedCustomerTypes);
 
         if (rest.dateOfBirth) {
@@ -784,6 +786,7 @@ console.log(input);
                     if (error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
+                        id.includes('types')&& (id='types');
 
                         const element = document.getElementById(id);
                         let scrollPosition = window.scrollY || window.pageYOffset;
@@ -795,6 +798,7 @@ console.log(input);
                         });
 
                         Object.entries(error.response.data.errors).map(([key, val]) => {
+                            key.includes('type')&& (key='types');
                             document.getElementById(key).classList.add('borderRedFB');
 
                             document.getElementById(key + 'Error').innerHTML = val;
@@ -1332,7 +1336,7 @@ console.log(input);
                         </div>
 
                         <div className="sectionFB --displayNone" ref={sectionBank3}>
-                            <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank3, moreBank2, false, 2)}>حذف</span> <i>3</i> </div>
+                            <div className="delMoreBank"> <span onClick={() => showSectionBank(sectionBank3, moreBank2, false, 2)}>حذف</span> <b>3</b> </div>
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="bankInfo.2.account">شماره حساب</label>
