@@ -1,5 +1,4 @@
 import Title from "./hooks/Title";
-// import { DatePicker, InputDatePicker } from "jalaali-react-date-picker";
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import "../../css/general.css";
@@ -13,18 +12,12 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
-// import Skeleton from 'react-loading-skeleton';
-// import 'react-loading-skeleton/dist/skeleton.css';
+import useChangeForm from './hooks/useChangeForm';
 
 const AddCustomer = () => {
 
     const MySwal = withReactContent(Swal);
-
     const {
-        years,
-        months,
-        days,
-        nameDays,
         optionDays,
         optionMonth,
         optionYears,
@@ -38,8 +31,8 @@ const AddCustomer = () => {
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
-    const containerShowGeRef = useRef(null);
     const form = useRef(null);
+    const formCurrent = form.current;
     const typesDiv = useRef(null);
     const dateOfBirth = useRef(null);
     const daySelect = useRef(null);
@@ -100,19 +93,9 @@ const AddCustomer = () => {
     const [refUpIcons, setRefUpIcons] = useState({});
     const [refDownIcons, setRefDownIcons] = useState({});
     const [refListTypes, setRefListTypes] = useState({});
-
-
-
     const [loading, setLoading] = useState(false);
-    const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
-    const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
-
-    const [hideGetCustomer, setHideGetCustomer] = useState(true);
-    const [flexDirection, setFlexDirection] = useState('columnGe');
-
     const [customers, setCustomers] = useState(null);
-
-    const [customerTypes, setCustomerTypes] = useState([
+    const customerTypes = [
         { code: 1, type: 'خریدار', subtype: 'بتن' },
         { code: 2, type: 'فروشنده', subtype: 'شن و ماسه' },
         { code: 3, type: 'فروشنده', subtype: 'سیمان' },
@@ -122,12 +105,8 @@ const AddCustomer = () => {
         { code: 7, type: 'مالک', subtype: 'پمپ زمینی' },
         { code: 8, type: 'مالک', subtype: 'کمپرسی' },
         { code: 9, type: 'پرسنل', subtype: '' },
-    ]);
+    ];
     const [customerTypeSelected, setCustomerTypeSelected] = useState([]);
-
-
-    /** ست کردن موارد لازم هنگامی که کاربر ویرایش مشتری را انتخاب می‌کند */
-    const [editMode, setEditMode] = useState(false);
 
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
@@ -161,14 +140,12 @@ const AddCustomer = () => {
     const [id, setId] = useState(null);
 
     useEffect(() => {
-        // getCustomerTypes();
         getCustomers();
     }, []);
 
     useEffect(() => {
         if (customerTypes) {
             const newRefs = customerTypes.reduce((acc, value) => {
-                
                 acc[value.code] = createRef();
                 return acc;
             }, {});
@@ -201,7 +178,6 @@ const AddCustomer = () => {
             setRefUpIcons(upIcons);
             setRefDownIcons(downIcons);
             setRefListTypes(listTypes);
-
         }
 
     }, [customers]);
@@ -214,30 +190,6 @@ const AddCustomer = () => {
         let widths = container.current.offsetWidth;
         setWidthComponent(widths)
     }, []);
-
-    /**
-     * نمایش فرم افزودن مشتری
-     */
-    const showAddCustomerForm = () => {
-        form.current.reset();
-        setDisabledBtnShowRecords(false);
-        setDisabledBtnShowForm(true);
-        setFlexDirection('columnGe');
-        setEditMode(false)
-        resetForm(false);
-    }
-
-    /**
-     * لیست مشترهای ایجاد شده را نمایش می دهد
-     */
-    const showCreatedCustomers = () => {
-        form.current.reset();
-        resetForm();
-        setDisabledBtnShowForm(false);
-        setDisabledBtnShowRecords(true);
-        setFlexDirection('columnReverseGe');
-        setHideGetCustomer(false);
-    }
 
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -255,7 +207,7 @@ const AddCustomer = () => {
                 <div className="typeShowGe">
                     <div className="typeTitleShowGe" onClick={() => showListTypes(customer.id)}>
                         <span className="typeTitleSpanShowGe">
-                            {customer['customer_types'].map((customerType, iType) => {
+                            {customer['customer_type'].map((customerType, iType) => {
                                 return (iType > 0 ? '، ' + customerType['type'] + ' ' + customerType['subtype'] : customerType['type'] + ' ' + customerType['subtype'])
                             })}
                         </span>
@@ -275,7 +227,7 @@ const AddCustomer = () => {
                         key={'list' + customer.id}
                         ref={refListTypes['list' + customer.id]}
                     >
-                        {customer['customer_types'].map((customerType, iType) => {
+                        {customer['customer_type'].map((customerType, iType) => {
                             return <div
                                 className="TypeBodyItemShowGe"
                                 key={iType}
@@ -289,7 +241,7 @@ const AddCustomer = () => {
 
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={() => showCustomerEditForm(customer.id)}
+                        onClick={() => showEditForm(customer.id)}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -314,15 +266,6 @@ const AddCustomer = () => {
         refUpIcons['up' + id].current.classList.toggle('--displayNone');
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
-
-    // /**
-    //  * دریافت نوع مشتری 
-    //  */
-    // async function getCustomerTypes() {
-    //     await axios.get("/api/v1/getCustomerTypes").then((response) => {
-    //         setCustomerTypes(response.data.CustomerTypes);
-    //     });
-    // }
 
     async function getCustomers() {
         await axios.get("/api/v1/getCustomers").then((response) => {
@@ -350,29 +293,10 @@ const AddCustomer = () => {
                     <i className="icofont-check-alt " />
                 </div>
                 <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']} </span>
-
             </div>
-
         })
-
         return value;
     }
-    // const showCustomerTypes = () => {
-    //     let value = customerTypes.map((customerType, i) => {
-
-    //         return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerType(e, customerType['id'], customerType['type'])}
-    //             key={i}>
-    //             <div className="checkedItemCustomerTypeFB" key={customerType['id']} ref={refs[customerType.id]}>
-    //                 <i className="icofont-check-alt " />
-    //             </div>
-    //             <span className="nameItemcustomerTypeFB"> {customerType['type']} </span>
-
-    //         </div>
-
-    //     })
-
-    //     return value;
-    // }
 
     const showCustomerTypeSelected = () => {
         let value = customerTypeSelected.map((customerType, i) => {
@@ -384,6 +308,7 @@ const AddCustomer = () => {
 
         return value;
     }
+
     /**
      * فرآیند انتخاب نوع مشتری
      * @param {*} e 
@@ -424,9 +349,7 @@ const AddCustomer = () => {
         setCustomerTypeSelected(updated);
         setInput(prevState => ({
             ...prevState,
-            // types: prevState.types.filter(typeId => typeId !== id)
             types: prevState.types.filter(item => !(item.type.trim() === type && item.subtype.trim() === subtype))
-
         }));
         let ref = refs[code]
         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
@@ -459,7 +382,6 @@ const AddCustomer = () => {
 
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         daySelect.current.classList.remove('borderRedFB');
-
     }
 
     const changeMonth = (e) => {
@@ -490,35 +412,16 @@ const AddCustomer = () => {
 
     }
 
-
-
-    /**
-     * نمایش فرم ویرایش مشتری
-     * @param {number} id 
-     */
-    const showCustomerEditForm = (id) => {
-
-        setDisabledBtnShowRecords(false);
-        setDisabledBtnShowForm(false);
-        setFlexDirection('columnGe');
-        window.scrollTo({ top: 60, behavior: 'smooth' });
-        setEditMode(true);
-        getAndSetCustomer(id);
-
-    }
-
     /**
      * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
      * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
      * @param {آدی رکورد} id0 
      */
-    const getAndSetCustomer = (id0) => {
-
+    const pasteDataForEditing = (id0) => {
         let customer = customers.find(customer => customer.id === id0);
         customer && setId(id0);
-
         const { id, created_at, updated_at, ...rest } = customer;//نادیده گرفتن کلید های مشخص شده
-        renameKey(rest, 'customer_types', 'types');
+        renameKey(rest, 'customer_type', 'types');
         renameKey(rest, 'bank_info', 'bankInfo');
 
         /**
@@ -548,13 +451,13 @@ const AddCustomer = () => {
 
         // کپی از شی برای انجام تغییرات
         let datas = { ...rest };
-        // console.log(datas);
-        // console.log(1);
-        const { customer_id, ...types } = datas['types'];//نادیده گرفتن کلید های مشخص شده
-        // datas['types'] = datas['types'].map(function (item) {
-        //     return item.code;
-        // });
-        console.log({...types});
+        
+        datas['types'] = datas['types'].map(function (item) {
+            let code=item.code;
+            let type=item.type;
+            let subtype=item.subtype; 
+            return ({code, type, subtype});
+        });
 
         setInput(datas);
         const updatedCustomerTypes = rest.types.map(obj => {
@@ -580,6 +483,66 @@ const AddCustomer = () => {
         });
 
     }
+
+    const resetForm = (apply = true) => {
+        setInput({
+            name: '',
+            lastName: '',
+            father: '',
+            nationalCode: '',
+            dateOfBirth: '',
+            mobile: '',
+            telephone: '',
+            email: '',
+            postalCode: '',
+            address: '',
+            types: [],
+            bankInfo: [
+                {
+                    bank: '',
+                    account: '',
+                    card: '',
+                    shaba: ''
+                }
+            ]
+        });
+
+        customerTypeSelected.map((types) => {
+            let ref = refs[types['code']]
+            ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+        })
+        setCustomerTypeSelected([]);
+        lableCustomerType.current.textContent = 'انتخاب';
+        setDay('');
+        setMonth('');
+        setYear('');
+
+        sectionBank2.current.classList.add('--displayNone');
+        sectionBank3.current.classList.add('--displayNone');
+        sectionBank4.current.classList.add('--displayNone');
+        sectionBank5.current.classList.add('--displayNone');
+        moreBank1.current.classList.remove('--displayNone');
+        moreBank2.current.classList.remove('--displayNone');
+        moreBank3.current.classList.remove('--displayNone');
+        moreBank4.current.classList.remove('--displayNone');
+
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
+
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+
+        // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
+        if (apply) {
+            window.scrollTo({ top: 0 });
+        }
+    }
+
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
      * این متد نام کلید یک آرایه یا یک آبجکت را تغییر می دهد
@@ -659,13 +622,11 @@ const AddCustomer = () => {
         refErr.current && (refErr.current.innerHTML = '')
         date && dateOfBirth.current.classList.remove('borderRedFB');
         types && typesDiv.current.classList.remove('borderRedFB');
-
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
-
         await axios.post(
             '/api/v1/addCustomer',
             { ...input },
@@ -678,9 +639,7 @@ const AddCustomer = () => {
             }
         ).then((response) => {
             setCustomers(prev => [...prev, response.data.customer]);
-
             form.current.reset();
-
             MySwal.fire({
                 icon: "success",
                 title: "با موفقیت ثبت شد",
@@ -832,73 +791,7 @@ const AddCustomer = () => {
         }));
     };
 
-    const resetForm = (apply = true) => {
-
-        setInput({
-            name: '',
-            lastName: '',
-            father: '',
-            nationalCode: '',
-            dateOfBirth: '',
-            mobile: '',
-            telephone: '',
-            email: '',
-            postalCode: '',
-            address: '',
-            types: [],
-            bankInfo: [
-                {
-                    bank: '',
-                    account: '',
-                    card: '',
-                    shaba: ''
-                }
-            ]
-        });
-
-        customerTypeSelected.map((types) => {
-            let ref = refs[types['code']]
-            ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-        })
-        setCustomerTypeSelected([]);
-        lableCustomerType.current.textContent = 'انتخاب';
-        setDay('');
-        setMonth('');
-        setYear('');
-
-        sectionBank2.current.classList.add('--displayNone');
-        sectionBank3.current.classList.add('--displayNone');
-        sectionBank4.current.classList.add('--displayNone');
-        sectionBank5.current.classList.add('--displayNone');
-        moreBank1.current.classList.remove('--displayNone');
-        moreBank2.current.classList.remove('--displayNone');
-        moreBank3.current.classList.remove('--displayNone');
-        moreBank4.current.classList.remove('--displayNone');
-
-        var elements = document.getElementsByClassName('element');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('borderRedFB');
-        }
-
-
-        var elements = document.getElementsByClassName('elementError');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = '';
-        }
-
-        // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
-        if (apply) {
-            const element = form.current;
-            let scrollPosition = window.scrollY || window.pageYOffset;
-            const top = element.getBoundingClientRect().top + scrollPosition - 50;
-            window.scrollTo({
-                top: top,
-                behavior: 'smooth'
-            });
-        }
-
-
-    }
+    
 
     return (
         <div className="containerAddCustomer" ref={container}>
@@ -920,7 +813,7 @@ const AddCustomer = () => {
             <div className="headPageGe">
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddCustomerForm}
+                    ref={btnAddGeRef} onClick={showAddForm}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف مشتری
@@ -929,7 +822,7 @@ const AddCustomer = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCreatedCustomers}
+                    onClick={showCreatedRecord}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده مشتری‌ها
@@ -1014,10 +907,9 @@ const AddCustomer = () => {
                                             <button className="btnRCTYitemsFB"
                                                 onClick={endSelectCustomerType}> ثبت </button>
 
-
                                         </div>
                                         <div className="leftCustomerTypeFB">
-                                            {customerTypes ? showCustomerTypes() : <Skeleton height={35} count={8} />}
+                                            {showCustomerTypes() }
                                         </div>
                                     </div>
                                     <i className="icofont-ui-rating starFB" />
@@ -1577,7 +1469,7 @@ const AddCustomer = () => {
                 </div>
 
                 <div
-                    className={`containerShowGe containerShowCustomer  ${hideGetCustomer ? 'hideGe' : ''}`}
+                    className={`containerShowGe containerShowCustomer  ${hideCreatedRecord ? 'hideGe' : ''}`}
                     ref={containerShowGeRef}
                 >
                     <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
@@ -1607,6 +1499,3 @@ const AddCustomer = () => {
 };
 
 export default AddCustomer;
-
-
-

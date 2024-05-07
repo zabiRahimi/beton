@@ -31,7 +31,7 @@ class Customer extends Model
     //     return $this->belongsToMany(CustomerType::class, 'customer_type_selecteds');
     // }
 
-    public function customerTypes():HasMany
+    public function customerType():HasMany
     {
         return $this->hasMany(CustomerType::class);
     }

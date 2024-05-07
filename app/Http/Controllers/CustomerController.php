@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $Customers = Customer::orderBy('id')->with(['customerTypes','bankInfo'])->get();
+        $Customers = Customer::orderBy('id')->with(['customerType','bankInfo'])->get();
 
         return response()->json(['Customers' => $Customers]);
     }
@@ -43,7 +43,7 @@ class CustomerController extends Controller
             $customer->fill($request->validated());
             $customer->save();
 
-            // $customer->customerTypes()->sync($request->validated()['types']);
+            // $customer->customerType()->sync($request->validated()['types']);
             // dd($request->validated()['types']);
                 foreach ($request->validated()['types'] as $typeDetailData) {
 
@@ -71,7 +71,7 @@ class CustomerController extends Controller
                 // \Log::error($e->getMessage());
             }
             // اضافه کردن رکوردهای ذخیره شده در دو جدول دیگر به متغییر زیر
-            $customer->load('customerTypes', 'bankInfo');
+            $customer->load('customerType', 'bankInfo');
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -107,10 +107,18 @@ class CustomerController extends Controller
 
          
     $customer->update($request->all());
-    $customer->customerTypes()->sync($request->validated()['types']);
+    // $customer->customerType()->sync($request->validated()['types']);
+    $customer->customerType()->delete();
+    foreach ($request->validated()['types'] as $typeDetailData) {
+
+        $typeDetail = new CustomerType();
+        $typeDetail->fill($typeDetailData);
+        $typeDetail->customer_id = $customer->id;
+        $typeDetail->save();
+    }
 
     // if ($request->has('customer_types')) {
-    //     $customer->customerTypes()->sync($request->get('customer_types'));
+    //     $customer->customerType()->sync($request->get('customer_types'));
     // }
 
     //  if ($request->has('bankInfo')) {
@@ -133,7 +141,7 @@ class CustomerController extends Controller
             $bankDetail->save();
         }
     }
-    $customer->load('customerTypes', 'bankInfo');
+    $customer->load('customerType', 'bankInfo');
         return response()->json(['customer'=>$customer] ,200);
     }
 
