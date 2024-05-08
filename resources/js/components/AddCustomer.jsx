@@ -133,7 +133,7 @@ const AddCustomer = () => {
             }
         ]
     });
-
+    console.log(input);
     /**
      * id to edit the model
      */
@@ -324,7 +324,7 @@ const AddCustomer = () => {
             setCustomerTypeSelected(old => [...old, { code, type, subtype }]);
             setInput(prevState => ({
                 ...prevState,
-                types: [...prevState.types, {code, type, subtype}]
+                types: [...prevState.types, { code, type, subtype }]
             }));
             const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype}`).join(' , ');
             lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + subtype : type + ' ' + subtype;
@@ -451,13 +451,37 @@ const AddCustomer = () => {
 
         // کپی از شی برای انجام تغییرات
         let datas = { ...rest };
-        
+        console.log(datas['bankInfo'].length);
+
+        /**
+         * هنگام فراخوانی رکورد از دیتابیس اطلاعات اضافی رکورد نیز برگردانده می‌شود
+         * که مورد نیاز نیست، برای حذف ستونهای اضافی از کد زیر استفاده می‌شود
+         * در واقع کد زیر ستونهای مورد نیاز را برمیگرداند 
+         */
         datas['types'] = datas['types'].map(function (item) {
-            let code=item.code;
-            let type=item.type;
-            let subtype=item.subtype; 
-            return ({code, type, subtype});
+            let code = item.code;
+            let type = item.type;
+            let subtype = item.subtype;
+            return ({ code, type, subtype });
         });
+
+        /**
+         * به کامنت کد بالا مراجعه کنید
+         */
+        if (datas['bankInfo'].length > 0) {
+            datas['bankInfo'] = datas['bankInfo'].map(function (item) {
+                let bank = item.bank,
+                    account = item.account,
+                    card = item.card,
+                    shaba = item.shaba;
+                return ({ bank, account, card, shaba });
+            });
+        } else {
+            datas['bankInfo']=[{bank:'', account:'', card:'', shaba:''}]
+        }
+
+
+
 
         setInput(datas);
         const updatedCustomerTypes = rest.types.map(obj => {
@@ -475,10 +499,10 @@ const AddCustomer = () => {
 
         lableCustomerType.current.textContent = ''//حذف کلمه انتخاب از لیبل لیست
         updatedCustomerTypes.map((type, i) => {
-           
+
             lableCustomerType.current.textContent += i == 0 ? type.type + ' ' + type.subtype : '، ' + type.type;
-           
-             let ref = refs[type.code];
+
+            let ref = refs[type.code];
             ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
         });
 
@@ -603,11 +627,23 @@ const AddCustomer = () => {
      */
     const handleSaveValBankInput = (e, index, input) => {
         let { value } = e.target;
+
         setInput(prevInput => {
-            let newBankInfo = [...prevInput.bankInfo];
-            if (newBankInfo[index]) {
+             let newBankInfo ;
+            // // console.log(newBankInfo[index]);
+            // if (newBankInfo[index]) {
+            //     newBankInfo[index] = { ...newBankInfo[index], [input]: value };
+            // }
+            // let me;
+            
+            if (Array.isArray(prevInput.bankInfo)) {
+                newBankInfo = [...prevInput.bankInfo];
+                
                 newBankInfo[index] = { ...newBankInfo[index], [input]: value };
-            }
+              } else {
+                newBankInfo[index]={bank:'', account:'', card:'', shaba:''}
+                newBankInfo[index] = { ...newBankInfo[index], [input]: value };
+              }
             return { ...prevInput, bankInfo: newBankInfo };
         });
     }
@@ -659,7 +695,7 @@ const AddCustomer = () => {
                     if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
-                        id.includes('type')&& (id='types');
+                        id.includes('type') && (id = 'types');
 
                         const element = document.getElementById(id);
                         let scrollPosition = window.scrollY || window.pageYOffset;
@@ -671,7 +707,7 @@ const AddCustomer = () => {
                         });
 
                         Object.entries(error.response.data.errors).map(([key, val]) => {
-                            key.includes('type')&& (key='types');
+                            key.includes('type') && (key = 'types');
                             document.getElementById(key).classList.add('borderRedFB');
 
                             document.getElementById(key + 'Error').innerHTML = val;
@@ -745,7 +781,7 @@ const AddCustomer = () => {
                     if (error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
-                        id.includes('types')&& (id='types');
+                        id.includes('types') && (id = 'types');
 
                         const element = document.getElementById(id);
                         let scrollPosition = window.scrollY || window.pageYOffset;
@@ -757,7 +793,7 @@ const AddCustomer = () => {
                         });
 
                         Object.entries(error.response.data.errors).map(([key, val]) => {
-                            key.includes('type')&& (key='types');
+                            key.includes('type') && (key = 'types');
                             document.getElementById(key).classList.add('borderRedFB');
 
                             document.getElementById(key + 'Error').innerHTML = val;
@@ -791,7 +827,7 @@ const AddCustomer = () => {
         }));
     };
 
-    
+
 
     return (
         <div className="containerAddCustomer" ref={container}>
@@ -909,7 +945,7 @@ const AddCustomer = () => {
 
                                         </div>
                                         <div className="leftCustomerTypeFB">
-                                            {showCustomerTypes() }
+                                            {showCustomerTypes()}
                                         </div>
                                     </div>
                                     <i className="icofont-ui-rating starFB" />

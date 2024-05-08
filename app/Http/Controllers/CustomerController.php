@@ -134,11 +134,13 @@ class CustomerController extends Controller
     if (isset($request->validated()['bankInfo']) && count($request->validated()['bankInfo']) > 0) {
         $customer->bankInfo()->delete();
         foreach ($request->validated()['bankInfo'] as $bankDetailData) {
-
-            $bankDetail = new BankInfo;
-            $bankDetail->fill($bankDetailData);
-            $bankDetail->customer_id = $customer->id;
-            $bankDetail->save();
+            if (isset($bank) && !is_null($bank)) {
+                $bankDetail = new BankInfo;
+                $bankDetail->fill($bankDetailData);
+                $bankDetail->customer_id = $customer->id;
+                $bankDetail->save();
+            } 
+           
         }
     }
     $customer->load('customerType', 'bankInfo');
