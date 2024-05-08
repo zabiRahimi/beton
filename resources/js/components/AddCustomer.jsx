@@ -133,7 +133,7 @@ const AddCustomer = () => {
             }
         ]
     });
-    console.log(input);
+
     /**
      * id to edit the model
      */
@@ -151,7 +151,6 @@ const AddCustomer = () => {
             }, {});
             setRefs(newRefs);
         }
-
     }, []);
 
     /**
@@ -174,12 +173,10 @@ const AddCustomer = () => {
                 acc['list' + value.id] = createRef();
                 return acc;
             }, {});
-
             setRefUpIcons(upIcons);
             setRefDownIcons(downIcons);
             setRefListTypes(listTypes);
         }
-
     }, [customers]);
 
     /**
@@ -451,7 +448,6 @@ const AddCustomer = () => {
 
         // کپی از شی برای انجام تغییرات
         let datas = { ...rest };
-        console.log(datas['bankInfo'].length);
 
         /**
          * هنگام فراخوانی رکورد از دیتابیس اطلاعات اضافی رکورد نیز برگردانده می‌شود
@@ -477,11 +473,8 @@ const AddCustomer = () => {
                 return ({ bank, account, card, shaba });
             });
         } else {
-            datas['bankInfo']=[{bank:'', account:'', card:'', shaba:''}]
+            datas['bankInfo'] = [{ bank: '', account: '', card: '', shaba: '' }]
         }
-
-
-
 
         setInput(datas);
         const updatedCustomerTypes = rest.types.map(obj => {
@@ -629,21 +622,15 @@ const AddCustomer = () => {
         let { value } = e.target;
 
         setInput(prevInput => {
-             let newBankInfo ;
-            // // console.log(newBankInfo[index]);
-            // if (newBankInfo[index]) {
-            //     newBankInfo[index] = { ...newBankInfo[index], [input]: value };
-            // }
-            // let me;
-            
+            let newBankInfo;
             if (Array.isArray(prevInput.bankInfo)) {
                 newBankInfo = [...prevInput.bankInfo];
-                
                 newBankInfo[index] = { ...newBankInfo[index], [input]: value };
-              } else {
-                newBankInfo[index]={bank:'', account:'', card:'', shaba:''}
+            } else {
+                newBankInfo[index] = { bank: '', account: '', card: '', shaba: '' }
                 newBankInfo[index] = { ...newBankInfo[index], [input]: value };
-              }
+            }
+
             return { ...prevInput, bankInfo: newBankInfo };
         });
     }
@@ -778,7 +765,7 @@ const AddCustomer = () => {
         })
             .catch(
                 error => {
-                    if (error.response.status == 422) {
+                    if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
                         id.includes('types') && (id = 'types');
@@ -826,8 +813,6 @@ const AddCustomer = () => {
             }
         }));
     };
-
-
 
     return (
         <div className="containerAddCustomer" ref={container}>
@@ -1467,8 +1452,6 @@ const AddCustomer = () => {
                             </div>
                         </div>
 
-
-
                         <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button
                                 variant="success"
@@ -1491,8 +1474,6 @@ const AddCustomer = () => {
                         </div>
 
                         <div className={`sectionFB divBtnsFB ${!editMode ? 'hideGe' : ''}`}>
-
-
                             <Button
                                 variant="info"
                                 className="btnSaveFB"
@@ -1524,7 +1505,6 @@ const AddCustomer = () => {
                         </div>
 
                         {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
-
 
                     </div>
                 </div>

@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $Customers = Customer::orderBy('id')->with(['customerType','bankInfo'])->get();
+        $Customers = Customer::orderBy('id')->with(['customerType', 'bankInfo'])->get();
 
         return response()->json(['Customers' => $Customers]);
     }
@@ -32,7 +32,6 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // StoreCustomerRequest $request
     public function store(StoreCustomerRequest $request)
     {
 
@@ -42,26 +41,21 @@ class CustomerController extends Controller
             $customer = new Customer;
             $customer->fill($request->validated());
             $customer->save();
+            foreach ($request->validated()['types'] as $typeDetailData) {
 
-            // $customer->customerType()->sync($request->validated()['types']);
-            // dd($request->validated()['types']);
-                foreach ($request->validated()['types'] as $typeDetailData) {
-
-                    $typeDetail = new CustomerType();
-                    $typeDetail->fill($typeDetailData);
-                    $typeDetail->customer_id = $customer->id;
-                    $typeDetail->save();
-                }
-            
-            
+                $typeDetail = new CustomerType();
+                $typeDetail->fill($typeDetailData);
+                $typeDetail->customer_id = $customer->id;
+                $typeDetail->save();
+            }
 
             try {
 
                 if (isset($request->validated()['bankInfo']) && count($request->validated()['bankInfo']) > 0) {
-                    foreach ($request->validated()['bankInfo'] as $bankDetailData) {
+                    foreach ($request->validated()['bankInfo'] as $info) {
 
                         $bankDetail = new BankInfo;
-                        $bankDetail->fill($bankDetailData);
+                        $bankDetail->fill($info);
                         $bankDetail->customer_id = $customer->id;
                         $bankDetail->save();
                     }
@@ -79,7 +73,7 @@ class CustomerController extends Controller
             throw $e;
         }
 
-        return response()->json(['customer'=>  $customer],200);
+        return response()->json(['customer' =>  $customer], 200);
     }
 
     /**
@@ -103,48 +97,29 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        // $customer->update(['type' => $request->type]);
-
-         
-    $customer->update($request->all());
-    // $customer->customerType()->sync($request->validated()['types']);
-    $customer->customerType()->delete();
-    foreach ($request->validated()['types'] as $typeDetailData) {
-
-        $typeDetail = new CustomerType();
-        $typeDetail->fill($typeDetailData);
-        $typeDetail->customer_id = $customer->id;
-        $typeDetail->save();
-    }
-
-    // if ($request->has('customer_types')) {
-    //     $customer->customerType()->sync($request->get('customer_types'));
-    // }
-
-    //  if ($request->has('bankInfo')) {
-    //     // $customer->bankInfo()->update($request->get('bankInfo'));
-    //     // $customer->bankInfo()->sync($request->get('bankInfo'));
-    //     $customer->bankInfo()->delete();
-
-    // // ایجاد اطلاعات بانکی جدید
-    // foreach ($request->get('bankInfo') as $bankInfoData) {
-    //     $customer->bankInfo()->create($bankInfoData);
-    // }
-    // }
-    if (isset($request->validated()['bankInfo']) && count($request->validated()['bankInfo']) > 0) {
-        $customer->bankInfo()->delete();
-        foreach ($request->validated()['bankInfo'] as $bankDetailData) {
-            if (isset($bank) && !is_null($bank)) {
-                $bankDetail = new BankInfo;
-                $bankDetail->fill($bankDetailData);
-                $bankDetail->customer_id = $customer->id;
-                $bankDetail->save();
-            } 
-           
+        $customer->update($request->all());
+        $customer->customerType()->delete();
+        foreach ($request->validated()['types'] as $typeDetailData) {
+            $typeDetail = new CustomerType();
+            $typeDetail->fill($typeDetailData);
+            $typeDetail->customer_id = $customer->id;
+            $typeDetail->save();
         }
-    }
-    $customer->load('customerType', 'bankInfo');
-        return response()->json(['customer'=>$customer] ,200);
+        
+        if (isset($request->validated()['bankInfo']) && count($request->validated()['bankInfo']) > 0) {
+            $customer->bankInfo()->delete();
+            foreach ($request->validated()['bankInfo'] as $info) {
+
+                if ((isset($info['bank']) && (!is_null($info['bank']))) && (!is_null($info['account']) || !is_null($info['card']) || !is_null($info['shaba']))) {
+                    $bankDetail = new BankInfo;
+                    $bankDetail->fill($info);
+                    $bankDetail->customer_id = $customer->id;
+                    $bankDetail->save();
+                }
+            }
+        }
+        $customer->load('customerType', 'bankInfo');
+        return response()->json(['customer' => $customer], 200);
     }
 
     /**

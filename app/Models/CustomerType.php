@@ -14,7 +14,6 @@ class CustomerType extends Model
     public $timestamps = false;
     
     protected $guarded = ['id'];
-    // protected $fillable = ['type', 'subtype'];
 
     public function customer(): BelongsTo
     {
@@ -24,16 +23,6 @@ class CustomerType extends Model
     // public function customers():BelongsToMany
     // {
     //     return $this->belongsToMany(Customer::class, 'customer_type_selecteds');
-    // }
-
-    // public function customer(): BelongsTo
-    // {
-    //     return $this->belongsTo(Customer::class);
-    // }
-
-    // public function customerType(): BelongsTo
-    // {
-    //     return $this->belongsTo(CustomerType::class);
     // }
 
 }

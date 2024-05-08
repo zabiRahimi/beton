@@ -57,6 +57,7 @@ class UpdateCustomerRequest extends FormRequest
         return [
             'name.required' => 'نام مشتری را وارد کنید',
             'lastName.required' => 'نام خانوادگی مشتری را وارد کنید',
+            'types.required' => 'نوع مشتری را انتخاب کنید',
         ];
     }
 }
