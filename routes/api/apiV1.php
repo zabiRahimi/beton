@@ -57,6 +57,7 @@ Route::controller(TruckController::class)->group(function () {
     
     Route::post('/addTruck', 'store');
     Route::get('/getTrucks', 'index');
+    Route::get ('/getTruckOwners','truckOwners');
     Route::patch('/editTruck/{truck}', 'update');
 
 });

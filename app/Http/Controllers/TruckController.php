@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Truck;
 use App\Http\Requests\StoreTruckRequest;
 use App\Http\Requests\UpdateTruckRequest;
+use App\Models\Customer;
 
 class TruckController extends Controller
 {
@@ -70,5 +71,19 @@ class TruckController extends Controller
     public function destroy(Truck $truck)
     {
         //
+    }
+
+    /**
+     * Display a listing of the customers who own trucks
+     */
+    public function truckOwners(){
+        $truckOwners = Customer::whereHas('customerType', function ($query) {
+            $query->where('type', 'مالک');
+        })->with(['customerType' => function ($query) {
+            $query->where('type', 'مالک');
+        }])->get();
+        // dd($truckOwners);
+        // $truckOwners='truckOmners';
+        return response()->json(['truckOwners'=>  $truckOwners],200);
     }
 }

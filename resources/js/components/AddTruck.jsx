@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate  } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import Title from "./hooks/Title";
 import "../../css/formBeton.css";
@@ -12,6 +13,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const AddTruck = () => {
 
+    let navigate = useNavigate();
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const MySwal = withReactContent(Swal);
 
@@ -31,6 +33,7 @@ const AddTruck = () => {
 
     const [loading, setLoading] = useState(false);
     const [trucks, setTrucks] = useState([]);
+    const [truckOwners, setTruckOwners] = useState([]);
 
     const [id, setId] = useState(null);
     const [input, setInput] = useState({
@@ -68,6 +71,7 @@ const AddTruck = () => {
 
     useEffect(() => {
         getTrucks();
+        getTruckOwners();
     }, []);
 
     async function getTrucks() {
@@ -76,6 +80,15 @@ const AddTruck = () => {
         });
     }
 
+    /**
+     * دریافت مالکان تراک ها
+     */
+    async function getTruckOwners() {
+        await axios.get("/api/v1/getTruckOwners").then((response) => {
+            setTruckOwners(response.data.truckOwners);
+            // console.log(response.data.truckOwners);
+        });
+    }
 
 
     /**
@@ -153,7 +166,6 @@ const AddTruck = () => {
         }
     }
 
-    console.log(input);
 
     const resetForm = (apply = true) => {
         setInput({
@@ -204,7 +216,78 @@ const AddTruck = () => {
        */
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
+        // console.log(value);
+        returnTruckOwners(value);
         setInput(prev => ({ ...prev, [input]: value }));
+    }
+
+    /**
+     * هنگامی که کاربر نوع کامیون را مشخص می‌کند این متد مشتریانی 
+     * که مالک این نوع کامیونها هستند را برمی‌گرداند تا برای نمایش در 
+     * کادر بازشو انتخاب مالک خودرو آماده شود
+     * @param {string} truck 
+     */
+    const returnTruckOwners = (truck) => {
+        // console.log(truckOwners);
+        let getOwners = truckOwners.filter(owner => owner.customer_type.some(type => type.subtype === truck));
+        // console.log(getOwners);
+        if (getOwners.length > 0) {
+            console.log('ok');
+        } else {
+            MySwal.fire({
+                icon: "warning",
+                title: "هشدار",
+                text: `هنوز هیچ مشتری که صاحب ${truck} باشد، ثبت نشده است، ابتدا مشتری را ثبت  کنید.`,
+                confirmButtonText: "  ثبت مشتری   ",
+                showCancelButton: true,
+                cancelButtonText: "کنسل",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                preConfirm: () => {
+                   
+                    navigate("/addCustomer");
+                }
+
+            });
+        }
+
+        let truckOwner = [
+            {
+                id: 1, name: 'احسان', lastName: 'رحیمی',
+                customer_type: [
+
+                    { id: 11, type: 'مالک', subType: 'پمپ' },
+                    { id: 12, type: 'مالک', subType: 'دکل' },
+                ],
+            },
+            {
+                id: 2, name: 'عباس', lastName: 'نعمتی',
+                customer_type: [
+                    { id: 13, type: 'مالک', subType: 'کمپرسی' },
+                    { id: 14, type: 'مالک', subType: 'میکسر' },
+                ],
+            },
+            {
+                id: 3, name: 'میلاد', lastName: 'ابراهیمی',
+                customer_type: [
+                    { id: 16, type: 'مالک', subType: 'میکسر' },
+                    { id: 17, type: 'مالک', subType: 'پمپ' },
+                    { id: 18, type: 'مالک', subType: 'کمپرسی' },
+                ],
+            },
+            {
+                id: 4, name: 'مرتضی', lastName: 'حسن شاهی',
+                customer_type: [
+                    { id: 19, type: 'مالک', subType: 'کمپرسی' },
+                    { id: 20, type: 'مالک', subType: 'دکل' },
+                    { id: 21, type: 'مالک', subType: 'میکسر' },
+                ],
+            },
+        ];
+
+        let mixerOwners = truckOwner.filter(owner => owner.customer_type.some(type => type.subType === 'میکسر'));
+
+        // console.log(mixerOwners);
     }
 
     /**
@@ -251,7 +334,6 @@ const AddTruck = () => {
         })
             .catch(
                 error => {
-                    console.log(error);
                     if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
@@ -364,16 +446,11 @@ const AddTruck = () => {
                                     >
                                         <option value="">انتخاب</option>
                                         <option value="میکسر">میکسر</option>
-                                        <option value="پمپ هوایی دکل">
-                                            پمپ هوایی دکل
+                                        <option value="پمپ دکل">
+                                            پمپ دکل
                                         </option>
                                         <option value="پمپ زمینی">پمپ زمینی</option>
                                         <option value="کمپرسی">کمپرسی</option>
-                                        <option value="تریلر بونکر">تریلر بونکر</option>
-                                        <option value="تریلر" >تریلر</option>
-                                        <option value="لودر">لودر</option>
-                                        <option value="جرثقیل">جرثقیل</option>
-                                        <option value="سایر" >سایر</option>
                                     </select>
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
@@ -531,8 +608,8 @@ const AddTruck = () => {
                                         onChange={e => getAlphabet(e)}
                                     >
                                         <option value=""> انتخاب </option>
-                                        
-                                       
+
+
                                     </select>
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
