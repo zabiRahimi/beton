@@ -34,6 +34,7 @@ const AddTruck = () => {
     const [loading, setLoading] = useState(false);
     const [trucks, setTrucks] = useState([]);
     const [truckOwners, setTruckOwners] = useState([]);
+    const[owners,setOwners] = useState();
 
     const [id, setId] = useState(null);
     const [input, setInput] = useState({
@@ -67,6 +68,8 @@ const AddTruck = () => {
      * ذخیره دو رقم سمت راست
      */
     const [digitsRightSide, setDigitsRightSide] = useState(null);
+
+    const [selectedOption, setSelectedOption] = useState('');
 
 
     useEffect(() => {
@@ -217,8 +220,13 @@ const AddTruck = () => {
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
         // console.log(value);
-        returnTruckOwners(value);
+        input=='truckType' && returnTruckOwners(value);
         setInput(prev => ({ ...prev, [input]: value }));
+        if (input=='truckOwner') {
+            setSelectedOption(value)
+        }if (input=='truckType') {
+            setSelectedOption('')
+        } 
     }
 
     /**
@@ -230,9 +238,9 @@ const AddTruck = () => {
     const returnTruckOwners = (truck) => {
         // console.log(truckOwners);
         let getOwners = truckOwners.filter(owner => owner.customer_type.some(type => type.subtype === truck));
-        // console.log(getOwners);
+        
         if (getOwners.length > 0) {
-            console.log('ok');
+            setOwners(getOwners);
         } else {
             MySwal.fire({
                 icon: "warning",
@@ -288,6 +296,15 @@ const AddTruck = () => {
         let mixerOwners = truckOwner.filter(owner => owner.customer_type.some(type => type.subType === 'میکسر'));
 
         // console.log(mixerOwners);
+    }
+
+    const showTruckOwners =()=>{
+        let val=owners.map((owner, i)=>{
+            return (
+                <option key={i} value={owner['id']}>{owner['name']} {owner['lastName']} {owner['father'] && `(${owner['father']})`}</option>
+            )
+        })
+        return val;
     }
 
     /**
@@ -561,62 +578,24 @@ const AddTruck = () => {
                                 <div className="errorContainerFB elementError" id="numberplateError" ref={numberplateErrorRef}> </div>
                             </div>
 
-
-                        </div>
-
-                        <div className="sectionFB">
-                            <div className="containerInputFB">
-                                <div className="divInputFB">
-                                    <label htmlFor="ownerName"> نام مالک </label>
-                                    <input
-                                        type="text"
-                                        id="ownerName"
-                                        className="inputTextFB"
-                                        onInput={e => handleSaveValInput(e, 'ownerName')}
-                                        onFocus={(e) => clearInputError(e, ownerNameErrorRef)}
-                                    />
-                                    <i className="icofont-ui-rating starFB" />
-                                </div>
-                                <div className="errorContainerFB elementError" id="ownerNameError" ref={ownerNameErrorRef}> </div>
-                            </div>
-
-                            <div className="containerInputFB">
-                                <div className="divInputFB">
-                                    <label htmlFor="ownerLastName"> نام خانوادگی </label>
-                                    <input
-                                        type="text"
-                                        id="ownerLastName"
-                                        className="inputTextFB"
-                                        onInput={e => handleSaveValInput(e, 'ownerLastName')}
-                                        onFocus={(e) => clearInputError(e, ownerLastNameErrorRef)}
-                                    />
-                                    <i className="icofont-ui-rating starFB" />
-                                </div>
-                                <div className="errorContainerFB elementError" id="ownerLastNameError" ref={ownerLastNameErrorRef}> </div>
-                            </div>
-
-                        </div>
-
-                        <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="ownerName"> مالک خودرو </label>
                                     <select
                                         name=""
                                         id="truckOwner"
-                                        className="selectChNumberplate"
-                                        onChange={e => getAlphabet(e)}
+                                        className="selectFB element inputTextFB"
+                                        onChange={e =>{ handleSaveValInput(e, 'truckOwner')}}
+                                        value={selectedOption}
                                     >
                                         <option value=""> انتخاب </option>
-
+                                        {owners ? showTruckOwners():<option style={{color:'red'}}> ابتدا نوع خودرو را انتخاب کنید </option>}
 
                                     </select>
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div className="errorContainerFB elementError" id="truckOwnerError" ref={truckOwnerErrorRef}> </div>
                             </div>
-
-
                         </div>
 
                         <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
