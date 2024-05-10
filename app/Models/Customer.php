@@ -46,4 +46,9 @@ class Customer extends Model
         return $this->hasOne(PersonnelContract::class);
     }
 
+    public function truck(): HasMany
+    {
+        return $this->hasMany(Truck::class);
+    }
+
 }

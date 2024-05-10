@@ -29,8 +29,12 @@ class AppServiceProvider extends ServiceProvider
             return preg_match('/^0[0-9]{10}$/', $value);
         });
 
+        // Validator::extend('numberplate', function ($attribute, $value, $parameters, $validator) {
+        //     return preg_match('/^[0-9]{2}-[آ-ی]{1}-[0-9]{3}-[0-9]{2}$/u', $value);
+        // });
+
         Validator::extend('numberplate', function ($attribute, $value, $parameters, $validator) {
-            return preg_match('/^[0-9]{2}-[آ-ی]{1}-[0-9]{3}-[0-9]{2}$/u', $value);
+            return preg_match('/^[0-9]{2}-[0-9]{3}-[0-9]{2}-[آ-ی]{1}$/u', $value);
         });
     }
 }

@@ -46,11 +46,11 @@ class StoreCustomerRequest extends FormRequest
     }
 
     public function messages(): array
-{
-    return [
-        'name.required' => 'نام مشتری را وارد کنید',
-        'lastName.required' => 'نام خانوادگی مشتری را وارد کنید',
-        'types.required' => 'نوع مشتری را انتخاب کنید',
-    ];
-}
+    {
+        return [
+            'name.required' => 'نام مشتری را وارد کنید',
+            'lastName.required' => 'نام خانوادگی مشتری را وارد کنید',
+            'types.required' => 'نوع مشتری را انتخاب کنید',
+        ];
+    }
 }

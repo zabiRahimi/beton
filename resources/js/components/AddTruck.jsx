@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import Title from "./hooks/Title";
 import "../../css/formBeton.css";
@@ -27,22 +27,19 @@ const AddTruck = () => {
     const truckNameErrorRef = useRef(null);
     const truckTypeErrorRef = useRef(null);
     const numberplateErrorRef = useRef(null);
-    const ownerNameErrorRef = useRef(null);
-    const ownerLastNameErrorRef = useRef(null);
-    const truckOwnerErrorRef = useRef(null);
+    const customer_idErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
     const [trucks, setTrucks] = useState([]);
     const [truckOwners, setTruckOwners] = useState([]);
-    const[owners,setOwners] = useState();
+    const [owners, setOwners] = useState();
 
     const [id, setId] = useState(null);
     const [input, setInput] = useState({
         truckName: '',
         truckType: '',
         numberplate: '',
-        ownerName: '',
-        ownerLastName: '',
+        customer_id: '',
     });
 
     /**
@@ -89,7 +86,6 @@ const AddTruck = () => {
     async function getTruckOwners() {
         await axios.get("/api/v1/getTruckOwners").then((response) => {
             setTruckOwners(response.data.truckOwners);
-            // console.log(response.data.truckOwners);
         });
     }
 
@@ -116,7 +112,7 @@ const AddTruck = () => {
 
         if (value.length == 2) {
             setDigitsLeftSide(value);
-            let val = value + '-' + alphabet + '-' + digitsMiddle + '-' + digitsRightSide;
+            let val = value + '-' + digitsMiddle + '-' + digitsRightSide + '-' + alphabet;
             setInput(prev => ({ ...prev, numberplate: val }));
         }
     }
@@ -133,7 +129,7 @@ const AddTruck = () => {
 
         if (value != '') {
             setAlphabet(value);
-            let val = digitsLeftSide + '-' + value + '-' + digitsMiddle + '-' + digitsRightSide;
+            let val = digitsLeftSide + '-' + digitsMiddle + '-' + digitsRightSide + '-' + value;
             setInput(prev => ({ ...prev, numberplate: val }));
         }
 
@@ -149,7 +145,7 @@ const AddTruck = () => {
 
         if (value.length == 3) {
             setDigitsMiddle(value);
-            let val = digitsLeftSide + '-' + alphabet + '-' + value + '-' + digitsRightSide;
+            let val = digitsLeftSide + '-' + value + '-' + digitsRightSide + '-' + alphabet;
             setInput(prev => ({ ...prev, numberplate: val }));
         }
     }
@@ -164,7 +160,8 @@ const AddTruck = () => {
 
         if (value.length == 2) {
             setDigitsRightSide(value);
-            let val = digitsLeftSide + '-' + alphabet + '-' + digitsMiddle + '-' + value;
+            let val = digitsLeftSide + '-' + digitsMiddle + '-' + value + '-' + alphabet ;
+            
             setInput(prev => ({ ...prev, numberplate: val }));
         }
     }
@@ -219,14 +216,13 @@ const AddTruck = () => {
        */
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-        // console.log(value);
-        input=='truckType' && returnTruckOwners(value);
+        input == 'truckType' && returnTruckOwners(value);
         setInput(prev => ({ ...prev, [input]: value }));
-        if (input=='truckOwner') {
+        if (input == 'customer_id') {
             setSelectedOption(value)
-        }if (input=='truckType') {
+        } if (input == 'truckType') {
             setSelectedOption('')
-        } 
+        }
     }
 
     /**
@@ -236,9 +232,8 @@ const AddTruck = () => {
      * @param {string} truck 
      */
     const returnTruckOwners = (truck) => {
-        // console.log(truckOwners);
         let getOwners = truckOwners.filter(owner => owner.customer_type.some(type => type.subtype === truck));
-        
+
         if (getOwners.length > 0) {
             setOwners(getOwners);
         } else {
@@ -252,54 +247,17 @@ const AddTruck = () => {
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 preConfirm: () => {
-                   
+
                     navigate("/addCustomer");
                 }
 
             });
         }
 
-        let truckOwner = [
-            {
-                id: 1, name: 'احسان', lastName: 'رحیمی',
-                customer_type: [
-
-                    { id: 11, type: 'مالک', subType: 'پمپ' },
-                    { id: 12, type: 'مالک', subType: 'دکل' },
-                ],
-            },
-            {
-                id: 2, name: 'عباس', lastName: 'نعمتی',
-                customer_type: [
-                    { id: 13, type: 'مالک', subType: 'کمپرسی' },
-                    { id: 14, type: 'مالک', subType: 'میکسر' },
-                ],
-            },
-            {
-                id: 3, name: 'میلاد', lastName: 'ابراهیمی',
-                customer_type: [
-                    { id: 16, type: 'مالک', subType: 'میکسر' },
-                    { id: 17, type: 'مالک', subType: 'پمپ' },
-                    { id: 18, type: 'مالک', subType: 'کمپرسی' },
-                ],
-            },
-            {
-                id: 4, name: 'مرتضی', lastName: 'حسن شاهی',
-                customer_type: [
-                    { id: 19, type: 'مالک', subType: 'کمپرسی' },
-                    { id: 20, type: 'مالک', subType: 'دکل' },
-                    { id: 21, type: 'مالک', subType: 'میکسر' },
-                ],
-            },
-        ];
-
-        let mixerOwners = truckOwner.filter(owner => owner.customer_type.some(type => type.subType === 'میکسر'));
-
-        // console.log(mixerOwners);
     }
 
-    const showTruckOwners =()=>{
-        let val=owners.map((owner, i)=>{
+    const showTruckOwners = () => {
+        let val = owners.map((owner, i) => {
             return (
                 <option key={i} value={owner['id']}>{owner['name']} {owner['lastName']} {owner['father'] && `(${owner['father']})`}</option>
             )
@@ -332,9 +290,12 @@ const AddTruck = () => {
                 }
             }
         ).then((response) => {
+            console.log(1);
             setTrucks(prev => [...prev, response.data.truck]);
+            console.log(2);
 
             form.current.reset();
+            console.log(3);
 
             MySwal.fire({
                 icon: "success",
@@ -347,6 +308,7 @@ const AddTruck = () => {
                 },
                 didClose: () => resetForm(),
             });
+            console.log(4);
 
         })
             .catch(
@@ -424,12 +386,12 @@ const AddTruck = () => {
 
             <div className={`containerMainAS_Ge ${flexDirection}`}>
                 <div className="continerAddGe ">
-                    <form action="" className="formBeton">
+                    <form action="" className="formBeton" ref={form}>
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش کامیون</h5>
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label>نام خودرو</label>
+                                    <label >نام خودرو</label>
                                     <select
                                         name=""
                                         id="truckName"
@@ -448,7 +410,7 @@ const AddTruck = () => {
                                     </select>
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB elementError" id="truckNameErrorRef" ref={truckNameErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="truckNameError" ref={truckNameErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
@@ -512,7 +474,7 @@ const AddTruck = () => {
                                                     onChange={e => getAlphabet(e)}
                                                 >
                                                     <option value=""> حرف </option>
-                                                    <option value="الف"> الف </option>
+                                                    <option value="a"> الف </option>
                                                     <option value="ب"> ب </option>
                                                     <option value="پ"> پ </option>
                                                     <option value="ت"> ت </option>
@@ -580,21 +542,22 @@ const AddTruck = () => {
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="ownerName"> مالک خودرو </label>
+                                    <label htmlFor="customer_id"> مالک خودرو </label>
                                     <select
                                         name=""
-                                        id="truckOwner"
+                                        id="customer_id"
                                         className="selectFB element inputTextFB"
-                                        onChange={e =>{ handleSaveValInput(e, 'truckOwner')}}
+                                        onChange={e => { handleSaveValInput(e, 'customer_id') }}
                                         value={selectedOption}
+                                        onClick={(e) => clearInputError(e, customer_idErrorRef)}
                                     >
                                         <option value=""> انتخاب </option>
-                                        {owners ? showTruckOwners():<option style={{color:'red'}}> ابتدا نوع خودرو را انتخاب کنید </option>}
+                                        {owners ? showTruckOwners() : <option style={{ color: 'red' }}> ابتدا نوع خودرو را انتخاب کنید </option>}
 
                                     </select>
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div className="errorContainerFB elementError" id="truckOwnerError" ref={truckOwnerErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div>
                             </div>
                         </div>
 

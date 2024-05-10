@@ -26,11 +26,17 @@ class StoreTruckRequest extends FormRequest
 
 
         return [
-            'truckName' => ['nullable', 'bail','string'],
+            'truckName' => ['required', 'bail','string'],
             'truckType' => ['required','bail','string'],
             'numberplate' => ['required','bail','numberplate','unique:trucks'],
-            'ownerName' => ['required','bail','string'],
-            'ownerLastName' => ['required','bail','string'],
+            'customer_id' => ['required','bail','numeric'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'customer_id.required' => 'مالک خودرو را انتخاب کنید',
         ];
     }
 }
