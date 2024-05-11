@@ -160,12 +160,49 @@ const AddTruck = () => {
 
         if (value.length == 2) {
             setDigitsRightSide(value);
-            let val = digitsLeftSide + '-' + digitsMiddle + '-' + value + '-' + alphabet ;
-            
+            let val = digitsLeftSide + '-' + digitsMiddle + '-' + value + '-' + alphabet;
+
             setInput(prev => ({ ...prev, numberplate: val }));
         }
     }
 
+    /**
+    * رکوردهای کامیون‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
+    * @returns 
+    */
+    const returnCreatedDriverRecords = () => {
+        let numberRow = trucks.length;
+        const reversedConcretes = trucks.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
+        let value = reversedConcretes.map((truck, i) => {
+            return <div className="rowListShowGe" key={i}>
+                <span className="rowNumShowGe">{numberRow - i}</span>
+                <span className="TrackTypeShowGe"> {truck['truckName']}   </span>
+                <span className="licensePlateShowGe"> {truck['truckName']}   </span>
+                <span className="truckOwnerShowGe"> {returnNameOwners(truck['customer_id'])}   </span>
+                <div className="divEditGe">
+                    <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                        onClick={() => showEditForm(truck['id'])}
+                    >
+                        <i className="icofont-pencil iEditGe" />
+                    </button>
+                </div>
+                <div className="divDelGe">
+                    <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                        <i className="icofont-trash iDelGe" />
+                    </button>
+                </div>
+            </div>
+        });
+
+        return value;
+    }
+
+    const returnNameOwners = (id) => {
+        let getOwners = truckOwners.filter(owner => owner.id == id);
+        console.log(getOwners[0]['name']);
+        return <div dangerouslySetInnerHTML={{ __html: `${getOwners[0]['name']} ${getOwners[0]['lastName']} &nbsp; ${getOwners[0]['father'] ? ('('+getOwners[0]['father']+')'):''}` }} />;
+
+    }
 
     const resetForm = (apply = true) => {
         setInput({
@@ -175,6 +212,7 @@ const AddTruck = () => {
             ownerName: '',
             ownerLastName: '',
         });
+        setSelectedOption('');
 
         var elements = document.getElementsByClassName('element');
         for (var i = 0; i < elements.length; i++) {
@@ -193,10 +231,10 @@ const AddTruck = () => {
     }
 
     /**
-* هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
-* این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
-* @param {شناسه رکورد} recordId 
-*/
+    * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
+    * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
+    * @param {شناسه رکورد} recordId 
+    */
     const pasteDataForEditing = (recordId) => {
 
         let truck = trucks.find(truck => truck.id === recordId);
@@ -219,9 +257,9 @@ const AddTruck = () => {
         input == 'truckType' && returnTruckOwners(value);
         setInput(prev => ({ ...prev, [input]: value }));
         if (input == 'customer_id') {
-            setSelectedOption(value)
+            setSelectedOption(value);
         } if (input == 'truckType') {
-            setSelectedOption('')
+            setSelectedOption('');
         }
     }
 
@@ -274,7 +312,7 @@ const AddTruck = () => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
     }
-
+    // console.log(input);
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
@@ -290,12 +328,9 @@ const AddTruck = () => {
                 }
             }
         ).then((response) => {
-            console.log(1);
             setTrucks(prev => [...prev, response.data.truck]);
-            console.log(2);
 
             form.current.reset();
-            console.log(3);
 
             MySwal.fire({
                 icon: "success",
@@ -308,7 +343,6 @@ const AddTruck = () => {
                 },
                 didClose: () => resetForm(),
             });
-            console.log(4);
 
         })
             .catch(
@@ -465,6 +499,7 @@ const AddTruck = () => {
                                                     placeholder="00"
                                                     maxLength="2"
                                                     onInput={e => getDigitLeftSide(e)}
+                                                    onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 />
 
                                                 <select
@@ -472,9 +507,10 @@ const AddTruck = () => {
                                                     id=""
                                                     className="selectChNumberplate"
                                                     onChange={e => getAlphabet(e)}
+                                                    onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 >
                                                     <option value=""> حرف </option>
-                                                    <option value="a"> الف </option>
+                                                    <option value="الف"> الف </option>
                                                     <option value="ب"> ب </option>
                                                     <option value="پ"> پ </option>
                                                     <option value="ت"> ت </option>
@@ -516,6 +552,7 @@ const AddTruck = () => {
                                                     placeholder="000"
                                                     maxLength="3"
                                                     onInput={e => getDigitMiddle(e)}
+                                                    onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 />
 
                                             </div>
@@ -528,6 +565,7 @@ const AddTruck = () => {
                                                     placeholder="00"
                                                     maxLength="2"
                                                     onInput={e => getDigitRightSide(e)}
+                                                    onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 />
 
                                             </div>
@@ -608,8 +646,9 @@ const AddTruck = () => {
                         <div className="rowListShowGe headRowListShowGe">
 
                             <span className="rowNumShowGe ">ردیف</span>
-                            <span className="licensePlateShowGe headLicensePlateShowGe "> پلاک خودرو </span>
                             <span className="TrackTypeShowGe ">نوع خودرو</span>
+                            <span className="licensePlateShowGe headLicensePlateShowGe "> پلاک خودرو </span>
+
                             <span className="truckOwnerShowGe ">مالک خودرو</span>
 
                             <span className="headEditShowGe"> ویرایش  </span>
@@ -617,7 +656,9 @@ const AddTruck = () => {
 
                         </div>
 
-                        <div className="rowListShowGe">
+                        {trucks ? returnCreatedDriverRecords() : <Skeleton height={40} count={12} />}
+
+                        {/* <div className="rowListShowGe">
 
                             <span className="rowNumShowGe">1</span>
                             <span className="licensePlateShowGe">63 895 ب 56</span>
@@ -680,7 +721,7 @@ const AddTruck = () => {
 
                             </div>
 
-                        </div>
+                        </div> */}
 
                     </div>
 

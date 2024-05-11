@@ -201,7 +201,6 @@ const AddDriver = () => {
         setWidthComponent(widths)
     }, []);
 
-
     /**
         * ذخیره مقادیر ورودی‌های کاربر در استیت
         * @param {*} e 
@@ -320,7 +319,6 @@ const AddDriver = () => {
             }
         }));
     };
-
 
     const handleSubmitEdit = async (e) => {
         e.preventDefault();

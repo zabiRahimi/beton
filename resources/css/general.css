@@ -194,21 +194,18 @@
 **
 */
 
-
-
-.licensePlateShowGe {
-    width: 23%;
-    margin: 0 13px;
-    text-align: center;
-    /* background-color: #525252; */
+.TrackTypeShowGe {
+    width: 18%;
+    margin: 0 13px 0 6px;
 }
 
-.TrackTypeShowGe {
-    width: 22%;
+.licensePlateShowGe {
+    width: 27%;
+    text-align: center;
 }
 
 .truckOwnerShowGe {
-    width: 22%;
+    width: 25%;
 }
 
 
