@@ -461,7 +461,7 @@ const AddDriver = () => {
                                         defaultValue={input.lastName}
                                         onInput={e => handleSaveValInput(e, 'lastName')}
                                         onFocus={e => clearInputError(e, lastNameErrorRef)}
-                                        autoFocus
+                                        
                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>

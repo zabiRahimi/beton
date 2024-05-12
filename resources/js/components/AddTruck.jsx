@@ -41,6 +41,11 @@ const AddTruck = () => {
         numberplate: '',
         customer_id: '',
     });
+    // const [digitLeft,setDigitLeft]=useState('');
+    // const [alphabet,setAlphabet]=useState('');
+    // const [digitMiddle,setDigitMiddle]=useState('');
+    // const [digitRight,setDigitRight]=useState('');
+
 
     /**
      * چهار استیت زیر مربوط به پلاک خودرو می‌باشند
@@ -177,7 +182,7 @@ const AddTruck = () => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="TrackTypeShowGe"> {truck['truckName']}   </span>
-                <span className="licensePlateShowGe"> {truck['truckName']}   </span>
+                <span className="licensePlateShowGe"> 83 - 255 ث 22</span>
                 <span className="truckOwnerShowGe"> {returnNameOwners(truck['customer_id'])}   </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
@@ -197,11 +202,21 @@ const AddTruck = () => {
         return value;
     }
 
+    /**
+     * هنگامی که قرار است لیست کامیون‌های ایجاد شده نمایش داده شود
+     * این متد نام مالک هر رکورد را برمی‌گرداند
+     * @param {*} id 
+     * @returns 
+     */
     const returnNameOwners = (id) => {
         let getOwners = truckOwners.filter(owner => owner.id == id);
-        console.log(getOwners[0]['name']);
-        return <div dangerouslySetInnerHTML={{ __html: `${getOwners[0]['name']} ${getOwners[0]['lastName']} &nbsp; ${getOwners[0]['father'] ? ('('+getOwners[0]['father']+')'):''}` }} />;
 
+        if (getOwners.length > 0) {
+            return <div className="truckOwnerShowGeDiv">
+                <span>{getOwners[0]['name']}  {getOwners[0]['lastName']}</span>
+                <span className="truckOwnerShowGeDivFather"> {getOwners[0]['father']}</span>
+            </div>;
+        }
     }
 
     const resetForm = (apply = true) => {
@@ -209,8 +224,7 @@ const AddTruck = () => {
             truckName: '',
             truckType: '',
             numberplate: '',
-            ownerName: '',
-            ownerLastName: '',
+            customer_id: '',
         });
         setSelectedOption('');
 
@@ -243,7 +257,15 @@ const AddTruck = () => {
         const { id, created_at, updated_at, ...rest } = truck;//نادیده گرفتن کلید های مشخص شده
 
         setInput(rest);
+        let numberplateArr = truck.numberplate.split('-');
+        setDigitsLeftSide(numberplateArr[0]);
+        setDigitsMiddle(numberplateArr[1]);
+        setDigitsRightSide(numberplateArr[2]);
+        setAlphabet(numberplateArr[3]);
+        returnTruckOwners(truck.truckType);
+        setSelectedOption(truck.customer_id);
     }
+
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
@@ -374,9 +396,80 @@ const AddTruck = () => {
         setLoading(false)
     }
 
-    const handleSubmitEdit = () => {
+    const handleSubmitEdit = async (e) => {
+        e.preventDefault();
+        setLoading(true)
 
+        await axios.patch(
+            `/api/v1/editTruck/${id}`,
+            { ...input },
+            {
+                headers:
+                {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then((response) => {
+            replaceObject(id, response.data.truck);
+
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ویرایش شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
+                didClose: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+            });
+
+        })
+            .catch(
+                error => {
+                    if (error.response && error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0];
+
+                        const element = document.getElementById(id);
+                        let scrollPosition = window.scrollY || window.pageYOffset;
+
+                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                        window.scrollTo({
+                            top: top,
+                            behavior: 'smooth'
+                        });
+
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            document.getElementById(key).classList.add('borderRedFB');
+
+                            document.getElementById(key + 'Error').innerHTML = val;
+
+                        });
+
+                    }
+                }
+            )
+
+        setLoading(false)
     }
+
+    /**
+     * هنگامی که کاربر اطلاعات یک مشتری را ویرایش می‌کند
+     * اطلاعات جدید در استیت جایگزین اطلاعات قبلی می‌شود
+     * @param {number} id 
+     * @param {object} newObject 
+     */
+    const replaceObject = (id, newObject) => {
+        setTrucks(trucks.map((object) => {
+            if (object.id == id) {
+                return newObject;
+            } else {
+                return object;
+            }
+        }));
+    };
 
 
     return (
@@ -430,8 +523,10 @@ const AddTruck = () => {
                                         name=""
                                         id="truckName"
                                         className="selectFB element inputTextFB"
+                                        value={input.truckName}
                                         onChange={e => handleSaveValInput(e, 'truckName')}
                                         onClick={(e) => clearInputError(e, truckNameErrorRef)}
+                                        autoFocus
                                     >
                                         <option value="">انتخاب</option>
                                         <option value="بنز">بنز</option>
@@ -454,6 +549,7 @@ const AddTruck = () => {
                                         name=""
                                         id="truckType"
                                         className="selectFB element inputTextFB"
+                                        value={input.truckType}
                                         onChange={e => handleSaveValInput(e, 'truckType')}
                                         onClick={(e) => clearInputError(e, truckTypeErrorRef)}
                                     >
@@ -498,6 +594,7 @@ const AddTruck = () => {
                                                     className="text2Numberplate"
                                                     placeholder="00"
                                                     maxLength="2"
+                                                    defaultValue={digitsLeftSide}
                                                     onInput={e => getDigitLeftSide(e)}
                                                     onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 />
@@ -506,6 +603,7 @@ const AddTruck = () => {
                                                     name=""
                                                     id=""
                                                     className="selectChNumberplate"
+                                                    value={alphabet}
                                                     onChange={e => getAlphabet(e)}
                                                     onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 >
@@ -551,6 +649,7 @@ const AddTruck = () => {
                                                     className="text3Numberplate"
                                                     placeholder="000"
                                                     maxLength="3"
+                                                    defaultValue={digitsMiddle}
                                                     onInput={e => getDigitMiddle(e)}
                                                     onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 />
@@ -564,6 +663,7 @@ const AddTruck = () => {
                                                     className="textSerialNumberplate"
                                                     placeholder="00"
                                                     maxLength="2"
+                                                    defaultValue={digitsRightSide}
                                                     onInput={e => getDigitRightSide(e)}
                                                     onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 />
@@ -657,71 +757,6 @@ const AddTruck = () => {
                         </div>
 
                         {trucks ? returnCreatedDriverRecords() : <Skeleton height={40} count={12} />}
-
-                        {/* <div className="rowListShowGe">
-
-                            <span className="rowNumShowGe">1</span>
-                            <span className="licensePlateShowGe">63 895 ب 56</span>
-                            <span className="TrackTypeShowGe">پمپ دکل</span>
-                            <span className="truckOwnerShowGe"> بازوافکن </span>
-
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showEditForm}
-                                >
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div>
-
-                        <div className="rowListShowGe">
-                            <span className="rowNumShowGe">2</span>
-                            <span className="licensePlateShowGe">83 329 ص 84</span>
-                            <span className="TrackTypeShowGe"> کمپرسی </span>
-                            <span className="truckOwnerShowGe"> صالحی </span>
-
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش ">
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-                            </div>
-
-                        </div>
-
-                        <div className="rowListShowGe">
-                            <span className="rowNumShowGe">3</span>
-                            <span className="licensePlateShowGe ">  99 453 الف 89</span>
-                            <span className="TrackTypeShowGe">میکسر</span>
-                            <span className="truckOwnerShowGe">زارع</span>
-                            <div className="divEditGe">
-                                <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                                    onClick={showEditForm}>
-                                    <i className="icofont-pencil iEditGe" />
-                                </button>
-                            </div>
-
-                            <div className="divDelGe">
-                                <button className="--styleLessBtn btnDelGe" title=" حذف ">
-                                    <i className="icofont-trash iDelGe" />
-                                </button>
-
-                            </div>
-
-                        </div> */}
 
                     </div>
 

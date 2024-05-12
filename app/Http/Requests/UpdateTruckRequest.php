@@ -28,8 +28,14 @@ class UpdateTruckRequest extends FormRequest
             'truckType' => ['required','bail','string'],
             'numberplate' => ['required','bail','numberplate',
             Rule::unique('trucks')->ignore($this->truck)],
-            'ownerName' => ['required','bail','string'],
-            'ownerLastName' => ['required','bail','string'],
+            'customer_id' => ['required','bail','numeric'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'customer_id.required' => 'مالک خودرو را انتخاب کنید',
         ];
     }
 }
