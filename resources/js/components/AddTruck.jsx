@@ -41,11 +41,6 @@ const AddTruck = () => {
         numberplate: '',
         customer_id: '',
     });
-    // const [digitLeft,setDigitLeft]=useState('');
-    // const [alphabet,setAlphabet]=useState('');
-    // const [digitMiddle,setDigitMiddle]=useState('');
-    // const [digitRight,setDigitRight]=useState('');
-
 
     /**
      * چهار استیت زیر مربوط به پلاک خودرو می‌باشند
@@ -59,7 +54,7 @@ const AddTruck = () => {
     /**
      * ذخیره حرف الفبا
      */
-    const [alphabet, setAlphabet] = useState(null);
+    const [alphabet, setAlphabet] = useState('');
 
     /**
      * ذخیره سه رقم میانی
@@ -72,7 +67,6 @@ const AddTruck = () => {
     const [digitsRightSide, setDigitsRightSide] = useState(null);
 
     const [selectedOption, setSelectedOption] = useState('');
-
 
     useEffect(() => {
         getTrucks();
@@ -93,7 +87,6 @@ const AddTruck = () => {
             setTruckOwners(response.data.truckOwners);
         });
     }
-
 
     /**
      * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
@@ -166,7 +159,6 @@ const AddTruck = () => {
         if (value.length == 2) {
             setDigitsRightSide(value);
             let val = digitsLeftSide + '-' + digitsMiddle + '-' + value + '-' + alphabet;
-
             setInput(prev => ({ ...prev, numberplate: val }));
         }
     }
@@ -182,7 +174,7 @@ const AddTruck = () => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="TrackTypeShowGe"> {truck['truckName']}   </span>
-                <span className="licensePlateShowGe"> 83 - 255 ث 22</span>
+                <span className="licensePlateShowGe"> {returnNumberplate(truck['numberplate'])} </span>
                 <span className="truckOwnerShowGe"> {returnNameOwners(truck['customer_id'])}   </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
@@ -219,6 +211,27 @@ const AddTruck = () => {
         }
     }
 
+    /**
+     * هنگامی که قرار است لیست کامیون‌های ایجاد شده نمایش داده شود
+     * این متد پلاک هر رکورد را برمی‌گرداند
+     * @param {*} id 
+     * @returns 
+     */
+    const returnNumberplate = (numberplate) => {
+
+
+        if (numberplate) {
+            let arr = numberplate.split('-');
+            // return `${arr[2]} - ${arr[1]} ${arr[3]}  ${arr[0]}`;
+            return <div className="numberplateDiv">
+                <span className="numberplateDivS1">{arr[0]}</span>
+                <span className="numberplateDivS2">{arr[3]}</span>
+                <span className="numberplateDivS3">{arr[1]}</span>
+                <span className="numberplateDivS4">{arr[2]}</span>
+            </div>
+        }
+    }
+   
     const resetForm = (apply = true) => {
         setInput({
             truckName: '',
@@ -227,6 +240,10 @@ const AddTruck = () => {
             customer_id: '',
         });
         setSelectedOption('');
+        setDigitsLeftSide('');
+        setAlphabet('');
+        setDigitsMiddle('');
+        setDigitsRightSide('');
 
         var elements = document.getElementsByClassName('element');
         for (var i = 0; i < elements.length; i++) {
@@ -250,12 +267,9 @@ const AddTruck = () => {
     * @param {شناسه رکورد} recordId 
     */
     const pasteDataForEditing = (recordId) => {
-
         let truck = trucks.find(truck => truck.id === recordId);
         truck && setId(recordId);
-
         const { id, created_at, updated_at, ...rest } = truck;//نادیده گرفتن کلید های مشخص شده
-
         setInput(rest);
         let numberplateArr = truck.numberplate.split('-');
         setDigitsLeftSide(numberplateArr[0]);
@@ -265,7 +279,6 @@ const AddTruck = () => {
         returnTruckOwners(truck.truckType);
         setSelectedOption(truck.customer_id);
     }
-
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
@@ -293,7 +306,6 @@ const AddTruck = () => {
      */
     const returnTruckOwners = (truck) => {
         let getOwners = truckOwners.filter(owner => owner.customer_type.some(type => type.subtype === truck));
-
         if (getOwners.length > 0) {
             setOwners(getOwners);
         } else {
@@ -330,15 +342,14 @@ const AddTruck = () => {
     * @param {*} e 
     * @param {رف مربوط به تگ نمایش خطا} refErr 
     */
-    const clearInputError = (e, refErr, types = false, date = false) => {
+    const clearInputError = (e, refErr) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
     }
-    // console.log(input);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
-
         await axios.post(
             '/api/v1/addTruck',
             { ...input },

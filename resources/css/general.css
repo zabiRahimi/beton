@@ -175,8 +175,8 @@
     top: 32px;
     background-color: #fff;
     z-index: 20;
-    border-radius:0 0 2px 2px;
-   box-shadow: 0px 5px 9px 2px #bebebe;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0px 5px 9px 2px #bebebe;
 }
 
 .TypeBodyItemShowGe {
@@ -201,21 +201,38 @@
 
 .licensePlateShowGe {
     width: 22%;
+    padding: 0 15px ;
     text-align: center;
-    direction: rtl;
+
+}
+
+.numberplateDiv {
+    display: flex;
+    direction: ltr;
+    background: #f1f2f4;
+    padding: 0 0 0 8px;
+    justify-content: space-around;
+    border: 1px solid #7f8084;
+    border-radius: 6px;
+}
+
+.numberplateDivS4 {
+   padding-left:4px;
+    border-left: 1px solid #7f8084;
+  
 }
 
 .truckOwnerShowGe {
     width: 30%;
 }
 
-.truckOwnerShowGeDiv{
+.truckOwnerShowGeDiv {
     padding-left: 5px;
     display: flex;
     justify-content: space-between;
 }
 
-.truckOwnerShowGeDivFather{
+.truckOwnerShowGeDivFather {
     font-size: 12px;
 }
 
