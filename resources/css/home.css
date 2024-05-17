@@ -53,6 +53,12 @@
 .mainHome,
 .mainCuC {
     width: 100%;
+   display: flex;
+   flex-direction: column;
+}
+
+.categoryLinksHome{
+    width: 100%;
     max-width: 100%;
     padding: 35px 15px;
     display: flex;
@@ -61,6 +67,16 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+
+.borderDivHome{
+    width: 98%;
+    height: 1px;
+    margin: 10px auto;
+    border: 2px solid #2c2ca8;
+    border-radius: 6px;
+
+}
+
 
 .linksHome {
     width: 130px;
@@ -130,6 +146,22 @@
     font-size: 0.8rem;
 }
 
+.divIcofontLinksHome .factureLinkIHome {
+    color: #0663b5;
+    font-size: 4rem;
+    background-color: #bed9f05c;
+}
+
+.divIcofontLinksHome .CurrentCostsIHome,
+.divIcofontLinksHome .orange {
+    color: #e87019;
+}
+
+.divIcofontLinksHome .miscellaneousIncomeIHome,
+.divIcofontLinksHome .green {
+    color: #257335;
+}
+
 @media screen and (max-width: 768px) {
     .divRightSide {
         display: none;
@@ -153,6 +185,10 @@
 
     .divIcofontLinksHome .iLinksHome {
         font-size: 3.5rem;
+    }
+
+    .divIcofontLinksHome .factureLinkIHome {
+        font-size: 4.5rem;
     }
 
     .divLeftSide {

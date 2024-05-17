@@ -1,0 +1,51 @@
+.mainSZ{
+width: 100%;
+
+position: relative;
+}
+
+.titleSZ{
+    width:100%;
+    padding: 0 8px;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.labelSZ{
+    flex-grow: 1;
+    padding-left: 15px;
+}
+
+.mainOptionSZ{
+    width: 100%;
+   
+    position: absolute;
+    top: 27px;
+    left: 0;
+    background-color: #e1e1ec;
+    border: 1px solid #636363;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.containerOptionSZ{
+    /* padding: 5px 12px; */
+}
+
+
+
+.containerOptionSZ:nth-child(even) {
+    background-color: #faf9f9 ;
+}
+
+.containerOptionSZ:nth-child(odd) {
+    background-color: #fff;
+}
+
+.containerOptionSZ:hover{
+    background-color: #4f4ffa;
+    color: #fff;
+}

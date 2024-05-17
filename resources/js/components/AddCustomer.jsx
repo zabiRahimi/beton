@@ -205,7 +205,7 @@ const AddCustomer = () => {
                     <div className="typeTitleShowGe" onClick={() => showListTypes(customer.id)}>
                         <span className="typeTitleSpanShowGe">
                             {customer['customer_type'].map((customerType, iType) => {
-                                return (iType > 0 ? '، ' + customerType['type'] + ' ' + customerType['subtype'] : customerType['type'] + ' ' + customerType['subtype'])
+                                return (iType > 0 ? '، ' + customerType['type'] + ' ' + (customerType['subtype'] || '') : customerType['type'] + ' ' + (customerType['subtype'] || ''))
                             })}
                         </span>
                         <i
@@ -298,7 +298,7 @@ const AddCustomer = () => {
     const showCustomerTypeSelected = () => {
         let value = customerTypeSelected.map((customerType, i) => {
             return <div className="customerTypeSelectedFB" key={i}>
-                <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']}</span>
+                <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype'] && customerType['subtype']}</span>
                 <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['code'], customerType['type'], customerType['subtype'])} />
             </div>
         })
@@ -323,8 +323,8 @@ const AddCustomer = () => {
                 ...prevState,
                 types: [...prevState.types, { code, type, subtype }]
             }));
-            const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype}`).join(' , ');
-            lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + subtype : type + ' ' + subtype;
+            const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype||''}`).join(' , ');
+            lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype||'') : type + ' ' + (subtype||'');
 
             errorRCTYitem.current.classList.add('--hidden');
         } else {
@@ -335,7 +335,7 @@ const AddCustomer = () => {
                 ...prevState,
                 types: prevState.types.filter(type => type.code !== code)
             }));
-            const typesString = updated.map((item) => `${item.type} ${item.subtype}`).join(' , ');
+            const typesString = updated.map((item) => `${item.type} ${item.subtype||''}`).join(' , ');
 
             lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
         }
@@ -346,13 +346,11 @@ const AddCustomer = () => {
         setCustomerTypeSelected(updated);
         setInput(prevState => ({
             ...prevState,
-            types: prevState.types.filter(item => !(item.type.trim() === type && item.subtype.trim() === subtype))
+            types: prevState.types.filter(item => !(item.type.trim() === type && (item.subtype ? item.subtype.trim() === subtype : true)))
         }));
         let ref = refs[code]
         ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-
         const typesString = updated.map((item) => `${item.type} ${item.subtype}`).join(' , ');
-
         lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
     }
 
@@ -493,7 +491,7 @@ const AddCustomer = () => {
         lableCustomerType.current.textContent = ''//حذف کلمه انتخاب از لیبل لیست
         updatedCustomerTypes.map((type, i) => {
 
-            lableCustomerType.current.textContent += i == 0 ? type.type + ' ' + type.subtype : '، ' + type.type;
+            lableCustomerType.current.textContent += i == 0 ? type.type + ' ' + (type.subtype ||''): '، ' + type.type + ' ' + (type.subtype ||'');
 
             let ref = refs[type.code];
             ref.current.classList.toggle('IcheckedItemCustomerTypeFB');

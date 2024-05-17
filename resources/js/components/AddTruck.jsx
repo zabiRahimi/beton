@@ -293,7 +293,8 @@ const AddTruck = () => {
         setInput(prev => ({ ...prev, [input]: value }));
         if (input == 'customer_id') {
             setSelectedOption(value);
-        } if (input == 'truckType') {
+        } 
+        if (input == 'truckType') {
             setSelectedOption('');
         }
     }

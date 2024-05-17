@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\PersonnelSlipController;
 use App\Http\Controllers\TruckController;
 
 /*
@@ -59,6 +60,15 @@ Route::controller(TruckController::class)->group(function () {
     Route::get('/getTrucks', 'index');
     Route::get ('/getTruckOwners','truckOwners');
     Route::patch('/editTruck/{truck}', 'update');
+
+});
+
+Route::controller(PersonnelSlipController::class)->group(function () {
+    
+    Route::post('/addPersonnelSlip', 'store');
+    Route::get('/getPersonnelSlips', 'index');
+    Route::get ('/getPersonnels','personnels');
+    Route::patch('/editPersonnelSlip/{personnelSlip}', 'update');
 
 });
 

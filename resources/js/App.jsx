@@ -14,17 +14,18 @@ import AddCustomer from "./components/AddCustomer";
 import AddCustomerType from "./components/AddCustomerType";
 
 import AddTruck from "./components/AddTruck";
-import AddPersonnel from "./components/AddPersonnel";
+// import AddPersonnel from "./components/AddPersonnel";
 import AddDriver from "./components/AddDriver";
 // import AddGoodsAndServices from "./components/AddGoodsAndServices";
 import AddCurrentCosts from "./components/AddCurrentCosts";
-import NavigateCustmoerContract from './components/customerContract/NavigateCustomerContract';
-import CustomerContract from "./components/customerContract/CustmoerContract";
-import AddPersonnelContract from "./components/customerContract/AddPersonnelContract";
-import AddBuyerContract from "./components/customerContract/AddBuyerContract";
-import AddSellerContract from "./components/customerContract/AddSellerContract";
+// import NavigateCustmoerContract from './components/customerContract/NavigateCustomerContract';
+// import CustomerContract from "./components/customerContract/CustmoerContract";
+// import AddPersonnelContract from "./components/customerContract/AddPersonnelContract";
+// import AddBuyerContract from "./components/customerContract/AddBuyerContract";
+// import AddSellerContract from "./components/customerContract/AddSellerContract";
 import AddPumpOperator from "./components/AddPumpOperator";
 import AddConcrete from "./components/AddConcrete";
+import AddPersonnelSlip from "./components/AddPersonnelSlip";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -42,21 +43,23 @@ function App() {
                 <Route path="addCustomerType/" element={<AddCustomerType />} />
 
                 <Route path="addTruck" element={<AddTruck />} />
-                <Route path="addPersonnel" element={<AddPersonnel />} />
+                {/* <Route path="addPersonnel" element={<AddPersonnel />} /> */}
                 <Route path="addDriver" element={<AddDriver />} />
 
                 <Route path="addConcrete" element={<AddConcrete />} />
                 
                 <Route path="addCurrentCosts" element={<AddCurrentCosts />} />
                 <Route path="addPumpOperator" element={<AddPumpOperator />} />
+                <Route path="addPersonnelSlip" element={<AddPersonnelSlip />} />
+                
 
-                <Route path="customerContract" element={<CustomerContract />} >
+                {/* <Route path="customerContract" element={<CustomerContract />} >
                     <Route index element={<NavigateCustmoerContract />} />
                     <Route path="addPersonnelContract" element={<AddPersonnelContract />} />
                     <Route path="addBuyerContract" element={<AddBuyerContract />} />
                     <Route path="addSellerContract" element={<AddSellerContract />} />
 
-                </Route>
+                </Route> */}
             </Route>
             // <Route path="/" element={<Root />} errorElement={<NotFound />}>
             //   <Route index element={<Home />} />

@@ -5,7 +5,10 @@ import { useEffect, useRef, useState } from "react";
 
 const Title = ({ title }) => {
     const navigate = useNavigate();
-
+    useEffect(()=>{
+        window.scrollTo(0, 0);
+    },[])
+    // window.scrollTo(0, 0);
     // const [scroll, setScroll] = useState(false);
 
     // useEffect(() => {
@@ -35,7 +38,7 @@ const Title = ({ title }) => {
                 <button
                     className="replyBtn"
                     onClick={() => {
-                        navigate(-1);
+                          navigate(-1);
                     }}
                 >
                     <i className="icofont-reply " />

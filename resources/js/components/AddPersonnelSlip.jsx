@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import Select from "react-select";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
@@ -7,14 +9,44 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import Title from "./hooks/Title";
 import Button from 'react-bootstrap/Button';
 import "../../css/formBeton.css";
+import "../../css/addPersonnelSlip.css";
 import useChangeForm from './hooks/useChangeForm';
 import DataZabi from "./hooks/DateZabi";
+import SelectZabi from "./hooks/SelectZabi";
 
-const AddDriver = () => {
+import Async from "react-select/async";
+
+const musicGenres = [
+    { value: "blues", label: "Blues" },
+    { value: "rock", label: "Rock" },
+    { value: "jazz", label: "Jazz" },
+    { value: "orchestra", label: "Orchestra" },
+];
+
+function filterMusicGenre(inputValue) {
+    return musicGenres.filter((musicGenre) => {
+        const regex = new RegExp(inputValue, "gi");
+        return musicGenre.label.match(regex);
+    });
+}
+
+const AddPersonnelSlip = () => {
+    let navigate = useNavigate();
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const MySwal = withReactContent(Swal);
 
+    const [options, setOptions] = useState([
+        { value: "blues", label: "Blues" },
+        { value: "rock", label: "Rock" },
+        { value: "jazz", label: "Jazz" },
+        { value: "orchestra", label: "Orchestra" },
+    ]);
+
     const {
+        years,
+        months,
+        days,
+        nameDays,
         optionDays,
         optionMonth,
         optionYears,
@@ -28,31 +60,52 @@ const AddDriver = () => {
     const monthSelect = useRef(null);
     const yearSelect = useRef(null);
 
+    const nameRef = useRef(null);
+    const lastNameRef = useRef(null);
+    const nationalCodeRef = useRef(null);
+    const dateOfBirthRef = useRef(null);
+    const mobileRef = useRef(null);
+    const addressRef = useRef(null);
+
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
-    const nameErrorRef = useRef(null);
-    const lastNameErrorRef = useRef(null);
-    const nationalCodeErrorRef = useRef(null);
-    const dateOfBirthErrorRef = useRef(null);
-    const mobileErrorRef = useRef(null);
-    const addressErrorRef = useRef(null);
+
+
+    const customer_idErrorRef = useRef(null);
+    const contractStartErrorRef = useRef(null);
+    const contractPeriodErrorRef = useRef(null);
+    const wageCalculationErrorRef = useRef(null);
+    const salaryErrorRef = useRef(null);
+    const workFridayErrorRef = useRef(null);
+    const workHolidayErrorRef = useRef(null);
+    const overtimeErrorRef = useRef(null);
+    const insuranceErrorRef = useRef(null);
+    const absencePenaltyErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
-    const [drivers, setDrivers] = useState([]);
+    const [personnels, setPersonnels] = useState([]);
+    const [personnelSlips, setPersonnelSlips] = useState([]);
 
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
     const [input, setInput] = useState({
-        name: '',
-        lastName: '',
-        nationalCode: '',
-        dateOfBirth: '',
-        mobile: '',
-        address: '',
+        customer_id: '',
+        contractStart: '',
+        contractPeriod: '',
+        wageCalculation: '',
+        salary: '',
+        workFriday: '',
+        workHoliday: '',
+        overtime: '',
+        insurance: '',
+        absencePenalty: '',
     });
     const [id, setId] = useState(null);
+    const hasCalledGetPersonnels = useRef(false);
+
+    const [selectedOption, setSelectedOption] = useState('');
 
     const changeDay = (e) => {
         let { value } = e.target;
@@ -99,30 +152,108 @@ const AddDriver = () => {
 
     }
 
+    /**
+    * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
+    */
+    const [widthComponent, setWidthComponent] = useState(0);
     useEffect(() => {
-        getDrivers();
+        let widths = container.current.offsetWidth;
+        setWidthComponent(widths)
     }, []);
 
-    async function getDrivers() {
-        await axios.get("/api/v1/getDrivers").then((response) => {
-            setDrivers(response.data.drivers);
+    useEffect(() => {
+        // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
+        if (!hasCalledGetPersonnels.current) {
+            getPersonnels();
+            hasCalledGetPersonnels.current = true;
+        }
+    }, []);
+
+    async function getPersonnels() {
+        await axios.get("/api/v1/getPersonnels").then((response) => {
+            let datas=response.data.personnels;
+            if (datas.length == 0) {
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا پرسنل را به عنوان مشتری ثبت کنید.`,
+                    confirmButtonText: "  ثبت مشتری   ",
+                    showCancelButton: true,
+                    cancelButtonText: "کنسل",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    preConfirm: () => {
+
+                        navigate("/addCustomer");
+                    }
+
+                });
+            } else {
+                datas.map((data, i)=>{
+                    setPersonnels(perv=>([...perv, {
+                        value: data.id,
+                        html: <div className="personnelAption_addPerS">
+                            <span className="name_addPers">{data.name} 
+                            {' '}
+                            {data.lastName}</span>
+                            
+                            <span className="fther_addPers">
+                            {data.father||''}
+                            </span>
+                            
+                        </div>
+                    }]) )
+                })
+
+                // setPersonnels(response.data.personnels);
+            }
         });
     }
+    // console.log(personnels);
 
     /**
-    * رکوردهای بتن‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
+     * 
+     * نام پرسنل‌های ثبت شده را در تگ سلکت مربوطه به نمایش می‌گذارد
+     * @returns 
+     */
+    // const showPersonnels = () => {
+    //     let val = options.map((personnel, i) => {
+    //         return (
+    //             <div key={i} onClick={()=>changeLabel(personnel['value'])} >
+    //                 {personnel['label']} 
+    //             </div>
+    //         )
+    //     })
+    //     return val;
+    // }
+    // const showPersonnels = () => {
+    //     let val = [];
+    //      options.map((personnel, i) => {
+    //         val[i]= {
+    //             value: personnel['value'],
+    //              div: <div >
+    //                 {personnel['label']}
+    //             </div>
+    //         }
+
+    //     })
+    //     return val;
+    // }
+
+    /**
+    * رکوردهای فیش‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
     * @returns 
     */
-    const returnCreatedDriverRecords = () => {
-        let numberRow = drivers.length;
-        const reversedConcretes = drivers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
-        let value = reversedConcretes.map((driver, i) => {
+    const returnCreatedPersonnelRecords = () => {
+        let numberRow = personnelSlips.length;
+        const reversedConcretes = personnelSlips.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
+        let value = reversedConcretes.map((personnelSlip, i) => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="GASNameShowGe"> {driver['name']} {driver['lastName']}  </span>
+                <span className="GASNameShowGe"> {personnelSlip['name']} {personnelSlip['lastName']}  </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
-                        onClick={() => showEditForm(driver['id'])}
+                        onClick={() => showEditForm(personnelSlip['id'])}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
@@ -140,12 +271,16 @@ const AddDriver = () => {
 
     const resetForm = (apply = true) => {
         setInput({
-            name: '',
-            lastName: '',
-            nationalCode: '',
-            dateOfBirth: '',
-            mobile: '',
-            address: '',
+            customer_id: '',
+            contractStart: '',
+            contractPeriod: '',
+            wageCalculation: '',
+            salary: '',
+            workFriday: '',
+            workHoliday: '',
+            overtime: '',
+            insurance: '',
+            absencePenalty: '',
         });
 
         var elements = document.getElementsByClassName('element');
@@ -171,24 +306,17 @@ const AddDriver = () => {
  */
     const pasteDataForEditing = (recordId) => {
 
-        let driver = drivers.find(driver => driver.id === recordId);
-        driver && setId(recordId);
+        let personnelSlip = personnelSlips.find(personnelSlip => personnelSlip.id === recordId);
+        personnelSlip && setId(recordId);
 
-        const { id, created_at, updated_at, ...rest } = driver;//نادیده گرفتن کلید های مشخص شده
+        const { id, created_at, updated_at, ...rest } = personnelSlip;//نادیده گرفتن کلید های مشخص شده
 
         setInput(rest);
     }
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
-    /**
-     * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
-     */
-    const [widthComponent, setWidthComponent] = useState(0);
-    useEffect(() => {
-        let widths = container.current.offsetWidth;
-        setWidthComponent(widths)
-    }, []);
+
 
     /**
         * ذخیره مقادیر ورودی‌های کاربر در استیت
@@ -200,6 +328,9 @@ const AddDriver = () => {
         // حذف کاما از اعداد
         let result = value.replace(/,/g, '');
         setInput(prev => ({ ...prev, [input]: result }));
+        if (input == 'customer_id') {
+            setSelectedOption(value);
+        }
     }
 
     /**
@@ -212,25 +343,9 @@ const AddDriver = () => {
         refErr.current && (refErr.current.innerHTML = '');
     }
 
-    const addZeroFirstStr = (element) => {
-        let value = input[element];
-        if (value && value != '0') {
-            isFirstDigitZero(value) || (value = 0 + value);
-        } else {
-            value = '';
-        }
-        setInput(prev => ({ ...prev, [element]: value }));
-    }
 
-    /**
-    * چکت می کند که آیا اول رشته صفر است یا خیر
-    * @param {یک رشته عددی} str 
-    * @returns 
-    */
-    function isFirstDigitZero(str) {
-        // اگر اولین کاراکتر رشته صفر باشد، تابع true برمی‌گرداند
-        return str.charAt(0) === '0';
-    }
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -247,7 +362,7 @@ const AddDriver = () => {
                 }
             }
         ).then((response) => {
-            setDrivers(prev => [...prev, response.data.driver]);
+            setPersonnelSlips(prev => [...prev, response.data.personnelSlip]);
 
             form.current.reset();
 
@@ -300,7 +415,7 @@ const AddDriver = () => {
      * @param {object} newObject 
      */
     const replaceObject = (id, newObject) => {
-        setDrivers(drivers.map((object) => {
+        setPersonnelSlips(personnelSlips.map((object) => {
             if (object.id == id) {
                 return newObject;
             } else {
@@ -324,7 +439,7 @@ const AddDriver = () => {
                 }
             }
         ).then((response) => {
-            replaceObject(id, response.data.driver);
+            replaceObject(id, response.data.personnelSlip);
 
             MySwal.fire({
                 icon: "success",
@@ -383,7 +498,7 @@ const AddDriver = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
             }} />
-            <Title title="تعریف راننده" />
+            <Title title="ایجاد و ثبت فیش حقوقی پرسنل" />
 
             <div className="headPageGe">
 
@@ -392,7 +507,7 @@ const AddDriver = () => {
                     ref={btnAddGeRef} onClick={showAddForm}
                     disabled={disabledBtnShowForm}
                 >
-                    تعریف راننده
+                    تعریف فیش حقوقی
                 </button>
 
                 <button
@@ -401,7 +516,7 @@ const AddDriver = () => {
                     onClick={showCreatedRecord}
                     disabled={disabledBtnShowRecords}
                 >
-                    مشاهده راننده‌های تعریف شده
+                    مشاهده فیش‌های تعریف شده
                 </button>
 
             </div>
@@ -411,59 +526,86 @@ const AddDriver = () => {
                 <div className="continerAddGe ">
                     <form action="" className="formBeton" ref={form}>
 
-                        <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش راننده </h5>
+                        <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش فیش </h5>
 
                         <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="name">
-                                        نام
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        className="inputTextFB element"
-                                        defaultValue={input.name}
-                                        onInput={e => handleSaveValInput(e, 'name')}
-                                        onFocus={e => clearInputError(e, nameErrorRef)}
-                                        autoFocus
-                                    />
+                                    <label htmlFor="customer_id"> پرسنل </label>
+                                    {/* <SelectZabi /> */}
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div
-                                    className="errorContainerFB elementError"
-                                    id="nameError"
-                                    ref={nameErrorRef}
-                                >
-                                </div>
+                                <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div>
                             </div>
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="lastName">
-                                        نام خانوادگی
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="lastName"
-                                        className="inputTextFB element"
-                                        defaultValue={input.lastName}
-                                        onInput={e => handleSaveValInput(e, 'lastName')}
-                                        onFocus={e => clearInputError(e, lastNameErrorRef)}
-                                        
-                                    />
+                                    <label htmlFor="customer_id"> 2پرسنل </label>
+                                    <SelectZabi
+                                    primaryLabel='انتخاب'
+                                     options={personnels} 
+                                     />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                <div
-                                    className="errorContainerFB elementError"
-                                    id="lastNameError"
-                                    ref={lastNameErrorRef}
-                                >
-                                </div>
+                                <div className="errorContainerFB elementError" id="customer_idError" > </div>
                             </div>
+                            {/* <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="customer_id"> پرسنل </label>
+                                    <select
+                                        name=""
+                                        id="customer_id"
+                                        className="selectFB element inputTextFB"
+                                        onChange={e => { handleSaveValInput(e, 'customer_id') }}
+                                        value={selectedOption}
+                                        onClick={(e) => clearInputError(e, customer_idErrorRef)}
+                                    >
+                                        <option value=""> انتخاب </option>
+                                        <Skeleton height={40} count={12} />
+                                         {personnels.length >3 ? showPersonnels() : <Skeleton height={40} count={12} />} 
+
+                                    </select>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div>
+                            </div> */}
+
+                            {/* <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label  >پرسنل </label>
+                                    <div className="selectFB element element containerCustomerTypeFB"
+                                        id="customer_id"
+                                        ref={typesDiv}
+                                        onClick={(e) => { showDivCustomerType(); clearInputError(e, typesErrorRef, true, false) }}
+                                    >
+                                        <span className="lableCustomerTypeFB" ref={lableCustomerType}> انتخاب </span>
+                                        <i className="icofont-caret-down " />
+                                    </div>
+                                    <div className="divItemCustomerTypeFB --hidden" ref={divItemCustomerType}>
+                                        <div className="rigthCustomerTypeFB">
+                                            <div className="RCTYitemsFB">
+                                                {customerTypeSelected && showCustomerTypeSelected()}
+                                            </div>
+                                            <div className="errorRCTYitemFB --hidden" ref={errorRCTYitem}>
+                                                هیچ گزینه ای انتخاب نشده است
+                                            </div>
+                                            <button className="btnRCTYitemsFB"
+                                                onClick={endSelectCustomerType}> ثبت </button>
+
+                                        </div>
+                                        <div className="leftCustomerTypeFB">
+                                            {showCustomerTypes()}
+                                        </div>
+                                    </div>
+                                    <i className="icofont-ui-rating starFB" />
+
+                                </div>
+                                <div className="errorContainerFB elementError" id="typesError" ref={typesErrorRef}> </div>
+                            </div> */}
+
                         </div>
 
-                        <div className="sectionFB">
+                        {/* <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="nationalCode">کد ملی </label>
@@ -557,9 +699,9 @@ const AddDriver = () => {
                                 </div>
                                 <div className="errorContainerFB elementError" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
                             </div>
-                        </div>
+                        </div> */}
 
-                        <div className="sectionFB">
+                        {/* <div className="sectionFB">
                             <div className="divRightFB">
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
@@ -594,7 +736,7 @@ const AddDriver = () => {
                                     <div className="errorContainerFB elementError" id="addressError" ref={addressErrorRef}> </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button
@@ -643,7 +785,7 @@ const AddDriver = () => {
                             <span className="headDelShowGe"> حذف </span>
                         </div>
 
-                        {drivers ? returnCreatedDriverRecords() : <Skeleton height={40} count={12} />}
+                        {personnelSlips ? returnCreatedPersonnelRecords() : <Skeleton height={40} count={12} />}
 
                     </div>
 
@@ -654,4 +796,4 @@ const AddDriver = () => {
         </div>
     )
 }
-export default AddDriver;
+export default AddPersonnelSlip;

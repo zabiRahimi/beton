@@ -1,0 +1,16 @@
+.personnelAption_addPerS{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 12px;
+}
+
+.fther_addPers{
+font-size: .7rem;
+color: #444444;
+}
+
+.personnelAption_addPerS:hover .fther_addPers{
+    color: #fff;
+}
