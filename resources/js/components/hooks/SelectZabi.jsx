@@ -1,44 +1,52 @@
 import { useState, useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-function SelectZabi({options, primaryLabel}) {
+function SelectZabi({options, primaryLabel, saveOption}) {
     const labelRef= useRef(null);
+    const mainOptionRef= useRef(null);
     const [currentElement, setCurrentElement] = useState(primaryLabel);
-    const select = () => {
-        return <div>
-            <div>select zabi</div>
-            <div>option zabi</div>
-        </div>
-    }
-
-    const changeLabel =(val)=>{
-        
-        // labelRef.current.textContent=val;
-        // ReactDOM.render(val, labelRef.current);
-        
-    //     const root = ReactDOM.createRoot(labelRef.current);
-
-    //    console.log(root);
-    }
     
-    const showOption=()=>{
+    
+    const returnOptions=()=>{
         let vals;
         vals=options.map((val, i)=>{
-            return <div className='containerOptionSZ' key={i} onClick={()=>setCurrentElement(val.html)}>
+            return <div className='containerOptionSZ' key={i} onClick={()=>{setCurrentElement(val.html); changeHandle(val.value) } }>
                 {val.html}
                  </div>
         })
         return vals;
     }
 
+    const optionDisplayHandle=(apply=true)=>{
+        if (apply) {
+            mainOptionRef.current.classList.add('--hidden');
+        } else {
+            mainOptionRef.current.classList.toggle('--hidden');
+        }
+    }
+
+    const changeHandle =(val)=>{
+        saveOption(val);
+        optionDisplayHandle();
+    }
+
     return (
-        <div className='mainSZ'>
-            <div className='titleSZ'>
+        <div 
+        className='mainSZ'
+        onBlur={optionDisplayHandle}
+        tabIndex="0" 
+        >
+            <div 
+            className='titleSZ'
+            onClick={()=>{optionDisplayHandle(false)}}
+            
+            >
                 <span className="labelSZ" ref={labelRef}> {currentElement}</span>
                 <i className="icofont-caret-down " />
             </div>
-            <div className='mainOptionSZ' >
-                {showOption()}
+            <div className='mainOptionSZ --hidden'  ref={mainOptionRef} >
+                {options.length>0 ? returnOptions() : <Skeleton height={32} count={6} />}
             </div>
         </div>
     );

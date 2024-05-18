@@ -27,9 +27,9 @@ class StorePersonnelSlipRequest extends FormRequest
             'contractPeriod' => ['nullable','bail',],
             'wageCalculation' => ['required','bail',],
             'salary' => ['required','bail',],
+            'overtime' => ['nullable','bail',],
             'workFriday' => ['nullable','bail',],
             'workHoliday' => ['nullable','bail',],
-            'overtime' => ['nullable','bail',],
             'insurance' => ['nullable','bail',],
             'absencePenalty' => ['nullable','bail',],
         ];

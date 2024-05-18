@@ -1,16 +1,16 @@
-.personnelAption_addPerS{
+.personnelAption_addPerS {
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    padding: 5px 12px;
+    padding: 4px 12px;
 }
 
-.fther_addPers{
-font-size: .7rem;
-color: #444444;
+.fther_addPers {
+    font-size: .7rem;
+    color: #444444;
 }
 
-.personnelAption_addPerS:hover .fther_addPers{
+.personnelAption_addPerS:hover .fther_addPers {
     color: #fff;
 }

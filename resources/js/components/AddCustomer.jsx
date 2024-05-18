@@ -907,7 +907,7 @@ const AddCustomer = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label  >نوع مشتری </label>
-                                    <div className="selectFB element element containerCustomerTypeFB"
+                                    <div className="selectFB element containerCustomerTypeFB"
                                         id="types"
                                         ref={typesDiv}
                                         onClick={(e) => { showDivCustomerType(); clearInputError(e, typesErrorRef, true, false) }}

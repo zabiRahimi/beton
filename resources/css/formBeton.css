@@ -51,7 +51,8 @@
     /* width: 50%; */
     /* margin-bottom: 30px; */
     width: 50%;
-    padding: 0 calc((50% - 335px) / 2);
+    /* padding: 0 calc((50% - 335px) / 2); */
+    padding: 0 calc((50% - 360px) / 2);
 }
 
 .divInputFB {
@@ -75,15 +76,16 @@
 }
 
 .divInputFB label {
-    width: 100px;
+    /* width: 135px; */
     display: inline-block;
     font-size: 0.95rem;
+    flex-grow: 1;
 }
 
 .inputTextFB,
 .inputTextUnitFB,
 .inputShabaFB {
-    width: 235px;
+    width: 200px;
     height: 30px;
     padding: 0 7px;
     font-size: 0.91rem;
@@ -489,6 +491,24 @@ color: #f1f1f1;
     direction: ltr;
 }
 
+/*  مربوط به کامپوننت ایجاد فیش حقوقی پرسنل، دکمه وضعیت بیمه   */
+.labelInsuranceAPS_FB{
+
+}
+
+.hasRadioInsuAPS_FB{
+    padding-right: 10px;
+    color: #006700;
+}
+
+.notHasRadioInsuAPS_FB{
+    padding-right: 10px;
+
+    color: #c30101;
+
+}
+
+
 @media screen and (min-width:1200px) {
 
     .formBeton {
@@ -507,19 +527,16 @@ color: #f1f1f1;
         padding: 0 calc((50% - 362px) / 2);
     }
 
-    .divInputFB {
-        /* padding: 0 25px; */
-    }
 
     .divInputFB label {
-        width: 112px;
+        width: 125px;
         font-size: 1.094rem;
     }
 
     .inputTextFB,
     .selectFB,
     .divExampleNumberplate {
-        width: 250px;
+        width: 230px;
     }
 
     .inputShabaFB{
@@ -551,7 +568,7 @@ color: #f1f1f1;
     }
 
     .errorContainerFB {
-        width: 250px;
+        width: 230px;
         margin-right: 120px;
         font-size: .72rem;
     }

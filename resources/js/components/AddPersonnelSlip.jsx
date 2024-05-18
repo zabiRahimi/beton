@@ -61,11 +61,13 @@ const AddPersonnelSlip = () => {
     const yearSelect = useRef(null);
 
     const nameRef = useRef(null);
-    const lastNameRef = useRef(null);
-    const nationalCodeRef = useRef(null);
-    const dateOfBirthRef = useRef(null);
-    const mobileRef = useRef(null);
-    const addressRef = useRef(null);
+    const contractStart = useRef(null);
+    const contractPeriod = useRef(null);
+    const salary = useRef(null);
+    const overtime = useRef(null);
+    const workFriday = useRef(null);
+    const insurance = useRef(null);
+    const absencePenalty = useRef(null);
 
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
@@ -97,11 +99,12 @@ const AddPersonnelSlip = () => {
         wageCalculation: '',
         salary: '',
         workFriday: '',
-        workHoliday: '',
         overtime: '',
         insurance: '',
         absencePenalty: '',
     });
+    const [customerId, setCustomerId] = useState('');
+    const [wageCalculation, setWageCalculation] = useState('');
     const [id, setId] = useState(null);
     const hasCalledGetPersonnels = useRef(false);
 
@@ -117,7 +120,7 @@ const AddPersonnelSlip = () => {
             setDay(value);
         }
         let valDate = year + '-' + month + '-' + value;
-        setInput(prev => ({ ...prev, dateOfBirth: valDate }));
+        setInput(prev => ({ ...prev, contractStart: valDate }));
 
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         daySelect.current.classList.remove('borderRedFB');
@@ -134,7 +137,7 @@ const AddPersonnelSlip = () => {
             setMonth(value);
         }
         let valDate = year + '-' + value + '-' + day;
-        setInput(prev => ({ ...prev, dateOfBirth: valDate }));
+        setInput(prev => ({ ...prev, contractStart: valDate }));
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         monthSelect.current.classList.remove('borderRedFB');
     }
@@ -146,7 +149,7 @@ const AddPersonnelSlip = () => {
             setYear(value);
         }
         let valDate = value + '-' + month + '-' + day;
-        setInput(prev => ({ ...prev, dateOfBirth: valDate }));
+        setInput(prev => ({ ...prev, contractStart: valDate }));
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         yearSelect.current.classList.remove('borderRedFB');
 
@@ -169,9 +172,17 @@ const AddPersonnelSlip = () => {
         }
     }, []);
 
+    useEffect(() => {
+        customerId && setInput(prev => ({ ...prev, customer_id: customerId }));
+    }, [customerId]);
+
+    useEffect(() => {
+        wageCalculation && setInput(prev => ({ ...prev, wageCalculation }));
+    }, [wageCalculation]);
+
     async function getPersonnels() {
         await axios.get("/api/v1/getPersonnels").then((response) => {
-            let datas=response.data.personnels;
+            let datas = response.data.personnels;
             if (datas.length == 0) {
                 MySwal.fire({
                     icon: "warning",
@@ -189,56 +200,46 @@ const AddPersonnelSlip = () => {
 
                 });
             } else {
-                datas.map((data, i)=>{
-                    setPersonnels(perv=>([...perv, {
+                datas.map((data, i) => {
+                    setPersonnels(perv => ([...perv, {
                         value: data.id,
                         html: <div className="personnelAption_addPerS">
-                            <span className="name_addPers">{data.name} 
-                            {' '}
-                            {data.lastName}</span>
-                            
+                            <span className="name_addPers">{data.name}
+                                {' '}
+                                {data.lastName}</span>
+
                             <span className="fther_addPers">
-                            {data.father||''}
+                                {data.father || ''}
                             </span>
-                            
+
                         </div>
-                    }]) )
+                    }]))
                 })
 
-                // setPersonnels(response.data.personnels);
             }
         });
     }
-    // console.log(personnels);
 
-    /**
-     * 
-     * نام پرسنل‌های ثبت شده را در تگ سلکت مربوطه به نمایش می‌گذارد
-     * @returns 
-     */
-    // const showPersonnels = () => {
-    //     let val = options.map((personnel, i) => {
-    //         return (
-    //             <div key={i} onClick={()=>changeLabel(personnel['value'])} >
-    //                 {personnel['label']} 
-    //             </div>
-    //         )
-    //     })
-    //     return val;
-    // }
-    // const showPersonnels = () => {
-    //     let val = [];
-    //      options.map((personnel, i) => {
-    //         val[i]= {
-    //             value: personnel['value'],
-    //              div: <div >
-    //                 {personnel['label']}
-    //             </div>
-    //         }
-
-    //     })
-    //     return val;
-    // }
+    const wageCalculationOptions = [
+        {
+            value: 'ساعتی',
+            html: <div className="personnelAption_addPerS">
+                <span className="name_addPers"> ساعتی </span>
+            </div>
+        },
+        {
+            value: 'روزانه',
+            html: <div className="personnelAption_addPerS">
+                <span className="name_addPers"> روزانه </span>
+            </div>
+        },
+        {
+            value: 'ماهانه',
+            html: <div className="personnelAption_addPerS">
+                <span className="name_addPers"> ماهانه </span>
+            </div>
+        },
+    ];
 
     /**
     * رکوردهای فیش‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -316,8 +317,6 @@ const AddPersonnelSlip = () => {
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
-
-
     /**
         * ذخیره مقادیر ورودی‌های کاربر در استیت
         * @param {*} e 
@@ -342,10 +341,6 @@ const AddPersonnelSlip = () => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
     }
-
-
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -483,6 +478,44 @@ const AddPersonnelSlip = () => {
         setLoading(false)
     }
 
+    /**
+     * اگر دقت شود در این‌پوت‌ کلمه ماه
+     * اضافه شده که درواقع جزیی از این پوت نیستن برای اینکه
+     * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
+     * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
+     * @param {number} id 
+     */
+    const htmlFor = (id) => {
+        document.getElementById(id).focus()
+    }
+
+    /**
+     * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
+     * به صورت دهگان،صدگان و ...
+     * @param {ref} ref 
+     */
+    const formatNub = (ref) => {
+        let val,
+            checkDthot,
+            resalt = ref.current.value.replace(/[\s,]/g, "");
+
+        // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
+        if (resalt.slice(-1) == '.') {
+            checkDthot = true;
+        } else {
+            checkDthot = false;
+        }
+        // چک می کند فقط رشته عددی باشد
+        if (parseFloat(resalt)) {
+            val = parseFloat(resalt);
+            /**
+             * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
+             * علامت را به آخر رشته اضافه می کند
+             */
+            val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
+            ref.current.value = val;
+        }
+    }
     return (
         <div className='' ref={container}>
 
@@ -532,101 +565,25 @@ const AddPersonnelSlip = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="customer_id"> پرسنل </label>
-                                    {/* <SelectZabi /> */}
-                                    <i className="icofont-ui-rating starFB" />
-                                </div>
-                                <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div>
-                            </div>
-
-                            <div className="containerInputFB">
-                                <div className="divInputFB">
-                                    <label htmlFor="customer_id"> 2پرسنل </label>
                                     <SelectZabi
-                                    primaryLabel='انتخاب'
-                                     options={personnels} 
-                                     />
-                                    <i className="icofont-ui-rating starFB" />
-                                </div>
-                                <div className="errorContainerFB elementError" id="customer_idError" > </div>
-                            </div>
-                            {/* <div className="containerInputFB">
-                                <div className="divInputFB">
-                                    <label htmlFor="customer_id"> پرسنل </label>
-                                    <select
-                                        name=""
-                                        id="customer_id"
-                                        className="selectFB element inputTextFB"
-                                        onChange={e => { handleSaveValInput(e, 'customer_id') }}
-                                        value={selectedOption}
-                                        onClick={(e) => clearInputError(e, customer_idErrorRef)}
-                                    >
-                                        <option value=""> انتخاب </option>
-                                        <Skeleton height={40} count={12} />
-                                         {personnels.length >3 ? showPersonnels() : <Skeleton height={40} count={12} />} 
-
-                                    </select>
+                                        primaryLabel='انتخاب'
+                                        options={personnels}
+                                        saveOption={setCustomerId}
+                                    />
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div>
-                            </div> */}
-
-                            {/* <div className="containerInputFB">
-                                <div className="divInputFB">
-                                    <label  >پرسنل </label>
-                                    <div className="selectFB element element containerCustomerTypeFB"
-                                        id="customer_id"
-                                        ref={typesDiv}
-                                        onClick={(e) => { showDivCustomerType(); clearInputError(e, typesErrorRef, true, false) }}
-                                    >
-                                        <span className="lableCustomerTypeFB" ref={lableCustomerType}> انتخاب </span>
-                                        <i className="icofont-caret-down " />
-                                    </div>
-                                    <div className="divItemCustomerTypeFB --hidden" ref={divItemCustomerType}>
-                                        <div className="rigthCustomerTypeFB">
-                                            <div className="RCTYitemsFB">
-                                                {customerTypeSelected && showCustomerTypeSelected()}
-                                            </div>
-                                            <div className="errorRCTYitemFB --hidden" ref={errorRCTYitem}>
-                                                هیچ گزینه ای انتخاب نشده است
-                                            </div>
-                                            <button className="btnRCTYitemsFB"
-                                                onClick={endSelectCustomerType}> ثبت </button>
-
-                                        </div>
-                                        <div className="leftCustomerTypeFB">
-                                            {showCustomerTypes()}
-                                        </div>
-                                    </div>
-                                    <i className="icofont-ui-rating starFB" />
-
-                                </div>
-                                <div className="errorContainerFB elementError" id="typesError" ref={typesErrorRef}> </div>
-                            </div> */}
+                            </div>
 
                         </div>
 
-                        {/* <div className="sectionFB">
-                            <div className="containerInputFB">
-                                <div className="divInputFB">
-                                    <label htmlFor="nationalCode">کد ملی </label>
-                                    <input
-                                        type="text"
-                                        id="nationalCode"
-                                        className="inputTextFB ltrFB element"
-                                        defaultValue={input.nationalCode}
-                                        onInput={e => handleSaveValInput(e, 'nationalCode')}
-                                        onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
-                                    />
-                                </div>
-                                <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
-                            </div>
-
+                        <div className="sectionFB">
                             <div className="containerInputFB">
                                 <div className="divInputFB ">
-                                    <label htmlFor="day">تاریخ تولد </label>
+                                    <label htmlFor="day">تاریخ شروع قرارداد </label>
                                     <div className="divDateBirth">
-                                        <div className="divUpDateAcus element" id="dateOfBirth"
-                                            ref={dateOfBirth}
+                                        <div className="divUpDateAcus element" id="contractStart"
+                                            ref={contractStart}
                                         >
                                             <input
                                                 type="text"
@@ -635,7 +592,7 @@ const AddPersonnelSlip = () => {
                                                 id="day"
                                                 value={day || ''}
                                                 onInput={(e) => changeDay(e)}
-                                                onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+                                                onFocus={(e) => clearInputError(e, contractStartErrorRef, false, true)}
 
                                             />
                                             <span>/</span>
@@ -645,7 +602,7 @@ const AddPersonnelSlip = () => {
                                                 placeholder="1"
                                                 value={month || ''}
                                                 onInput={(e) => changeMonth(e)}
-                                                onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+                                                onFocus={(e) => clearInputError(e, contractStartErrorRef, false, true)}
 
                                             />
                                             <span>/</span>
@@ -655,7 +612,7 @@ const AddPersonnelSlip = () => {
                                                 placeholder="1300"
                                                 value={year || ''}
                                                 onInput={(e) => { changeYear(e) }}
-                                                onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+                                                onFocus={(e) => clearInputError(e, contractStartErrorRef, false, true)}
 
                                             />
                                         </div>
@@ -666,7 +623,7 @@ const AddPersonnelSlip = () => {
                                                 value={day}
                                                 ref={daySelect}
                                                 onChange={(e) => changeDay(e)}
-                                                onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+                                                onClick={(e) => clearInputError(e, contractStartErrorRef, false, true)}
 
                                             >
                                                 <option value="">روز</option>
@@ -677,7 +634,7 @@ const AddPersonnelSlip = () => {
                                                 value={month}
                                                 ref={monthSelect}
                                                 onChange={(e) => changeMonth(e)}
-                                                onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+                                                onClick={(e) => clearInputError(e, contractStartErrorRef, false, true)}
 
                                             >
                                                 <option value="">ماه</option>
@@ -688,7 +645,7 @@ const AddPersonnelSlip = () => {
                                                 value={year}
                                                 ref={yearSelect}
                                                 onChange={(e) => { changeYear(e) }}
-                                                onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+                                                onClick={(e) => clearInputError(e, contractStartErrorRef, false, true)}
 
                                             >
                                                 <option value="">سال</option>
@@ -697,46 +654,187 @@ const AddPersonnelSlip = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="errorContainerFB elementError" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="contractStartError" ref={contractStartErrorRef}> </div>
                             </div>
-                        </div> */}
 
-                        {/* <div className="sectionFB">
-                            <div className="divRightFB">
-                                <div className="containerInputFB">
-                                    <div className="divInputFB">
-                                        <label htmlFor="mobile">موبایل</label>
-                                        <input type="text" id="mobile" className="inputTextFB ltrFB element"
-                                            value={input['mobile'] || ''}
-                                            onInput={e => handleSaveValInput(e, 'mobile')}
-                                            onBlur={() => addZeroFirstStr('mobile')}
-                                            onFocus={(e) => clearInputError(e, mobileErrorRef)}
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="contractPeriod">
+                                        مدت قرارداد
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="contractPeriod"
+                                        className=" inputTextUnitFB ltrFB element"
+                                        defaultValue={input.contractPeriod}
+                                        ref={contractPeriod}
+                                        onFocus={e => clearInputError(e, contractPeriodErrorRef)}
+                                    />
 
-                                        />
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="mobileError" ref={mobileErrorRef}> </div>
-
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('contractPeriod')}
+                                    >
+                                        ماه
+                                    </span>
                                 </div>
-
-                            </div>
-
-                            <div className="divLeftFB">
-                                <div className="containerInputFB">
-                                    <div className="divInputFB">
-                                        <label htmlFor="address">آدرس</label>
-                                        <textarea
-                                            id="address"
-                                            className="textareaAddressACu"
-                                            defaultValue={input.address}
-                                            onInput={e => handleSaveValInput(e, 'address')}
-                                            onFocus={(e) => clearInputError(e, addressErrorRef)}
-
-                                        />
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="addressError" ref={addressErrorRef}> </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id="contractPeriodError"
+                                    ref={contractPeriodErrorRef}
+                                >
                                 </div>
                             </div>
-                        </div> */}
+                        </div>
+
+                        <div className="sectionFB">
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="wageCalculation">نوع دستمزد</label>
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={wageCalculationOptions}
+                                        saveOption={setWageCalculation}
+                                    />
+                                </div>
+                                <div className="errorContainerFB elementError" id="wageCalculationError" ref={wageCalculationErrorRef}> </div>
+
+                            </div>
+
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="salary">میزان حقوق </label>
+                                    <input
+                                        type="text"
+                                        id="salary"
+                                        className=" inputTextUnitFB ltrFB element"
+                                        defaultValue={input.salary}
+                                        ref={salary}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'amountCement');
+                                            formatNub(salary);
+                                        }
+                                        }
+                                        onFocus={e => clearInputError(e, salaryErrorRef)}
+                                    />
+
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('salary')}
+                                    >
+                                        تومان
+                                    </span>
+                                </div>
+                                <div className="errorContainerFB elementError" id="salaryError" ref={salaryErrorRef}> </div>
+                            </div>
+
+                        </div>
+
+                        <div className="sectionFB">
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="overtime">درصد اضافه کاری</label>
+                                    <input
+                                        type="text"
+                                        id="overtime"
+                                        className=" inputTextUnitFB ltrFB element"
+                                        defaultValue={input.overtime}
+                                        ref={overtime}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'overtime');
+                                            formatNub(overtime);
+                                        }
+                                        }
+                                        onFocus={e => clearInputError(e, overtimeErrorRef)}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('overtime')}
+                                    >
+                                        درصد
+                                    </span>
+
+                                </div>
+                                <div className="errorContainerFB elementError" id="wageCalculationError" ref={wageCalculationErrorRef}> </div>
+
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="workFriday">درصد جمعه کاری</label>
+                                    <input
+                                        type="text"
+                                        id="workFriday"
+                                        className=" inputTextUnitFB ltrFB element"
+                                        defaultValue={input.workFriday}
+                                        ref={workFriday}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'amountCement');
+                                            formatNub(workFriday);
+                                        }
+                                        }
+                                        onFocus={e => clearInputError(e, workFridayErrorRef)}
+                                    />
+
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('workFriday')}
+                                    >
+                                        درصد
+                                    </span>
+                                </div>
+                                <div className="errorContainerFB elementError" id="salaryError" ref={salaryErrorRef}> </div>
+                            </div>
+                        </div>
+
+                        <div className="sectionFB">
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="absencePenalty"> جریمه غیبت</label>
+                                    <input
+                                        type="text"
+                                        id="absencePenalty"
+                                        className=" inputTextUnitFB ltrFB element"
+                                        defaultValue={input.absencePenalty}
+                                        ref={absencePenalty}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'absencePenalty');
+                                            formatNub(absencePenalty);
+                                        }
+                                        }
+                                        onFocus={e => clearInputError(e, absencePenaltyErrorRef)}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('absencePenalty')}
+                                    >
+                                        تومان
+                                    </span>
+
+                                </div>
+                                <div className="errorContainerFB elementError" id="absencePenaltyError" ref={absencePenaltyErrorRef}> </div>
+
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="insurance"> بیمه </label>
+                                    <label htmlFor="ok" className="labelInsuranceAPS_FB">
+                                        <input type="radio" name="dd" id="ok" />
+                                        <span className="hasRadioInsuAPS_FB">دارد</span>
+                                    </label>
+                                    <label htmlFor="no" className="labelInsuranceAPS_FB">
+                                        <input type="radio" name="dd" id="no" />
+                                        <span className="notHasRadioInsuAPS_FB">ندارد</span>
+                                    </label>
+
+
+                                </div>
+                                <div className="errorContainerFB elementError" id="insuranceError" ref={insuranceErrorRef}> </div>
+                            </div>
+                        </div>
 
                         <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button

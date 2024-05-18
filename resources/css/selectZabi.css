@@ -1,28 +1,28 @@
-.mainSZ{
-width: 100%;
-
-position: relative;
+.mainSZ {
+    width: 235px;
+    position: relative;
 }
 
-.titleSZ{
-    width:100%;
+.titleSZ {
+    width: 100%;
+    height: 30px;
     padding: 0 8px;
-    border: 1px solid #000;
+    border: 1px solid #8f8f9d;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
 }
 
-.labelSZ{
+.labelSZ {
     flex-grow: 1;
     padding-left: 15px;
 }
 
-.mainOptionSZ{
+.mainOptionSZ {
     width: 100%;
-   
     position: absolute;
-    top: 27px;
+    top: 31px;
     left: 0;
     background-color: #e1e1ec;
     border: 1px solid #636363;
@@ -31,21 +31,21 @@ position: relative;
     flex-direction: column;
 }
 
-.containerOptionSZ{
-    /* padding: 5px 12px; */
-}
-
-
-
 .containerOptionSZ:nth-child(even) {
-    background-color: #faf9f9 ;
+    background-color: #faf9f9;
 }
 
 .containerOptionSZ:nth-child(odd) {
     background-color: #fff;
 }
 
-.containerOptionSZ:hover{
+.containerOptionSZ:hover {
     background-color: #4f4ffa;
     color: #fff;
+}
+
+@media screen and (min-width:1200px) {
+    .mainSZ {
+        width: 250px;
+    }
 }
