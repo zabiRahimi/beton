@@ -1,5 +1,5 @@
 .mainSZ {
-    width: 235px;
+    width: 200px;
     position: relative;
 }
 
@@ -46,6 +46,6 @@
 
 @media screen and (min-width:1200px) {
     .mainSZ {
-        width: 250px;
+        width: 230px;
     }
 }

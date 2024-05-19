@@ -30,7 +30,11 @@ class PersonnelSlipController extends Controller
      */
     public function store(StorePersonnelSlipRequest $request)
     {
-        //
+        $personnelSlip = new PersonnelSlip();
+        $personnelSlip->fill($request->validated());
+        $personnelSlip->save();
+
+        return response()->json(['personnelSlip'=>  $personnelSlip],200);
     }
 
     /**

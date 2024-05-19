@@ -26,7 +26,8 @@
   }
 
 .borderRedFB{
-    border-color: #ff0000 !important;
+    /* border-color: #ff0000 !important; */
+    border:1px solid #ff0000 !important;
 }
 
 .titleFormFB {
@@ -84,7 +85,8 @@
 
 .inputTextFB,
 .inputTextUnitFB,
-.inputShabaFB {
+.inputShabaFB,
+.divRadioFB {
     width: 200px;
     height: 30px;
     padding: 0 7px;
@@ -94,20 +96,26 @@
 
 .inputTextUnitFB,
 .inputShabaFB {
-    width: 170px;
+    width: 140px;
     border: 1px solid #8f8f9d;
     border-left: none;
 }
 
 .inputShabaFB{
-    width: 221px;
+    width: 185px;
+}
+
+.divRadioFB{
+    border: none;
+    display: flex;
+    justify-content: space-between;
 }
 
 /* جهت نمایش خطاهای فرم */
 .errorContainerFB {
-    width: 235px;
+    width: 200px;
     min-height: 17px;
-    margin-right: 100px;
+    margin-right: 160px;
     color: red;
     font-size: .7rem;
 }
@@ -115,7 +123,7 @@
 /* جهت نمایش واحد یک فیلد */
 .unitFB,
 .unitShabaFB {
-    width: 65px;
+    width: 60px;
     height: 30px;
     font-size: 0.72rem;
     background-color: #fff;
@@ -144,11 +152,11 @@
 .divLeftFB .containerInputFB {
     margin-bottom: 10px;
     width: 100%;
-    padding: 0 calc((100% - 335px) / 2);
+    padding: 0 calc((100% - 360px) / 2);
 }
 
 .containerCustomerTypeFB {
-    width: 235px;
+    width: 200px;
     height: 30px;
     padding:0 10px 0 15px;
     font-size: 1rem;
@@ -300,8 +308,6 @@ color: #f1f1f1;
     /* background-color: inherit; */
 }
 
-
-
 .selectFB option {
     font-size: 1.22rem;
     /* font-family: IRANSansRegular !important; */
@@ -356,7 +362,7 @@ color: #f1f1f1;
 
 /**         ***** Numberplate *****       **/
 .divExampleNumberplate {
-    width: 235px;
+    width: 213px;
     height: 37px;
     display: flex;
     flex-direction: row-reverse;
@@ -365,7 +371,7 @@ color: #f1f1f1;
 }
 
 .divIranNumberplate {
-    width: 28px;
+    width: 25px;
     display: flex;
     flex-direction: column;
     background-color: #0404c5;
@@ -413,16 +419,16 @@ color: #f1f1f1;
 }
 
 .text2Numberplate {
-    width: 42px;
+    width: 38px;
 }
 
 .selectChNumberplate {
-    width: 61px;
+    width: 58px;
     border-radius: 0;
 }
 
 .text3Numberplate {
-    width: 58px;
+    width: 50px;
 }
 
 .divSerialNumberplate {
@@ -441,7 +447,7 @@ color: #f1f1f1;
 }
 
 .textSerialNumberplate {
-    width: 42px;
+    width: 38px;
     height: 27px;
     border-radius: 0 4px 4px 0;
 }
@@ -513,7 +519,7 @@ color: #f1f1f1;
 
     .formBeton {
         margin: 35px auto;
-        padding: 15px 32px;
+        padding: 15px 10px;
     }
 
     .starFB {
@@ -524,39 +530,42 @@ color: #f1f1f1;
 
     .containerInputFB {
         width: 50%;
-        padding: 0 calc((50% - 362px) / 2);
+        /* padding: 0 calc((50% - 362px) / 2); */
+        padding: 0 calc((50% - 400px) / 2);
     }
 
 
     .divInputFB label {
-        width: 125px;
-        font-size: 1.094rem;
+        /* width: 125px; */
+        font-size: 1.062rem;
     }
 
     .inputTextFB,
     .selectFB,
-    .divExampleNumberplate {
+    .divExampleNumberplate,
+    .divRadioFB {
         width: 230px;
     }
 
     .inputShabaFB{
-        width: 235px;
+        width: 215px;
     }
 
     .divRightFB .containerInputFB,
     .divLeftFB .containerInputFB {
         width: 100%;
         margin-bottom: 18px;
-        padding: 0 calc((100% - 362px) / 2);
+        /* padding: 0 calc((100% - 362px) / 2); */
+        padding: 0 calc((100% - 380px) / 2);
     }
 
     .inputTextUnitFB {
-        width: 185px;
+        width: 170px;
     }
 
     .text2Numberplate,
     .textSerialNumberplate {
-        width: 47px;
+        width: 40px;
     }
 
     .selectChNumberplate {
@@ -569,7 +578,7 @@ color: #f1f1f1;
 
     .errorContainerFB {
         width: 230px;
-        margin-right: 120px;
+        margin-right: 155px;
         font-size: .72rem;
     }
 

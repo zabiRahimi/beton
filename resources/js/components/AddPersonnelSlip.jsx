@@ -331,6 +331,7 @@ const AddPersonnelSlip = () => {
             setSelectedOption(value);
         }
     }
+    console.log(input);
 
     /**
     * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
@@ -347,7 +348,7 @@ const AddPersonnelSlip = () => {
         setLoading(true)
 
         await axios.post(
-            '/api/v1/addDriver',
+            '/api/v1/addPersonnelSlip',
             { ...input },
             {
                 headers:
@@ -516,6 +517,7 @@ const AddPersonnelSlip = () => {
             ref.current.value = val;
         }
     }
+
     return (
         <div className='' ref={container}>
 
@@ -565,11 +567,13 @@ const AddPersonnelSlip = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="customer_id"> پرسنل </label>
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={personnels}
-                                        saveOption={setCustomerId}
-                                    />
+                                    <div id="customer_id">
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={personnels}
+                                            saveOption={setCustomerId}
+                                        />
+                                    </div>
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div>
@@ -668,6 +672,10 @@ const AddPersonnelSlip = () => {
                                         className=" inputTextUnitFB ltrFB element"
                                         defaultValue={input.contractPeriod}
                                         ref={contractPeriod}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'contractPeriod');
+                                        }
+                                        }
                                         onFocus={e => clearInputError(e, contractPeriodErrorRef)}
                                     />
 
@@ -691,11 +699,19 @@ const AddPersonnelSlip = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="wageCalculation">نوع دستمزد</label>
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={wageCalculationOptions}
-                                        saveOption={setWageCalculation}
-                                    />
+                                    <div 
+                                    // className="element"
+                                     id="wageCalculation"
+                                     onClick={e => clearInputError(e, wageCalculationErrorRef)}
+                                     >
+                                        <SelectZabi
+                                            onClick={e => clearInputError(e, wageCalculation)}
+                                            primaryLabel='انتخاب'
+                                            options={wageCalculationOptions}
+                                            saveOption={setWageCalculation}
+                                        />
+                                    </div>
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div className="errorContainerFB elementError" id="wageCalculationError" ref={wageCalculationErrorRef}> </div>
 
@@ -712,7 +728,7 @@ const AddPersonnelSlip = () => {
                                         defaultValue={input.salary}
                                         ref={salary}
                                         onInput={e => {
-                                            handleSaveValInput(e, 'amountCement');
+                                            handleSaveValInput(e, 'salary');
                                             formatNub(salary);
                                         }
                                         }
@@ -725,6 +741,7 @@ const AddPersonnelSlip = () => {
                                     >
                                         تومان
                                     </span>
+                                    <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div className="errorContainerFB elementError" id="salaryError" ref={salaryErrorRef}> </div>
                             </div>
@@ -751,13 +768,13 @@ const AddPersonnelSlip = () => {
                                     />
                                     <span
                                         className="unitFB"
-                                        onClick={() => htmlFor('overtime')}
+                                        onClick={() => htmlFor('overtimeErrorRef')}
                                     >
                                         درصد
                                     </span>
 
                                 </div>
-                                <div className="errorContainerFB elementError" id="wageCalculationError" ref={wageCalculationErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="overtimeError" ref={overtimeErrorRef}> </div>
 
                             </div>
 
@@ -771,7 +788,7 @@ const AddPersonnelSlip = () => {
                                         defaultValue={input.workFriday}
                                         ref={workFriday}
                                         onInput={e => {
-                                            handleSaveValInput(e, 'amountCement');
+                                            handleSaveValInput(e, 'workFriday');
                                             formatNub(workFriday);
                                         }
                                         }
@@ -785,7 +802,7 @@ const AddPersonnelSlip = () => {
                                         درصد
                                     </span>
                                 </div>
-                                <div className="errorContainerFB elementError" id="salaryError" ref={salaryErrorRef}> </div>
+                                <div className="errorContainerFB elementError" id="workFridayError" ref={workFridayErrorRef}> </div>
                             </div>
                         </div>
 
@@ -820,17 +837,37 @@ const AddPersonnelSlip = () => {
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="insurance"> بیمه </label>
-                                    <label htmlFor="ok" className="labelInsuranceAPS_FB">
-                                        <input type="radio" name="dd" id="ok" />
-                                        <span className="hasRadioInsuAPS_FB">دارد</span>
-                                    </label>
-                                    <label htmlFor="no" className="labelInsuranceAPS_FB">
-                                        <input type="radio" name="dd" id="no" />
-                                        <span className="notHasRadioInsuAPS_FB">ندارد</span>
-                                    </label>
-
-
+                                    <label > بیمه </label>
+                                    <div className="divRadioFB element" id="insurance">
+                                        <label htmlFor="hasInsurance" className="labelInsuranceAPS_FB">
+                                            <input
+                                                type="radio"
+                                                value={true}
+                                                name="insurance"
+                                                id="hasInsurance"
+                                                onInput={e => {
+                                                    handleSaveValInput(e, 'insurance');
+                                                }
+                                                }
+                                                onFocus={e => clearInputError(e, insuranceErrorRef)}
+                                            />
+                                            <span className="hasRadioInsuAPS_FB">دارد</span>
+                                        </label>
+                                        <label htmlFor="notHasInsurance" className="labelInsuranceAPS_FB">
+                                            <input
+                                                type="radio"
+                                                value={false}
+                                                name="insurance"
+                                                id="notHasInsurance"
+                                                onInput={e => {
+                                                    handleSaveValInput(e, 'insurance');
+                                                }
+                                                }
+                                                onFocus={e => clearInputError(e, insuranceErrorRef)}
+                                            />
+                                            <span className="notHasRadioInsuAPS_FB">ندارد</span>
+                                        </label>
+                                    </div>
                                 </div>
                                 <div className="errorContainerFB elementError" id="insuranceError" ref={insuranceErrorRef}> </div>
                             </div>

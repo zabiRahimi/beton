@@ -23,15 +23,22 @@ class StorePersonnelSlipRequest extends FormRequest
     {
         return [
             'customer_id' => ['required','bail','numeric','unique:personnel_slips'],
-            'contractStart' => ['nullable','bail',],
-            'contractPeriod' => ['nullable','bail',],
-            'wageCalculation' => ['required','bail',],
-            'salary' => ['required','bail',],
-            'overtime' => ['nullable','bail',],
-            'workFriday' => ['nullable','bail',],
-            'workHoliday' => ['nullable','bail',],
-            'insurance' => ['nullable','bail',],
-            'absencePenalty' => ['nullable','bail',],
+            'contractStart' => ['nullable','bail','date'],
+            'contractPeriod' => ['nullable','bail','numeric',],
+            'wageCalculation' => ['required','bail','string',],
+            'salary' => ['required','bail','numeric',],
+            'overtime' => ['nullable','bail','numeric',],
+            'workFriday' => ['nullable','bail','numeric',],
+            'workHoliday' => ['nullable','bail','numeric',],
+            'absencePenalty' => ['nullable','bail','numeric',],
+            'insurance' => ['nullable','bail','boolean',],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'customer_id.required' => 'پرسنل را انتخاب کنید',
         ];
     }
 }

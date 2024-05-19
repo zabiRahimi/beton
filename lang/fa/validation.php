@@ -48,7 +48,7 @@ return [
     'digits_between'       => 'The :attribute must be between :min and :max digits.',
     'dimensions'           => 'The :attribute has invalid image dimensions.',
     'distinct'             => 'The :attribute field has a duplicate value.',
-    'email'                => 'لطفا ایمیل را صحیح وارد کنید',
+    'email'                => ' ایمیل را صحیح وارد کنید',
     'exists'               => 'The selected :attribute is invalid.',
     'file'                 => 'The :attribute must be a file.',
     'filled'               => 'The :attribute field must have a value.',
@@ -100,11 +100,11 @@ return [
     ],
     'not_in'               => 'The selected :attribute is invalid.',
     'not_regex'            => 'The :attribute format is invalid.',
-    'numeric'              => 'لطفا :attribute را به عدد وارد کنید',
+    'numeric'              => ' :attribute را به عدد وارد کنید',
     'present'              => 'The :attribute field must be present.',
     'regex'                => 'The :attribute format is invalid.',
 
-    'required'             => 'لطفا :attribute را وارد کنید',
+    'required'             => ' :attribute را وارد کنید',
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',
     'required_with'        => 'The :attribute field is required when :values is present.',
@@ -140,7 +140,7 @@ return [
             'rule-name' => 'custom-message',
         ],
         'captcha' => [
-            'required_unless' => 'لطفا کد امنیتی را وارد کنید .',
+            'required_unless' => ' کد امنیتی را وارد کنید .',
         ],
 
         'bankInfo.*.bank' => [
@@ -233,6 +233,14 @@ return [
         'truckType' => 'نوع خودرو',
         'ownerName' => 'نام مالک خودرو',
         'ownerLastName' => 'نام خانوادگی مالک خودرو',
+        'contractStart' => 'شروع قرارداد',
+        'contractPeriod' => 'مدت قرارداد',
+        'wageCalculation' => 'نوع دستمزد',
+        'salary' => 'میزان حقوق',
+        'workFriday' => 'درصد جمعه‌کاری',
+        'overtime' => 'درصد اضافه‌کاری',
+        'insurance' => 'بیمه',
+        'absencePenalty' => 'جریمه غیبت',
 
     ],
 
