@@ -3,14 +3,41 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    padding: 4px 12px;
+    padding: 4px 4px 4px 5px;
+}
+
+.name_addPers,
+.fther_addPers{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.name_addPers {
+    max-width: 77%;
+    font-size: 0.9rem;
+    flex-grow: 1;
+    
 }
 
 .fther_addPers {
+    max-width: 30%;
     font-size: .7rem;
     color: #444444;
+    
 }
 
 .personnelAption_addPerS:hover .fther_addPers {
     color: #fff;
+}
+
+@media screen and (min-width:1200px) {
+    .name_addPers {
+        font-size: 0.95rem;
+    }
+
+    .fther_addPers {
+        font-size: .72rem;
+        color: #444444;
+    }
 }

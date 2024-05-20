@@ -1,11 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef,forwardRef, useImperativeHandle } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-function SelectZabi({options, primaryLabel, saveOption}) {
+const SelectZabi=forwardRef(({options, primaryLabel, saveOption},ref)=> {
     const labelRef= useRef(null);
     const mainOptionRef= useRef(null);
     const [currentElement, setCurrentElement] = useState(primaryLabel);
+    useImperativeHandle(ref, () => ({
+        updateData(value) {
+            setCurrentElement(value);
+        }
+      }));
     
     
     const returnOptions=()=>{
@@ -27,6 +32,7 @@ function SelectZabi({options, primaryLabel, saveOption}) {
     }
 
     const changeHandle =(val)=>{
+        console.log(val);
         saveOption(val);
         optionDisplayHandle();
     }
@@ -43,14 +49,14 @@ function SelectZabi({options, primaryLabel, saveOption}) {
             
             >
                 <span className="labelSZ" ref={labelRef}> {currentElement}</span>
-                <i className="icofont-caret-down " />
+                <i className="icofont-caret-down iSZ" />
             </div>
             <div className='mainOptionSZ --hidden'  ref={mainOptionRef} >
                 {options.length>0 ? returnOptions() : <Skeleton height={32} count={6} />}
             </div>
         </div>
     );
-}
+})
 
 export default SelectZabi;
 

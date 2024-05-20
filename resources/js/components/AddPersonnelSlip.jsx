@@ -35,18 +35,7 @@ const AddPersonnelSlip = () => {
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const MySwal = withReactContent(Swal);
 
-    const [options, setOptions] = useState([
-        { value: "blues", label: "Blues" },
-        { value: "rock", label: "Rock" },
-        { value: "jazz", label: "Jazz" },
-        { value: "orchestra", label: "Orchestra" },
-    ]);
-
     const {
-        years,
-        months,
-        days,
-        nameDays,
         optionDays,
         optionMonth,
         optionYears,
@@ -72,8 +61,6 @@ const AddPersonnelSlip = () => {
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
-
-
     const customer_idErrorRef = useRef(null);
     const contractStartErrorRef = useRef(null);
     const contractPeriodErrorRef = useRef(null);
@@ -84,6 +71,9 @@ const AddPersonnelSlip = () => {
     const overtimeErrorRef = useRef(null);
     const insuranceErrorRef = useRef(null);
     const absencePenaltyErrorRef = useRef(null);
+
+    const customerSelectChild= useRef();
+    const wageCalculationSelectChild= useRef();
 
     const [loading, setLoading] = useState(false);
     const [personnels, setPersonnels] = useState([]);
@@ -283,6 +273,14 @@ const AddPersonnelSlip = () => {
             insurance: '',
             absencePenalty: '',
         });
+        setCustomerId('');
+        setWageCalculation('');
+        customerSelectChild.current && customerSelectChild.current.updateData('انتخاب');
+        wageCalculationSelectChild.current && wageCalculationSelectChild.current.updateData('انتخاب');
+         
+        setDay('');
+        setMonth('');
+        setYear('');
 
         var elements = document.getElementsByClassName('element');
         for (var i = 0; i < elements.length; i++) {
@@ -324,15 +322,24 @@ const AddPersonnelSlip = () => {
         */
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-        // حذف کاما از اعداد
-        let result = value.replace(/,/g, '');
-        setInput(prev => ({ ...prev, [input]: result }));
+        if (input == 'salary' || input == 'absencePenalty') {
+            // حذف کاما از اعداد
+            value = value.replace(/,/g, '');
+        }
+        if (input == 'insurance' && value == 'true') {
+            setInput(prev => ({ ...prev, [input]: true }));
+        } else if (input == 'insurance' && value == 'false') {
+            setInput(prev => ({ ...prev, [input]: false }));
+        } else {
+            setInput(prev => ({ ...prev, [input]: value }));
+        }
+
         if (input == 'customer_id') {
             setSelectedOption(value);
         }
-    }
-    console.log(input);
 
+    }
+console.log(input);
     /**
     * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
     * @param {*} e 
@@ -340,6 +347,18 @@ const AddPersonnelSlip = () => {
     */
     const clearInputError = (e, refErr, types = false, date = false) => {
         e.target.classList.remove('borderRedFB');
+
+        /**
+         * دو خط کد زیر برای زمانی است‌ که کلاس مورد
+         *  نظر بر روی پدر تگهااعمال شده‌است
+         * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
+         *  و سپس کلاس را از تگ پدر حذف 
+         * می‌‌کند، این کدها معمولا برای کامپوننتی
+         *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
+        */
+        const parentWithClass = e.target.closest('.borderRedFB');
+        parentWithClass && parentWithClass.classList.remove('borderRedFB');
+        date && contractStart.current.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
     }
 
@@ -567,11 +586,15 @@ const AddPersonnelSlip = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="customer_id"> پرسنل </label>
-                                    <div id="customer_id">
+                                    <div
+                                        id="customer_id"
+                                        onClick={e => clearInputError(e, customer_idErrorRef)}
+                                    >
                                         <SelectZabi
                                             primaryLabel='انتخاب'
                                             options={personnels}
                                             saveOption={setCustomerId}
+                                            ref={customerSelectChild}
                                         />
                                     </div>
                                     <i className="icofont-ui-rating starFB" />
@@ -699,16 +722,15 @@ const AddPersonnelSlip = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label htmlFor="wageCalculation">نوع دستمزد</label>
-                                    <div 
-                                    // className="element"
-                                     id="wageCalculation"
-                                     onClick={e => clearInputError(e, wageCalculationErrorRef)}
-                                     >
+                                    <div
+                                        id="wageCalculation"
+                                        onClick={e => clearInputError(e, wageCalculationErrorRef)}
+                                    >
                                         <SelectZabi
-                                            onClick={e => clearInputError(e, wageCalculation)}
                                             primaryLabel='انتخاب'
                                             options={wageCalculationOptions}
                                             saveOption={setWageCalculation}
+                                            ref={wageCalculationSelectChild}
                                         />
                                     </div>
                                     <i className="icofont-ui-rating starFB" />

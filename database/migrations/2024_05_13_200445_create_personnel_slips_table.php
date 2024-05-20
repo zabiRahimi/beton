@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('contractPeriod')->nullable()->comment('مدت قرارداد');
             $table->string('wageCalculation')->comment('نوع محاسبه مزد');
             $table->string('salary')->comment('دست مزد');
-            $table->string('workFriday')->comment('درصد جمعه‌کاری');
-            $table->string('workHoliday')->comment('درصد تعطیل‌کاری');
-            $table->string('overtime')->comment('درصد اضافه‌کاری');
-            $table->string('insurance')->comment('وضعیت بیمه');
-            $table->string('absencePenalty')->nullable()->comment('جریمه غیبت');
+            $table->string('workFriday')->nullable()->comment('درصد جمعه‌کاری');
+            $table->string('workHoliday')->nullable()->comment('درصد تعطیل‌کاری');
+            $table->string('overtime')->nullable()->comment('درصد اضافه‌کاری');
+            $table->string('absencePenalty')->nullable()->nullable()->comment('جریمه غیبت');
+            $table->string('insurance')->nullable()->comment('وضعیت بیمه');
             $table->timestamps();
         });
     }
