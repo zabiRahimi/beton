@@ -14,7 +14,10 @@ class PersonnelSlipController extends Controller
      */
     public function index()
     {
-        //
+        // $personnelSlips = PersonnelSlip::orderBy('id')->with('customer')->get();
+        $personnelSlips = PersonnelSlip::orderBy('id')->get();
+
+        return response()->json(['personnelSlips' => $personnelSlips]);
     }
 
     /**

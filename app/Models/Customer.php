@@ -41,9 +41,9 @@ class Customer extends Model
         return $this->hasMany(BankInfo::class);
     }
 
-    public function personnelContract(): HasOne
+    public function personnelSlip(): HasOne
     {
-        return $this->hasOne(PersonnelContract::class);
+        return $this->hasOne(PersonnelSlip::class);
     }
 
     public function truck(): HasMany

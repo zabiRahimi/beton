@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Select from "react-select";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
@@ -14,8 +13,6 @@ import useChangeForm from './hooks/useChangeForm';
 import DataZabi from "./hooks/DateZabi";
 import SelectZabi from "./hooks/SelectZabi";
 
-import Async from "react-select/async";
-
 const musicGenres = [
     { value: "blues", label: "Blues" },
     { value: "rock", label: "Rock" },
@@ -23,12 +20,6 @@ const musicGenres = [
     { value: "orchestra", label: "Orchestra" },
 ];
 
-function filterMusicGenre(inputValue) {
-    return musicGenres.filter((musicGenre) => {
-        const regex = new RegExp(inputValue, "gi");
-        return musicGenre.label.match(regex);
-    });
-}
 
 const AddPersonnelSlip = () => {
     let navigate = useNavigate();
@@ -72,8 +63,8 @@ const AddPersonnelSlip = () => {
     const insuranceErrorRef = useRef(null);
     const absencePenaltyErrorRef = useRef(null);
 
-    const customerSelectChild= useRef();
-    const wageCalculationSelectChild= useRef();
+    const customerSelectChild = useRef();
+    const wageCalculationSelectChild = useRef();
 
     const [loading, setLoading] = useState(false);
     const [personnels, setPersonnels] = useState([]);
@@ -170,6 +161,10 @@ const AddPersonnelSlip = () => {
         wageCalculation && setInput(prev => ({ ...prev, wageCalculation }));
     }, [wageCalculation]);
 
+    useEffect(() => {
+        getPersonnelSlips();
+    }, [wageCalculation]);
+
     async function getPersonnels() {
         await axios.get("/api/v1/getPersonnels").then((response) => {
             let datas = response.data.personnels;
@@ -210,6 +205,13 @@ const AddPersonnelSlip = () => {
         });
     }
 
+    async function getPersonnelSlips() {
+        await axios.get("/api/v1/getPersonnelSlips").then((response) => {
+            let datas = response.data.personnelSlips;
+            setPersonnelSlips(datas);
+            
+        });
+    }
     const wageCalculationOptions = [
         {
             value: 'ساعتی',
@@ -230,15 +232,21 @@ const AddPersonnelSlip = () => {
             </div>
         },
     ];
+    const zabi=(id)=>{
+        let val= personnels.filter(personnel=>personnel.value == id)
+        console.log(val);
+       return true;
+    }
 
     /**
     * رکوردهای فیش‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
     * @returns 
     */
-    const returnCreatedPersonnelRecords = () => {
+    const returnCreatedPersonnelSlipRecords = () => {
         let numberRow = personnelSlips.length;
         const reversedConcretes = personnelSlips.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((personnelSlip, i) => {
+            console.log(zabi(personnelSlip['customer_id']));
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="GASNameShowGe"> {personnelSlip['name']} {personnelSlip['lastName']}  </span>
@@ -277,7 +285,7 @@ const AddPersonnelSlip = () => {
         setWageCalculation('');
         customerSelectChild.current && customerSelectChild.current.updateData('انتخاب');
         wageCalculationSelectChild.current && wageCalculationSelectChild.current.updateData('انتخاب');
-         
+
         setDay('');
         setMonth('');
         setYear('');
@@ -339,7 +347,7 @@ const AddPersonnelSlip = () => {
         }
 
     }
-console.log(input);
+
     /**
     * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
     * @param {*} e 
@@ -931,18 +939,19 @@ console.log(input);
                     ref={containerShowGeRef}
                 >
 
-                    <h4 className="titleShowGe"> راننده‌های تعریف شده</h4>
+                    <h4 className="titleShowGe"> فیش‌های تعریف شده</h4>
 
                     <div className="divListShowGe">
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
-                            <span className="GASNameShowGe"> راننده </span>
+                            <span className="GASNameShowGe"> نام پرسنل </span>
+                            <span className="GASNameShowGe"> نام پدر </span>
                             <span className="headEditShowGe"> ویرایش  </span>
                             <span className="headDelShowGe"> حذف </span>
                         </div>
 
-                        {personnelSlips ? returnCreatedPersonnelRecords() : <Skeleton height={40} count={12} />}
+                        {personnelSlips.length > 0 ? returnCreatedPersonnelSlipRecords() : <Skeleton height={40} count={12} />}
 
                     </div>
 
