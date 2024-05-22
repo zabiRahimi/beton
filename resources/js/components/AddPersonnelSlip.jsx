@@ -68,6 +68,7 @@ const AddPersonnelSlip = () => {
 
     const [loading, setLoading] = useState(false);
     const [personnels, setPersonnels] = useState([]);
+    const [personnels2, setPersonnels2] = useState([]);
     const [personnelSlips, setPersonnelSlips] = useState([]);
 
     const [day, setDay] = useState('');
@@ -185,6 +186,7 @@ const AddPersonnelSlip = () => {
 
                 });
             } else {
+                setPersonnels2(datas);
                 datas.map((data, i) => {
                     setPersonnels(perv => ([...perv, {
                         value: data.id,
@@ -209,7 +211,7 @@ const AddPersonnelSlip = () => {
         await axios.get("/api/v1/getPersonnelSlips").then((response) => {
             let datas = response.data.personnelSlips;
             setPersonnelSlips(datas);
-            
+
         });
     }
     const wageCalculationOptions = [
@@ -232,10 +234,17 @@ const AddPersonnelSlip = () => {
             </div>
         },
     ];
-    const zabi=(id)=>{
-        let val= personnels.filter(personnel=>personnel.value == id)
-        console.log(val);
-       return true;
+
+    /**
+     * 
+     * اطلاعات پرسنل را برمی‌گرداند
+     * جهت نمایش در رکوردهای فیش های ثبت شده
+     * @param {*} id 
+     * @returns 
+     */
+    const retrunPersonnel = (id) => {
+        let val = personnels2.filter(personnel => personnel.id == id)
+        return val[0];
     }
 
     /**
@@ -246,10 +255,12 @@ const AddPersonnelSlip = () => {
         let numberRow = personnelSlips.length;
         const reversedConcretes = personnelSlips.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((personnelSlip, i) => {
-            console.log(zabi(personnelSlip['customer_id']));
+            console.log(retrunPersonnel(personnelSlip['customer_id']).name);
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="GASNameShowGe"> {personnelSlip['name']} {personnelSlip['lastName']}  </span>
+                <span className="APSNameShowGe"> {retrunPersonnel(personnelSlip['customer_id']).name} </span>
+                <span className="APSNameShowGe"> {retrunPersonnel(personnelSlip['customer_id']).lastName}  </span>
+                <span className="APSfatherNameShowGe"> {retrunPersonnel(personnelSlip['customer_id']).father && retrunPersonnel(personnelSlip['customer_id']).father}  </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
                         onClick={() => showEditForm(personnelSlip['id'])}
@@ -945,8 +956,9 @@ const AddPersonnelSlip = () => {
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
-                            <span className="GASNameShowGe"> نام پرسنل </span>
-                            <span className="GASNameShowGe"> نام پدر </span>
+                            <span className="APSNameShowGe"> نام پرسنل </span>
+                            <span className="APSNameShowGe"> نام خانوادگی </span>
+                            <span className="APSfatherNameHeadShowGe"> نام پدر </span>
                             <span className="headEditShowGe"> ویرایش  </span>
                             <span className="headDelShowGe"> حذف </span>
                         </div>
