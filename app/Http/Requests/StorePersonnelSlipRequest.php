@@ -39,6 +39,8 @@ class StorePersonnelSlipRequest extends FormRequest
     {
         return [
             'customer_id.required' => 'پرسنل را انتخاب کنید',
+            'customer_id.unique' => 'برای این شخص قبلا فیش حقوقی ثبت شده است.',
+
         ];
     }
 }

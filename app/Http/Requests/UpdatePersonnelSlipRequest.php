@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class UpdatePersonnelSlipRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdatePersonnelSlipRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,25 @@ class UpdatePersonnelSlipRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'customer_id' => ['required','bail','numeric', Rule::unique('personnel_slips')->ignore($this->personnelSlip)],
+            'contractStart' => ['nullable','bail','date'],
+            'contractPeriod' => ['nullable','bail','numeric',],
+            'wageCalculation' => ['required','bail','string',],
+            'salary' => ['required','bail','numeric',],
+            'overtime' => ['nullable','bail','numeric',],
+            'workFriday' => ['nullable','bail','numeric',],
+            'workHoliday' => ['nullable','bail','numeric',],
+            'absencePenalty' => ['nullable','bail','numeric',],
+            'insurance' => ['nullable','bail','boolean',],
+         ];
+    }      
+
+    public function messages(): array
+    {
+        return [
+            'customer_id.required' => 'پرسنل را انتخاب کنید',
+            'customer_id.unique' => 'برای این شخص قبلا فیش حقوقی ثبت شده است.',
         ];
     }
+     
 }

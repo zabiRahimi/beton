@@ -61,7 +61,9 @@ class PersonnelSlipController extends Controller
      */
     public function update(UpdatePersonnelSlipRequest $request, PersonnelSlip $personnelSlip)
     {
-        //
+        $personnelSlip->update($request->all());
+
+        return response()->json(['personnelSlip'=>  $personnelSlip],200);
     }
 
     /**

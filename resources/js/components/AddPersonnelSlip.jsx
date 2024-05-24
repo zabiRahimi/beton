@@ -13,13 +13,6 @@ import useChangeForm from './hooks/useChangeForm';
 import DataZabi from "./hooks/DateZabi";
 import SelectZabi from "./hooks/SelectZabi";
 
-const musicGenres = [
-    { value: "blues", label: "Blues" },
-    { value: "rock", label: "Rock" },
-    { value: "jazz", label: "Jazz" },
-    { value: "orchestra", label: "Orchestra" },
-];
-
 
 const AddPersonnelSlip = () => {
     let navigate = useNavigate();
@@ -35,12 +28,10 @@ const AddPersonnelSlip = () => {
     const container = useRef(null);
     const form = useRef(null);
     const formCurrent = form.current;
-    const dateOfBirth = useRef(null);
     const daySelect = useRef(null);
     const monthSelect = useRef(null);
     const yearSelect = useRef(null);
 
-    const nameRef = useRef(null);
     const contractStart = useRef(null);
     const contractPeriod = useRef(null);
     const salary = useRef(null);
@@ -58,7 +49,6 @@ const AddPersonnelSlip = () => {
     const wageCalculationErrorRef = useRef(null);
     const salaryErrorRef = useRef(null);
     const workFridayErrorRef = useRef(null);
-    const workHolidayErrorRef = useRef(null);
     const overtimeErrorRef = useRef(null);
     const insuranceErrorRef = useRef(null);
     const absencePenaltyErrorRef = useRef(null);
@@ -255,7 +245,6 @@ const AddPersonnelSlip = () => {
         let numberRow = personnelSlips.length;
         const reversedConcretes = personnelSlips.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((personnelSlip, i) => {
-            console.log(retrunPersonnel(personnelSlip['customer_id']).name);
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="APSNameShowGe"> {retrunPersonnel(personnelSlip['customer_id']).name} </span>
@@ -316,6 +305,7 @@ const AddPersonnelSlip = () => {
             window.scrollTo({ top: 0 });
         }
     }
+    console.log(input);
 
     /**
  * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
@@ -326,10 +316,32 @@ const AddPersonnelSlip = () => {
 
         let personnelSlip = personnelSlips.find(personnelSlip => personnelSlip.id === recordId);
         personnelSlip && setId(recordId);
+        const name=retrunPersonnel(personnelSlip['customer_id']).name + ' ' + retrunPersonnel(personnelSlip['customer_id']).lastName;
+
+        customerSelectChild.current && customerSelectChild.current.updateData(name);
+        wageCalculationSelectChild.current && wageCalculationSelectChild.current.updateData(personnelSlip['wageCalculation']);
+
+        if (personnelSlip['contractStart']) {
+            let parts = personnelSlip['contractStart'].split("-");
+            setYear(parts[0]);
+            setMonth(parts[1]);
+            setDay(parts[2]);
+        }
+
+        
 
         const { id, created_at, updated_at, ...rest } = personnelSlip;//نادیده گرفتن کلید های مشخص شده
 
         setInput(rest);
+        if (personnelSlip['insurance']==1) {
+            console.log(personnelSlip['insurance']);
+            setInput(prev => ({ ...prev, insurance: true }));
+
+            
+        } else if(personnelSlip['insurance']==0) {
+            setInput(prev => ({ ...prev, insurance: false }));
+            
+        }
     }
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
@@ -463,7 +475,7 @@ const AddPersonnelSlip = () => {
         setLoading(true)
 
         await axios.patch(
-            `/api/v1/editDriver/${id}`,
+            `/api/v1/editPersonnelSlip/${id}`,
             { ...input },
             {
                 headers:
@@ -884,9 +896,10 @@ const AddPersonnelSlip = () => {
                                             <input
                                                 type="radio"
                                                 value={true}
+                                                checked={input.insurance=== true}
                                                 name="insurance"
                                                 id="hasInsurance"
-                                                onInput={e => {
+                                                onChange={e => {
                                                     handleSaveValInput(e, 'insurance');
                                                 }
                                                 }
@@ -898,9 +911,10 @@ const AddPersonnelSlip = () => {
                                             <input
                                                 type="radio"
                                                 value={false}
+                                                checked={input.insurance=== false}
                                                 name="insurance"
                                                 id="notHasInsurance"
-                                                onInput={e => {
+                                                onChange={e => {
                                                     handleSaveValInput(e, 'insurance');
                                                 }
                                                 }
@@ -963,7 +977,7 @@ const AddPersonnelSlip = () => {
                             <span className="headDelShowGe"> حذف </span>
                         </div>
 
-                        {personnelSlips.length > 0 ? returnCreatedPersonnelSlipRecords() : <Skeleton height={40} count={12} />}
+                        {personnelSlips.length > 0 ? returnCreatedPersonnelSlipRecords() : <Skeleton height={40} count={8} />}
 
                     </div>
 
