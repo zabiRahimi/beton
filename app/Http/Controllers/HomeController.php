@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CementStore;
+use App\Models\SandStore;
+use App\Models\WaterStore;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,7 +14,9 @@ class HomeController extends Controller
      */
     public function getCementInventory ()
     {
-        //
+        $cementInventory= CementStore::get();
+        return response()->json(['cementInventory' => $cementInventory]);
+
     }
 
      /**
@@ -19,7 +24,8 @@ class HomeController extends Controller
      */
     public function getSandInventory ()
     {
-        //
+        $sandInventory= SandStore::get();
+        return response()->json(['sandInventory' => $sandInventory]);
     }
 
      /**
@@ -27,6 +33,7 @@ class HomeController extends Controller
      */
     public function getWaterInventory ()
     {
-        //
+        $waterInventory= WaterStore::get();
+        return response()->json(['waterInventory' => $waterInventory]);
     }
 }

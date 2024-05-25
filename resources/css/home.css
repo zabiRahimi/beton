@@ -162,6 +162,80 @@
     color: #257335;
 }
 
+/**** مربوط به نمایش انبارها  ****/
+
+.displayGoodsInventoryHome{
+    
+    
+}
+
+.linksDGIHome{
+    width: 200px;
+    padding: 30px 8px 10px 8px;
+    border:1px solid #0663b5;
+    border-radius: 50% 50% 10px 10px;
+    background: #e9f1f2;
+}
+
+.titleLinksDGIHome{
+    width: 100%;
+    text-align: center;
+}
+
+.divILinksDGIHome{
+    margin-top: 6px;
+    text-align: center;
+}
+
+.iLinkDGIHome{
+    font-size: 4rem;
+}
+
+.cementILkDGIHome{
+    color: #096609;
+}
+
+.sandILDGIHome{
+    color: #041040;
+}
+
+.waterILDGIHome{
+    color:#2f2fb7 ;
+}
+
+.divStoreLDGIHome{}
+
+.divTotalLDGIHome{
+    width: 100%;
+    margin: 5px 0 3px;
+    padding: 2px 3px;
+    border: 1px solid #90a7a8;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+}
+
+.labelDTLDGIhome{
+    padding-left: 3px;
+
+
+}
+
+.amountDTLDGIhome{
+    flex-grow: 1;
+    text-align: center;
+    color: #030920;
+    font-size: 1.2rem;
+}
+
+.unitDTLDGIhome{
+    padding-right: 5px;
+    color: #6d6d6e;
+    font-size: 0.75rem;
+}
+
+
 .divIcofontLinksHome .iCementStoreHome,
 .divIcofontLinksHome .iSandStoreHome,
 .divIcofontLinksHome .iWaterSrtorHome {
@@ -214,6 +288,52 @@
 
     .divLeftSide {
         width: calc(100% - 260px);
+    }
+
+    .linksDGIHome{
+        width: 280px;
+        padding: 30px 10px 10px 10px;
+        
+    }
+    
+    .titleLinksDGIHome{
+        width: 100%;
+        font-size: 1.2rem;
+    }
+    
+    .divILinksDGIHome{
+        margin-top: 8px;
+    }
+    
+    .iLinkDGIHome{
+        font-size: 4.5rem;
+    }
+    
+   
+    
+    .divStoreLDGIHome{}
+    
+    .divTotalLDGIHome{
+        margin: 8px 0 6px;
+        padding: 4px 6px;
+        
+    }
+    
+    .labelDTLDGIhome{
+        padding-left: 6px;
+        font-size: 1.2rem;
+    
+    
+    }
+    
+    .amountDTLDGIhome{
+       
+        font-size: 1.4rem;
+    }
+    
+    .unitDTLDGIhome{
+        padding-right: 8px;
+        font-size: 0.85rem;
     }
 
     .divIcofontLinksHome .iCementStoreHome,

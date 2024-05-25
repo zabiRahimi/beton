@@ -9,9 +9,9 @@ const Home = () => {
         if ('scrollRestoration' in history) {
             // Back off, browser, I got this...
             history.scrollRestoration = 'manual';
-          }
-          
-          window.scrollTo(0, 0);
+        }
+
+        window.scrollTo(0, 0);
     }, []);
     return (
         <div className="containerHome">
@@ -53,34 +53,74 @@ const Home = () => {
 
                 <div className="borderDivHome"></div>
 
-                <section className="displayGoodsInventoryHome">
-                    نمایش آمار کالاها
-                    {/* <div className="statisticsContainerHome"></div>
-                    <div className="containerCreateReservoirsHome">
+                <section className="categoryLinksHome displayGoodsInventoryHome">
+                    <Link to="addCementStore" className="linksDGIHome --styleLessLink ">
+                        <div className="titleLinksDGIHome">
+                            موجودی سیمان
+                        </div>
+                        <div className="divILinksDGIHome">
+                            <i className="icofont-database  iLinkDGIHome cementILkDGIHome   " />
+                        </div>
+                        <div className="divStoreLDGIHome"></div>
+                        <div className="divTotalLDGIHome">
+                            <div className="labelDTLDGIhome">مجموع</div>
+                            <div className="amountDTLDGIhome">150000</div>
+                            <div className="unitDTLDGIhome">کیلو گرم</div>
+                        </div>
+                    </Link>
 
-                    </div> */}
+                    <Link to="addCementStore" className="linksDGIHome --styleLessLink ">
+                        <div className="titleLinksDGIHome">
+                            موجودی شن‌وماسه
+                        </div>
+                        <div className="divILinksDGIHome">
+                            <i className="icofont-database iLinkDGIHome sandILDGIHome    " />
+                        </div>
+                        <div className="divStoreLDGIHome"></div>
+                        <div className="divTotalLDGIHome">
+                            <div className="labelDTLDGIhome">مجموع</div>
+                            <div className="amountDTLDGIhome">600000</div>
+                            <div className="unitDTLDGIhome">کیلو گرم</div>
+                        </div>
+                    </Link>
+
+                    <Link to="addCementStore" className="linksDGIHome --styleLessLink ">
+                        <div className="titleLinksDGIHome">
+                            موجودی آب
+                        </div>
+                        <div className="divILinksDGIHome">
+                            <i className="icofont-database  iLinkDGIHome waterILDGIHome  " />
+                        </div>
+                        <div className="divStoreLDGIHome"></div>
+                        <div className="divTotalLDGIHome">
+                            <div className="labelDTLDGIhome">مجموع</div>
+                            <div className="amountDTLDGIhome">20000</div>
+                            <div className="unitDTLDGIhome">کیلو گرم</div>
+                        </div>
+                    </Link>
+
                 </section>
 
                 <section className="categoryLinksHome">
-                <Link to="addCementStore" className="linksHome --styleLessLink ">
+                    <Link to="addCementStore" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome divIcofontAddCustomer">
                             <i className="icofont-database-add  iLinksHome iCementStoreHome  " />
                         </div>
-                        <span>تعریف و مشاهده انبار سیمان</span>
+                        <span>تعریف انبار سیمان</span>
                     </Link>
 
                     <Link to="addSandStore" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome divIcofontAddCustomer">
                             <i className="icofont-database-add  iLinksHome iSandStoreHome  " />
                         </div>
-                        <span>تعریف و مشاهده انبار شن‌وماسه</span>
+                        <span>تعریف انبار شن‌وماسه</span>
                     </Link>
 
                     <Link to="addWaterStore" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome divIcofontAddCustomer">
                             <i className="icofont-database-add  iLinksHome iWaterSrtorHome  " />
                         </div>
-                        <span>تعریف و مشاهده انبار آب</span>
+                        <span>تعریف انبار آب</span>
                     </Link>
                 </section>
 
@@ -156,7 +196,7 @@ const Home = () => {
                 <div className="borderDivHome"></div>
 
                 <section className="categoryLinksHome">
-                <Link to="customerContract" className="linksHome --styleLessLink ">
+                    <Link to="customerContract" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-ui-alarm    iLinksHome factureLinkIHome " />
                             <i className="icofont-plus Iplus" />
