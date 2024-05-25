@@ -26,6 +26,9 @@ import AddCurrentCosts from "./components/AddCurrentCosts";
 import AddPumpOperator from "./components/AddPumpOperator";
 import AddConcrete from "./components/AddConcrete";
 import AddPersonnelSlip from "./components/AddPersonnelSlip";
+import AddCementStore from "./components/AddCementStore";
+import AddSandStore from "./components/AddSandStore";
+import AddWaterStore from "./components/AddWaterStore";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -51,6 +54,11 @@ function App() {
                 <Route path="addCurrentCosts" element={<AddCurrentCosts />} />
                 <Route path="addPumpOperator" element={<AddPumpOperator />} />
                 <Route path="addPersonnelSlip" element={<AddPersonnelSlip />} />
+
+                <Route path="addCementStore" element={<AddCementStore />} />
+                <Route path="addSandStore" element={<AddSandStore />} />
+                <Route path="addWaterStore" element={<AddWaterStore />} />
+
                 
 
                 {/* <Route path="customerContract" element={<CustomerContract />} >

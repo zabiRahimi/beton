@@ -53,6 +53,39 @@ const Home = () => {
 
                 <div className="borderDivHome"></div>
 
+                <section className="displayGoodsInventoryHome">
+                    نمایش آمار کالاها
+                    {/* <div className="statisticsContainerHome"></div>
+                    <div className="containerCreateReservoirsHome">
+
+                    </div> */}
+                </section>
+
+                <section className="categoryLinksHome">
+                <Link to="addCementStore" className="linksHome --styleLessLink ">
+                        <div className="divIcofontLinksHome divIcofontAddCustomer">
+                            <i className="icofont-database-add  iLinksHome iCementStoreHome  " />
+                        </div>
+                        <span>تعریف و مشاهده انبار سیمان</span>
+                    </Link>
+
+                    <Link to="addSandStore" className="linksHome --styleLessLink ">
+                        <div className="divIcofontLinksHome divIcofontAddCustomer">
+                            <i className="icofont-database-add  iLinksHome iSandStoreHome  " />
+                        </div>
+                        <span>تعریف و مشاهده انبار شن‌وماسه</span>
+                    </Link>
+
+                    <Link to="addWaterStore" className="linksHome --styleLessLink ">
+                        <div className="divIcofontLinksHome divIcofontAddCustomer">
+                            <i className="icofont-database-add  iLinksHome iWaterSrtorHome  " />
+                        </div>
+                        <span>تعریف و مشاهده انبار آب</span>
+                    </Link>
+                </section>
+
+                <div className="borderDivHome"></div>
+
                 <section className="categoryLinksHome secondCategoryLinksHome">
 
                     <Link to="addCustomer" className="linksHome --styleLessLink ">
