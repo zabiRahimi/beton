@@ -75,9 +75,9 @@ Route::controller(PersonnelSlipController::class)->group(function () {
 
 Route::controller(HomeController::class)->group(function () {
     
-    Route::get('/getCementInventory', 'getCementInventory');
-    Route::get('/getSandInventory', 'getSandInventory');
-    Route::get ('/getWaterInventory','getWaterInventory');
+    Route::get('/getCementInventorys', 'getCementInventorys');
+    Route::get('/getSandInventorys', 'getSandInventorys');
+    Route::get ('/getWaterInventorys','getWaterInventorys');
 
 });
 

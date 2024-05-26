@@ -164,72 +164,117 @@
 
 /**** مربوط به نمایش انبارها  ****/
 
-.displayGoodsInventoryHome{
-    
-    
-}
+.displayGoodsInventoryHome {}
 
-.linksDGIHome{
-    width: 200px;
-    padding: 30px 8px 10px 8px;
-    border:1px solid #0663b5;
-    border-radius: 50% 50% 10px 10px;
+.linksDGIHome {
+    width: 215px;
+    min-height: 250px;
+    padding: 20px 6px 5px 6px;
+    border: solid #8d9fae;
+    border-top-width: 1px;
+    border-right-width: 4px;
+    border-bottom-width: 2px;
+    border-left-width: 4px;
+    border-radius: 35% 35% 7px 7px;
     background: #e9f1f2;
+    display: flex;
+    flex-direction: column;
 }
 
-.titleLinksDGIHome{
+.titleLinksDGIHome {
     width: 100%;
     text-align: center;
 }
 
-.divILinksDGIHome{
-    margin-top: 6px;
+.divILinksDGIHome {
+    margin: 18px 0;
     text-align: center;
 }
 
-.iLinkDGIHome{
+.iLinkDGIHome {
     font-size: 4rem;
 }
 
-.cementILkDGIHome{
+.cementILkDGIHome {
     color: #096609;
 }
 
-.sandILDGIHome{
+.sandILDGIHome {
     color: #041040;
 }
 
-.waterILDGIHome{
-    color:#2f2fb7 ;
+.waterILDGIHome {
+    color: #2f2fb7;
 }
 
-.divStoreLDGIHome{}
+.divStoreLDGIHome {
+    margin-top: auto;
+}
 
-.divTotalLDGIHome{
+.rowSiloRHome {
     width: 100%;
-    margin: 5px 0 3px;
+    padding: 3px 2px;
+    border: 1px solid #90a7a8;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    background-color: #ebfffd;
+}
+
+.nameSiloRHome {
+    max-width: 70px;
+    padding-left: 4px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.amountSiloRHome {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.unitSiloRhome {
+    width: 35px;
+    font-size: 0.7rem;
+    color: #6d6d6e;
+}
+
+
+.notRowSiloRHome {
+    padding: 3px 2px;
+    font-size: 0.8rem;
+    color: #c80808;
+    background-color: #ffbcbc;
+}
+
+.divTotalLDGIHome {
+    width: 100%;
+    margin-top: auto;
     padding: 2px 3px;
     border: 1px solid #90a7a8;
     border-radius: 3px;
     display: flex;
     align-items: center;
     background-color: #fff;
+
 }
 
-.labelDTLDGIhome{
+.labelDTLDGIhome {
     padding-left: 3px;
 
 
 }
 
-.amountDTLDGIhome{
+.amountDTLDGIhome {
     flex-grow: 1;
     text-align: center;
     color: #030920;
     font-size: 1.2rem;
 }
 
-.unitDTLDGIhome{
+.unitDTLDGIhome {
     padding-right: 5px;
     color: #6d6d6e;
     font-size: 0.75rem;
@@ -290,48 +335,61 @@
         width: calc(100% - 260px);
     }
 
-    .linksDGIHome{
+    .linksDGIHome {
         width: 280px;
-        padding: 30px 10px 10px 10px;
-        
+        min-height: 310px;
+        padding: 25px 10px 8px 10px;
+
     }
-    
-    .titleLinksDGIHome{
+
+    .titleLinksDGIHome {
         width: 100%;
         font-size: 1.2rem;
     }
-    
-    .divILinksDGIHome{
-        margin-top: 8px;
+
+    .divILinksDGIHome {
+        margin: 22px 0;
     }
-    
-    .iLinkDGIHome{
-        font-size: 4.5rem;
+
+    .iLinkDGIHome {
+        font-size: 5rem;
     }
-    
-   
-    
-    .divStoreLDGIHome{}
-    
-    .divTotalLDGIHome{
-        margin: 8px 0 6px;
+
+    .rowSiloRHome {
+        padding: 4px 8px;
+
+    }
+
+    .nameSiloRHome {
+        max-width: 90px;
+        font-size: 1rem;
+    }
+
+    .unitSiloRhome {
+        font-size: 0.82rem;
+        color: #6d6d6e;
+    }
+
+    .notRowSiloRHome {
+        padding: 3px 8px;
+        font-size: 0.9rem;
+    }
+
+    .divTotalLDGIHome {
+        margin-top: auto;
         padding: 4px 6px;
-        
     }
-    
-    .labelDTLDGIhome{
+
+    .labelDTLDGIhome {
         padding-left: 6px;
         font-size: 1.2rem;
-    
-    
     }
-    
-    .amountDTLDGIhome{
-       
+
+    .amountDTLDGIhome {
         font-size: 1.4rem;
     }
-    
-    .unitDTLDGIhome{
+
+    .unitDTLDGIhome {
         padding-right: 8px;
         font-size: 0.85rem;
     }

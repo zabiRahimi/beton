@@ -12,28 +12,28 @@ class HomeController extends Controller
      /**
      * Receive and display cement inventory
      */
-    public function getCementInventory ()
+    public function getCementInventorys ()
     {
-        $cementInventory= CementStore::get();
-        return response()->json(['cementInventory' => $cementInventory]);
+        $cementInventorys= CementStore::get();
+        return response()->json(['cementInventorys' => $cementInventorys]);
 
     }
 
      /**
      * Receive and display sand inventory
      */
-    public function getSandInventory ()
+    public function getSandInventorys ()
     {
-        $sandInventory= SandStore::get();
-        return response()->json(['sandInventory' => $sandInventory]);
+        $sandInventorys= SandStore::get();
+        return response()->json(['sandInventorys' => $sandInventorys]);
     }
 
      /**
      * Receive and display water inventory
      */
-    public function getWaterInventory ()
+    public function getWaterInventorys ()
     {
-        $waterInventory= WaterStore::get();
-        return response()->json(['waterInventory' => $waterInventory]);
+        $waterInventorys= WaterStore::get();
+        return response()->json(['waterInventorys' => $waterInventorys]);
     }
 }

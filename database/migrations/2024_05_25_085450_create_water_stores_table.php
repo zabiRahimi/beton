@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('water_stores', function (Blueprint $table) {
             $table->id();
+            $table->string('silo');
+            $table->string('amount')->default('0');
             $table->timestamps();
         });
     }
