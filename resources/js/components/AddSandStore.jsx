@@ -23,9 +23,18 @@ const AddSandStore = () => {
 
     const form = useRef(null);
     const formCurrent = form.current;
+    
+    const siloErrorRef = useRef(null);
+    const amountErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
     const [sandStores, setSandStores] = useState(null);
+
+    const [id, setId] = useState(null);
+    const [input, setInput] = useState({
+        silo: '',
+        amount: '',
+    });
 
 
     /**

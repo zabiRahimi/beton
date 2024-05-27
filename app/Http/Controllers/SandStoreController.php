@@ -13,7 +13,9 @@ class SandStoreController extends Controller
      */
     public function index()
     {
-        //
+        $cementStores = SandStore::orderBy('id')->get();
+
+        return response()->json(['cementStores' => $cementStores]);
     }
 
     /**
@@ -29,7 +31,11 @@ class SandStoreController extends Controller
      */
     public function store(StoreSandStoreRequest $request)
     {
-        //
+        $sandStore = new SandStore();
+        $sandStore->fill($request->validated());
+        $sandStore->save();
+
+        return response()->json(['sandStore'=>  $sandStore],200);
     }
 
     /**
@@ -53,7 +59,9 @@ class SandStoreController extends Controller
      */
     public function update(UpdateSandStoreRequest $request, SandStore $sandStore)
     {
-        //
+        $sandStore->update($request->all());
+
+        return response()->json(['sandStore'=>  $sandStore],200);
     }
 
     /**

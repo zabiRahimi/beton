@@ -13,7 +13,9 @@ class CementStoreController extends Controller
      */
     public function index()
     {
-        //
+        $cementStores = CementStore::orderBy('id')->get();
+
+        return response()->json(['cementStores' => $cementStores]);
     }
 
     /**
@@ -29,7 +31,11 @@ class CementStoreController extends Controller
      */
     public function store(StoreCementStoreRequest $request)
     {
-        //
+        $cementStore = new CementStore();
+        $cementStore->fill($request->validated());
+        $cementStore->save();
+
+        return response()->json(['cementStore'=>  $cementStore],200);
     }
 
     /**
@@ -53,7 +59,9 @@ class CementStoreController extends Controller
      */
     public function update(UpdateCementStoreRequest $request, CementStore $cementStore)
     {
-        //
+        $cementStore->update($request->all());
+
+        return response()->json(['cementStore'=>  $cementStore],200);
     }
 
     /**

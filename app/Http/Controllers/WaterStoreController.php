@@ -13,7 +13,9 @@ class WaterStoreController extends Controller
      */
     public function index()
     {
-        //
+        $waterStores = WaterStore::orderBy('id')->get();
+
+        return response()->json(['waterStores' => $waterStores]);
     }
 
     /**
@@ -29,7 +31,11 @@ class WaterStoreController extends Controller
      */
     public function store(StoreWaterStoreRequest $request)
     {
-        //
+        $waterStore = new WaterStore();
+        $waterStore->fill($request->validated());
+        $waterStore->save();
+
+        return response()->json(['waterStore'=>  $waterStore],200);
     }
 
     /**
@@ -53,7 +59,9 @@ class WaterStoreController extends Controller
      */
     public function update(UpdateWaterStoreRequest $request, WaterStore $waterStore)
     {
-        //
+        $waterStore->update($request->all());
+
+        return response()->json(['waterStore'=>  $waterStore],200);
     }
 
     /**

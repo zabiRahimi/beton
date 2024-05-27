@@ -171,7 +171,8 @@
     min-height: 250px;
     padding: 20px 6px 5px 6px;
     border: solid #8d9fae;
-    border-top-width: 1px;
+    border-top-width: 7px;
+    border-top-style: double;
     border-right-width: 4px;
     border-bottom-width: 2px;
     border-left-width: 4px;

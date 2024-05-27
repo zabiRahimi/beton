@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CementStoreController;
 use App\Http\Controllers\ConcreteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -8,7 +9,9 @@ use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonnelSlipController;
+use App\Http\Controllers\SandStoreController;
 use App\Http\Controllers\TruckController;
+use App\Http\Controllers\WaterStoreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +81,30 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/getCementInventorys', 'getCementInventorys');
     Route::get('/getSandInventorys', 'getSandInventorys');
     Route::get ('/getWaterInventorys','getWaterInventorys');
+
+});
+
+Route::controller(CementStoreController::class)->group(function () {
+    
+    Route::post('/addCementStore', 'store');
+    Route::get('/getCementStores', 'index');
+    Route::patch('/editCementStore/{cementStore}', 'update');
+
+});
+
+Route::controller(SandStoreController::class)->group(function () {
+    
+    Route::post('/addSandStore', 'store');
+    Route::get('/getSandStores', 'index');
+    Route::patch('/editSandStore/{sandStore}', 'update');
+
+});
+
+Route::controller(WaterStoreController::class)->group(function () {
+    
+    Route::post('/addWaterStore', 'store');
+    Route::get('/getWaterStores', 'index');
+    Route::patch('/editWaterStore/{waterStore}', 'update');
 
 });
 
