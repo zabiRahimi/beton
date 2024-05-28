@@ -13,9 +13,9 @@ class SandStoreController extends Controller
      */
     public function index()
     {
-        $cementStores = SandStore::orderBy('id')->get();
+        $sandStores = SandStore::orderBy('id')->get();
 
-        return response()->json(['cementStores' => $cementStores]);
+        return response()->json(['sandStores' => $sandStores]);
     }
 
     /**

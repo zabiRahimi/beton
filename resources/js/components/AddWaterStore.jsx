@@ -53,7 +53,7 @@ const AddWaterStore = () => {
 
     async function getWaterStores() {
         await axios.get("/api/v1/getWaterStores").then((response) => {
-            setWaterStores(response.data.WaterStores);
+            setWaterStores(response.data.waterStores);
         });
     }
 
@@ -403,7 +403,7 @@ const AddWaterStore = () => {
                                         defaultValue={input.amount}
                                         ref={amountRef}
                                         onInput={e => {
-                                            handleSaveValInput(e, 'amount'); totalBtonDetails();
+                                            handleSaveValInput(e, 'amount');
                                             formatNub(amountRef);
                                         }
                                         }

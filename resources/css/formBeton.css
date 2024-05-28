@@ -115,7 +115,7 @@
 .errorContainerFB {
     width: 200px;
     min-height: 17px;
-    margin-right: 160px;
+    margin-right: auto;
     color: red;
     font-size: .7rem;
 }
@@ -578,7 +578,6 @@ color: #f1f1f1;
 
     .errorContainerFB {
         width: 230px;
-        margin-right: 155px;
         font-size: .72rem;
     }
 

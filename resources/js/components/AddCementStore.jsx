@@ -404,7 +404,7 @@ const AddCementStore = () => {
                                         defaultValue={input.amount}
                                         ref={amountRef}
                                         onInput={e => {
-                                            handleSaveValInput(e, 'amount'); totalBtonDetails();
+                                            handleSaveValInput(e, 'amount');
                                             formatNub(amountRef);
                                         }
                                         }
