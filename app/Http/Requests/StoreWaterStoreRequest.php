@@ -11,7 +11,7 @@ class StoreWaterStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class StoreWaterStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'reservoir' => ['required', 'bail','string','unique:water_stores'],
+            'amount' => ['required','bail','numeric'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'reservoir.required' => 'نام مخزن را وارد کنید',
+            'reservoir.unique' => 'نام مخزن تکراری است.',
         ];
     }
 }

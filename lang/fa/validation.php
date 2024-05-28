@@ -241,6 +241,9 @@ return [
         'overtime' => 'درصد اضافه‌کاری',
         'insurance' => 'بیمه',
         'absencePenalty' => 'جریمه غیبت',
+        'silo' => 'سیلو',
+        'amount' => 'مقدار',
+        'reservoir' => 'مخزن',
 
     ],
 

@@ -25,6 +25,8 @@ const AddCementStore = () => {
     const form = useRef(null);
     const formCurrent = form.current;
 
+    const amountRef = useRef(null);
+
     const siloErrorRef = useRef(null);
     const amountErrorRef = useRef(null);
 
@@ -102,7 +104,8 @@ const AddCementStore = () => {
 
     const resetForm = (apply = true) => {
         setInput({
-            storeName: ''
+            silo: '',
+            amoutn:''
         });
 
         var elements = document.getElementsByClassName('element');
@@ -362,7 +365,7 @@ const AddCementStore = () => {
                 <div className="continerAddGe ">
                     <form action="" className="formBeton" ref={form}>
 
-                        <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش راننده </h5>
+                        <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش سیلو </h5>
 
                         <div className="sectionFB">
                             <div className="containerInputFB">
@@ -424,10 +427,6 @@ const AddCementStore = () => {
                             </div>
                         </div>
 
-
-
-
-
                         <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button
                                 variant="success"
@@ -463,11 +462,8 @@ const AddCementStore = () => {
                     className={`containerShowGe containerShowCustomer  ${hideCreatedRecord ? 'hideGe' : ''}`}
                     ref={containerShowGeRef}
                 >
-
-                    <h4 className="titleShowGe"> راننده‌های تعریف شده</h4>
-
+                    <h4 className="titleShowGe"> سیلو‌های تعریف شده</h4>
                     <div className="divListShowGe">
-
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
                             <span className="GASNameShowGe"> نام سیلو </span>
@@ -475,11 +471,8 @@ const AddCementStore = () => {
                             <span className="headEditShowGe"> ویرایش  </span>
                             <span className="headDelShowGe"> حذف </span>
                         </div>
-
                         {cementStores ? returnCreatedCementStoreRecords() : <Skeleton height={40} count={2} />}
-
                     </div>
-
                 </div>
 
             </div>

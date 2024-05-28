@@ -11,7 +11,7 @@ class StoreCementStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class StoreCementStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'silo' => ['required', 'bail','string','unique:cement_stores'],
+            'amount' => ['required','bail','numeric'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'silo.required' => 'نام سیلو را وارد کنید',
+            'silo.unique' => 'نام سیلو تکراری است.',
         ];
     }
 }
