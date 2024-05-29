@@ -37,13 +37,13 @@ const AddPersonnelSlip = () => {
     const salary = useRef(null);
     const overtime = useRef(null);
     const workFriday = useRef(null);
-    const insurance = useRef(null);
     const absencePenalty = useRef(null);
 
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
     const customer_idErrorRef = useRef(null);
+    const jobErrorRef = useRef(null);
     const contractStartErrorRef = useRef(null);
     const contractPeriodErrorRef = useRef(null);
     const wageCalculationErrorRef = useRef(null);
@@ -66,6 +66,7 @@ const AddPersonnelSlip = () => {
     const [year, setYear] = useState('');
     const [input, setInput] = useState({
         customer_id: '',
+        job:'',
         contractStart: '',
         contractPeriod: '',
         wageCalculation: '',
@@ -271,6 +272,7 @@ const AddPersonnelSlip = () => {
     const resetForm = (apply = true) => {
         setInput({
             customer_id: '',
+            job:'',
             contractStart: '',
             contractPeriod: '',
             wageCalculation: '',
@@ -631,6 +633,23 @@ const AddPersonnelSlip = () => {
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
                                 <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="job">شغل</label>
+                                    <input
+                                        type="text"
+                                        className="inputTextFB element"
+                                        id="job"
+                                        defaultValue={input.job}
+                                        onInput={e => handleSaveValInput(e, 'job')}
+                                        onFocus={e => clearInputError(e, jobErrorRef)}
+                                        autoFocus
+                                    />
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div className="errorContainerFB elementError" id="jobError" ref={jobErrorRef}> </div>
                             </div>
 
                         </div>

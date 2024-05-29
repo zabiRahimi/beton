@@ -25,6 +25,7 @@ class UpdatePersonnelSlipRequest extends FormRequest
     {
         return [
             'customer_id' => ['required','bail','numeric', Rule::unique('personnel_slips')->ignore($this->personnelSlip)],
+            'job' => ['required','bail','string'],
             'contractStart' => ['nullable','bail','date'],
             'contractPeriod' => ['nullable','bail','numeric',],
             'wageCalculation' => ['required','bail','string',],

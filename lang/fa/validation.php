@@ -244,6 +244,7 @@ return [
         'silo' => 'سیلو',
         'amount' => 'مقدار',
         'reservoir' => 'مخزن',
+        'job' => 'شغل',
 
     ],
 

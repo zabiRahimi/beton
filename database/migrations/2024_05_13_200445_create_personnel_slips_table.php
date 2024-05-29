@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('personnel_slips', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('gob');
             $table->date('contractStart')->nullable()->comment('شروع قرارداد');
             $table->string('contractPeriod')->nullable()->comment('مدت قرارداد');
             $table->string('wageCalculation')->comment('نوع محاسبه مزد');

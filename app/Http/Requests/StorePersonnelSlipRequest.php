@@ -23,6 +23,7 @@ class StorePersonnelSlipRequest extends FormRequest
     {
         return [
             'customer_id' => ['required','bail','numeric','unique:personnel_slips'],
+            'job' => ['required','bail','string'],
             'contractStart' => ['nullable','bail','date'],
             'contractPeriod' => ['nullable','bail','numeric',],
             'wageCalculation' => ['required','bail','string',],
