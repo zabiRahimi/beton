@@ -4,7 +4,7 @@ import axios from 'axios';
 import "../../css/general.css";
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
-import { createRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
@@ -29,14 +29,13 @@ const AddWaterStore = () => {
     const amountErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
-    const [waterStores, setWaterStores]=useState(null);
+    const [waterStores, setWaterStores] = useState(null);
 
     const [id, setId] = useState(null);
     const [input, setInput] = useState({
         reservoir: '',
         amount: '',
     });
-
 
     /**
      * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
@@ -57,18 +56,27 @@ const AddWaterStore = () => {
         });
     }
 
-     /**
-    * رکوردهای بتن‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
-    * @returns 
+    /**
+     * فرمت‌دهی به اعداد هنگامی که کاربر اقدام به ویرایش یک رکورد می‌کند
+     */
+    useEffect(() => {
+        if (editMode) {
+            input.amount && (amountRef.current.value = parseFloat(input.amount).toLocaleString());
+        }
+    }, [input]);
+
+    /**
+     * رکوردهای بتن‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
+     * @returns 
     */
-     const returnCreatedWaterStoreRecords = () => {
+    const returnCreatedWaterStoreRecords = () => {
         let numberRow = waterStores.length;
         const reversedConcretes = waterStores.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((waterStore, i) => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="GASNameShowGe"> {waterStore['reservoir']}   </span>
-                <span className="GASNameShowGe"> {waterStore['amount']}   </span>
+                <span className="GASNameShowGe"> {waterStore['reservoir']} </span>
+                <span className="GASNameShowGe"> {parseInt(waterStore['amount']).toLocaleString()} </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
                         onClick={() => showEditForm(waterStore['id'])}
@@ -87,24 +95,22 @@ const AddWaterStore = () => {
         return value;
     }
 
-      /**
-     * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
-     * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
-     * @param {آدی رکورد} id0 
-     */
-      const pasteDataForEditing = (id0) => {
+    /**
+      * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
+      * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
+      * @param {آدی رکورد} id0 
+      */
+    const pasteDataForEditing = (id0) => {
         let waterStore = waterStores.find(waterStore => waterStore.id === id0);
         waterStore && setId(id0);
         const { id, created_at, updated_at, ...rest } = waterStore;//نادیده گرفتن کلید های مشخص شده
-
-      setInput(datas);
-
+        setInput(rest);
     }
 
     const resetForm = (apply = true) => {
         setInput({
             reservoir: '',
-            amoutn:''
+            amoutn: ''
         });
 
         var elements = document.getElementsByClassName('element');
@@ -164,12 +170,12 @@ const AddWaterStore = () => {
         document.getElementById(id).focus()
     }
 
-      /**
-        * ذخیره مقادیر ورودی‌های کاربر در استیت
-        * @param {*} e 
-        * @param {*} input 
-        */
-      const handleSaveValInput = (e, input) => {
+    /**
+      * ذخیره مقادیر ورودی‌های کاربر در استیت
+      * @param {*} e 
+      * @param {*} input 
+      */
+    const handleSaveValInput = (e, input) => {
         let { value } = e.target;
         // حذف کاما از اعداد
         let result = value.replace(/,/g, '');
@@ -325,7 +331,7 @@ const AddWaterStore = () => {
 
     return (
         <div className='' ref={container}>
-            
+
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
                 backgroundColor: '#6d6b6b',
                 position: 'fixed',

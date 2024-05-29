@@ -4,7 +4,7 @@ import axios from 'axios';
 import "../../css/general.css";
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
-import { createRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
@@ -23,7 +23,7 @@ const AddSandStore = () => {
 
     const form = useRef(null);
     const formCurrent = form.current;
-    
+
     const amountRef = useRef(null);
 
     const siloErrorRef = useRef(null);
@@ -58,18 +58,27 @@ const AddSandStore = () => {
         });
     }
 
-     /**
+    /**
+     * فرمت‌دهی به اعداد هنگامی که کاربر اقدام به ویرایش یک رکورد می‌کند
+     */
+    useEffect(() => {
+        if (editMode) {
+            input.amount && (amountRef.current.value = parseFloat(input.amount).toLocaleString());
+        }
+    }, [input]);
+
+    /**
     * رکوردهای بتن‌های ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
     * @returns 
     */
-     const returnCreatedSandStoreRecords = () => {
+    const returnCreatedSandStoreRecords = () => {
         let numberRow = sandStores.length;
         const reversedConcretes = sandStores.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((sandStore, i) => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="GASNameShowGe"> {sandStore['silo']}   </span>
-                <span className="GASNameShowGe"> {sandStore['amount']}   </span>
+                <span className="GASNameShowGe"> {parseInt(sandStore['amount']).toLocaleString()}   </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
                         onClick={() => showEditForm(sandStore['id'])}
@@ -89,23 +98,21 @@ const AddSandStore = () => {
     }
 
     /**
-   * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
-   * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
-   * @param {آدی رکورد} id0 
-   */
+       * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
+       * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
+       * @param {آدی رکورد} id0 
+       */
     const pasteDataForEditing = (id0) => {
         let sandStore = sandStores.find(sandStore => sandStore.id === id0);
         sandStore && setId(id0);
         const { id, created_at, updated_at, ...rest } = sandStore;//نادیده گرفتن کلید های مشخص شده
-
-        setInput(datas);
-
+        setInput(rest);
     }
 
     const resetForm = (apply = true) => {
         setInput({
             silo: '',
-            amoutn:''
+            amoutn: ''
         });
 
         var elements = document.getElementsByClassName('element');
@@ -127,10 +134,10 @@ const AddSandStore = () => {
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
-        * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
-        * به صورت دهگان،صدگان و ...
-        * @param {ref} ref 
-        */
+     * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
+     * به صورت دهگان،صدگان و ...
+     * @param {ref} ref 
+    */
     const formatNub = (ref) => {
         let val,
             checkDthot,
@@ -165,12 +172,12 @@ const AddSandStore = () => {
         document.getElementById(id).focus()
     }
 
-      /**
-        * ذخیره مقادیر ورودی‌های کاربر در استیت
-        * @param {*} e 
-        * @param {*} input 
-        */
-      const handleSaveValInput = (e, input) => {
+    /**
+      * ذخیره مقادیر ورودی‌های کاربر در استیت
+      * @param {*} e 
+      * @param {*} input 
+      */
+    const handleSaveValInput = (e, input) => {
         let { value } = e.target;
         // حذف کاما از اعداد
         let result = value.replace(/,/g, '');

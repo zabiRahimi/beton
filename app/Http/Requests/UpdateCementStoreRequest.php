@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class UpdateCementStoreRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateCementStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,19 @@ class UpdateCementStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'silo' => [
+                'required', 'bail', 'string',
+                Rule::unique('cement_stores')->ignore($this->cementStore)
+            ],
+            'amount' => ['required', 'bail', 'numeric'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'silo.required' => 'نام سیلو را وارد کنید',
+            'silo.unique' => 'نام سیلو تکراری است.',
         ];
     }
 }

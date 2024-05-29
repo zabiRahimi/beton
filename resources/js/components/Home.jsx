@@ -132,7 +132,7 @@ const Home = () => {
         if (waterInventorys && waterInventorys.length > 0) {
             let value = waterInventorys.map((waterInventory, i) => {
                 return <div className="rowSiloRHome" key={i}>
-                    <div className="nameSiloRHome"> {waterInventory['silo']} </div>
+                    <div className="nameSiloRHome"> {waterInventory['reservoir']} </div>
                     <div className="amountSiloRHome"> {parseInt(waterInventory['amount']).toLocaleString()} </div>
                     <div className="unitSiloRhome"> کیلوگرم </div>
                 </div>

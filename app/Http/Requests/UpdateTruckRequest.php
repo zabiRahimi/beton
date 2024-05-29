@@ -24,11 +24,13 @@ class UpdateTruckRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'truckName' => ['nullable', 'bail','string'],
-            'truckType' => ['required','bail','string'],
-            'numberplate' => ['required','bail','numberplate',
-            Rule::unique('trucks')->ignore($this->truck)],
-            'customer_id' => ['required','bail','numeric'],
+            'truckName' => ['nullable', 'bail', 'string'],
+            'truckType' => ['required', 'bail', 'string'],
+            'numberplate' => [
+                'required', 'bail', 'numberplate',
+                Rule::unique('trucks')->ignore($this->truck)
+            ],
+            'customer_id' => ['required', 'bail', 'numeric'],
         ];
     }
 

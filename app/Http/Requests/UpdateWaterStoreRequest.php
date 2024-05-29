@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class UpdateWaterStoreRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateWaterStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,21 @@ class UpdateWaterStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+
+            'reservoir' => [
+                'required', 'bail', 'string',
+                Rule::unique('water_stores')->ignore($this->waterStore)
+            ],
+            'amount' => ['required', 'bail', 'numeric'],
+
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'reservoir.required' => 'نام مخزن را وارد کنید',
+            'reservoir.unique' => 'نام مخزن تکراری است.',
         ];
     }
 }

@@ -69,7 +69,7 @@ const AddCementStore = () => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="GASNameShowGe"> {cementStore['silo']}   </span>
-                <span className="GASNameShowGe"> {cementStore['amount']}   </span>
+                <span className="GASNameShowGe"> {parseInt(cementStore['amount']).toLocaleString()}   </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
                         onClick={() => showEditForm(cementStore['id'])}
@@ -97,15 +97,15 @@ const AddCementStore = () => {
         let cementStore = cementStores.find(cementStore => cementStore.id === id0);
         cementStore && setId(id0);
         const { id, created_at, updated_at, ...rest } = cementStore;//نادیده گرفتن کلید های مشخص شده
-
-        setInput(datas);
+        console.log(rest);
+        setInput(rest);
 
     }
 
     const resetForm = (apply = true) => {
         setInput({
             silo: '',
-            amoutn:''
+            amoutn: ''
         });
 
         var elements = document.getElementsByClassName('element');
@@ -125,6 +125,15 @@ const AddCementStore = () => {
     }
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+
+    /**
+     * فرمت‌دهی به اعداد هنگامی که کاربر اقدام به ویرایش یک رکورد می‌کند
+     */
+    useEffect(() => {
+        if (editMode) {
+            input.amount && (amountRef.current.value = parseFloat(input.amount).toLocaleString());
+        }
+    }, [input]);
 
     /**
         * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
@@ -165,12 +174,12 @@ const AddCementStore = () => {
         document.getElementById(id).focus()
     }
 
-      /**
-        * ذخیره مقادیر ورودی‌های کاربر در استیت
-        * @param {*} e 
-        * @param {*} input 
-        */
-      const handleSaveValInput = (e, input) => {
+    /**
+      * ذخیره مقادیر ورودی‌های کاربر در استیت
+      * @param {*} e 
+      * @param {*} input 
+      */
+    const handleSaveValInput = (e, input) => {
         let { value } = e.target;
         // حذف کاما از اعداد
         let result = value.replace(/,/g, '');
