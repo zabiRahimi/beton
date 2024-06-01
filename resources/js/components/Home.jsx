@@ -150,7 +150,7 @@ const Home = () => {
             <Title title="داشبورد" />
             <main className="mainHome">
                 <section className="categoryLinksHome firstCategoryLinksHome">
-                    <Link to="customerContract" className="linksHome --styleLessLink ">
+                    <Link to="invoices" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment   iLinksHome factureLinkIHome " />
                             <i className="icofont-plus Iplus" />

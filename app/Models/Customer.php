@@ -51,4 +51,9 @@ class Customer extends Model
         return $this->hasMany(Truck::class);
     }
 
+    public function financial(): HasOne
+    {
+        return $this->hasOne(Financial::class);
+    }
+
 }

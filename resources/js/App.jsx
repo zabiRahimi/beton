@@ -29,6 +29,9 @@ import AddPersonnelSlip from "./components/AddPersonnelSlip";
 import AddCementStore from "./components/AddCementStore";
 import AddSandStore from "./components/AddSandStore";
 import AddWaterStore from "./components/AddWaterStore";
+import Invoices from "./components/invoices/Invoices";
+import NavigateInvoices from "./components/invoices/NavigateInvoices";
+import AddConcreteSalesInvoice from "./components/invoices/AddConcreteSalesInvoice";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -68,6 +71,14 @@ function App() {
                     <Route path="addSellerContract" element={<AddSellerContract />} />
 
                 </Route> */}
+
+                <Route path="invoices" element={<Invoices />} >
+                    <Route index element={<NavigateInvoices />} />
+                    <Route path="addConcreteSalesInvoice" element={<AddConcreteSalesInvoice />} />
+                    {/* <Route path="addBuyerContract" element={<AddBuyerContract />} />
+                    <Route path="addSellerContract" element={<AddSellerContract />} /> */}
+
+                </Route>
             </Route>
             // <Route path="/" element={<Root />} errorElement={<NotFound />}>
             //   <Route index element={<Home />} />
