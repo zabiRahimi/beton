@@ -1,17 +1,17 @@
 import Title from '../hooks/Title';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import "../../css/general.css";
-import "../../css/formBeton.css";
-import "../../css/addCustomer.css";
-import DataZabi from "./hooks/DateZabi";
+import "../../../css/general.css";
+import "../../../css/formBeton.css";
+import "../../../css/addCustomer.css";
+import DataZabi from "../hooks/DateZabi";
 import { createRef, useEffect, useRef, useState } from "react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
-import useChangeForm from './hooks/useChangeForm';
+import useChangeForm from '../hooks/useChangeForm';
 const AddConcreteSalesInvoice=()=>{
     
     const MySwal = withReactContent(Swal);
@@ -51,6 +51,8 @@ const AddConcreteSalesInvoice=()=>{
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
 
+    const [concreteSalesInvoices,setConcreteSalesInvoices]=useState(null);
+
     const [input, setInput] = useState({
         customer_id:'',
         date: '',
@@ -72,16 +74,16 @@ const AddConcreteSalesInvoice=()=>{
     const [id, setId] = useState(null);
 
     useEffect(() => {
-        getCustomers();
+        getConcreteSalesInvoices();
     }, []);
 
     useEffect(() => {
         if (customerTypes) {
-            const newRefs = customerTypes.reduce((acc, value) => {
-                acc[value.code] = createRef();
-                return acc;
-            }, {});
-            setRefs(newRefs);
+            // const newRefs = customerTypes.reduce((acc, value) => {
+            //     acc[value.code] = createRef();
+            //     return acc;
+            // }, {});
+            // setRefs(newRefs);
         }
     }, []);
 
@@ -196,9 +198,9 @@ const AddConcreteSalesInvoice=()=>{
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-    async function getCustomers() {
-        await axios.get("/api/v1/getCustomers").then((response) => {
-            setCustomers(response.data.Customers);
+    async function getConcreteSalesInvoices() {
+        await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
+            setConcreteSalesInvoices(response.data.concreteSalesInvoices);
         });
     }
 
