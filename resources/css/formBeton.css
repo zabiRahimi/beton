@@ -514,6 +514,13 @@ color: #f1f1f1;
 
 }
 
+/*         مربوط به صفحه ایجاد فاکتور فروش بتن    */
+.containerCSI_FB{
+    width: 100%;
+    padding: 3px 2px;
+    border: 1px solid #808080;
+    border-radius: 2px;
+}
 
 @media screen and (min-width:1200px) {
 
