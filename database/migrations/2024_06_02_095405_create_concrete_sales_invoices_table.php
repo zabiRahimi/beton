@@ -21,6 +21,8 @@ return new class extends Migration
             $table->date('date');
             $table->string('weight');
             $table->string('cubicMeters')->comment('متر مکعب');
+            $table->string('unitPrice')->comment('قیمت واحد');
+            $table->string('totalPrice')->comment('قیمت کل');
             $table->string('maskanMeli')->nullable()->comment('مسکن ملی');
             $table->string('vahed')->nullable()->comment('واحد مسکن ملی');
             $table->string('address')->nullable();

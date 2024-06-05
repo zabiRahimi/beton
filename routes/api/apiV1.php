@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CementStoreController;
 use App\Http\Controllers\ConcreteController;
+use App\Http\Controllers\ConcreteSalesInvoiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
@@ -105,6 +106,14 @@ Route::controller(WaterStoreController::class)->group(function () {
     Route::post('/addWaterStore', 'store');
     Route::get('/getWaterStores', 'index');
     Route::patch('/editWaterStore/{waterStore}', 'update');
+
+});
+
+Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
+    
+    Route::post('/addConcreteSalesInvoice', 'store');
+    Route::get('/getConcreteSalesInvoices', 'index');
+    Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
 
 });
 

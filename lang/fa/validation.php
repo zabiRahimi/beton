@@ -245,6 +245,13 @@ return [
         'amount' => 'مقدار',
         'reservoir' => 'مخزن',
         'job' => 'شغل',
+        'weight'=>'وزن',
+        'cubicMeters'=>'مترمکعب',
+        'unitPrice'=>'قیمت واحد',
+        'totalPrice'=>'قیمت کل',
+        'vahed'=>'واحد',
+        'concretingPosition'=>'موقعیت بتن ریزی',
+        
 
     ],
 
