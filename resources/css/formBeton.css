@@ -76,6 +76,11 @@
     width: 100%;
 }
 
+.divInputCheckboxFB{
+   display: flex;
+   justify-content: space-around;
+}
+
 .divInputFB label {
     /* width: 135px; */
     display: inline-block;
@@ -92,6 +97,10 @@
     padding: 0 7px;
     font-size: 0.91rem;
     border: 1px solid #8f8f9d;
+}
+
+.inputCheckboxFB{
+    width: 30px;
 }
 
 .inputTextUnitFB,
@@ -520,6 +529,16 @@ color: #f1f1f1;
     padding: 3px 2px;
     border: 1px solid #808080;
     border-radius: 2px;
+}
+
+/* .inactiveInputCSI_FB{
+   background-color:  #f4f4f4;
+
+} */
+
+.inactiveLabelCSI_FB{
+    color: #747474;
+
 }
 
 @media screen and (min-width:1200px) {

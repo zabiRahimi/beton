@@ -35,6 +35,9 @@ const AddConcreteSalesInvoice = () => {
     const monthSelect = useRef(null);
     const yearSelect = useRef(null);
 
+    const unitPriceRef = useRef(null);
+    const unitPriceErrorRef = useRef(null);
+
     const nameErrorRef = useRef(null);
     const lastNameErrorRef = useRef(null);
     const fatherErrorRef = useRef(null);
@@ -46,6 +49,11 @@ const AddConcreteSalesInvoice = () => {
     const emailErrorRef = useRef(null);
     const postalCodeErrorRef = useRef(null);
     const addressErrorRef = useRef(null);
+
+    const zabi=<div>zabi</div>
+    const [invoice, setInvoice]=useState([zabi, zabi]);
+
+    console.log(invoice);
 
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
@@ -82,7 +90,15 @@ const AddConcreteSalesInvoice = () => {
         getConcreteSalesInvoices();
     }, []);
 
-
+    useEffect(() => {
+        if (invoice) {
+            // const newRefs = customerTypes.reduce((acc, value) => {
+            //     acc[value.code] = createRef();
+            //     return acc;
+            // }, {});
+            // setRefs(newRefs);
+        }
+    }, [invoice]);
 
     /**
      * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -208,10 +224,6 @@ const AddConcreteSalesInvoice = () => {
         divItemCustomerType.current.classList.toggle('--hidden');
     }
 
-
-
-
-
     /**
      * فرآیند انتخاب نوع مشتری
      * @param {*} e 
@@ -242,10 +254,6 @@ const AddConcreteSalesInvoice = () => {
 
         }
     }
-
-
-
-
 
     const changeDay = (e) => {
         let { value } = e.target;
@@ -686,6 +694,40 @@ const AddConcreteSalesInvoice = () => {
             }
         }));
     };
+
+    /**
+      * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
+      * به صورت دهگان،صدگان و ...
+      * @param {ref} ref 
+      */
+    const formatNub = (ref) => {
+        let val,
+            checkDthot,
+            resalt = ref.current.value.replace(/[\s,]/g, "");
+
+        // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
+        if (resalt.slice(-1) == '.') {
+            checkDthot = true;
+        } else {
+            checkDthot = false;
+        }
+        // چک می کند فقط رشته عددی باشد
+        if (parseFloat(resalt)) {
+            val = parseFloat(resalt);
+            /**
+             * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
+             * علامت را به آخر رشته اضافه می کند
+             */
+            val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
+            ref.current.value = val;
+        }
+    }
+
+    const handleAddInvoice = (e)=>{
+        e.preventDefault();
+        setInvoice([...invoice, zabi])
+    }
+
     return (
         <div ref={container}>
 
@@ -731,7 +773,7 @@ const AddConcreteSalesInvoice = () => {
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="name">انتخاب مشتری</label>
+                                    <label htmlFor="name"> مشتری</label>
                                     <input
                                         type="text"
                                         className="inputTextFB element"
@@ -802,6 +844,7 @@ const AddConcreteSalesInvoice = () => {
                                                     onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
 
                                                 />
+                                                <i className="icofont-ui-rating starFB" />
                                             </div>
 
                                             <div className="divDownDateAcus" >
@@ -847,7 +890,7 @@ const AddConcreteSalesInvoice = () => {
                             <div className="sectionFB">
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label htmlFor="nationalCode">شماره قبض </label>
+                                        <label htmlFor="nationalCode">عیار بتن </label>
                                         <input
                                             type="text"
                                             id="nationalCode"
@@ -856,97 +899,235 @@ const AddConcreteSalesInvoice = () => {
                                             onInput={e => handleSaveValInput(e, 'nationalCode')}
                                             onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
                                         />
+                                        <i className="icofont-ui-rating starFB" />
                                     </div>
                                     <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                 </div>
 
                                 <div className="containerInputFB">
-                                    <div className="divInputFB ">
-                                        <label htmlFor="day">تاریخ و ساعت  </label>
-                                        <div className="divDateBirth">
-                                            <div className="divUpDateAcus element" id="dateOfBirth"
-                                                ref={dateOfBirth}
-                                            >
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputDayTDACus element"
-                                                    placeholder="1"
-                                                    id="day"
-                                                    value={day || ''}
-                                                    onInput={(e) => changeDay(e)}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                                <span>/</span>
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputMonthTDACus element"
-                                                    placeholder="1"
-                                                    value={month || ''}
-                                                    onInput={(e) => changeMonth(e)}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                                <span>/</span>
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputYearTDACus element"
-                                                    placeholder="1300"
-                                                    value={year || ''}
-                                                    onInput={(e) => { changeYear(e) }}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                            </div>
-
-                                            <div className="divDownDateAcus" >
-                                                <select
-                                                    className="element"
-                                                    value={day}
-                                                    ref={daySelect}
-                                                    onChange={(e) => changeDay(e)}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">روز</option>
-                                                    {optionDays}
-                                                </select>
-                                                <select
-                                                    className="element"
-                                                    value={month}
-                                                    ref={monthSelect}
-                                                    onChange={(e) => changeMonth(e)}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">ماه</option>
-                                                    {optionMonth}
-                                                </select>
-                                                <select
-                                                    className="element"
-                                                    value={year}
-                                                    ref={yearSelect}
-                                                    onChange={(e) => { changeYear(e) }}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">سال</option>
-                                                    {optionYears}
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div className="divInputFB">
+                                        <label htmlFor='unitPrice'> قیمت واحد بتن (مترمکعب) </label>
+                                        <input
+                                            type="text"
+                                            id="unitPrice"
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={input.unitPrice}
+                                            ref={unitPriceRef}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'unitPrice');
+                                                formatNub(unitPriceRef);
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor('unitPrice')}
+                                        >
+                                            تومان
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id="concreteNameCodeError"
+                                        ref={unitPriceErrorRef}
+                                    >
+                                    </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor='unitPrice'> وزن بار </label>
+                                        <input
+                                            type="text"
+                                            id="unitPrice"
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={input.unitPrice}
+                                            ref={unitPriceRef}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'unitPrice');
+                                                formatNub(unitPriceRef);
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor('unitPrice')}
+                                        >
+                                            کیلو گرم
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id="concreteNameCodeError"
+                                        ref={unitPriceErrorRef}
+                                    >
+                                    </div>
+                                </div>
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor='unitPrice'> حجم بار </label>
+                                        <input
+                                            type="text"
+                                            id="unitPrice"
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={input.unitPrice}
+                                            ref={unitPriceRef}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'unitPrice');
+                                                formatNub(unitPriceRef);
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor('unitPrice')}
+                                        >
+                                            مترمکعب
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id="concreteNameCodeError"
+                                        ref={unitPriceErrorRef}
+                                    >
+                                    </div>
+                                </div>
+
+                                <div className="containerInputFB">
+
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor='unitPrice'> قیمت کل </label>
+                                        <input
+                                            type="text"
+                                            id="unitPrice"
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={input.unitPrice}
+                                            ref={unitPriceRef}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'unitPrice');
+                                                formatNub(unitPriceRef);
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor('unitPrice')}
+                                        >
+                                            مترمکعب
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id="concreteNameCodeError"
+                                        ref={unitPriceErrorRef}
+                                    >
+                                    </div>
                                 </div>
                             </div>
+
+                            <div className="sectionFB">
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor="nationalCode">میکسر </label>
+                                        <input
+                                            type="text"
+                                            id="nationalCode"
+                                            className="inputTextFB ltrFB element"
+                                            defaultValue={input.nationalCode}
+                                            onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                            onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                        />
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor="nationalCode">راننده </label>
+                                        <input
+                                            type="text"
+                                            id="nationalCode"
+                                            className="inputTextFB ltrFB element"
+                                            defaultValue={input.nationalCode}
+                                            onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                            onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                        />
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor='unitPrice'> کرایه میکسر </label>
+                                        <input
+                                            type="text"
+                                            id="unitPrice"
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={input.unitPrice}
+                                            ref={unitPriceRef}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'unitPrice');
+                                                formatNub(unitPriceRef);
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor('unitPrice')}
+                                        >
+                                            تومان
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id="concreteNameCodeError"
+                                        ref={unitPriceErrorRef}
+                                    >
+                                    </div>
+                                </div>
+
+                            </div>
+
                             <div className="sectionFB">
                                 <div className="containerInputFB">
+                                    <div className="divInputCheckboxFB">
+
+                                        <input
+                                            type="checkbox"
+                                            id="nationalCode"
+                                            className="inputCheckboxFB  element"
+                                            defaultValue={input.nationalCode}
+                                            onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                            onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                        />
+                                        <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB'>مسکن ملی (شهرک امام خمینی) </label>
+                                    </div>
+                                    <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                </div>
+                                <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label htmlFor="nationalCode">شماره قبض </label>
+                                        <label htmlFor="nationalCode" className='inactiveLabelCSI_FB'>شماره واحد </label>
                                         <input
                                             type="text"
                                             id="nationalCode"
                                             className="inputTextFB ltrFB element"
+                                            disabled
                                             defaultValue={input.nationalCode}
                                             onInput={e => handleSaveValInput(e, 'nationalCode')}
                                             onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
@@ -956,92 +1137,29 @@ const AddConcreteSalesInvoice = () => {
                                 </div>
 
                                 <div className="containerInputFB">
-                                    <div className="divInputFB ">
-                                        <label htmlFor="day">تاریخ و ساعت  </label>
-                                        <div className="divDateBirth">
-                                            <div className="divUpDateAcus element" id="dateOfBirth"
-                                                ref={dateOfBirth}
-                                            >
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputDayTDACus element"
-                                                    placeholder="1"
-                                                    id="day"
-                                                    value={day || ''}
-                                                    onInput={(e) => changeDay(e)}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+                                    <div className="divInputCheckboxFB">
 
-                                                />
-                                                <span>/</span>
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputMonthTDACus element"
-                                                    placeholder="1"
-                                                    value={month || ''}
-                                                    onInput={(e) => changeMonth(e)}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                                <span>/</span>
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputYearTDACus element"
-                                                    placeholder="1300"
-                                                    value={year || ''}
-                                                    onInput={(e) => { changeYear(e) }}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                            </div>
-
-                                            <div className="divDownDateAcus" >
-                                                <select
-                                                    className="element"
-                                                    value={day}
-                                                    ref={daySelect}
-                                                    onChange={(e) => changeDay(e)}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">روز</option>
-                                                    {optionDays}
-                                                </select>
-                                                <select
-                                                    className="element"
-                                                    value={month}
-                                                    ref={monthSelect}
-                                                    onChange={(e) => changeMonth(e)}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">ماه</option>
-                                                    {optionMonth}
-                                                </select>
-                                                <select
-                                                    className="element"
-                                                    value={year}
-                                                    ref={yearSelect}
-                                                    onChange={(e) => { changeYear(e) }}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">سال</option>
-                                                    {optionYears}
-                                                </select>
-                                            </div>
-                                        </div>
+                                        <input
+                                            type="checkbox"
+                                            id="nationalCode"
+                                            className="inputCheckboxFB  element"
+                                            defaultValue={input.nationalCode}
+                                            onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                            onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                        />
+                                        <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB'>مسکن ملی (شهرک شهید رئیسی) </label>
                                     </div>
-                                    <div className="errorContainerFB elementError" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
+                                    <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                 </div>
-                            </div>
-                            <div className="sectionFB">
+
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
-                                        <label htmlFor="nationalCode">شماره قبض </label>
+                                        <label htmlFor="nationalCode" className='inactiveLabelCSI_FB'>شماره واحد </label>
                                         <input
                                             type="text"
                                             id="nationalCode"
                                             className="inputTextFB ltrFB element"
+                                            disabled
                                             defaultValue={input.nationalCode}
                                             onInput={e => handleSaveValInput(e, 'nationalCode')}
                                             onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
@@ -1050,254 +1168,12 @@ const AddConcreteSalesInvoice = () => {
                                     <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                 </div>
 
-                                <div className="containerInputFB">
-                                    <div className="divInputFB ">
-                                        <label htmlFor="day">تاریخ و ساعت  </label>
-                                        <div className="divDateBirth">
-                                            <div className="divUpDateAcus element" id="dateOfBirth"
-                                                ref={dateOfBirth}
-                                            >
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputDayTDACus element"
-                                                    placeholder="1"
-                                                    id="day"
-                                                    value={day || ''}
-                                                    onInput={(e) => changeDay(e)}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                                <span>/</span>
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputMonthTDACus element"
-                                                    placeholder="1"
-                                                    value={month || ''}
-                                                    onInput={(e) => changeMonth(e)}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                                <span>/</span>
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputYearTDACus element"
-                                                    placeholder="1300"
-                                                    value={year || ''}
-                                                    onInput={(e) => { changeYear(e) }}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                            </div>
-
-                                            <div className="divDownDateAcus" >
-                                                <select
-                                                    className="element"
-                                                    value={day}
-                                                    ref={daySelect}
-                                                    onChange={(e) => changeDay(e)}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">روز</option>
-                                                    {optionDays}
-                                                </select>
-                                                <select
-                                                    className="element"
-                                                    value={month}
-                                                    ref={monthSelect}
-                                                    onChange={(e) => changeMonth(e)}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">ماه</option>
-                                                    {optionMonth}
-                                                </select>
-                                                <select
-                                                    className="element"
-                                                    value={year}
-                                                    ref={yearSelect}
-                                                    onChange={(e) => { changeYear(e) }}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">سال</option>
-                                                    {optionYears}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
-                                </div>
-                            </div>
-                            <div className="sectionFB">
-                                <div className="containerInputFB">
-                                    <div className="divInputFB">
-                                        <label htmlFor="nationalCode">شماره قبض </label>
-                                        <input
-                                            type="text"
-                                            id="nationalCode"
-                                            className="inputTextFB ltrFB element"
-                                            defaultValue={input.nationalCode}
-                                            onInput={e => handleSaveValInput(e, 'nationalCode')}
-                                            onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
-                                        />
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
-                                </div>
-
-                                <div className="containerInputFB">
-                                    <div className="divInputFB ">
-                                        <label htmlFor="day">تاریخ و ساعت  </label>
-                                        <div className="divDateBirth">
-                                            <div className="divUpDateAcus element" id="dateOfBirth"
-                                                ref={dateOfBirth}
-                                            >
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputDayTDACus element"
-                                                    placeholder="1"
-                                                    id="day"
-                                                    value={day || ''}
-                                                    onInput={(e) => changeDay(e)}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                                <span>/</span>
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputMonthTDACus element"
-                                                    placeholder="1"
-                                                    value={month || ''}
-                                                    onInput={(e) => changeMonth(e)}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                                <span>/</span>
-                                                <input
-                                                    type="text"
-                                                    className="inputTextDateACus inputYearTDACus element"
-                                                    placeholder="1300"
-                                                    value={year || ''}
-                                                    onInput={(e) => { changeYear(e) }}
-                                                    onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                />
-                                            </div>
-
-                                            <div className="divDownDateAcus" >
-                                                <select
-                                                    className="element"
-                                                    value={day}
-                                                    ref={daySelect}
-                                                    onChange={(e) => changeDay(e)}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">روز</option>
-                                                    {optionDays}
-                                                </select>
-                                                <select
-                                                    className="element"
-                                                    value={month}
-                                                    ref={monthSelect}
-                                                    onChange={(e) => changeMonth(e)}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">ماه</option>
-                                                    {optionMonth}
-                                                </select>
-                                                <select
-                                                    className="element"
-                                                    value={year}
-                                                    ref={yearSelect}
-                                                    onChange={(e) => { changeYear(e) }}
-                                                    onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
-
-                                                >
-                                                    <option value="">سال</option>
-                                                    {optionYears}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div className="sectionFB">
-                            <div className="divRightFB">
-                                <div className="containerInputFB">
-                                    <div className="divInputFB">
-                                        <label htmlFor="mobile">موبایل</label>
-                                        <input type="text" id="mobile" className="inputTextFB ltrFB element"
-                                            value={input['mobile'] || ''}
-                                            onInput={e => handleSaveValInput(e, 'mobile')}
-                                            onBlur={() => addZeroFirstStr('mobile')}
-                                            onFocus={(e) => clearInputError(e, mobileErrorRef)}
-
-                                        />
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="mobileError" ref={mobileErrorRef}> </div>
-
-                                </div>
-
-                                <div className="containerInputFB">
-                                    <div className="divInputFB">
-                                        <label htmlFor="telephone">تلفن </label>
-                                        <input type="text" id="telephone" className="inputTextFB ltrFB element"
-                                            value={input['telephone'] || ''}
-                                            onInput={e => handleSaveValInput(e, 'telephone')}
-                                            onBlur={() => addZeroFirstStr('telephone')}
-                                            onFocus={(e) => clearInputError(e, telephoneErrorRef)}
-
-                                        />
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="telephoneError" ref={telephoneErrorRef}> </div>
-                                </div>
-
-                                <div className="containerInputFB">
-                                    <div className="divInputFB">
-                                        <label htmlFor="postalCode">کد پستی</label>
-                                        <input
-                                            type="text"
-                                            className="inputTextFB ltrFB element"
-                                            id="postalCode"
-                                            defaultValue={input.postalCode}
-                                            onInput={e => handleSaveValInput(e, 'postalCode')}
-                                            onFocus={(e) => clearInputError(e, postalCodeErrorRef)}
-
-                                        />
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="postalCodeError" ref={postalCodeErrorRef}> </div>
-                                </div>
-                                <div className="containerInputFB">
-                                    <div className="divInputFB">
-                                        <label htmlFor="email">ایمیل</label>
-                                        <input
-                                            type="text"
-                                            id="email"
-                                            className="inputTextFB ltrFB element"
-                                            defaultValue={input.email}
-                                            onInput={e => handleSaveValInput(e, 'email')}
-                                            onFocus={(e) => clearInputError(e, emailErrorRef)}
-
-                                        />
-                                    </div>
-                                    <div className="errorContainerFB elementError" id="emailError" ref={emailErrorRef}> </div>
-                                </div>
-                            </div>
-
-                            <div className="divLeftFB">
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
                                         <label htmlFor="address">آدرس</label>
                                         <textarea
                                             id="address"
-                                            className="textareaAddressACu"
+                                            className="textareaAddressCSI_FB"
                                             defaultValue={input.address}
                                             onInput={e => handleSaveValInput(e, 'address')}
                                             onFocus={(e) => clearInputError(e, addressErrorRef)}
@@ -1306,8 +1182,41 @@ const AddConcreteSalesInvoice = () => {
                                     </div>
                                     <div className="errorContainerFB elementError" id="addressError" ref={addressErrorRef}> </div>
                                 </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor="nationalCode" >موقعیت بتن‌ریزی </label>
+                                        <textarea
+                                            id="address"
+                                            className="textareaAddressCSI_FB"
+                                            defaultValue={input.address}
+                                            onInput={e => handleSaveValInput(e, 'address')}
+                                            onFocus={(e) => clearInputError(e, addressErrorRef)}
+
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                </div>
+
                             </div>
+
+                            <div className="divBtnAddInmoiceCSI_FB">
+                                <button onClick={e=>{handleAddInvoice(e)}}>
+                                    <i className='icofont-plus' />
+                                    اضافه کردن فاکتور
+                                </button>
+                            </div>
+
                         </div>
+                        {invoice.map((inv, i)=>{
+                          return  <div key={i}>
+                                {inv}
+                            </div>
+                        })}
+
+
+
+
 
                         <div className={`sectionFB divBtnsFB ${!editMode ? '' : 'hideGe'}`}>
                             <Button
