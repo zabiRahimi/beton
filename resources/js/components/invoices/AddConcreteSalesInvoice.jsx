@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from '../hooks/useChangeForm';
+import SelectZabi from "../hooks/SelectZabi";
+
 const AddConcreteSalesInvoice = () => {
 
     const MySwal = withReactContent(Swal);
@@ -38,6 +40,10 @@ const AddConcreteSalesInvoice = () => {
     const unitPriceRef = useRef(null);
     const unitPriceErrorRef = useRef(null);
 
+    const hasCalledGetConcreteBuyers = useRef(false);
+    const hasCalledGetMixers = useRef(false);
+
+
     const nameErrorRef = useRef(null);
     const lastNameErrorRef = useRef(null);
     const fatherErrorRef = useRef(null);
@@ -50,41 +56,90 @@ const AddConcreteSalesInvoice = () => {
     const postalCodeErrorRef = useRef(null);
     const addressErrorRef = useRef(null);
 
-    const zabi=<div>zabi</div>
-    const [invoice, setInvoice]=useState([zabi, zabi]);
-
-    console.log(invoice);
-
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
 
+    const [refInvoice, setRefInvoice] = useState({});
+    const [refDate, setRefDate] = useState({});
+    const [refWeight, setRefWeight] = useState({});
+    const [refCubicMeters, setRefCubicMeters] = useState({});
+    const [refConcrete_id, setRefConcrete_id] = useState({});
+    const [refTruck_id, setRefTruck_id] = useState({});
+    const [refDrive_id, setRefDrive_id] = useState({});
+    const [refUnitPrice, setRefUnitPrice] = useState({});
+    const [refTotalPrice, setRefTotalPrice] = useState({});
+    const [refFare, setRefFare] = useState({});
+    const [refMaskanMeli, setRefMaskanMeli] = useState({});
+    const [refVahed, setRefVahed] = useState({});
+    const [refAddress, setRefAddress] = useState({});
+    const [refConcretingPosition, setRefConcretingPosition] = useState({});
+
+    const [refErrorDate, setRefErrorDate] = useState({});
+    const [refErrorWeight, setRefErrorWeight] = useState({});
+    const [refErrorCubicMeters, setRefErrorCubicMeters] = useState({});
+    const [refErrorConcrete_id, setRefErrorConcrete_id] = useState({});
+    const [refErrorTruck_id, setRefErrorTruck_id] = useState({});
+    const [refErrorDrive_id, setRefErrorDrive_id] = useState({});
+    const [refErrorUnitPrice, setRefErrorUnitPrice] = useState({});
+    const [refErrorTotalPrice, setRefErrorTotalPrice] = useState({});
+    const [refErrorFare, setRefErrorFare] = useState({});
+    const [refErrorMaskanMeli, setRefErrorMaskanMeli] = useState({});
+    const [refErrorVahed, setRefErrorVahed] = useState({});
+    const [refErrorAddress, setRefErrorAddress] = useState({});
+    const [refErrorConcretingPosition, setRefErrorConcretingPosition] = useState({});
+
     const [loading, setLoading] = useState(false);
-
+    const[concreteBuyers,setConcreteBuyers]= useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
+    const [ticketNumber, setTicketNumber] = useState(1);
 
+    
     const [input, setInput] = useState({
         customer_id: '',
-        date: '',
-        weight: '',
-        cubicMeters: "",
-        concrete_id: '',
-        truck_id: '',
-        drive_id: '',
-        unitPrice: '',
-        totalPrice: '',
-        fare: '',
-        maskanMeli: '',
-        vahed: '',
-        address: '',
-        concretingPosition: '',
+        invoice: [{
+            date: '',
+            weight: '',
+            cubicMeters: "",
+            concrete_id: '',
+            truck_id: '',
+            driver_id: '',
+            unitPrice: '',
+            totalPrice: '',
+            fare: '',
+            maskanMeli: '',
+            vahed: '',
+            address: '',
+            concretingPosition: ''
+        }],
+        
     });
-
-
+    
+    
     /**
      * id to edit the model
-     */
-    const [id, setId] = useState(null);
+    */
+   const [id, setId] = useState(null);
+   const sampleInvoice = 'invoice';
+    
+
+
+    const [invoice, setInvoice] = useState([sampleInvoice]);
+
+    useEffect(() => {
+        // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
+        if (!hasCalledGetConcreteBuyers.current) {
+            getCSIConcreteBuyers();
+            hasCalledGetConcreteBuyers.current = true;
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!hasCalledGetMixers.current) {
+            getCSIMixers();
+            hasCalledGetMixers.current = true;
+        }
+    }, []);
 
     useEffect(() => {
         getConcreteSalesInvoices();
@@ -99,6 +154,72 @@ const AddConcreteSalesInvoice = () => {
             // setRefs(newRefs);
         }
     }, [invoice]);
+
+    /**
+    * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
+    * نوع مشتری هر رکورد است
+    */
+    useEffect(() => {
+        if (invoice) {
+            const refDate = invoice.reduce((acc, value, i) => {
+                acc['date' + (i + 1)] = createRef();
+                return acc;
+            }, {});
+            const refWeight = invoice.reduce((acc, value, i) => {
+                acc['weight' + (i + 1)] = createRef();
+                return acc;
+            }, {});
+            let refs = invoice.reduce((acc, cur, i) => {
+                acc[`date${i}`] = createRef();
+                acc[`weight${i}`] = createRef();
+                acc[`cubicMeters${i}`] = createRef();
+                acc[`concrete_id${i}`] = createRef();
+                acc[`truck_id${i}`] = createRef();
+                acc[`driver_id${i}`] = createRef();
+                acc[`unitPrice${i}`] = createRef();
+                acc[`totalPrice${i}`] = createRef();
+                acc[`fare${i}`] = createRef();
+                acc[`maskanMeli${i}`] = createRef();
+                acc[`vahed${i}`] = createRef();
+                acc[`address${i}`] = createRef();
+                acc[`concretingPosition${i}`] = createRef();
+                return acc;
+            }, {});
+            setRefInvoice(refs);
+            // setRefDate(refDate);
+            // setRefWeight(refWeight);
+            // setRefCubicMeters();
+            // setRefConcrete_id();
+            // setRefTruck_id(refs);
+            // setRefDrive_id();
+            // setRefUnitPrice();
+            // setRefTotalPrice();
+            // setRefFare();
+            // setRefMaskanMeli();
+            // setRefVahed();
+            // setRefAddress();
+            // setRefConcretingPosition();
+            // setRefErrorDate();
+            // setRefErrorWeight();
+            // setRefErrorCubicMeters();
+            // setRefErrorConcrete_id();
+            // setRefErrorTruck_id();
+            // setRefErrorDrive_id();
+            // setRefErrorUnitPrice();
+            // setRefErrorTotalPrice();
+            // setRefErrorFare();
+            // setRefErrorMaskanMeli();
+            // setRefErrorVahed();
+            // setRefErrorAddress();
+            // setRefErrorConcretingPosition();
+            
+            
+        }
+    }, [invoice]);
+
+   
+    // console.log(input);
+    // console.log(refTruck_id);
 
     /**
      * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -134,6 +255,213 @@ const AddConcreteSalesInvoice = () => {
         let widths = container.current.offsetWidth;
         setWidthComponent(widths)
     }, []);
+
+    async function getCSIConcreteBuyers() {
+        await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
+            let datas = response.data.concreteBuyers;
+            if (datas.length == 0) {
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا خریداران بتن را به عنوان مشتری ثبت کنید.`,
+                    confirmButtonText: "  ثبت مشتری   ",
+                    showCancelButton: true,
+                    cancelButtonText: "کنسل",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    preConfirm: () => {
+ 
+                        navigate("/addCustomer");
+                    }
+ 
+                });
+            } else {
+                console.log(datas);
+                // setPersonnels2(datas);
+                datas.map((data, i) => {
+                    setConcreteBuyers(perv => ([...perv, {
+                        value: data.id,
+                        html: <div className="personnelAption_addPerS">
+                            <span className="name_addPers">{data.name}
+                                {' '}
+                                {data.lastName}</span>
+ 
+                            <span className="fther_addPers">
+                                {data.father || ''}
+                            </span>
+ 
+                        </div>
+                    }]))
+                })
+ 
+            }
+        });
+    }
+
+    async function getCSIMixers() {
+        await axios.get("/api/v1/getCSIMixers").then((response) => {
+            let datas = response.data.mixers;
+            if (datas.length == 0) {
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا خریداران بتن را به عنوان مشتری ثبت کنید.`,
+                    confirmButtonText: "  ثبت مشتری   ",
+                    showCancelButton: true,
+                    cancelButtonText: "کنسل",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    preConfirm: () => {
+ 
+                        navigate("/addCustomer");
+                    }
+ 
+                });
+            } else {
+                console.log(datas);
+                // setPersonnels2(datas);
+                datas.map((data, i) => {
+                    setConcreteBuyers(perv => ([...perv, {
+                        value: data.id,
+                        html: <div className="personnelAption_addPerS">
+                            <span className="name_addPers">{data.name}
+                                {' '}
+                                {data.lastName}</span>
+ 
+                            <span className="fther_addPers">
+                                {data.father || ''}
+                            </span>
+ 
+                        </div>
+                    }]))
+                })
+ 
+            }
+        });
+    }
+
+    // async function getPersonnels() {
+    //     await axios.get("/api/v1/getPersonnels").then((response) => {
+    //         let datas = response.data.personnels;
+    //         if (datas.length == 0) {
+    //             MySwal.fire({
+    //                 icon: "warning",
+    //                 title: "هشدار",
+    //                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا پرسنل را به عنوان مشتری ثبت کنید.`,
+    //                 confirmButtonText: "  ثبت مشتری   ",
+    //                 showCancelButton: true,
+    //                 cancelButtonText: "کنسل",
+    //                 confirmButtonColor: "#3085d6",
+    //                 cancelButtonColor: "#d33",
+    //                 preConfirm: () => {
+ 
+    //                     navigate("/addCustomer");
+    //                 }
+ 
+    //             });
+    //         } else {
+    //             setPersonnels2(datas);
+    //             datas.map((data, i) => {
+    //                 setPersonnels(perv => ([...perv, {
+    //                     value: data.id,
+    //                     html: <div className="personnelAption_addPerS">
+    //                         <span className="name_addPers">{data.name}
+    //                             {' '}
+    //                             {data.lastName}</span>
+ 
+    //                         <span className="fther_addPers">
+    //                             {data.father || ''}
+    //                         </span>
+ 
+    //                     </div>
+    //                 }]))
+    //             })
+ 
+    //         }
+    //     });
+    // }
+
+    // async function getPersonnels() {
+    //     await axios.get("/api/v1/getPersonnels").then((response) => {
+    //         let datas = response.data.personnels;
+    //         if (datas.length == 0) {
+    //             MySwal.fire({
+    //                 icon: "warning",
+    //                 title: "هشدار",
+    //                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا پرسنل را به عنوان مشتری ثبت کنید.`,
+    //                 confirmButtonText: "  ثبت مشتری   ",
+    //                 showCancelButton: true,
+    //                 cancelButtonText: "کنسل",
+    //                 confirmButtonColor: "#3085d6",
+    //                 cancelButtonColor: "#d33",
+    //                 preConfirm: () => {
+ 
+    //                     navigate("/addCustomer");
+    //                 }
+ 
+    //             });
+    //         } else {
+    //             setPersonnels2(datas);
+    //             datas.map((data, i) => {
+    //                 setPersonnels(perv => ([...perv, {
+    //                     value: data.id,
+    //                     html: <div className="personnelAption_addPerS">
+    //                         <span className="name_addPers">{data.name}
+    //                             {' '}
+    //                             {data.lastName}</span>
+ 
+    //                         <span className="fther_addPers">
+    //                             {data.father || ''}
+    //                         </span>
+ 
+    //                     </div>
+    //                 }]))
+    //             })
+ 
+    //         }
+    //     });
+    // }
+
+    // async function getPersonnels() {
+    //     await axios.get("/api/v1/getPersonnels").then((response) => {
+    //         let datas = response.data.personnels;
+    //         if (datas.length == 0) {
+    //             MySwal.fire({
+    //                 icon: "warning",
+    //                 title: "هشدار",
+    //                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا پرسنل را به عنوان مشتری ثبت کنید.`,
+    //                 confirmButtonText: "  ثبت مشتری   ",
+    //                 showCancelButton: true,
+    //                 cancelButtonText: "کنسل",
+    //                 confirmButtonColor: "#3085d6",
+    //                 cancelButtonColor: "#d33",
+    //                 preConfirm: () => {
+ 
+    //                     navigate("/addCustomer");
+    //                 }
+ 
+    //             });
+    //         } else {
+    //             setPersonnels2(datas);
+    //             datas.map((data, i) => {
+    //                 setPersonnels(perv => ([...perv, {
+    //                     value: data.id,
+    //                     html: <div className="personnelAption_addPerS">
+    //                         <span className="name_addPers">{data.name}
+    //                             {' '}
+    //                             {data.lastName}</span>
+ 
+    //                         <span className="fther_addPers">
+    //                             {data.father || ''}
+    //                         </span>
+ 
+    //                     </div>
+    //                 }]))
+    //             })
+ 
+    //         }
+    //     });
+    // }
 
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -488,33 +816,44 @@ const AddConcreteSalesInvoice = () => {
      * @param {*} e 
      * @param {*} input 
      */
-    const handleSaveValInput = (e, input) => {
+    const handleSaveValInput = (e, input, i, customer = false) => {
         let { value } = e.target;
-        setInput(prev => ({ ...prev, [input]: value }));
+        
+        if (!customer) {
+            setInput(prevInput => {
+                let newInvoice;
+                if (Array.isArray(prevInput.invoice)) {
+                    newInvoice = [...prevInput.invoice];
+                    newInvoice[i] = { ...newInvoice[i], [input]: value };
+                } else {
+                    newInvoice[i] = {
+                        date: '',
+                        weight: '',
+                        cubicMeters: "",
+                        concrete_id: '',
+                        truck_id: '',
+                        driver_id: '',
+                        unitPrice: '',
+                        totalPrice: '',
+                        fare: '',
+                        maskanMeli: '',
+                        vahed: '',
+                        address: '',
+                        concretingPosition: ''
+                    }
+                    newInvoice[i] = { ...newInvoice[i], [input]: value };
+                }
+
+                return { ...prevInput, invoice: newInvoice };
+            });
+
+        } else {
+
+            setInput(prev => ({ ...prev, [input]: value }));
+        }
     }
 
-    /**
-     * برای ذخیره شماره حسابها و یا شماره کارت های متعدد
-     * @param {*} e 
-     * @param {*} index 
-     * @param {*} input 
-     */
-    const handleSaveValBankInput = (e, index, input) => {
-        let { value } = e.target;
 
-        setInput(prevInput => {
-            let newBankInfo;
-            if (Array.isArray(prevInput.bankInfo)) {
-                newBankInfo = [...prevInput.bankInfo];
-                newBankInfo[index] = { ...newBankInfo[index], [input]: value };
-            } else {
-                newBankInfo[index] = { bank: '', account: '', card: '', shaba: '' }
-                newBankInfo[index] = { ...newBankInfo[index], [input]: value };
-            }
-
-            return { ...prevInput, bankInfo: newBankInfo };
-        });
-    }
 
     /**
      * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
@@ -723,10 +1062,16 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const handleAddInvoice = (e)=>{
+    const handleAddInvoice = (e) => {
         e.preventDefault();
-        setInvoice([...invoice, zabi])
+        setInvoice([...invoice, sampleInvoice])
+        setInput(prevInput => {
+            let newInvoice = [...prevInput.invoice, { date: '', weight: '', cubicMeters: "", concrete_id: '', truck_id: '', driver_id: '', unitPrice: '', totalPrice: '', fare: '', maskanMeli: '', vahed: '', address: '', concretingPosition: '' }];
+
+            return { ...prevInput, invoice: newInvoice };
+        });
     }
+
 
     return (
         <div ref={container}>
@@ -779,7 +1124,7 @@ const AddConcreteSalesInvoice = () => {
                                         className="inputTextFB element"
                                         id="name"
                                         defaultValue={input.name}
-                                        onInput={e => handleSaveValInput(e, 'name')}
+                                        onInput={e => handleSaveValInput(e, 'customer_id','',true)}
                                         onFocus={e => clearInputError(e, nameErrorRef)}
                                         autoFocus
                                     />
@@ -788,9 +1133,29 @@ const AddConcreteSalesInvoice = () => {
                                 <div className="errorContainerFB elementError" id="nameError" ref={nameErrorRef}> </div>
                             </div>
 
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="customer_id"> پرسنل </label>
+                                    <div
+                                        id="customer_id"
+                                        onClick={e => clearInputError(e, customer_idErrorRef)}
+                                    >
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={concreteBuyers}
+                                            // saveOption={setCustomerId}
+                                            // ref={customerSelectChild}
+                                        />
+                                    </div>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                {/* <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div> */}
+                                <div className="errorContainerFB elementError" id="customer_idError" > </div>
+                            </div>
+
                         </div>
 
-                        <div className="containerCSI_FB">
+                        {/* <div className="containerCSI_FB">
                             <div className="sectionFB">
                                 <div className="containerInputFB">
                                     <div className="divInputFB">
@@ -1199,20 +1564,430 @@ const AddConcreteSalesInvoice = () => {
                                 </div>
 
                             </div>
+                        </div> */}
+                        {invoice.map((inv, i) => {
+                            return <div key={i}>
+                                <div className="containerCSI_FB">
+                                    <div className="sectionFB">
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor="nationalCode">شماره قبض </label>
+                                                <input
+                                                    type="text"
+                                                    id="nationalCode"
+                                                    className="inputTextFB ltrFB element"
+                                                    disabled
+                                                    defaultValue={ticketNumber + i}
+                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
 
-                            <div className="divBtnAddInmoiceCSI_FB">
-                                <button onClick={e=>{handleAddInvoice(e)}}>
-                                    <i className='icofont-plus' />
-                                    اضافه کردن فاکتور
-                                </button>
-                            </div>
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB ">
+                                                <label htmlFor="day">تاریخ و ساعت  </label>
+                                                <div className="divDateBirth">
+                                                    <div className="divUpDateAcus element" id="dateOfBirth"
+                                                        ref={refDate['date' + (i)]}
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            className="inputTextDateACus inputDayTDACus element"
+                                                            placeholder="1"
+                                                            id="day"
+                                                            value={day || ''}
+                                                            onInput={(e) => changeDay(e)}
+                                                            onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
 
-                        </div>
-                        {invoice.map((inv, i)=>{
-                          return  <div key={i}>
-                                {inv}
+                                                        />
+                                                        <span>/</span>
+                                                        <input
+                                                            type="text"
+                                                            className="inputTextDateACus inputMonthTDACus element"
+                                                            placeholder="1"
+                                                            value={month || ''}
+                                                            onInput={(e) => changeMonth(e)}
+                                                            onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+
+                                                        />
+                                                        <span>/</span>
+                                                        <input
+                                                            type="text"
+                                                            className="inputTextDateACus inputYearTDACus element"
+                                                            placeholder="1300"
+                                                            value={year || ''}
+                                                            onInput={(e) => { changeYear(e) }}
+                                                            onFocus={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+
+                                                        />
+                                                        <i className="icofont-ui-rating starFB" />
+                                                    </div>
+
+                                                    <div className="divDownDateAcus" >
+                                                        <select
+                                                            className="element"
+                                                            value={day}
+                                                            ref={daySelect}
+                                                            onChange={(e) => changeDay(e)}
+                                                            onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+
+                                                        >
+                                                            <option value="">روز</option>
+                                                            {optionDays}
+                                                        </select>
+                                                        <select
+                                                            className="element"
+                                                            value={month}
+                                                            ref={monthSelect}
+                                                            onChange={(e) => changeMonth(e)}
+                                                            onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+
+                                                        >
+                                                            <option value="">ماه</option>
+                                                            {optionMonth}
+                                                        </select>
+                                                        <select
+                                                            className="element"
+                                                            value={year}
+                                                            ref={yearSelect}
+                                                            onChange={(e) => { changeYear(e) }}
+                                                            onClick={(e) => clearInputError(e, dateOfBirthErrorRef, false, true)}
+
+                                                        >
+                                                            <option value="">سال</option>
+                                                            {optionYears}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="dateOfBirthError" ref={dateOfBirthErrorRef}> </div>
+                                        </div>
+                                    </div>
+                                    <div className="sectionFB">
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor="nationalCode">عیار بتن </label>
+                                                <input
+                                                    type="text"
+                                                    id="nationalCode"
+                                                    className="inputTextFB ltrFB element"
+                                                    defaultValue={input.nationalCode}
+                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                />
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor='unitPrice'> قیمت واحد بتن (مترمکعب) </label>
+                                                <input
+                                                    type="text"
+                                                    id="unitPrice"
+                                                    className="inputTextUnitFB ltrFB element"
+                                                    defaultValue={input.unitPrice}
+                                                    ref={unitPriceRef}
+                                                    onInput={e => {
+                                                        handleSaveValInput(e, 'unitPrice');
+                                                        formatNub(unitPriceRef);
+                                                    }
+                                                    }
+                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                                />
+                                                <span
+                                                    className="unitFB"
+                                                    onClick={() => htmlFor('unitPrice')}
+                                                >
+                                                    تومان
+                                                </span>
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div
+                                                className="errorContainerFB elementError"
+                                                id="concreteNameCodeError"
+                                                ref={unitPriceErrorRef}
+                                            >
+                                            </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor='unitPrice'> وزن بار </label>
+                                                <input
+                                                    type="text"
+                                                    id="unitPrice"
+                                                    className="inputTextUnitFB ltrFB element"
+                                                    defaultValue={input.unitPrice}
+                                                    ref={refWeight['weight' + (i + 1)]}
+                                                    onInput={e => {
+                                                        handleSaveValInput(e, 'weight', i);
+                                                        formatNub(unitPriceRef);
+                                                    }
+                                                    }
+                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                                />
+                                                <span
+                                                    className="unitFB"
+                                                    onClick={() => htmlFor('unitPrice')}
+                                                >
+                                                    کیلو گرم
+                                                </span>
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div
+                                                className="errorContainerFB elementError"
+                                                id="concreteNameCodeError"
+                                                ref={unitPriceErrorRef}
+                                            >
+                                            </div>
+                                        </div>
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor='unitPrice'> حجم بار </label>
+                                                <input
+                                                    type="text"
+                                                    id="unitPrice"
+                                                    className="inputTextUnitFB ltrFB element"
+                                                    defaultValue={input.unitPrice}
+                                                    ref={unitPriceRef}
+                                                    onInput={e => {
+                                                        handleSaveValInput(e, 'unitPrice');
+                                                        formatNub(unitPriceRef);
+                                                    }
+                                                    }
+                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                                />
+                                                <span
+                                                    className="unitFB"
+                                                    onClick={() => htmlFor('unitPrice')}
+                                                >
+                                                    مترمکعب
+                                                </span>
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div
+                                                className="errorContainerFB elementError"
+                                                id="concreteNameCodeError"
+                                                ref={unitPriceErrorRef}
+                                            >
+                                            </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor='unitPrice'> قیمت کل </label>
+                                                <input
+                                                    type="text"
+                                                    id="unitPrice"
+                                                    className="inputTextUnitFB ltrFB element"
+                                                    defaultValue={input.unitPrice}
+                                                    ref={unitPriceRef}
+                                                    onInput={e => {
+                                                        handleSaveValInput(e, 'unitPrice');
+                                                        formatNub(unitPriceRef);
+                                                    }
+                                                    }
+                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                                />
+                                                <span
+                                                    className="unitFB"
+                                                    onClick={() => htmlFor('unitPrice')}
+                                                >
+                                                    مترمکعب
+                                                </span>
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div
+                                                className="errorContainerFB elementError"
+                                                id="concreteNameCodeError"
+                                                ref={unitPriceErrorRef}
+                                            >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="sectionFB">
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor="nationalCode">میکسر </label>
+                                                <input
+                                                    type="text"
+                                                    id="nationalCode"
+                                                    className="inputTextFB ltrFB element"
+                                                    defaultValue={input.nationalCode}
+                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                />
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor="nationalCode">راننده </label>
+                                                <input
+                                                    type="text"
+                                                    id="nationalCode"
+                                                    className="inputTextFB ltrFB element"
+                                                    defaultValue={input.nationalCode}
+                                                    onInput={e => handleSaveValInput(e, 'driver_id',i)}
+                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                    ref={refTruck_id[`driver_id${i}`]}
+                                                />
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor='unitPrice'> کرایه میکسر </label>
+                                                <input
+                                                    type="text"
+                                                    id="unitPrice"
+                                                    className="inputTextUnitFB ltrFB element"
+                                                    defaultValue={input.unitPrice}
+                                                    ref={unitPriceRef}
+                                                    onInput={e => {
+                                                        handleSaveValInput(e, 'unitPrice');
+                                                        formatNub(unitPriceRef);
+                                                    }
+                                                    }
+                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                                />
+                                                <span
+                                                    className="unitFB"
+                                                    onClick={() => htmlFor('unitPrice')}
+                                                >
+                                                    تومان
+                                                </span>
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div
+                                                className="errorContainerFB elementError"
+                                                id="concreteNameCodeError"
+                                                ref={unitPriceErrorRef}
+                                            >
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div className="sectionFB">
+                                        <div className="containerInputFB">
+                                            <div className="divInputCheckboxFB">
+
+                                                <input
+                                                    type="checkbox"
+                                                    id="nationalCode"
+                                                    className="inputCheckboxFB  element"
+                                                    defaultValue={input.nationalCode}
+                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                />
+                                                <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB'>مسکن ملی (شهرک امام خمینی) </label>
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor="nationalCode" className='inactiveLabelCSI_FB'>شماره واحد </label>
+                                                <input
+                                                    type="text"
+                                                    id="nationalCode"
+                                                    className="inputTextFB ltrFB element"
+                                                    disabled
+                                                    defaultValue={input.nationalCode}
+                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputCheckboxFB">
+
+                                                <input
+                                                    type="checkbox"
+                                                    id="nationalCode"
+                                                    className="inputCheckboxFB  element"
+                                                    defaultValue={input.nationalCode}
+                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                />
+                                                <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB'>مسکن ملی (شهرک شهید رئیسی) </label>
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor="nationalCode" className='inactiveLabelCSI_FB'>شماره واحد </label>
+                                                <input
+                                                    type="text"
+                                                    id="nationalCode"
+                                                    className="inputTextFB ltrFB element"
+                                                    disabled
+                                                    defaultValue={input.nationalCode}
+                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor="address">آدرس</label>
+                                                <textarea
+                                                    id="address"
+                                                    className="textareaAddressCSI_FB"
+                                                    defaultValue={input.address}
+                                                    onInput={e => handleSaveValInput(e, 'address')}
+                                                    onFocus={(e) => clearInputError(e, addressErrorRef)}
+
+                                                />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="addressError" ref={addressErrorRef}> </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label htmlFor="nationalCode" >موقعیت بتن‌ریزی </label>
+                                                <textarea
+                                                    id="address"
+                                                    className="textareaAddressCSI_FB"
+                                                    defaultValue={input.address}
+                                                    onInput={e => handleSaveValInput(e, 'address')}
+                                                    onFocus={(e) => clearInputError(e, addressErrorRef)}
+
+                                                />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
                             </div>
                         })}
+                        <div className="divBtnAddInmoiceCSI_FB">
+                            <button onClick={e => { handleAddInvoice(e) }}>
+                                <i className='icofont-plus' />
+                                اضافه کردن فاکتور جدید
+                            </button>
+                        </div>
 
 
 

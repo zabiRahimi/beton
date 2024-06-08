@@ -56,4 +56,11 @@ class Customer extends Model
         return $this->hasOne(Financial::class);
     }
 
+    public function scopeConcreteBuyers($query)
+    {
+        return $query->whereHas('customerType', function ($query) {
+            $query->where('code', 1);
+        });
+    }
+
 }

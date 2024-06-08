@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ConcreteSalesInvoice;
 use App\Http\Requests\StoreConcreteSalesInvoiceRequest;
 use App\Http\Requests\UpdateConcreteSalesInvoiceRequest;
+use App\Models\Customer;
+use App\Models\Truck;
 
 class ConcreteSalesInvoiceController extends Controller
 {
@@ -15,7 +17,7 @@ class ConcreteSalesInvoiceController extends Controller
     {
         $oncreteSalesInvoices = ConcreteSalesInvoice::orderBy('id')->get();
 
-        return response()->json(['oncreteSalesInvoices' => $oncreteSalesInvoices],200);
+        return response()->json(['oncreteSalesInvoices' => $oncreteSalesInvoices], 200);
     }
 
     /**
@@ -31,7 +33,6 @@ class ConcreteSalesInvoiceController extends Controller
      */
     public function store(StoreConcreteSalesInvoiceRequest $request)
     {
-       
     }
 
     /**
@@ -64,5 +65,28 @@ class ConcreteSalesInvoiceController extends Controller
     public function destroy(ConcreteSalesInvoice $concreteSalesInvoice)
     {
         //
+    }
+
+    public function getCSIConcreteBuyers()
+    {
+        $concreteBuyers = Customer::concreteBuyers()->get();
+
+        return response()->json(['concreteBuyers'=> $concreteBuyers]);
+
+    }
+
+    public function getCSIConcretes()
+    {
+    }
+
+    public function getCSIMixers()
+    {
+        $mixers= Truck::getMixers();
+        return response()->json(['mixers'=> $mixers]);
+
+    }
+
+    public function getCSIDrivers()
+    {
     }
 }

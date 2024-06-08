@@ -15,4 +15,8 @@ class Truck extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public static function getMixers() {
+        return self::where('truckType', 'میکسر')->with('customer')->get();
+    }
 }

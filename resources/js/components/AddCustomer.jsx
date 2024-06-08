@@ -133,7 +133,7 @@ const AddCustomer = () => {
             }
         ]
     });
-
+    
     /**
      * id to edit the model
      */
