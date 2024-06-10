@@ -218,14 +218,12 @@ const AddTruck = () => {
      * @returns 
      */
     const returnNumberplate = (numberplate) => {
-
-
         if (numberplate) {
             let arr = numberplate.split('-');
             // return `${arr[2]} - ${arr[1]} ${arr[3]}  ${arr[0]}`;
             return <div className="numberplateDiv">
                 <span className="numberplateDivS1">{arr[0]}</span>
-                <span className="numberplateDivS2">{arr[3]}</span>
+                <span className="numberplateDivS2">{arr[3]=='ا'?'الف':arr[3]}</span>
                 <span className="numberplateDivS3">{arr[1]}</span>
                 <span className="numberplateDivS4">{arr[2]}</span>
             </div>
@@ -620,7 +618,7 @@ const AddTruck = () => {
                                                     onClick={(e) => clearInputError(e, numberplateErrorRef)}
                                                 >
                                                     <option value=""> حرف </option>
-                                                    <option value="الف"> الف </option>
+                                                    <option value="ا"> الف </option>
                                                     <option value="ب"> ب </option>
                                                     <option value="پ"> پ </option>
                                                     <option value="ت"> ت </option>

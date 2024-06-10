@@ -1,3 +1,5 @@
+import { createRef, useEffect, useRef, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Title from '../hooks/Title';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -5,7 +7,6 @@ import "../../../css/general.css";
 import "../../../css/formBeton.css";
 import "../../../css/addCustomer.css";
 import DataZabi from "../hooks/DateZabi";
-import { createRef, useEffect, useRef, useState } from "react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
@@ -15,6 +16,7 @@ import useChangeForm from '../hooks/useChangeForm';
 import SelectZabi from "../hooks/SelectZabi";
 
 const AddConcreteSalesInvoice = () => {
+    let navigate = useNavigate();
 
     const MySwal = withReactContent(Swal);
     const {
@@ -41,7 +43,9 @@ const AddConcreteSalesInvoice = () => {
     const unitPriceErrorRef = useRef(null);
 
     const hasCalledGetConcreteBuyers = useRef(false);
+    const hasCalledGetConcretes = useRef(false);
     const hasCalledGetMixers = useRef(false);
+    const hasCalledGetDrivers = useRef(false);
 
 
     const nameErrorRef = useRef(null);
@@ -90,11 +94,10 @@ const AddConcreteSalesInvoice = () => {
     const [refErrorConcretingPosition, setRefErrorConcretingPosition] = useState({});
 
     const [loading, setLoading] = useState(false);
-    const[concreteBuyers,setConcreteBuyers]= useState([]);
+    const [concreteBuyers, setConcreteBuyers] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState(1);
 
-    
     const [input, setInput] = useState({
         customer_id: '',
         invoice: [{
@@ -112,18 +115,14 @@ const AddConcreteSalesInvoice = () => {
             address: '',
             concretingPosition: ''
         }],
-        
+
     });
-    
-    
+
     /**
      * id to edit the model
     */
-   const [id, setId] = useState(null);
-   const sampleInvoice = 'invoice';
-    
-
-
+    const [id, setId] = useState(null);
+    const sampleInvoice = 'invoice';
     const [invoice, setInvoice] = useState([sampleInvoice]);
 
     useEffect(() => {
@@ -135,9 +134,23 @@ const AddConcreteSalesInvoice = () => {
     }, []);
 
     useEffect(() => {
+        if (!hasCalledGetConcretes.current) {
+            getCSIConcretes();
+            hasCalledGetConcretes.current = true;
+        }
+    }, []);
+
+    useEffect(() => {
         if (!hasCalledGetMixers.current) {
             getCSIMixers();
             hasCalledGetMixers.current = true;
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!hasCalledGetDrivers.current) {
+            getCSIDrivers();
+            hasCalledGetDrivers.current = true;
         }
     }, []);
 
@@ -212,12 +225,12 @@ const AddConcreteSalesInvoice = () => {
             // setRefErrorVahed();
             // setRefErrorAddress();
             // setRefErrorConcretingPosition();
-            
-            
+
+
         }
     }, [invoice]);
 
-   
+
     // console.log(input);
     // console.log(refTruck_id);
 
@@ -270,10 +283,10 @@ const AddConcreteSalesInvoice = () => {
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
                     preConfirm: () => {
- 
+
                         navigate("/addCustomer");
                     }
- 
+
                 });
             } else {
                 console.log(datas);
@@ -285,22 +298,63 @@ const AddConcreteSalesInvoice = () => {
                             <span className="name_addPers">{data.name}
                                 {' '}
                                 {data.lastName}</span>
- 
+
                             <span className="fther_addPers">
                                 {data.father || ''}
                             </span>
- 
+
                         </div>
                     }]))
                 })
- 
+
             }
         });
     }
 
-    async function getCSIMixers() {
-        await axios.get("/api/v1/getCSIMixers").then((response) => {
-            let datas = response.data.mixers;
+    async function getCSIConcretes() {
+        await axios.get("/api/v1/getCSIConcretes").then((response) => {
+            let datas = response.data.concretes;
+            if (datas.length == 0) {
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    text: `هنوز هیچ عیار بتنی ثبت نشده است. لازم است ابتدا عیار بتن را ثبت کنید.`,
+                    confirmButtonText: "  ثبت بتن   ",
+                    showCancelButton: true,
+                    cancelButtonText: "کنسل",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    preConfirm: () => {
+
+                        navigate("/addConcrete");
+                    }
+
+                });
+            } else {
+                console.log(datas);
+                // setPersonnels2(datas);
+                datas.map((data, i) => {
+                    setConcretes(perv => ([...perv, {
+                        value: data.id,
+                        html: <div className="concreteAptionSelectFB">
+                            <span className="concreteLabelSelectFB">بتن
+                               </span>
+
+                            <span className="concreteSelectFB">
+                                {data.concreteName}
+                            </span>
+
+                        </div>
+                    }]))
+                })
+
+            }
+        });
+    }
+
+    async function getCSIConcreteBuyers() {
+        await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
+            let datas = response.data.concreteBuyers;
             if (datas.length == 0) {
                 MySwal.fire({
                     icon: "warning",
@@ -312,10 +366,10 @@ const AddConcreteSalesInvoice = () => {
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
                     preConfirm: () => {
- 
+
                         navigate("/addCustomer");
                     }
- 
+
                 });
             } else {
                 console.log(datas);
@@ -327,15 +381,57 @@ const AddConcreteSalesInvoice = () => {
                             <span className="name_addPers">{data.name}
                                 {' '}
                                 {data.lastName}</span>
- 
+
                             <span className="fther_addPers">
                                 {data.father || ''}
                             </span>
- 
+
                         </div>
                     }]))
                 })
- 
+
+            }
+        });
+    }
+
+    async function getCSIMixers() {
+        await axios.get("/api/v1/getCSIMixers").then((response) => {
+            let datas = response.data.mixers;
+            if (datas.length == 0) {
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    text: `هنوز هیچ کامیونی به عنوان میکسر ثبت نشده است. لازم است ابتدا کامیونی به عنوان میکسر ثبت کنید.`,
+                    confirmButtonText: "  ثبت میکسر   ",
+                    showCancelButton: true,
+                    cancelButtonText: "کنسل",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    preConfirm: () => {
+
+                        navigate("/addTruck");
+                    }
+
+                });
+            } else {
+                console.log(datas);
+                // setPersonnels2(datas);
+                datas.map((data, i) => {
+                    setConcreteBuyers(perv => ([...perv, {
+                        value: data.id,
+                        html: <div className="personnelAption_addPerS">
+                            <span className="name_addPers">{data.name}
+                                {' '}
+                                {data.lastName}</span>
+
+                            <span className="fther_addPers">
+                                {data.father || ''}
+                            </span>
+
+                        </div>
+                    }]))
+                })
+
             }
         });
     }
@@ -354,10 +450,10 @@ const AddConcreteSalesInvoice = () => {
     //                 confirmButtonColor: "#3085d6",
     //                 cancelButtonColor: "#d33",
     //                 preConfirm: () => {
- 
+
     //                     navigate("/addCustomer");
     //                 }
- 
+
     //             });
     //         } else {
     //             setPersonnels2(datas);
@@ -368,15 +464,15 @@ const AddConcreteSalesInvoice = () => {
     //                         <span className="name_addPers">{data.name}
     //                             {' '}
     //                             {data.lastName}</span>
- 
+
     //                         <span className="fther_addPers">
     //                             {data.father || ''}
     //                         </span>
- 
+
     //                     </div>
     //                 }]))
     //             })
- 
+
     //         }
     //     });
     // }
@@ -395,10 +491,10 @@ const AddConcreteSalesInvoice = () => {
     //                 confirmButtonColor: "#3085d6",
     //                 cancelButtonColor: "#d33",
     //                 preConfirm: () => {
- 
+
     //                     navigate("/addCustomer");
     //                 }
- 
+
     //             });
     //         } else {
     //             setPersonnels2(datas);
@@ -409,15 +505,15 @@ const AddConcreteSalesInvoice = () => {
     //                         <span className="name_addPers">{data.name}
     //                             {' '}
     //                             {data.lastName}</span>
- 
+
     //                         <span className="fther_addPers">
     //                             {data.father || ''}
     //                         </span>
- 
+
     //                     </div>
     //                 }]))
     //             })
- 
+
     //         }
     //     });
     // }
@@ -436,10 +532,10 @@ const AddConcreteSalesInvoice = () => {
     //                 confirmButtonColor: "#3085d6",
     //                 cancelButtonColor: "#d33",
     //                 preConfirm: () => {
- 
+
     //                     navigate("/addCustomer");
     //                 }
- 
+
     //             });
     //         } else {
     //             setPersonnels2(datas);
@@ -450,15 +546,15 @@ const AddConcreteSalesInvoice = () => {
     //                         <span className="name_addPers">{data.name}
     //                             {' '}
     //                             {data.lastName}</span>
- 
+
     //                         <span className="fther_addPers">
     //                             {data.father || ''}
     //                         </span>
- 
+
     //                     </div>
     //                 }]))
     //             })
- 
+
     //         }
     //     });
     // }
@@ -818,7 +914,7 @@ const AddConcreteSalesInvoice = () => {
      */
     const handleSaveValInput = (e, input, i, customer = false) => {
         let { value } = e.target;
-        
+
         if (!customer) {
             setInput(prevInput => {
                 let newInvoice;
@@ -1124,7 +1220,7 @@ const AddConcreteSalesInvoice = () => {
                                         className="inputTextFB element"
                                         id="name"
                                         defaultValue={input.name}
-                                        onInput={e => handleSaveValInput(e, 'customer_id','',true)}
+                                        onInput={e => handleSaveValInput(e, 'customer_id', '', true)}
                                         onFocus={e => clearInputError(e, nameErrorRef)}
                                         autoFocus
                                     />
@@ -1143,8 +1239,8 @@ const AddConcreteSalesInvoice = () => {
                                         <SelectZabi
                                             primaryLabel='انتخاب'
                                             options={concreteBuyers}
-                                            // saveOption={setCustomerId}
-                                            // ref={customerSelectChild}
+                                        // saveOption={setCustomerId}
+                                        // ref={customerSelectChild}
                                         />
                                     </div>
                                     <i className="icofont-ui-rating starFB" />
@@ -1840,7 +1936,7 @@ const AddConcreteSalesInvoice = () => {
                                                     id="nationalCode"
                                                     className="inputTextFB ltrFB element"
                                                     defaultValue={input.nationalCode}
-                                                    onInput={e => handleSaveValInput(e, 'driver_id',i)}
+                                                    onInput={e => handleSaveValInput(e, 'driver_id', i)}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
                                                     ref={refTruck_id[`driver_id${i}`]}
                                                 />

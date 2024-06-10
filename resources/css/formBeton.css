@@ -1,5 +1,5 @@
 .formBeton {
-    max-width:1100px ;
+    max-width: 1100px;
     margin: 15px 5px;
     padding: 15px 8px;
     background-color: #f6f6f9;
@@ -10,24 +10,24 @@
 
 }
 
-.mmm{
+.mmm {
     background-color: #6d6b6b;
-   
-    position:'fixed';
-    width:'100%';
-    height:'100vh';
-    z-index:100;
-    opacity:0.5;
-    display:'flex';
+
+    position: 'fixed';
+    width: '100%';
+    height: '100vh';
+    z-index: 100;
+    opacity: 0.5;
+    display: 'flex';
     justify-content: center;
     align-items: center;
 
-   
-  }
 
-.borderRedFB{
+}
+
+.borderRedFB {
     /* border-color: #ff0000 !important; */
-    border:1px solid #ff0000 !important;
+    border: 1px solid #ff0000 !important;
 }
 
 .titleFormFB {
@@ -76,9 +76,9 @@
     width: 100%;
 }
 
-.divInputCheckboxFB{
-   display: flex;
-   justify-content: space-around;
+.divInputCheckboxFB {
+    display: flex;
+    justify-content: space-around;
 }
 
 .divInputFB label {
@@ -99,7 +99,7 @@
     border: 1px solid #8f8f9d;
 }
 
-.inputCheckboxFB{
+.inputCheckboxFB {
     width: 30px;
 }
 
@@ -110,11 +110,11 @@
     border-left: none;
 }
 
-.inputShabaFB{
+.inputShabaFB {
     width: 185px;
 }
 
-.divRadioFB{
+.divRadioFB {
     border: none;
     display: flex;
     justify-content: space-between;
@@ -145,11 +145,12 @@
     color: #747474;
 }
 
-.unitShabaFB{
+.unitShabaFB {
     width: 15px;
     color: #000;
     font-size: 1rem;
 }
+
 .divRightFB,
 .divLeftFB {
     width: 50%;
@@ -167,7 +168,7 @@
 .containerCustomerTypeFB {
     width: 200px;
     height: 30px;
-    padding:0 10px 0 15px;
+    padding: 0 10px 0 15px;
     font-size: 1rem;
     border: 1px solid #8f8f9d;
     border-radius: 2px;
@@ -177,15 +178,16 @@
     cursor: pointer;
 }
 
-.lableCustomerTypeFB{
+.lableCustomerTypeFB {
     width: max-content;
-    white-space: nowrap; 
-    overflow: hidden; 
-    text-overflow: ellipsis; /* نمایش سه نقطه در انتها */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* نمایش سه نقطه در انتها */
 }
 
-.divItemCustomerTypeFB{
-    
+.divItemCustomerTypeFB {
+
     padding: 5px 12px;
     position: absolute;
     top: 33px;
@@ -196,7 +198,7 @@
     display: flex;
 }
 
-.rigthCustomerTypeFB{
+.rigthCustomerTypeFB {
     width: 220px;
     height: 100%;
     min-height: 350px;
@@ -206,11 +208,11 @@
     background-color: #fff;
 }
 
-.RCTYitemsFB{
+.RCTYitemsFB {
     /* height: 100%; */
-    max-height:300px ;
-    min-height:300px ;
-    padding:0 0 5px 3px;
+    max-height: 300px;
+    min-height: 300px;
+    padding: 0 0 5px 3px;
     overflow-x: hidden;
     overflow-y: auto;
     display: flex;
@@ -218,7 +220,7 @@
     align-items: stretch;
 }
 
-.btnRCTYitemsFB{
+.btnRCTYitemsFB {
     width: 90%;
     height: 40px;
     margin: 3px auto 0;
@@ -226,28 +228,28 @@
     border-radius: 4px;
     background-color: #4f4fb6;
     color: #fff;
-     display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     /* cursor: pointer;  */
 }
 
-.btnRCTYitemsFB:hover{
+.btnRCTYitemsFB:hover {
     background-color: #6363c6;
     color: #eae9e9;
 }
 
-.errorRCTYitemFB{
+.errorRCTYitemFB {
     padding: 1px 3px;
     background-color: #f5acac;
     color: #ff0000;
 }
 
-.btnRCTYitemsFB:active{
+.btnRCTYitemsFB:active {
     background-color: #333367;
 }
 
-.customerTypeSelectedFB{
+.customerTypeSelectedFB {
     width: 100%;
     min-height: 35px;
     padding: 0 6px;
@@ -260,22 +262,24 @@
     align-items: center;
 }
 
-.delItemCustomerTypeFB{
+.delItemCustomerTypeFB {
     color: #ff0000;
     cursor: pointer;
 }
 
-.delItemCustomerTypeFB:active{
+.delItemCustomerTypeFB:active {
     color: #c3ff00;
 }
 
-.leftCustomerTypeFB{
+.leftCustomerTypeFB {
     width: 200px;
     max-height: 350px;
-    overflow-x: hidden; /* حذف اسکرول افقی */
+    overflow-x: hidden;
+    /* حذف اسکرول افقی */
     overflow-y: auto;
-    
+
 }
+
 .leftCustomerTypeFB div:nth-child(even) {
     background-color: #fefdfd;
 }
@@ -284,7 +288,7 @@
     background-color: #f1f1f1;
 }
 
-.itemCustomerTypeFB{
+.itemCustomerTypeFB {
     height: 35px;
     padding: 0 6px;
     display: flex;
@@ -296,23 +300,23 @@
     color: #008000;
 }
 
-.checkedItemCustomerTypeFB{
-width: 15px;
-height: 15px;
-border: 1px solid #8f8f9d;
-/* background-color: green !important; */
-display: flex;
-justify-content: center;
-align-items: center;
-color: #f1f1f1;
+.checkedItemCustomerTypeFB {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #8f8f9d;
+    /* background-color: green !important; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f1f1f1;
 
 }
 
-.IcheckedItemCustomerTypeFB{
+.IcheckedItemCustomerTypeFB {
     color: #008000;
 }
 
-.nameItemcustomerTypeFB{
+.nameItemcustomerTypeFB {
     padding-right: 10px;
     /* background-color: inherit; */
 }
@@ -323,30 +327,31 @@ color: #f1f1f1;
     font-family: 'Times New Roman', Times, serif !important;
 }
 
-.delMoreBank{
+.delMoreBank {
     width: 100%;
     margin: 0 0 4px 30px;
     padding-bottom: 2px;
     /* border-bottom: 1px solid #be0b0b; */
-    
+
     /* position: absolute; */
-    
+
     flex-grow: 1;
     direction: ltr;
     display: flex;
     justify-content: space-between;
-    
+
 }
-.delMoreBank span{
+
+.delMoreBank span {
     cursor: pointer;
     border-bottom: 1px solid #be0b0b;
     color: #ff0000;
-    
+
 }
 
-.moreBank{
+.moreBank {
     margin: 0 30px 6px 0;
-    padding:1px 3px;
+    padding: 1px 3px;
     font-size: .8rem;
     color: #0404c5;
     cursor: pointer;
@@ -507,16 +512,14 @@ color: #f1f1f1;
 }
 
 /*  مربوط به کامپوننت ایجاد فیش حقوقی پرسنل، دکمه وضعیت بیمه   */
-.labelInsuranceAPS_FB{
+.labelInsuranceAPS_FB {}
 
-}
-
-.hasRadioInsuAPS_FB{
+.hasRadioInsuAPS_FB {
     padding-right: 10px;
     color: #006700;
 }
 
-.notHasRadioInsuAPS_FB{
+.notHasRadioInsuAPS_FB {
     padding-right: 10px;
 
     color: #c30101;
@@ -524,7 +527,7 @@ color: #f1f1f1;
 }
 
 /*         مربوط به صفحه ایجاد فاکتور فروش بتن    */
-.containerCSI_FB{
+.containerCSI_FB {
     width: 100%;
     padding: 3px 2px;
     border: 1px solid #808080;
@@ -536,10 +539,18 @@ color: #f1f1f1;
 
 } */
 
-.inactiveLabelCSI_FB{
+.inactiveLabelCSI_FB {
     color: #747474;
 
 }
+
+/* 
+       جهت نمایش آپشن‌های مختلف در کامپوننت سلکت، لازم به ذکر است 
+          که این کلاس‌ها در کامپوننتی که از کامپوننت سلکت استفاده می‌کند
+          استفاده می شود
+*/
+
+
 
 @media screen and (min-width:1200px) {
 
@@ -573,7 +584,7 @@ color: #f1f1f1;
         width: 230px;
     }
 
-    .inputShabaFB{
+    .inputShabaFB {
         width: 215px;
     }
 
