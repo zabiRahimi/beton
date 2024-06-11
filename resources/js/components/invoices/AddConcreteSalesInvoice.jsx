@@ -101,6 +101,16 @@ const AddConcreteSalesInvoice = () => {
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState(1);
 
+    /**
+     * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
+     * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
+     */
+    const [invoiceIndex, setInvoiceIndex] = useState('');
+    const [customerId, setCustomerId] = useState('');
+    const [concreteId, setConCreteId] = useState('');
+    const [truckId, setTruckId] = useState('');
+    const [driverId, setDriverId] = useState('');
+
     const [input, setInput] = useState({
         customer_id: '',
         invoice: [{
@@ -272,6 +282,22 @@ const AddConcreteSalesInvoice = () => {
         setWidthComponent(widths)
     }, []);
 
+    useEffect(() => {
+        customerId && setInput(prev => ({ ...prev, customer_id: customerId }));
+    }, [customerId]);
+
+    useEffect(() => {
+        concreteId && setInput(prev => ({ ...prev, concrete_id: concreteId }));
+    }, [concreteId]);
+
+    useEffect(() => {
+        truckId && setInput(prev => ({ ...prev, truck_id: truckId }));
+    }, [truckId]);
+
+    useEffect(() => {
+        driverId && setInput(prev => ({ ...prev, driver_id: driverId }));
+    }, [driverId]);
+
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
             let datas = response.data.concreteBuyers;
@@ -417,21 +443,20 @@ const AddConcreteSalesInvoice = () => {
 
                 });
             } else {
-                console.log(datas);
                 // setPersonnels2(datas);
                 datas.map((data, i) => {
                     let arr = data.numberplate.split('-')
                     setMixers(perv => ([...perv, {
-                        
+
                         value: data.id,
                         html: <div className="mixerAptionSelectFB">
                             <span className="name_addPers">
-                            <div className="numberplateDiv">
-                <span className="numberplateDivS1">{arr[0]}</span>
-                <span className="numberplateDivS2">{arr[3]=='ا'?'الف':arr[3]}</span>
-                <span className="numberplateDivS3">{arr[1]}</span>
-                <span className="numberplateDivS4">{arr[2]}</span>
-            </div>
+                                <div className="numberplateDiv">
+                                    <span className="numberplateDivS1">{arr[0]}</span>
+                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                                    <span className="numberplateDivS3">{arr[1]}</span>
+                                    <span className="numberplateDivS4">{arr[2]}</span>
+                                </div>
                             </span>
 
                             <span className="fther_addPers">
@@ -1528,7 +1553,7 @@ const AddConcreteSalesInvoice = () => {
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
                                                         options={drivers}
-                                                    // saveOption={setCustomerId}
+                                                        saveOption={setDriverId}
                                                     // ref={customerSelectChild}
                                                     />
                                                 </div>
