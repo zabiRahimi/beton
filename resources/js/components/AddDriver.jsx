@@ -478,7 +478,6 @@ const AddDriver = () => {
                                         defaultValue={input.father}
                                         onInput={e => handleSaveValInput(e, 'father')}
                                         onFocus={e => clearInputError(e, fatherErrorRef)}
-                                        autoFocus
                                     />
                                 </div>
                                 <div
