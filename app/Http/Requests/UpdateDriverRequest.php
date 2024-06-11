@@ -26,6 +26,7 @@ class UpdateDriverRequest extends FormRequest
         return [
             'name' => ['required', 'bail', 'string'],
             'lastName' => ['required', 'bail', 'string'],
+            'father' => ['nullable', 'bail', 'string'],
             'nationalCode' => [
                 'nullable', 'bail', 'numeric','digits:10',
                 Rule::unique('drivers')->ignore($this->driver)

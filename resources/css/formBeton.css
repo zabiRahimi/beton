@@ -46,8 +46,6 @@
     position: relative;
 }
 
-
-
 .containerInputFB {
     /* width: 50%; */
     /* margin-bottom: 30px; */
@@ -549,6 +547,16 @@
           که این کلاس‌ها در کامپوننتی که از کامپوننت سلکت استفاده می‌کند
           استفاده می شود
 */
+.concreteAptionSelectFB,
+.mixerAptionSelectFB{
+    padding: 3px 8px 2px 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mixerNamberpalteSelectFB{}
+
+.mixerOwnerSelectFB{}
 
 
 

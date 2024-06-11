@@ -33,6 +33,7 @@ const AddDriver = () => {
 
     const nameErrorRef = useRef(null);
     const lastNameErrorRef = useRef(null);
+    const fatherErrorRef = useRef(null);
     const nationalCodeErrorRef = useRef(null);
     const dateOfBirthErrorRef = useRef(null);
     const mobileErrorRef = useRef(null);
@@ -47,6 +48,7 @@ const AddDriver = () => {
     const [input, setInput] = useState({
         name: '',
         lastName: '',
+        father:'',
         nationalCode: '',
         dateOfBirth: '',
         mobile: '',
@@ -120,6 +122,7 @@ const AddDriver = () => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
                 <span className="GASNameShowGe"> {driver['name']} {driver['lastName']}  </span>
+                <span className="GASNameShowGe"> {driver['father']}   </span>
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
                         onClick={() => showEditForm(driver['id'])}
@@ -142,6 +145,7 @@ const AddDriver = () => {
         setInput({
             name: '',
             lastName: '',
+            father:'',
             nationalCode: '',
             dateOfBirth: '',
             mobile: '',
@@ -461,6 +465,29 @@ const AddDriver = () => {
                                 >
                                 </div>
                             </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor="name">
+                                        نام پدر
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="father"
+                                        className="inputTextFB element"
+                                        defaultValue={input.father}
+                                        onInput={e => handleSaveValInput(e, 'father')}
+                                        onFocus={e => clearInputError(e, fatherErrorRef)}
+                                        autoFocus
+                                    />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id="fatherError"
+                                    ref={fatherErrorRef}
+                                >
+                                </div>
+                            </div>
                         </div>
 
                         <div className="sectionFB">
@@ -639,6 +666,7 @@ const AddDriver = () => {
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
                             <span className="GASNameShowGe"> راننده </span>
+                            <span className="GASNameShowGe"> نام پدر </span>
                             <span className="headEditShowGe"> ویرایش  </span>
                             <span className="headDelShowGe"> حذف </span>
                         </div>
