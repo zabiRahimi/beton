@@ -107,7 +107,7 @@ const AddConcreteSalesInvoice = () => {
      */
     const [invoiceIndex, setInvoiceIndex] = useState('');
     const [customerId, setCustomerId] = useState('');
-    const [concreteId, setConCreteId] = useState('');
+    const [concreteId, setConcreteId] = useState('');
     const [truckId, setTruckId] = useState('');
     const [driverId, setDriverId] = useState('');
 
@@ -239,10 +239,8 @@ const AddConcreteSalesInvoice = () => {
             // setRefErrorAddress();
             // setRefErrorConcretingPosition();
 
-
         }
     }, [invoice]);
-
 
     /**
      * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -284,8 +282,12 @@ const AddConcreteSalesInvoice = () => {
     }, [customerId]);
 
     useEffect(() => {
-        concreteId && setInput(prev => ({ ...prev, concrete_id: concreteId }));
-    }, [concreteId]);
+        concreteId &&  setInput(prevInput => {
+            let invoices = [...prevInput.invoice];
+            invoices[invoiceIndex] = { ...invoices[invoiceIndex], concrete_id: concreteId };
+            return { ...prevInput, invoice: invoices };
+        });
+    }, [concreteId, invoiceIndex]);
 
     useEffect(() => {
         truckId && setInput(prevInput => {
@@ -293,12 +295,16 @@ const AddConcreteSalesInvoice = () => {
             invoices[invoiceIndex] = { ...invoices[invoiceIndex], truck_id: truckId };
             return { ...prevInput, invoice: invoices };
         });
-    }, [truckId]);
-    console.log(input);
+    }, [truckId, invoiceIndex]);
+    console.log(input.invoice);
 
     useEffect(() => {
-        driverId && setInput(prev => ({ ...prev, driver_id: driverId }));
-    }, [driverId]);
+        driverId &&  setInput(prevInput => {
+            let invoices = [...prevInput.invoice];
+            invoices[invoiceIndex] = { ...invoices[invoiceIndex], driver_id: driverId };
+            return { ...prevInput, invoice: invoices };
+        });
+    }, [driverId, invoiceIndex]);
 
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
@@ -1259,7 +1265,7 @@ const AddConcreteSalesInvoice = () => {
                                         <SelectZabi
                                             primaryLabel='انتخاب'
                                             options={concreteBuyers}
-                                        // saveOption={setCustomerId}
+                                            saveOption={setCustomerId}
                                         // ref={customerSelectChild}
                                         />
                                     </div>
@@ -1278,7 +1284,7 @@ const AddConcreteSalesInvoice = () => {
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
                                                 <label htmlFor="nationalCode">شماره قبض </label>
-                                                <input
+                                                {/* <input
                                                     type="text"
                                                     id="nationalCode"
                                                     className="inputTextFB ltrFB element"
@@ -1286,7 +1292,10 @@ const AddConcreteSalesInvoice = () => {
                                                     defaultValue={ticketNumber + i}
                                                     onInput={e => handleSaveValInput(e, 'nationalCode')}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
-                                                />
+                                                /> */}
+                                                <div className="ticketNumberACSI_FB">
+                                                    {ticketNumber + i}
+                                                </div>
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                         </div>
@@ -1382,7 +1391,7 @@ const AddConcreteSalesInvoice = () => {
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
                                                         options={concretes}
-                                                    // saveOption={setCustomerId}
+                                                    saveOption={setConcreteId}
                                                     // ref={customerSelectChild}
                                                     />
                                                 </div>
