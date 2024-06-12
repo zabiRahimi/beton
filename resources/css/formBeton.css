@@ -554,9 +554,32 @@
     justify-content: space-between;
 }
 
-.mixerNamberpalteSelectFB{}
+.mixerAptionSelectFB{
+    width: 100%;
+    padding: 3px 2px 3px 2px;
+}
 
-.mixerOwnerSelectFB{}
+.mixerAptionSelectFB .numberplateDiv{
+    height: 24px;
+    border-color: #0404c5;
+}
+.mixerAptionSelectFB:hover .numberplateDiv{
+    background-color: #53a5b1;
+    height: 24px;
+}
+
+.mixerNamberpalteSelectFB{
+    width: 110px;
+}
+
+.mixerOwnerSelectFB{
+    width: calc(100% - 110px);
+    padding-right: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9rem;
+}
 
 
 

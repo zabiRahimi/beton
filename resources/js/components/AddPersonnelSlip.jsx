@@ -336,7 +336,6 @@ const AddPersonnelSlip = () => {
 
         setInput(rest);
         if (personnelSlip['insurance']==1) {
-            console.log(personnelSlip['insurance']);
             setInput(prev => ({ ...prev, insurance: true }));
 
             

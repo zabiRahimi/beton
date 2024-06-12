@@ -32,7 +32,6 @@ const SelectZabi=forwardRef(({options, primaryLabel, saveOption},ref)=> {
     }
 
     const changeHandle =(val)=>{
-        console.log(val);
         saveOption(val);
         optionDisplayHandle();
     }

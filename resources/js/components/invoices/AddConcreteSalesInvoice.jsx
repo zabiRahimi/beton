@@ -244,9 +244,6 @@ const AddConcreteSalesInvoice = () => {
     }, [invoice]);
 
 
-    // console.log(input);
-    // console.log(refTruck_id);
-
     /**
      * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
      * نوع مشتری هر رکورد است
@@ -291,8 +288,13 @@ const AddConcreteSalesInvoice = () => {
     }, [concreteId]);
 
     useEffect(() => {
-        truckId && setInput(prev => ({ ...prev, truck_id: truckId }));
+        truckId && setInput(prevInput => {
+            let invoices = [...prevInput.invoice];
+            invoices[invoiceIndex] = { ...invoices[invoiceIndex], truck_id: truckId };
+            return { ...prevInput, invoice: invoices };
+        });
     }, [truckId]);
+    console.log(input);
 
     useEffect(() => {
         driverId && setInput(prev => ({ ...prev, driver_id: driverId }));
@@ -318,7 +320,7 @@ const AddConcreteSalesInvoice = () => {
 
                 });
             } else {
-                console.log(datas);
+
                 // setPersonnels2(datas);
                 datas.map((data, i) => {
                     setConcreteBuyers(perv => ([...perv, {
@@ -360,7 +362,7 @@ const AddConcreteSalesInvoice = () => {
 
                 });
             } else {
-                console.log(datas);
+
                 // setPersonnels2(datas);
                 datas.map((data, i) => {
                     setConcretes(perv => ([...perv, {
@@ -401,7 +403,7 @@ const AddConcreteSalesInvoice = () => {
 
                 });
             } else {
-                console.log(datas);
+
                 // setPersonnels2(datas);
                 datas.map((data, i) => {
                     setDrivers(perv => ([...perv, {
@@ -450,7 +452,7 @@ const AddConcreteSalesInvoice = () => {
 
                         value: data.id,
                         html: <div className="mixerAptionSelectFB">
-                            <span className="name_addPers">
+                            <span className="mixerNamberpalteSelectFB">
                                 <div className="numberplateDiv">
                                     <span className="numberplateDivS1">{arr[0]}</span>
                                     <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
@@ -459,8 +461,9 @@ const AddConcreteSalesInvoice = () => {
                                 </div>
                             </span>
 
-                            <span className="fther_addPers">
+                            <span className="mixerOwnerSelectFB">
                                 {data.customer.name}
+                                {' '}
                                 {data.customer.lastName}
                             </span>
 
@@ -1528,12 +1531,12 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor="customer_id"> میکسر </label>
                                                 <div
                                                     id="customer_id"
-                                                    onClick={e => clearInputError(e, customer_idErrorRef)}
+                                                    onClick={e => { setInvoiceIndex(i)}}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
                                                         options={mixers}
-                                                    // saveOption={setCustomerId}
+                                                        saveOption={setTruckId}
                                                     // ref={customerSelectChild}
                                                     />
                                                 </div>
@@ -1548,7 +1551,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor="customer_id"> راننده </label>
                                                 <div
                                                     id="customer_id"
-                                                    onClick={e => clearInputError(e, customer_idErrorRef)}
+                                                    onClick={e => { setInvoiceIndex(i); clearInputError(e, customer_idErrorRef); }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
