@@ -105,7 +105,9 @@ const AddConcreteSalesInvoice = () => {
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
      * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
      */
-    const [invoiceIndex, setInvoiceIndex] = useState('');
+    const [invoiceIndexForConcrete, setInvoiceIndexForConcrete] = useState('');
+    const [invoiceIndexForMixer, setInvoiceIndexForMixer] = useState('');
+    const [invoiceIndexForDriver, setInvoiceIndexForDriver] = useState('');
     const [customerId, setCustomerId] = useState('');
     const [concreteId, setConcreteId] = useState('');
     const [truckId, setTruckId] = useState('');
@@ -282,29 +284,29 @@ const AddConcreteSalesInvoice = () => {
     }, [customerId]);
 
     useEffect(() => {
-        concreteId &&  setInput(prevInput => {
+        concreteId && setInput(prevInput => {
             let invoices = [...prevInput.invoice];
-            invoices[invoiceIndex] = { ...invoices[invoiceIndex], concrete_id: concreteId };
+            invoices[invoiceIndexForConcrete] = { ...invoices[invoiceIndexForConcrete], concrete_id: concreteId };
             return { ...prevInput, invoice: invoices };
         });
-    }, [concreteId, invoiceIndex]);
+    }, [concreteId, invoiceIndexForConcrete]);
 
     useEffect(() => {
         truckId && setInput(prevInput => {
             let invoices = [...prevInput.invoice];
-            invoices[invoiceIndex] = { ...invoices[invoiceIndex], truck_id: truckId };
+            invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId };
             return { ...prevInput, invoice: invoices };
         });
-    }, [truckId, invoiceIndex]);
+    }, [truckId, invoiceIndexForMixer]);
     console.log(input.invoice);
 
     useEffect(() => {
-        driverId &&  setInput(prevInput => {
+        driverId && setInput(prevInput => {
             let invoices = [...prevInput.invoice];
-            invoices[invoiceIndex] = { ...invoices[invoiceIndex], driver_id: driverId };
+            invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
             return { ...prevInput, invoice: invoices };
         });
-    }, [driverId, invoiceIndex]);
+    }, [driverId, invoiceIndexForDriver]);
 
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
@@ -409,8 +411,6 @@ const AddConcreteSalesInvoice = () => {
 
                 });
             } else {
-
-                // setPersonnels2(datas);
                 datas.map((data, i) => {
                     setDrivers(perv => ([...perv, {
                         value: data.id,
@@ -481,128 +481,6 @@ const AddConcreteSalesInvoice = () => {
         });
     }
 
-    // async function getPersonnels() {
-    //     await axios.get("/api/v1/getPersonnels").then((response) => {
-    //         let datas = response.data.personnels;
-    //         if (datas.length == 0) {
-    //             MySwal.fire({
-    //                 icon: "warning",
-    //                 title: "هشدار",
-    //                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا پرسنل را به عنوان مشتری ثبت کنید.`,
-    //                 confirmButtonText: "  ثبت مشتری   ",
-    //                 showCancelButton: true,
-    //                 cancelButtonText: "کنسل",
-    //                 confirmButtonColor: "#3085d6",
-    //                 cancelButtonColor: "#d33",
-    //                 preConfirm: () => {
-
-    //                     navigate("/addCustomer");
-    //                 }
-
-    //             });
-    //         } else {
-    //             setPersonnels2(datas);
-    //             datas.map((data, i) => {
-    //                 setPersonnels(perv => ([...perv, {
-    //                     value: data.id,
-    //                     html: <div className="personnelAption_addPerS">
-    //                         <span className="name_addPers">{data.name}
-    //                             {' '}
-    //                             {data.lastName}</span>
-
-    //                         <span className="fther_addPers">
-    //                             {data.father || ''}
-    //                         </span>
-
-    //                     </div>
-    //                 }]))
-    //             })
-
-    //         }
-    //     });
-    // }
-
-    // async function getPersonnels() {
-    //     await axios.get("/api/v1/getPersonnels").then((response) => {
-    //         let datas = response.data.personnels;
-    //         if (datas.length == 0) {
-    //             MySwal.fire({
-    //                 icon: "warning",
-    //                 title: "هشدار",
-    //                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا پرسنل را به عنوان مشتری ثبت کنید.`,
-    //                 confirmButtonText: "  ثبت مشتری   ",
-    //                 showCancelButton: true,
-    //                 cancelButtonText: "کنسل",
-    //                 confirmButtonColor: "#3085d6",
-    //                 cancelButtonColor: "#d33",
-    //                 preConfirm: () => {
-
-    //                     navigate("/addCustomer");
-    //                 }
-
-    //             });
-    //         } else {
-    //             setPersonnels2(datas);
-    //             datas.map((data, i) => {
-    //                 setPersonnels(perv => ([...perv, {
-    //                     value: data.id,
-    //                     html: <div className="personnelAption_addPerS">
-    //                         <span className="name_addPers">{data.name}
-    //                             {' '}
-    //                             {data.lastName}</span>
-
-    //                         <span className="fther_addPers">
-    //                             {data.father || ''}
-    //                         </span>
-
-    //                     </div>
-    //                 }]))
-    //             })
-
-    //         }
-    //     });
-    // }
-
-    // async function getPersonnels() {
-    //     await axios.get("/api/v1/getPersonnels").then((response) => {
-    //         let datas = response.data.personnels;
-    //         if (datas.length == 0) {
-    //             MySwal.fire({
-    //                 icon: "warning",
-    //                 title: "هشدار",
-    //                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا پرسنل را به عنوان مشتری ثبت کنید.`,
-    //                 confirmButtonText: "  ثبت مشتری   ",
-    //                 showCancelButton: true,
-    //                 cancelButtonText: "کنسل",
-    //                 confirmButtonColor: "#3085d6",
-    //                 cancelButtonColor: "#d33",
-    //                 preConfirm: () => {
-
-    //                     navigate("/addCustomer");
-    //                 }
-
-    //             });
-    //         } else {
-    //             setPersonnels2(datas);
-    //             datas.map((data, i) => {
-    //                 setPersonnels(perv => ([...perv, {
-    //                     value: data.id,
-    //                     html: <div className="personnelAption_addPerS">
-    //                         <span className="name_addPers">{data.name}
-    //                             {' '}
-    //                             {data.lastName}</span>
-
-    //                         <span className="fther_addPers">
-    //                             {data.father || ''}
-    //                         </span>
-
-    //                     </div>
-    //                 }]))
-    //             })
-
-    //         }
-    //     });
-    // }
 
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -1284,17 +1162,10 @@ const AddConcreteSalesInvoice = () => {
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
                                                 <label htmlFor="nationalCode">شماره قبض </label>
-                                                {/* <input
-                                                    type="text"
-                                                    id="nationalCode"
-                                                    className="inputTextFB ltrFB element"
-                                                    disabled
-                                                    defaultValue={ticketNumber + i}
-                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
-                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
-                                                /> */}
-                                                <div className="ticketNumberACSI_FB">
-                                                    {ticketNumber + i}
+                                                <div className="mainTicketNumberACSI_FB">
+                                                    <div className="ticketNumberACSI_FB">
+                                                        {ticketNumber + i}
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
@@ -1386,12 +1257,12 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor="customer_id"> عیار بتن </label>
                                                 <div
                                                     id="concrete_id"
-                                                    onClick={e => clearInputError(e, concrete_idErrorRef)}
+                                                    onClick={e => {setInvoiceIndexForConcrete(i); clearInputError(e, concrete_idErrorRef)}}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
                                                         options={concretes}
-                                                    saveOption={setConcreteId}
+                                                        saveOption={setConcreteId}
                                                     // ref={customerSelectChild}
                                                     />
                                                 </div>
@@ -1411,7 +1282,7 @@ const AddConcreteSalesInvoice = () => {
                                                     defaultValue={input.unitPrice}
                                                     ref={unitPriceRef}
                                                     onInput={e => {
-                                                        handleSaveValInput(e, 'unitPrice');
+                                                        handleSaveValInput(e, 'unitPrice',i);
                                                         formatNub(unitPriceRef);
                                                     }
                                                     }
@@ -1540,7 +1411,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor="customer_id"> میکسر </label>
                                                 <div
                                                     id="customer_id"
-                                                    onClick={e => { setInvoiceIndex(i)}}
+                                                    onClick={e => { setInvoiceIndexForMixer(i) }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
@@ -1560,7 +1431,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor="customer_id"> راننده </label>
                                                 <div
                                                     id="customer_id"
-                                                    onClick={e => { setInvoiceIndex(i); clearInputError(e, customer_idErrorRef); }}
+                                                    onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, customer_idErrorRef); }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'

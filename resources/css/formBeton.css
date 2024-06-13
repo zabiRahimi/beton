@@ -581,6 +581,25 @@
     font-size: 0.9rem;
 }
 
+.mainTicketNumberACSI_FB{
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ticketNumberACSI_FB{
+    width: 90px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #474747;
+    border-radius: 20%;
+    color: #008000;
+    font-size: 1.2rem;
+}
+
 
 
 @media screen and (min-width:1200px) {
@@ -611,7 +630,8 @@
     .inputTextFB,
     .selectFB,
     .divExampleNumberplate,
-    .divRadioFB {
+    .divRadioFB,
+    .mainTicketNumberACSI_FB {
         width: 230px;
     }
 
