@@ -123,7 +123,7 @@ const AddConcreteSalesInvoice = () => {
         customer_id: '',
         invoice: [{
             date: '',
-            time:'',
+            time: '',
             weight: '',
             cubicMeters: "",
             concrete_id: '',
@@ -608,7 +608,7 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const changeDay = (e) => {
+    const changeDay = (e, i) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
@@ -617,14 +617,19 @@ const AddConcreteSalesInvoice = () => {
         if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
             setDay(value);
         }
-        let valDate = year + '-' + month + '-' + value;
-        setInput(prev => ({ ...prev, date: valDate }));
+        let date = year + '-' + month + '-' + value;
+        setInput(prevInput => {
+            let newInvoice;
+            newInvoice = [...prevInput.invoice];
+            newInvoice[i] = { ...newInvoice[i], date };
+            return { ...prevInput, invoice: newInvoice };
+        });
 
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         daySelect.current.classList.remove('borderRedFB');
     }
 
-    const changeMonth = (e) => {
+    const changeMonth = (e, i) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
@@ -633,26 +638,36 @@ const AddConcreteSalesInvoice = () => {
         if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
             setMonth(value);
         }
-        let valDate = year + '-' + value + '-' + day;
-        setInput(prev => ({ ...prev, date: valDate }));
+        let date = year + '-' + value + '-' + day;
+        setInput(prevInput => {
+            let newInvoice;
+            newInvoice = [...prevInput.invoice];
+            newInvoice[i] = { ...newInvoice[i], date };
+            return { ...prevInput, invoice: newInvoice };
+        });
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         monthSelect.current.classList.remove('borderRedFB');
     }
 
-    const changeYear = (e) => {
+    const changeYear = (e, i) => {
         let { value } = e.target;
 
         if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
             setYear(value);
         }
-        let valDate = value + '-' + month + '-' + day;
-        setInput(prev => ({ ...prev, date: valDate }));
+        let date = value + '-' + month + '-' + day;
+        setInput(prevInput => {
+            let newInvoice;
+            newInvoice = [...prevInput.invoice];
+            newInvoice[i] = { ...newInvoice[i], date };
+            return { ...prevInput, invoice: newInvoice };
+        });
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         yearSelect.current.classList.remove('borderRedFB');
 
     }
 
-    const changeHour = (e) => {
+    const changeHour = (e, i) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
@@ -661,35 +676,54 @@ const AddConcreteSalesInvoice = () => {
         if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
             setHour(value);
         }
-        let valDate = value + ':' + minute + ':' + second;
-        setInput(prev => ({ ...prev, tiem: valDate }));
+        let time = value + ':' + minute + ':' + second;
+        setInput(prevInput => {
+            let newInvoice;
+            newInvoice = [...prevInput.invoice];
+            newInvoice[i] = { ...newInvoice[i], time };
+            return { ...prevInput, invoice: newInvoice };
+        });
 
         daySelect.current.classList.remove('borderRedFB');
     }
 
-    const changeMinute = (e) => {
+    const changeMinute = (e, i) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-            setMonth(value);
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
+            setMinute(value);
         }
-        let valDate = year + '-' + value + '-' + day;
-        setInput(prev => ({ ...prev, date: valDate }));
+        let time = hour + ':' + value + ':' + second;
+        setInput(prevInput => {
+            let newInvoice;
+            newInvoice = [...prevInput.invoice];
+            newInvoice[i] = { ...newInvoice[i], time };
+            return { ...prevInput, invoice: newInvoice };
+        });
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         monthSelect.current.classList.remove('borderRedFB');
     }
 
-    const changeSecond = (e) => {
+    const changeSecond = (e, i) => {
         let { value } = e.target;
+        console.log(`value ${value}`);
+        value = value.toString();
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
-        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-            setYear(value);
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
+            setSecond(value);
         }
-        let valDate = value + '-' + month + '-' + day;
-        setInput(prev => ({ ...prev, date: valDate }));
+        let time = hour + ':' + minute + ':' + value;
+        setInput(prevInput => {
+            let newInvoice;
+            newInvoice = [...prevInput.invoice];
+            newInvoice[i] = { ...newInvoice[i], time };
+            return { ...prevInput, invoice: newInvoice };
+        });
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
         yearSelect.current.classList.remove('borderRedFB');
 
@@ -788,7 +822,7 @@ const AddConcreteSalesInvoice = () => {
             customer_id: '',
             invoice: [{
                 date: '',
-                time:'',
+                time: '',
                 weight: '',
                 cubicMeters: "",
                 concrete_id: '',
@@ -1084,7 +1118,7 @@ const AddConcreteSalesInvoice = () => {
         e.preventDefault();
         setInvoice([...invoice, sampleInvoice])
         setInput(prevInput => {
-            let newInvoice = [...prevInput.invoice, { date: '',time: '', weight: '', cubicMeters: "", concrete_id: '', truck_id: '', driver_id: '', unitPrice: '', totalPrice: '', fare: '', maskanMeli: '', vahed: '', address: '', concretingPosition: '' }];
+            let newInvoice = [...prevInput.invoice, { date: '', time: '', weight: '', cubicMeters: "", concrete_id: '', truck_id: '', driver_id: '', unitPrice: '', totalPrice: '', fare: '', maskanMeli: '', vahed: '', address: '', concretingPosition: '' }];
 
             return { ...prevInput, invoice: newInvoice };
         });
@@ -1186,8 +1220,8 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="00"
                                                             id="hour"
-                                                            value={hour || ''}
-                                                            onInput={(e) => changeHour(e)}
+                                                            value={second || ''}
+                                                            onInput={(e) => changeSecond(e, i)}
                                                             onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         />
@@ -1195,9 +1229,9 @@ const AddConcreteSalesInvoice = () => {
                                                         <input
                                                             type="text"
                                                             className="inputTextDateACus inputMonthTDACus element"
-                                                            placeholder="1"
-                                                            value={month || ''}
-                                                            onInput={(e) => changeMonth(e)}
+                                                            placeholder="00"
+                                                            value={minute || ''}
+                                                            onInput={(e) => changeMinute(e, i)}
                                                             onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         />
@@ -1205,9 +1239,9 @@ const AddConcreteSalesInvoice = () => {
                                                         <input
                                                             type="text"
                                                             className="inputTextDateACus inputYearTDACus element"
-                                                            placeholder="1300"
-                                                            value={year || ''}
-                                                            onInput={(e) => { changeYear(e) }}
+                                                            placeholder="00"
+                                                            value={hour || ''}
+                                                            onInput={(e) => { changeHour(e, i) }}
                                                             onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         />
@@ -1217,36 +1251,36 @@ const AddConcreteSalesInvoice = () => {
                                                     <div className="divDownDateAcus" >
                                                         <select
                                                             className="element"
-                                                            value={day}
+                                                            value={second}
                                                             ref={daySelect}
-                                                            onChange={(e) => changeDay(e)}
-                                                            onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
+                                                            onChange={(e) => changeSecond(e, i)}
+                                                        // onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         >
-                                                            <option value="">روز</option>
-                                                            {optionDays}
+                                                            <option value=""> ثانیه </option>
+                                                            {optionSeconds}
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            value={month}
+                                                            value={minute}
                                                             ref={monthSelect}
-                                                            onChange={(e) => changeMonth(e)}
+                                                            onChange={(e) => changeMinute(e, i)}
                                                             onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         >
-                                                            <option value="">ماه</option>
-                                                            {optionMonth}
+                                                            <option value=""> دقیقه </option>
+                                                            {optionMinutes}
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            value={year}
+                                                            value={hour}
                                                             ref={yearSelect}
-                                                            onChange={(e) => { changeYear(e) }}
+                                                            onChange={(e) => { changeHour(e, i) }}
                                                             onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         >
-                                                            <option value="">سال</option>
-                                                            {optionYears}
+                                                            <option value=""> ساعت </option>
+                                                            {optionHours}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1256,7 +1290,7 @@ const AddConcreteSalesInvoice = () => {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB ">
-                                                <label htmlFor="day">تاریخ و ساعت  </label>
+                                                <label htmlFor="day">تاریخ  </label>
                                                 <div className="divDateBirth">
                                                     <div className="divUpDateAcus element" id="date"
                                                         ref={refDate['date' + (i)]}
@@ -1267,7 +1301,7 @@ const AddConcreteSalesInvoice = () => {
                                                             placeholder="1"
                                                             id="day"
                                                             value={day || ''}
-                                                            onInput={(e) => changeDay(e)}
+                                                            onInput={(e) => changeDay(e, i)}
                                                             onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         />
@@ -1277,7 +1311,7 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputMonthTDACus element"
                                                             placeholder="1"
                                                             value={month || ''}
-                                                            onInput={(e) => changeMonth(e)}
+                                                            onInput={(e) => changeMonth(e, i)}
                                                             onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         />
@@ -1287,7 +1321,7 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="1300"
                                                             value={year || ''}
-                                                            onInput={(e) => { changeYear(e) }}
+                                                            onInput={(e) => { changeYear(e, i) }}
                                                             onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         />
@@ -1299,7 +1333,7 @@ const AddConcreteSalesInvoice = () => {
                                                             className="element"
                                                             value={day}
                                                             ref={daySelect}
-                                                            onChange={(e) => changeDay(e)}
+                                                            onChange={(e) => changeDay(e, i)}
                                                             onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         >
@@ -1310,7 +1344,7 @@ const AddConcreteSalesInvoice = () => {
                                                             className="element"
                                                             value={month}
                                                             ref={monthSelect}
-                                                            onChange={(e) => changeMonth(e)}
+                                                            onChange={(e) => changeMonth(e, i)}
                                                             onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         >
@@ -1321,7 +1355,7 @@ const AddConcreteSalesInvoice = () => {
                                                             className="element"
                                                             value={year}
                                                             ref={yearSelect}
-                                                            onChange={(e) => { changeYear(e) }}
+                                                            onChange={(e) => { changeYear(e, i) }}
                                                             onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
 
                                                         >
@@ -1420,15 +1454,15 @@ const AddConcreteSalesInvoice = () => {
                                         </div>
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor='unitPrice'> حجم بار </label>
+                                                <label htmlFor='cubicMeters'> حجم بار </label>
                                                 <input
                                                     type="text"
-                                                    id="unitPrice"
+                                                    id="cubicMeters"
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.unitPrice}
+                                                    defaultValue={input.cubicMeters}
                                                     ref={unitPriceRef}
                                                     onInput={e => {
-                                                        handleSaveValInput(e, 'unitPrice');
+                                                        handleSaveValInput(e, 'cubicMeters', i);
                                                         formatNub(unitPriceRef);
                                                     }
                                                     }
@@ -1456,15 +1490,15 @@ const AddConcreteSalesInvoice = () => {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor='unitPrice'> قیمت کل </label>
+                                                <label htmlFor='totalPrice'> قیمت کل </label>
                                                 <input
                                                     type="text"
-                                                    id="unitPrice"
+                                                    id="totalPrice"
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.unitPrice}
+                                                    defaultValue={input.totalPrice}
                                                     ref={unitPriceRef}
                                                     onInput={e => {
-                                                        handleSaveValInput(e, 'unitPrice');
+                                                        handleSaveValInput(e, 'totalPrice', i);
                                                         formatNub(unitPriceRef);
                                                     }
                                                     }
@@ -1474,7 +1508,7 @@ const AddConcreteSalesInvoice = () => {
                                                     className="unitFB"
                                                     onClick={() => htmlFor('unitPrice')}
                                                 >
-                                                    مترمکعب
+                                                    تومان
                                                 </span>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
@@ -1531,15 +1565,15 @@ const AddConcreteSalesInvoice = () => {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor='unitPrice'> کرایه میکسر </label>
+                                                <label htmlFor='fare'> کرایه میکسر </label>
                                                 <input
                                                     type="text"
-                                                    id="unitPrice"
+                                                    id="fare"
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.unitPrice}
+                                                    defaultValue={input.fare}
                                                     ref={unitPriceRef}
                                                     onInput={e => {
-                                                        handleSaveValInput(e, 'unitPrice');
+                                                        handleSaveValInput(e, 'fare', i);
                                                         formatNub(unitPriceRef);
                                                     }
                                                     }
@@ -1581,14 +1615,14 @@ const AddConcreteSalesInvoice = () => {
                                         </div>
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="nationalCode" className='inactiveLabelCSI_FB'>شماره واحد </label>
+                                                <label htmlFor="vahed" className='inactiveLabelCSI_FB'>شماره واحد </label>
                                                 <input
                                                     type="text"
-                                                    id="nationalCode"
+                                                    id="vahed"
                                                     className="inputTextFB ltrFB element"
                                                     disabled
-                                                    defaultValue={input.nationalCode}
-                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    defaultValue={input.vahed}
+                                                    onInput={e => handleSaveValInput(e, 'vahed', i)}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
                                                 />
                                             </div>
@@ -1603,7 +1637,7 @@ const AddConcreteSalesInvoice = () => {
                                                     id="nationalCode"
                                                     className="inputCheckboxFB  element"
                                                     defaultValue={input.nationalCode}
-                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    onInput={e => handleSaveValInput(e, 'nationalCode', i)}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
                                                 />
                                                 <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB'>مسکن ملی (شهرک شهید رئیسی) </label>
@@ -1634,7 +1668,7 @@ const AddConcreteSalesInvoice = () => {
                                                     id="address"
                                                     className="textareaAddressCSI_FB"
                                                     defaultValue={input.address}
-                                                    onInput={e => handleSaveValInput(e, 'address')}
+                                                    onInput={e => handleSaveValInput(e, 'address', i)}
                                                     onFocus={(e) => clearInputError(e, addressErrorRef)}
 
                                                 />
@@ -1644,12 +1678,12 @@ const AddConcreteSalesInvoice = () => {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="nationalCode" >موقعیت بتن‌ریزی </label>
+                                                <label htmlFor="concretingPosition" >موقعیت بتن‌ریزی </label>
                                                 <textarea
-                                                    id="address"
+                                                    id="concretingPosition"
                                                     className="textareaAddressCSI_FB"
-                                                    defaultValue={input.address}
-                                                    onInput={e => handleSaveValInput(e, 'address')}
+                                                    defaultValue={input.concretingPosition}
+                                                    onInput={e => handleSaveValInput(e, 'concretingPosition', i)}
                                                     onFocus={(e) => clearInputError(e, addressErrorRef)}
 
                                                 />
