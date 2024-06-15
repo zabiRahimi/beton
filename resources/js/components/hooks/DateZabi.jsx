@@ -1,8 +1,8 @@
 const DateZabi = () => {
     let years = [];
-    
 
-    
+
+
     const months = [
         "فروردین",
         "اردیبهشت",
@@ -27,7 +27,14 @@ const DateZabi = () => {
         "جمعه",
     ];
 
-    const days=['01','02','03','04','05','06','07','08','09',10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+    const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+
+    const hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+
+    const minutes = ['01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60];
+
+    const seconds = ['01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60];
+
 
     const cabise = [
         1300, 1304, 1309, 1313, 1317, 1321, 1325, 1329, 1333, 1337, 1342, 1346,
@@ -41,18 +48,30 @@ const DateZabi = () => {
         years.push(index);
     }
 
-    let optionDays = days.map((day,i)=>{
-         return <option key={i} value={day}>{day}</option>
-    })
+    let optionDays = days.map((day, i) => {
+        return <option key={i} value={day}>{day}</option>
+    });
 
-    let optionMonth = months.map((month,i)=>{
-        return <option key={i} value={(i+1)<10 ? '0'+(i+1):(i+1)}>{month}</option>
-   })
+    let optionMonth = months.map((month, i) => {
+        return <option key={i} value={(i + 1) < 10 ? '0' + (i + 1) : (i + 1)}>{month}</option>
+    });
 
-   let optionYears = years.map((year,i)=>{
-    return <option key={i} value={year}>{year}</option>
-})
+    let optionYears = years.map((year, i) => {
+        return <option key={i} value={year}>{year}</option>
+    });
 
-    return { years,  months, days, nameDays,optionDays,optionMonth,optionYears };
+    let optionHours = hours.map((hour, i) => {
+        return <option key={i} value={hour}>{hour}</option>
+    });
+
+    let optionMinutes = minutes.map((minute, i) => {
+        return <option key={i} value={minute}>{minute}</option>
+    });
+
+    let optionSeconds = seconds.map((second, i) => {
+        return <option key={i} value={second}>{second}</option>
+    });
+
+    return { years, months, days, nameDays,hours, minutes, seconds, optionDays, optionMonth, optionYears, optionHours, optionMinutes, optionSeconds  };
 };
 export default DateZabi;
