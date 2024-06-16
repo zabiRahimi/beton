@@ -106,6 +106,7 @@ const AddConcreteSalesInvoice = () => {
     const [drivers, setDrivers] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState(1);
+    const [isRef, setIsRef]= useState(false);
 
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
@@ -220,6 +221,8 @@ const AddConcreteSalesInvoice = () => {
                 return acc;
             }, {});
             setRefInvoice(refs);
+            setIsRef(true)
+
             // setRefDate(refDate);
             // setRefWeight(refWeight);
             // setRefCubicMeters();
@@ -304,7 +307,6 @@ const AddConcreteSalesInvoice = () => {
             return { ...prevInput, invoice: invoices };
         });
     }, [truckId, invoiceIndexForMixer]);
-    console.log(input.invoice);
 
     useEffect(() => {
         driverId && setInput(prevInput => {
@@ -313,6 +315,19 @@ const AddConcreteSalesInvoice = () => {
             return { ...prevInput, invoice: invoices };
         });
     }, [driverId, invoiceIndexForDriver]);
+
+    useEffect(() => {
+        
+        if (isRef) {
+        let indexCurrentInvoice = invoice.length - 1;
+
+            refInvoice.length>= 1 && (reft = refInvoice[`concrete_id0`]);
+            refInvoice[`concrete_id${indexCurrentInvoice}`] && refInvoice[`concrete_id${indexCurrentInvoice}`].current.updateData('zabi');
+             
+        }
+       
+    }, [invoice, isRef]);
+
 
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
@@ -709,7 +724,6 @@ const AddConcreteSalesInvoice = () => {
 
     const changeSecond = (e, i) => {
         let { value } = e.target;
-        console.log(`value ${value}`);
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
@@ -1116,14 +1130,35 @@ const AddConcreteSalesInvoice = () => {
 
     const handleAddInvoice = (e) => {
         e.preventDefault();
-        setInvoice([...invoice, sampleInvoice])
+        setInvoice([...invoice, sampleInvoice]);
+        let date = handleSetDateForNewInvoice();
         setInput(prevInput => {
-            let newInvoice = [...prevInput.invoice, { date: '', time: '', weight: '', cubicMeters: "", concrete_id: '', truck_id: '', driver_id: '', unitPrice: '', totalPrice: '', fare: '', maskanMeli: '', vahed: '', address: '', concretingPosition: '' }];
+            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id: '', truck_id: '', driver_id: '', unitPrice: '', totalPrice: '', fare: '', maskanMeli: '', vahed: '', address: '', concretingPosition: '' }];
 
             return { ...prevInput, invoice: newInvoice };
         });
+        handleSetConcreteForNewInvoice();
+
+        handleClearTime();
     }
 
+    const handleClearTime = () => {
+        setHour('');
+        setMinute('');
+        setSecond('');
+    }
+
+    const handleSetDateForNewInvoice = () => {
+        let date = year + '-' + month + '-' + day;
+        return date;
+    }
+
+    const handleSetConcreteForNewInvoice = () => {
+        let indexCurrentInvoice = invoice.length;
+        let ref = refInvoice[`concrete_id${indexCurrentInvoice - 1}`]
+
+
+    }
 
     return (
         <div ref={container}>
@@ -1380,7 +1415,7 @@ const AddConcreteSalesInvoice = () => {
                                                         primaryLabel='انتخاب'
                                                         options={concretes}
                                                         saveOption={setConcreteId}
-                                                    // ref={customerSelectChild}
+                                                        ref={refInvoice[`concrete_id${i}`]}
                                                     />
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
@@ -1695,6 +1730,7 @@ const AddConcreteSalesInvoice = () => {
 
                                 </div>
                             </div>
+                            
                         })}
                         <div className="divBtnAddInmoiceCSI_FB">
                             <button onClick={e => { handleAddInvoice(e) }}>
