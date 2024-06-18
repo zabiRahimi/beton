@@ -17,7 +17,6 @@ import SelectZabi from "../hooks/SelectZabi";
 
 const AddConcreteSalesInvoice = () => {
     let navigate = useNavigate();
-
     const MySwal = withReactContent(Swal);
     const {
         optionDays,
@@ -106,7 +105,7 @@ const AddConcreteSalesInvoice = () => {
     const [drivers, setDrivers] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState(1);
-    const [isRef, setIsRef]= useState(false);
+    const [isRef, setIsRef] = useState(false);
 
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
@@ -316,18 +315,41 @@ const AddConcreteSalesInvoice = () => {
         });
     }, [driverId, invoiceIndexForDriver]);
 
+    // useEffect(() => {
+
+    //     if (isRef) {
+    //         let concrete_id,
+    //             concreteName,
+    //             indexCurrentInvoice = invoice.length - 1;
+    //         input.invoice[indexCurrentInvoice - 1] && (concrete_id = input.invoice[indexCurrentInvoice - 1].concrete_id);
+
+    //         concrete_id && (concreteName = concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName'])
+
+    //         refInvoice[`concrete_id${indexCurrentInvoice}`]&& concreteName && refInvoice[`concrete_id${indexCurrentInvoice}`].current.updateData(concreteName);
+
+    //     }
+
+    // }, [invoice, isRef]);
+
     useEffect(() => {
-        
-        if (isRef) {
-        let indexCurrentInvoice = invoice.length - 1;
-
-            refInvoice.length>= 1 && (reft = refInvoice[`concrete_id0`]);
-            refInvoice[`concrete_id${indexCurrentInvoice}`] && refInvoice[`concrete_id${indexCurrentInvoice}`].current.updateData('zabi');
+        async function updateData() {
+          if (isRef) {
+            let concrete_id,
+                concreteName,
+                indexCurrentInvoice = invoice.length - 1;
+                 input.invoice[indexCurrentInvoice - 1] && (concrete_id = input.invoice[indexCurrentInvoice - 1].concrete_id);
+                 concrete_id && (concreteName = concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']);
+            
+            await 
+               refInvoice[`concrete_id${indexCurrentInvoice}`].current.updateData(concreteName);
              
+            
+          }
         }
-       
-    }, [invoice, isRef]);
-
+      
+        updateData();
+      }, [invoice, isRef]);
+    console.log(concretes);
 
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
@@ -396,6 +418,7 @@ const AddConcreteSalesInvoice = () => {
                 datas.map((data, i) => {
                     setConcretes(perv => ([...perv, {
                         value: data.id,
+                        concreteName: data.concreteName,
                         html: <div className="concreteAptionSelectFB">
                             <span className="concreteLabelSelectFB">بتن
                             </span>
@@ -1730,7 +1753,7 @@ const AddConcreteSalesInvoice = () => {
 
                                 </div>
                             </div>
-                            
+
                         })}
                         <div className="divBtnAddInmoiceCSI_FB">
                             <button onClick={e => { handleAddInvoice(e) }}>
