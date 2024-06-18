@@ -129,6 +129,7 @@ const AddConcreteSalesInvoice = () => {
     const [unitPrice, setUnitPrice]= useState('');
     const [address, setAddress]= useState('');
     const [concretingPosition, setConcretingPosition] = useState('');
+    const [fare, setFare] = useState('');
 
 
     const [input, setInput] = useState({
@@ -915,6 +916,7 @@ const AddConcreteSalesInvoice = () => {
     const handleSaveValInput = (e, input, i, customer = false) => {
         let { value } = e.target;
         input == 'unitPrice' && setUnitPrice(value);
+        input =='fare' && setFare(value);
         input =='address' && setAddress(value);
         input =='concretingPosition' && setConcretingPosition(value);
         if (!customer) {
@@ -1149,7 +1151,7 @@ const AddConcreteSalesInvoice = () => {
         let concrete_id = handleSetConcreteForNewInvoice();
         // handleSetUnitPriceForNewInvoice();
         setInput(prevInput => {
-            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', unitPrice, totalPrice: '', fare: '', maskanMeli: '', vahed: '', address, concretingPosition }];
+            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', unitPrice, totalPrice: '', fare, maskanMeli: '', vahed: '', address, concretingPosition }];
 
             return { ...prevInput, invoice: newInvoice };
         });
@@ -1627,7 +1629,7 @@ const AddConcreteSalesInvoice = () => {
                                                     type="text"
                                                     id="fare"
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.fare}
+                                                    defaultValue={fare}
                                                     ref={unitPriceRef}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'fare', i);
