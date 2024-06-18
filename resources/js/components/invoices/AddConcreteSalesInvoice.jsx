@@ -119,6 +119,18 @@ const AddConcreteSalesInvoice = () => {
     const [truckId, setTruckId] = useState('');
     const [driverId, setDriverId] = useState('');
 
+    /**
+     * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
+     * جهت جایگذاری مقادیر پیش فرض المنت ها از استیت‌های زیر استفاده می‌شود
+     */
+    const [isNewInvoice, setIsNewInvoice] = useState(false);
+    const [indexNewInvoice, setIndexNewInvoice] = useState('');
+    const [concreteName, setConcreteName] = useState('');
+    const [unitPrice, setUnitPrice]= useState('');
+    const [address, setAddress]= useState('');
+    const [concretingPosition, setConcretingPosition] = useState('');
+
+
     const [input, setInput] = useState({
         customer_id: '',
         invoice: [{
@@ -251,7 +263,6 @@ const AddConcreteSalesInvoice = () => {
 
         }
     }, [invoice]);
-
     /**
      * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
      * نوع مشتری هر رکورد است
@@ -320,36 +331,42 @@ const AddConcreteSalesInvoice = () => {
     //     if (isRef) {
     //         let concrete_id,
     //             concreteName,
-    //             indexCurrentInvoice = invoice.length - 1;
-    //         input.invoice[indexCurrentInvoice - 1] && (concrete_id = input.invoice[indexCurrentInvoice - 1].concrete_id);
+    //             indexNewInvoice = invoice.length - 1;
+    //         input.invoice[indexNewInvoice - 1] && (concrete_id = input.invoice[indexNewInvoice - 1].concrete_id);
 
     //         concrete_id && (concreteName = concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName'])
 
-    //         refInvoice[`concrete_id${indexCurrentInvoice}`]&& concreteName && refInvoice[`concrete_id${indexCurrentInvoice}`].current.updateData(concreteName);
+    //         refInvoice[`concrete_id${indexNewInvoice}`]&& concreteName && refInvoice[`concrete_id${indexNewInvoice}`].current.updateData(concreteName);
 
     //     }
 
     // }, [invoice, isRef]);
 
+    // useEffect(() => {
+    //     if (isRef) {
+    //         let concrete_id,
+    //             concreteName,
+    //             indexNewInvoice = invoice.length - 1;
+    //         input.invoice[indexNewInvoice - 1] && (concrete_id = input.invoice[indexNewInvoice - 1].concrete_id);
+    //         concrete_id && (concreteName = concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']);
+    //         // refInvoice[`concrete_id${indexNewInvoice}`].current.updateData(concreteName);
+    //        setIndexNewInvoice(indexNewInvoice);
+    //         setConcreteName(concreteName);
+    //         setIsNewInvoice(true);
+    //     }
+    // }, [invoice, isRef]);
+
+
     useEffect(() => {
-        async function updateData() {
-          if (isRef) {
-            let concrete_id,
-                concreteName,
-                indexCurrentInvoice = invoice.length - 1;
-                 input.invoice[indexCurrentInvoice - 1] && (concrete_id = input.invoice[indexCurrentInvoice - 1].concrete_id);
-                 concrete_id && (concreteName = concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']);
-            
-            await 
-               refInvoice[`concrete_id${indexCurrentInvoice}`].current.updateData(concreteName);
-             
-            
-          }
+        
+        if (isRef && refInvoice[`concrete_id${indexNewInvoice}`] ) {
+            concreteName && refInvoice[`concrete_id${indexNewInvoice}`].current.updateData(<div className="defaultConcreteNameACSI_FB"><span>بتن</span> <span>{concreteName}</span></div>);  
         }
-      
-        updateData();
-      }, [invoice, isRef]);
-    console.log(concretes);
+       
+        setIsNewInvoice(false);
+
+
+    }, [isNewInvoice,isRef]);
 
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
@@ -613,37 +630,6 @@ const AddConcreteSalesInvoice = () => {
      */
     const showDivCustomerType = () => {
         divItemCustomerType.current.classList.toggle('--hidden');
-    }
-
-    /**
-     * فرآیند انتخاب نوع مشتری
-     * @param {*} e 
-     * @param {*} code 
-     * @param {*} type 
-     * @param {*} subtype 
-     */
-    const AddCustomerType = (e, code, type, subtype) => {
-        e.preventDefault();
-        let ref = refs[code]
-        let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-        if (val) {
-            setInput(prevState => ({
-                ...prevState,
-                types: [...prevState.types, { code, type, subtype }]
-            }));
-
-            errorRCTYitem.current.classList.add('--hidden');
-        } else {
-
-
-            setInput(prevState => ({
-                ...prevState,
-                types: prevState.types.filter(type => type.code !== code)
-            }));
-            const typesString = updated.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
-
-
-        }
     }
 
     const changeDay = (e, i) => {
@@ -928,7 +914,9 @@ const AddConcreteSalesInvoice = () => {
      */
     const handleSaveValInput = (e, input, i, customer = false) => {
         let { value } = e.target;
-
+        input == 'unitPrice' && setUnitPrice(value);
+        input =='address' && setAddress(value);
+        input =='concretingPosition' && setConcretingPosition(value);
         if (!customer) {
             setInput(prevInput => {
                 let newInvoice;
@@ -1151,19 +1139,26 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const handleAddInvoice = (e) => {
+    const handleAddNewInvoice = (e) => {
         e.preventDefault();
+                            
+        setIndexNewInvoice(invoice.length);                     
         setInvoice([...invoice, sampleInvoice]);
+        setIsNewInvoice(true);
         let date = handleSetDateForNewInvoice();
+        let concrete_id = handleSetConcreteForNewInvoice();
+        // handleSetUnitPriceForNewInvoice();
         setInput(prevInput => {
-            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id: '', truck_id: '', driver_id: '', unitPrice: '', totalPrice: '', fare: '', maskanMeli: '', vahed: '', address: '', concretingPosition: '' }];
+            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', unitPrice, totalPrice: '', fare: '', maskanMeli: '', vahed: '', address, concretingPosition }];
 
             return { ...prevInput, invoice: newInvoice };
         });
-        handleSetConcreteForNewInvoice();
+        // handleSetConcreteForNewInvoice();
 
         handleClearTime();
     }
+
+    console.log(input);
 
     const handleClearTime = () => {
         setHour('');
@@ -1177,11 +1172,15 @@ const AddConcreteSalesInvoice = () => {
     }
 
     const handleSetConcreteForNewInvoice = () => {
-        let indexCurrentInvoice = invoice.length;
-        let ref = refInvoice[`concrete_id${indexCurrentInvoice - 1}`]
-
+        let concrete_id = input.invoice[invoice.length - 1].concrete_id;
+        concrete_id && (setConcreteName(concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']));
+        return concrete_id;
 
     }
+
+    // const handleSetUnitPriceForNewInvoice =()=>{
+    //     const unitPrice=input.invoice[invoice.length - 1].unitPrice;
+    // }
 
     return (
         <div ref={container}>
@@ -1454,7 +1453,7 @@ const AddConcreteSalesInvoice = () => {
                                                     type="text"
                                                     id="unitPrice"
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.unitPrice}
+                                                    defaultValue={unitPrice}
                                                     ref={unitPriceRef}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'unitPrice', i);
@@ -1725,7 +1724,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <textarea
                                                     id="address"
                                                     className="textareaAddressCSI_FB"
-                                                    defaultValue={input.address}
+                                                    defaultValue={address}
                                                     onInput={e => handleSaveValInput(e, 'address', i)}
                                                     onFocus={(e) => clearInputError(e, addressErrorRef)}
 
@@ -1740,7 +1739,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <textarea
                                                     id="concretingPosition"
                                                     className="textareaAddressCSI_FB"
-                                                    defaultValue={input.concretingPosition}
+                                                    defaultValue={concretingPosition}
                                                     onInput={e => handleSaveValInput(e, 'concretingPosition', i)}
                                                     onFocus={(e) => clearInputError(e, addressErrorRef)}
 
@@ -1756,7 +1755,7 @@ const AddConcreteSalesInvoice = () => {
 
                         })}
                         <div className="divBtnAddInmoiceCSI_FB">
-                            <button onClick={e => { handleAddInvoice(e) }}>
+                            <button onClick={e => { handleAddNewInvoice(e) }}>
                                 <i className='icofont-plus' />
                                 اضافه کردن فاکتور جدید
                             </button>
