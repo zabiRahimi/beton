@@ -118,6 +118,7 @@ const AddConcreteSalesInvoice = () => {
     const [concreteId, setConcreteId] = useState('');
     const [truckId, setTruckId] = useState('');
     const [driverId, setDriverId] = useState('');
+    const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
 
     /**
      * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
@@ -230,6 +231,10 @@ const AddConcreteSalesInvoice = () => {
                 acc[`vahed${i}`] = createRef();
                 acc[`address${i}`] = createRef();
                 acc[`concretingPosition${i}`] = createRef();
+                acc[`checkedMaskanEmam${i}`] = createRef();
+                acc[`checkedMaskanEmam${i}`].current = true;
+                acc[`checkedMaskanShahid${i}`] = createRef();
+                acc[`checkedMaskanShahid${i}`].current = true;
                 return acc;
             }, {});
             setRefInvoice(refs);
@@ -1140,6 +1145,12 @@ const AddConcreteSalesInvoice = () => {
             ref.current.value = val;
         }
     }
+    const handleCheckedMaskanMeli= (e, maskan, i)=>{
+        // let z= e.toggle(true)
+        console.log(refInvoice[`checkedMaskanEmam${i}`].current);
+        setCheckedMaskanMeli(maskan);
+
+    }
 
     const handleAddNewInvoice = (e) => {
         e.preventDefault();
@@ -1160,7 +1171,6 @@ const AddConcreteSalesInvoice = () => {
         handleClearTime();
     }
 
-    console.log(input);
 
     const handleClearTime = () => {
         setHour('');
@@ -1664,7 +1674,10 @@ const AddConcreteSalesInvoice = () => {
                                                     type="checkbox"
                                                     id="nationalCode"
                                                     className="inputCheckboxFB  element"
+                                                    checked={checkedMaskanMeli=="شهرک امام"}
+
                                                     defaultValue={input.nationalCode}
+                                                    onClick={e=>{handleCheckedMaskanMeli(e,'شهرک امام', i)}}
                                                     onInput={e => handleSaveValInput(e, 'nationalCode')}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
                                                 />
@@ -1695,7 +1708,10 @@ const AddConcreteSalesInvoice = () => {
                                                     type="checkbox"
                                                     id="nationalCode"
                                                     className="inputCheckboxFB  element"
+                                                    checked={checkedMaskanMeli=="شهرک شهید رییسی"}
                                                     defaultValue={input.nationalCode}
+                                                    onClick={e=>{handleCheckedMaskanMeli(e, 'شهرک شهید رییسی', i)}}
+
                                                     onInput={e => handleSaveValInput(e, 'nationalCode', i)}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
                                                 />
