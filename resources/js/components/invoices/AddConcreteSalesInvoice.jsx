@@ -118,6 +118,7 @@ const AddConcreteSalesInvoice = () => {
     const [concreteId, setConcreteId] = useState('');
     const [truckId, setTruckId] = useState('');
     const [driverId, setDriverId] = useState('');
+    const [maskanMeli, setMaskanMeli] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
 
     /**
@@ -133,9 +134,6 @@ const AddConcreteSalesInvoice = () => {
     const [fare, setFare] = useState('');
     const [checkedValue, setCheckedValue] = useState('');
     const [isChecked, setIsChecked] = useState(false)
-
-
-
 
     const [input, setInput] = useState({
         customer_id: '',
@@ -163,6 +161,14 @@ const AddConcreteSalesInvoice = () => {
     const [id, setId] = useState(null);
     const sampleInvoice = 'invoice';
     const [invoice, setInvoice] = useState([sampleInvoice]);
+
+    const [maskan, setMaskan] = useState([...invoice.map(item => ''), '']);
+    useEffect(() => {
+        if (isRef) {
+            setMaskan((prev) => [...prev, '']);
+        }
+
+    }, [invoice]);
 
     useEffect(() => {
         // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
@@ -197,7 +203,7 @@ const AddConcreteSalesInvoice = () => {
         getConcreteSalesInvoices();
     }, []);
 
-   
+
 
     /**
     * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -330,36 +336,6 @@ const AddConcreteSalesInvoice = () => {
         });
     }, [driverId, invoiceIndexForDriver]);
 
-    // useEffect(() => {
-
-    //     if (isRef) {
-    //         let concrete_id,
-    //             concreteName,
-    //             indexNewInvoice = invoice.length - 1;
-    //         input.invoice[indexNewInvoice - 1] && (concrete_id = input.invoice[indexNewInvoice - 1].concrete_id);
-
-    //         concrete_id && (concreteName = concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName'])
-
-    //         refInvoice[`concrete_id${indexNewInvoice}`]&& concreteName && refInvoice[`concrete_id${indexNewInvoice}`].current.updateData(concreteName);
-
-    //     }
-
-    // }, [invoice, isRef]);
-
-    // useEffect(() => {
-    //     if (isRef) {
-    //         let concrete_id,
-    //             concreteName,
-    //             indexNewInvoice = invoice.length - 1;
-    //         input.invoice[indexNewInvoice - 1] && (concrete_id = input.invoice[indexNewInvoice - 1].concrete_id);
-    //         concrete_id && (concreteName = concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']);
-    //         // refInvoice[`concrete_id${indexNewInvoice}`].current.updateData(concreteName);
-    //        setIndexNewInvoice(indexNewInvoice);
-    //         setConcreteName(concreteName);
-    //         setIsNewInvoice(true);
-    //     }
-    // }, [invoice, isRef]);
-
 
     useEffect(() => {
 
@@ -371,29 +347,6 @@ const AddConcreteSalesInvoice = () => {
 
 
     }, [isNewInvoice, isRef]);
-
-    // useEffect(() => {
-
-    //     let i = invoice.length;
-    //     let maskanMeli = input.invoice[i - 1].maskanMeli;
-    //     console.log(`isnewInvoice ${isNewInvoice}`);
-
-    //     if (refInvoice[`checkedMaskanEmam${indexNewInvoice}`] && maskanMeli == 'مسکن ملی شهرک امام خمینی') {
-    //         console.log('shod');
-    //         refInvoice[`checkedMaskanEmam${indexNewInvoice}`].current = false
-    //     }
-
-    //     // if (maskanMeli == 'مسکن ملی شهرک امام خمینی' && isNewInvoice) {
-    //     //     // refInvoice[`checkedMaskanEmam${indexNewInvoice}`] &&
-    //     //     refInvoice[`checkedMaskanEmam${indexNewInvoice}`] &&  (refInvoice[`checkedMaskanEmam${indexNewInvoice}`].current = false);
-    //     // } else if (maskanMeli == 'مسکن ملی شهرک شهید رییسی') {
-    //     //     // console.log(`shahid = ${maskanMeli}`);
-    //     //     refInvoice[`checkedMaskanShahid${indexNewInvoice}`].current = false;
-
-    //     // }
-
-    //     // console.log(refInvoice[`checkedMaskanEmam${indexNewInvoice}`]);
-    // }, [isChecked]);
 
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
@@ -939,18 +892,18 @@ const AddConcreteSalesInvoice = () => {
      * @param {*} e 
      * @param {*} input 
      */
-    const handleSaveValInput = (e, input, i, customer = false, maskan = '') => {
+    const handleSaveValInput = (e, input, i, customer = false) => {
         let { value } = e.target;
         input == 'unitPrice' && setUnitPrice(value);
         input == 'fare' && setFare(value);
         input == 'address' && setAddress(value);
         input == 'concretingPosition' && setConcretingPosition(value);
-
         if (input == 'maskanMeli') {
-            // value== maskan;
+            const copyMaskan = [...maskan];
+            copyMaskan[i] = value;
+            copyMaskan[maskan.length - 1] = value;
+            setMaskan(copyMaskan);
         }
-
-        console.log(`value: ${value}`);
 
         if (!customer) {
             setInput(prevInput => {
@@ -1173,46 +1126,59 @@ const AddConcreteSalesInvoice = () => {
             ref.current.value = val;
         }
     }
-    const handleCheckedMaskanMeli = (e, maskan, i) => {
-        // let z= e.toggle(true)
+
+    const handleCheckedMaskanMeli = (e, value, i, labelId) => {
+
         let checked;
-        // maskan == `emam${i}` &&  (checked = refInvoice[`checkedMaskanEmam${i}`].current);
-        // maskan == `shahid${i}` &&  (checked = refInvoice[`checkedMaskanShahid${i}`].current);
-        if (isChecked) {
-            if (checkedValue == 'مسکن ملی شهرک امام خمینی') {
-                checked = false;
-                const checkbox = e.target;
-                checkbox.checked = !checkbox.checked;
-                console.log(checkbox);
-            } else if (checkedValue == 'مسکن ملی شهرک شهید رییسی') {
-                checked = false;
-            }
-        }else{
-            if (maskan == `emam${i}`) {
+        if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
+            const copyMaskan = [...maskan];
+            copyMaskan[i] = '';
+            copyMaskan[maskan.length - 1] = '';
+            setMaskan(copyMaskan);
+            checked = false;
+            const checkbox = e.target;
+            checkbox.checked = !checkbox.checked;
+            setCheckedValue('');
+        } else if (value == `shahid${i}` && isChecked && checkedValue == 'مسکن ملی شهرک شهید رییسی') {
+            const copyMaskan = [...maskan];
+            copyMaskan[i] = '';
+            copyMaskan[maskan.length - 1] = '';
+            setMaskan(copyMaskan);
+            checked = false;
+            const checkbox = e.target;
+            checkbox.checked = !checkbox.checked;
+            setCheckedValue('');
+        }
+        else {
+            if (value == `emam${i}`) {
                 checked = refInvoice[`checkedMaskanEmam${i}`].current;
-            } else if (maskan == `shahid${i}`) {
+                document.getElementById(labelId).classList.remove('inactiveLabelCSI_FB');
+
+            } else if (value == `shahid${i}`) {
                 checked = refInvoice[`checkedMaskanShahid${i}`].current;
+                document.getElementById(labelId).classList.add('inactiveLabelCSI_FB');
+
             }
 
 
-            if (maskan == `emam${i}`) {
+            if (value == `emam${i}`) {
                 refInvoice[`checkedMaskanEmam${i}`].current = !checked;
                 refInvoice[`checkedMaskanShahid${i}`].current = true;
-            } else if (maskan == `shahid${i}`) {
+            } else if (value == `shahid${i}`) {
                 refInvoice[`checkedMaskanShahid${i}`].current = !checked;
                 refInvoice[`checkedMaskanEmam${i}`].current = true;
             }
         }
-        
-        console.log(`checked = ${checked}`);
-        // checked = maskan == `emam${i}` ? refInvoice[`checkedMaskanEmam${i}`].current : refInvoice[`checkedMaskanShahid${i}`].current;
+
+
         if (checked) {
-            setCheckedMaskanMeli(maskan);
+            setCheckedMaskanMeli(value);
+
         } else {
             setCheckedMaskanMeli('');
         }
 
-       
+
         setIsChecked(false)
     }
 
@@ -1258,6 +1224,9 @@ const AddConcreteSalesInvoice = () => {
 
     const handleSetMaskanMeliForNewInvoice = () => {
         let maskanMeli = input.invoice[invoice.length - 1].maskanMeli;
+        const copyMaskan = [...maskan];
+        copyMaskan[maskan.length - 1] = maskanMeli;
+        setMaskan(copyMaskan);
         setCheckedValue(maskanMeli);
         return maskanMeli;
     }
@@ -1751,16 +1720,16 @@ const AddConcreteSalesInvoice = () => {
                                                     value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${i}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
 
                                                     onChange={e => {
-                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i);
+                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i, `labelEmam${i}`);
                                                     }}
 
 
 
-                                                    checked={checkedMaskanMeli == `emam${i}` || input.invoice[i].maskanMeli == 'مسکن ملی شهرک امام خمینی'}
+                                                    checked={checkedMaskanMeli == `emam${i}` || maskan[i] == 'مسکن ملی شهرک امام خمینی'}
 
                                                     ref={refInvoice[`checkBaxEmam${i}`]}
                                                 />
-                                                <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB'>مسکن ملی (شهرک امام خمینی) </label>
+                                                <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB' id={`labelEmam${i}`}>مسکن ملی (شهرک امام خمینی) </label>
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                         </div>
@@ -1795,7 +1764,7 @@ const AddConcreteSalesInvoice = () => {
                                                     }}
 
 
-                                                    checked={checkedMaskanMeli == `shahid${i}` || input.invoice[i].maskanMeli == 'مسکن ملی شهرک شهید رییسی'}
+                                                    checked={checkedMaskanMeli == `shahid${i}` || maskan[i] == 'مسکن ملی شهرک شهید رییسی'}
 
                                                     ref={refInvoice[`checkBaxShahid${i}`]}
 
