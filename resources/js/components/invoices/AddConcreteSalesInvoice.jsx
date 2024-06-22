@@ -129,6 +129,7 @@ const AddConcreteSalesInvoice = () => {
     const [indexNewInvoice, setIndexNewInvoice] = useState('');
     const [concreteName, setConcreteName] = useState('');
     const [unitPrice, setUnitPrice] = useState('');
+    const [vahed, setVahed] = useState('');
     const [address, setAddress] = useState('');
     const [concretingPosition, setConcretingPosition] = useState('');
     const [fare, setFare] = useState('');
@@ -898,6 +899,7 @@ const AddConcreteSalesInvoice = () => {
         input == 'fare' && setFare(value);
         input == 'address' && setAddress(value);
         input == 'concretingPosition' && setConcretingPosition(value);
+        input == 'vahed' && setVahed(value);
         if (input == 'maskanMeli') {
             const copyMaskan = [...maskan];
             copyMaskan[i] = value;
@@ -1127,8 +1129,7 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const handleCheckedMaskanMeli = (e, value, i, labelId) => {
-
+    const handleCheckedMaskanMeli = (e, value, i) => {
         let checked;
         if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
             const copyMaskan = [...maskan];
@@ -1152,12 +1153,9 @@ const AddConcreteSalesInvoice = () => {
         else {
             if (value == `emam${i}`) {
                 checked = refInvoice[`checkedMaskanEmam${i}`].current;
-                document.getElementById(labelId).classList.remove('inactiveLabelCSI_FB');
 
             } else if (value == `shahid${i}`) {
                 checked = refInvoice[`checkedMaskanShahid${i}`].current;
-                document.getElementById(labelId).classList.add('inactiveLabelCSI_FB');
-
             }
 
 
@@ -1720,7 +1718,7 @@ const AddConcreteSalesInvoice = () => {
                                                     value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${i}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
 
                                                     onChange={e => {
-                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i, `labelEmam${i}`);
+                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i);
                                                     }}
 
 
@@ -1729,18 +1727,20 @@ const AddConcreteSalesInvoice = () => {
 
                                                     ref={refInvoice[`checkBaxEmam${i}`]}
                                                 />
-                                                <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB' id={`labelEmam${i}`}>مسکن ملی (شهرک امام خمینی) </label>
+                                                <label htmlFor="nationalCode"
+                                                    className={`labelCheckboxFB  ${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
+                                                    id={`labelEmam${i}`}>مسکن ملی (شهرک امام خمینی) </label>
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                         </div>
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="vahed" className='inactiveLabelCSI_FB'>شماره واحد </label>
+                                                <label htmlFor="vahed" className={`${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
                                                 <input
                                                     type="text"
                                                     id="vahed"
                                                     className="inputTextFB ltrFB element"
-                                                    disabled
+                                                    disabled={maskan[i] != 'مسکن ملی شهرک امام خمینی'}
                                                     defaultValue={input.vahed}
                                                     onInput={e => handleSaveValInput(e, 'vahed', i)}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
@@ -1769,22 +1769,25 @@ const AddConcreteSalesInvoice = () => {
                                                     ref={refInvoice[`checkBaxShahid${i}`]}
 
                                                 />
-                                                <label htmlFor="nationalCode" className='labelCheckboxFB inactiveLabelCSI_FB'>مسکن ملی (شهرک شهید رئیسی) </label>
+                                                <label htmlFor="nationalCode"
+                                                    className={`labelCheckboxFB ${maskan[i] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
+                                                >مسکن ملی (شهرک شهید رئیسی) </label>
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                         </div>
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="nationalCode" className='inactiveLabelCSI_FB'>شماره واحد </label>
+                                                <label htmlFor="nationalCode" className={`${maskan[i] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
                                                 <input
                                                     type="text"
                                                     id="nationalCode"
                                                     className="inputTextFB ltrFB element"
-                                                    disabled
+                                                    
                                                     defaultValue={input.nationalCode}
                                                     onInput={e => handleSaveValInput(e, 'nationalCode')}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                    disabled={maskan[i] != 'مسکن ملی شهرک شهید رییسی'}
                                                 />
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
