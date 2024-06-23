@@ -351,9 +351,9 @@ const AddConcreteSalesInvoice = () => {
     }, [isNewInvoice, isRef]);
 
     useEffect(() => {
-        let index= invoice.length - 1;
+        let index = invoice.length - 1;
         if (isRef && refInvoice[`unitPrice${index}`]) {
-            
+
             input.invoice[index].unitPrice && (refInvoice[`unitPrice${index}`].current.value = parseFloat(input.invoice[index].unitPrice).toLocaleString())
         }
 
@@ -910,6 +910,30 @@ const AddConcreteSalesInvoice = () => {
         input == 'address' && setAddress(value);
         input == 'concretingPosition' && setConcretingPosition(value);
         input == 'vahed' && setVahed(value);
+        let result = value.replace(/,/g, '');
+
+        switch (input) {
+            case 'unitPrice':
+                value = value.replace(/,/g, '');
+                setUnitPrice(value);
+                break;
+            case 'weight':
+                value = value.replace(/,/g, '');
+                break;
+            case 'fare':
+                value = value.replace(/,/g, '');
+                setFare(value);
+                break;
+            case 'vahed':
+                setVahed(value);
+                break;
+            case 'address':
+                setAddress(value);
+                break;
+            case 'concretingPosition':
+                setConcretingPosition(value);
+                break;
+        }
         if (input == 'maskanMeli') {
             const copyMaskan = [...maskan];
             copyMaskan[i] = value;
