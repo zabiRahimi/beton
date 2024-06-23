@@ -22,6 +22,7 @@ const AddConcreteSalesInvoice = () => {
         optionDays,
         optionMonth,
         optionYears,
+        optionShortYears,
         optionHours,
         optionMinutes,
         optionSeconds,
@@ -1106,11 +1107,30 @@ const AddConcreteSalesInvoice = () => {
       * به صورت دهگان،صدگان و ...
       * @param {ref} ref 
       */
-    const formatNub = (ref) => {
+    const formatNub = (input, i) => {
+        console.log(refInvoice[`weight${i}`]);
         let val,
             checkDthot,
-            resalt = ref.current.value.replace(/[\s,]/g, "");
-
+            resalt,
+            refCurrent; 
+switch (input) {
+    case 'weight':
+        resalt=refInvoice[`weight${i}`].current.value.replace(/[\s,]/g, "");
+        refCurrent=refInvoice[`weight${i}`].current;
+        break;
+        case 'unitPrice':
+            resalt=refInvoice[`unitPrice${i}`].current.value.replace(/[\s,]/g, "");
+        refCurrent=refInvoice[`unitPrice${i}`].current;
+        break;
+        case 'totalPrice':
+            resalt=refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
+        refCurrent=refInvoice[`totalPrice${i}`].current;
+        break;
+        case 'fare':
+            resalt=refInvoice[`fare${i}`].current.value.replace(/[\s,]/g, "");
+        refCurrent=refInvoice[`fare${i}`].current;
+        break;
+}
         // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
         if (resalt.slice(-1) == '.') {
             checkDthot = true;
@@ -1125,8 +1145,21 @@ const AddConcreteSalesInvoice = () => {
              * علامت را به آخر رشته اضافه می کند
              */
             val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
-            ref.current.value = val;
+            refCurrent.value = val;
         }
+    }
+
+    console.log(input.invoice);
+
+     /**
+     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
+     * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
+     * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
+     * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
+     * @param {number} id 
+     */
+     const htmlFor = (id) => {
+        document.getElementById(id).focus()
     }
 
     const handleCheckedMaskanMeli = (e, value, i) => {
@@ -1470,7 +1503,7 @@ const AddConcreteSalesInvoice = () => {
 
                                                         >
                                                             <option value="">سال</option>
-                                                            {optionYears}
+                                                            {optionShortYears}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1533,23 +1566,24 @@ const AddConcreteSalesInvoice = () => {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor='unitPrice'> وزن بار </label>
+                                                <label htmlFor={`weight${i}`}> وزن بار </label>
                                                 <input
                                                     type="text"
-                                                    id="unitPrice"
+                                                    id={`weight${i}`}
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.unitPrice}
-                                                    ref={refWeight['weight' + (i + 1)]}
+                                                    defaultValue={input.invoice[i].weight}
+                                                    // ref={refWeight['weight' + (i + 1)]}
+                                                    ref={refInvoice[`weight${i}`]}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'weight', i);
-                                                        formatNub(unitPriceRef);
+                                                        formatNub('weight', i);
                                                     }
                                                     }
                                                     onFocus={e => clearInputError(e, unitPriceErrorRef)}
                                                 />
                                                 <span
                                                     className="unitFB"
-                                                    onClick={() => htmlFor('unitPrice')}
+                                                    onClick={() => htmlFor(`weight${i}`)}
                                                 >
                                                     کیلو گرم
                                                 </span>
@@ -1733,8 +1767,9 @@ const AddConcreteSalesInvoice = () => {
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                         </div>
+                                        
                                         <div className="containerInputFB">
-                                            <div className="divInputFB">
+                                            {/* <div className="divInputFB">
                                                 <label htmlFor="vahed" className={`${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
                                                 <input
                                                     type="text"
@@ -1746,7 +1781,7 @@ const AddConcreteSalesInvoice = () => {
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
                                                 />
                                             </div>
-                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div> */}
                                         </div>
 
                                         <div className="containerInputFB">
@@ -1778,16 +1813,16 @@ const AddConcreteSalesInvoice = () => {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="nationalCode" className={`${maskan[i] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
+                                                <label htmlFor="nationalCode" className={`${(maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
                                                 <input
                                                     type="text"
                                                     id="nationalCode"
                                                     className="inputTextFB ltrFB element"
                                                     
-                                                    defaultValue={input.nationalCode}
-                                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                                    defaultValue={vahed}
+                                                    onInput={e => handleSaveValInput(e, 'vahed', i)}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
-                                                    disabled={maskan[i] != 'مسکن ملی شهرک شهید رییسی'}
+                                                    disabled={maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی'}
                                                 />
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>

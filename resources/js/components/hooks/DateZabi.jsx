@@ -1,5 +1,6 @@
 const DateZabi = () => {
-    let years = [];
+    let years = [],
+        shortYears = [];
 
 
 
@@ -48,6 +49,10 @@ const DateZabi = () => {
         years.push(index);
     }
 
+    for (let index = 1403; index < 1411; index++) {
+        shortYears.push(index);
+    }
+
     let optionDays = days.map((day, i) => {
         return <option key={i} value={day}>{day}</option>
     });
@@ -57,6 +62,10 @@ const DateZabi = () => {
     });
 
     let optionYears = years.map((year, i) => {
+        return <option key={i} value={year}>{year}</option>
+    });
+
+    let optionShortYears = shortYears.map((year, i) => {
         return <option key={i} value={year}>{year}</option>
     });
 
@@ -72,6 +81,6 @@ const DateZabi = () => {
         return <option key={i} value={second}>{second}</option>
     });
 
-    return { years, months, days, nameDays,hours, minutes, seconds, optionDays, optionMonth, optionYears, optionHours, optionMinutes, optionSeconds  };
+    return { years, months, days, nameDays, hours, minutes, seconds, optionDays, optionMonth, optionYears, optionShortYears, optionHours, optionMinutes, optionSeconds };
 };
 export default DateZabi;
