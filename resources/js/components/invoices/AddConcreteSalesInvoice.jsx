@@ -350,6 +350,15 @@ const AddConcreteSalesInvoice = () => {
 
     }, [isNewInvoice, isRef]);
 
+    useEffect(() => {
+        let index= invoice.length - 1;
+        if (isRef && refInvoice[`unitPrice${index}`]) {
+            
+            input.invoice[index].unitPrice && (refInvoice[`unitPrice${index}`].current.value = parseFloat(input.invoice[index].unitPrice).toLocaleString())
+        }
+
+    }, [isNewInvoice]);
+
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
             let datas = response.data.concreteBuyers;
@@ -1112,25 +1121,25 @@ const AddConcreteSalesInvoice = () => {
         let val,
             checkDthot,
             resalt,
-            refCurrent; 
-switch (input) {
-    case 'weight':
-        resalt=refInvoice[`weight${i}`].current.value.replace(/[\s,]/g, "");
-        refCurrent=refInvoice[`weight${i}`].current;
-        break;
-        case 'unitPrice':
-            resalt=refInvoice[`unitPrice${i}`].current.value.replace(/[\s,]/g, "");
-        refCurrent=refInvoice[`unitPrice${i}`].current;
-        break;
-        case 'totalPrice':
-            resalt=refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
-        refCurrent=refInvoice[`totalPrice${i}`].current;
-        break;
-        case 'fare':
-            resalt=refInvoice[`fare${i}`].current.value.replace(/[\s,]/g, "");
-        refCurrent=refInvoice[`fare${i}`].current;
-        break;
-}
+            refCurrent;
+        switch (input) {
+            case 'weight':
+                resalt = refInvoice[`weight${i}`].current.value.replace(/[\s,]/g, "");
+                refCurrent = refInvoice[`weight${i}`].current;
+                break;
+            case 'unitPrice':
+                resalt = refInvoice[`unitPrice${i}`].current.value.replace(/[\s,]/g, "");
+                refCurrent = refInvoice[`unitPrice${i}`].current;
+                break;
+            case 'totalPrice':
+                resalt = refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
+                refCurrent = refInvoice[`totalPrice${i}`].current;
+                break;
+            case 'fare':
+                resalt = refInvoice[`fare${i}`].current.value.replace(/[\s,]/g, "");
+                refCurrent = refInvoice[`fare${i}`].current;
+                break;
+        }
         // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
         if (resalt.slice(-1) == '.') {
             checkDthot = true;
@@ -1151,14 +1160,14 @@ switch (input) {
 
     console.log(input.invoice);
 
-     /**
-     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
-     * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
-     * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
-     * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
-     * @param {number} id 
-     */
-     const htmlFor = (id) => {
+    /**
+    * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
+    * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
+    * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
+    * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
+    * @param {number} id 
+    */
+    const htmlFor = (id) => {
         document.getElementById(id).focus()
     }
 
@@ -1534,23 +1543,23 @@ switch (input) {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor='unitPrice'> قیمت واحد بتن (مترمکعب) </label>
+                                                <label htmlFor={`unitPrice${i}`}> قیمت واحد بتن (مترمکعب) </label>
                                                 <input
                                                     type="text"
-                                                    id="unitPrice"
+                                                    id={`unitPrice${i}`}
                                                     className="inputTextUnitFB ltrFB element"
                                                     defaultValue={unitPrice}
-                                                    ref={unitPriceRef}
+                                                    ref={refInvoice[`unitPrice${i}`]}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'unitPrice', i);
-                                                        formatNub(unitPriceRef);
+                                                        formatNub('unitPrice', i);
                                                     }
                                                     }
                                                     onFocus={e => clearInputError(e, unitPriceErrorRef)}
                                                 />
                                                 <span
                                                     className="unitFB"
-                                                    onClick={() => htmlFor('unitPrice')}
+                                                    onClick={() => htmlFor(`unitPrice${i}`)}
                                                 >
                                                     تومان
                                                 </span>
@@ -1598,23 +1607,22 @@ switch (input) {
                                         </div>
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor='cubicMeters'> حجم بار </label>
+                                                <label htmlFor={`cubicMeters${i}`}> حجم بار </label>
                                                 <input
                                                     type="text"
-                                                    id="cubicMeters"
+                                                    id={`cubicMeters${i}`}
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.cubicMeters}
+                                                    defaultValue={input.invoice[i].cubicMeters}
                                                     ref={unitPriceRef}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'cubicMeters', i);
-                                                        formatNub(unitPriceRef);
                                                     }
                                                     }
                                                     onFocus={e => clearInputError(e, unitPriceErrorRef)}
                                                 />
                                                 <span
                                                     className="unitFB"
-                                                    onClick={() => htmlFor('unitPrice')}
+                                                    onClick={() => htmlFor(`cubicMeters${i}`)}
                                                 >
                                                     مترمکعب
                                                 </span>
@@ -1634,10 +1642,10 @@ switch (input) {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor='totalPrice'> قیمت کل </label>
+                                                <label htmlFor={`totalPrice${i}`}> قیمت کل </label>
                                                 <input
                                                     type="text"
-                                                    id="totalPrice"
+                                                    id={`totalPrice${i}`}
                                                     className="inputTextUnitFB ltrFB element"
                                                     defaultValue={input.totalPrice}
                                                     ref={unitPriceRef}
@@ -1650,7 +1658,7 @@ switch (input) {
                                                 />
                                                 <span
                                                     className="unitFB"
-                                                    onClick={() => htmlFor('unitPrice')}
+                                                    onClick={() => htmlFor(`totalPrice${i}`)}
                                                 >
                                                     تومان
                                                 </span>
@@ -1709,23 +1717,23 @@ switch (input) {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor='fare'> کرایه میکسر </label>
+                                                <label htmlFor={`fare${i}`}> کرایه میکسر </label>
                                                 <input
                                                     type="text"
-                                                    id="fare"
+                                                    id={`fare${i}`}
                                                     className="inputTextUnitFB ltrFB element"
                                                     defaultValue={fare}
-                                                    ref={unitPriceRef}
+                                                    ref={refInvoice[`fare${i}`]}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'fare', i);
-                                                        formatNub(unitPriceRef);
+                                                        formatNub('fare', i);
                                                     }
                                                     }
                                                     onFocus={e => clearInputError(e, unitPriceErrorRef)}
                                                 />
                                                 <span
                                                     className="unitFB"
-                                                    onClick={() => htmlFor('unitPrice')}
+                                                    onClick={() => htmlFor(`fare${i}`)}
                                                 >
                                                     تومان
                                                 </span>
@@ -1767,7 +1775,7 @@ switch (input) {
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
                                         </div>
-                                        
+
                                         <div className="containerInputFB">
                                             {/* <div className="divInputFB">
                                                 <label htmlFor="vahed" className={`${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
@@ -1818,7 +1826,7 @@ switch (input) {
                                                     type="text"
                                                     id="nationalCode"
                                                     className="inputTextFB ltrFB element"
-                                                    
+
                                                     defaultValue={vahed}
                                                     onInput={e => handleSaveValInput(e, 'vahed', i)}
                                                     onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
