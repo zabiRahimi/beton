@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ConcreteSalesInvoice;
 use App\Http\Requests\StoreConcreteSalesInvoiceRequest;
 use App\Http\Requests\UpdateConcreteSalesInvoiceRequest;
+use App\Models\CementStore;
 use App\Models\Concrete;
 use App\Models\Customer;
 use App\Models\Driver;
@@ -94,5 +95,11 @@ class ConcreteSalesInvoiceController extends Controller
     {
         $drivers= Driver::get();
         return response()->json(['drivers'=> $drivers]);
+    }
+
+    public function getCSICementStores()
+    {
+        $cementStores= CementStore::get();
+        return response()->json(['cementStores'=> $cementStores]);
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('truck_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('driver_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('concrete_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('cementStore_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
             $table->date('date');
             $table->string('weight');

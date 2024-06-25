@@ -247,6 +247,7 @@ return [
         'reservoir' => 'مخزن',
         'job' => 'شغل',
         'weight'=>'وزن',
+        'cementStore_id'=>'سیلوی سیمان',
         'cubicMeters'=>'مترمکعب',
         'unitPrice'=>'قیمت واحد',
         'totalPrice'=>'قیمت کل',
@@ -256,14 +257,13 @@ return [
         'invoice.*.time'=>'ساعت',
         'invoice.*.date'=>'تاریخ',
         'invoice.*.concrete_id'=>'عیار بتن',
-        'invoice.*.untiPrice'=>'قیمت واحد بتن',
+        'invoice.*.cementStore_id'=>'سیلوی سیمان',
+        'invoice.*.unitPrice'=>'قیمت واحد بتن',
         'invoice.*.weight'=>'وزن خالص بار',
         'invoice.*.truck_id'=>'میکسر',
         'invoice.*.driver_id'=>'راننده',
         'invoice.*.fare'=>'کرایه میکسر',
         'invoice.*.vahed'=>'شماره واحد',
-        
-
     ],
 
 ];

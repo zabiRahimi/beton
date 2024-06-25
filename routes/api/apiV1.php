@@ -117,6 +117,7 @@ Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
     Route::get('/getCSIConcretes', 'getCSIConcretes');
     Route::get('/getCSIMixers', 'getCSIMixers');
     Route::get('/getCSIDrivers', 'getCSIDrivers');
+    Route::get('/getCSICementStores', 'getCSICementStores');
     Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
 
 });
