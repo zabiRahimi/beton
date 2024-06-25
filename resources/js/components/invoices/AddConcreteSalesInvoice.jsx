@@ -1103,28 +1103,38 @@ console.log(input.invoice);
 
                         let id = Object.keys(error.response.data.errors)[0];
                         console.log(id);
+                        const checkCubicMeters = /^invoice\.\d+\.cubicMeters$/;
+                        const checkTotalPrice = /^invoice\.\d+\.totalPrice$/;
                         // id.includes('type') && (id = 'types');
-
-                        const element = document.getElementById(id);
-                        let scrollPosition = window.scrollY || window.pageYOffset;
-
-                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
-                        window.scrollTo({
-                            top: top,
-                            behavior: 'smooth'
-                        });
-
-                        Object.entries(error.response.data.errors).map(([key, val]) => {
-                            key.includes('type') && (key = 'types');
-                            document.getElementById(key).classList.add('borderRedFB');
-
-                            document.getElementById(key + 'Error').innerHTML = val;
-                            if (key == 'date') {
-                                day || daySelect.current.classList.add('borderRedFB');
-                                month || monthSelect.current.classList.add('borderRedFB');
-                                year || yearSelect.current.classList.add('borderRedFB');
-                            }
-                        });
+                        if (!checkCubicMeters.test(id) && !checkTotalPrice.test(id)) {
+                            console.log(id);
+                            const element = document.getElementById(id);
+                            let scrollPosition = window.scrollY || window.pageYOffset;
+    
+                            const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                            window.scrollTo({
+                                top: top,
+                                behavior: 'smooth'
+                            });
+                        }
+                            Object.entries(error.response.data.errors).map(([key, val]) => {
+                                // key.includes('type') && (key = 'types');
+                                if (!key.includes('cubicMeters') && !key.includes('totalPrice') ) {
+                                    document.getElementById(key).classList.add('borderRedFB');
+    
+                                    document.getElementById(key + 'Error').innerHTML = val;
+                                } 
+                                // document.getElementById(key).classList.add('borderRedFB');
+    
+                                // document.getElementById(key + 'Error').innerHTML = val;
+                                // if (key == 'date') {
+                                //     day || daySelect.current.classList.add('borderRedFB');
+                                //     month || monthSelect.current.classList.add('borderRedFB');
+                                //     year || yearSelect.current.classList.add('borderRedFB');
+                                // }
+                            });
+                        
+                       
 
                     }
                 }
@@ -1677,10 +1687,10 @@ console.log(input.invoice);
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor={`weight${i}`}> وزن بار </label>
+                                                <label htmlFor={`invoice.${i}.weight`}> وزن خالص بار </label>
                                                 <input
                                                     type="text"
-                                                    id={`weight${i}`}
+                                                    id={`invoice.${i}.weight`}
                                                     className="inputTextUnitFB ltrFB element"
                                                     defaultValue={input.invoice[i].weight}
                                                     // ref={refWeight['weight' + (i + 1)]}
@@ -1690,11 +1700,11 @@ console.log(input.invoice);
                                                         formatNub('weight', i);
                                                     }
                                                     }
-                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                                    onFocus={e => clearInputError(e, refInvoice[`weightError${i}`])}
                                                 />
                                                 <span
                                                     className="unitFB"
-                                                    onClick={() => htmlFor(`weight${i}`)}
+                                                    onClick={() => htmlFor(`invoice.${i}.weight`)}
                                                 >
                                                     کیلو گرم
                                                 </span>
@@ -1702,8 +1712,8 @@ console.log(input.invoice);
                                             </div>
                                             <div
                                                 className="errorContainerFB elementError"
-                                                id="concreteNameCodeError"
-                                                ref={unitPriceErrorRef}
+                                                id={`invoice.${i}.weightError`}
+                                                ref={refInvoice[`weightError${i}`]}
                                             >
                                             </div>
                                         </div>
