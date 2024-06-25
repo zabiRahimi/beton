@@ -21,7 +21,6 @@ const AddConcreteSalesInvoice = () => {
     const {
         optionDays,
         optionMonth,
-        optionYears,
         optionShortYears,
         optionHours,
         optionMinutes,
@@ -51,7 +50,7 @@ const AddConcreteSalesInvoice = () => {
     const hasCalledGetDrivers = useRef(false);
 
 
-    const nameErrorRef = useRef(null);
+    const customer_idErrorRef = useRef(null);
     const lastNameErrorRef = useRef(null);
     const fatherErrorRef = useRef(null);
     const typesErrorRef = useRef(null);
@@ -222,17 +221,27 @@ const AddConcreteSalesInvoice = () => {
                 return acc;
             }, {});
             let refs = invoice.reduce((acc, cur, i) => {
+                acc[`time${i}`] = createRef();
+                acc[`timeError${i}`] = createRef();
                 acc[`date${i}`] = createRef();
+                acc[`dateError${i}`] = createRef();
                 acc[`weight${i}`] = createRef();
+                acc[`weightError${i}`] = createRef();
                 acc[`cubicMeters${i}`] = createRef();
                 acc[`concrete_id${i}`] = createRef();
+                acc[`concrete_idError${i}`] = createRef();
                 acc[`truck_id${i}`] = createRef();
+                acc[`truck_idError${i}`] = createRef();
                 acc[`driver_id${i}`] = createRef();
+                acc[`driver_idError${i}`] = createRef();
                 acc[`unitPrice${i}`] = createRef();
+                acc[`unitPriceError${i}`] = createRef();
                 acc[`totalPrice${i}`] = createRef();
                 acc[`fare${i}`] = createRef();
+                acc[`fareError${i}`] = createRef();
                 acc[`maskanMeli${i}`] = createRef();
                 acc[`vahed${i}`] = createRef();
+                acc[`vahedError${i}`] = createRef();
                 acc[`address${i}`] = createRef();
                 acc[`concretingPosition${i}`] = createRef();
                 acc[`checkBaxEmam${i}`] = createRef();
@@ -352,9 +361,11 @@ const AddConcreteSalesInvoice = () => {
 
     useEffect(() => {
         let index = invoice.length - 1;
-        if (isRef && refInvoice[`unitPrice${index}`]) {
+        if (isRef) {
 
-            input.invoice[index].unitPrice && (refInvoice[`unitPrice${index}`].current.value = parseFloat(input.invoice[index].unitPrice).toLocaleString())
+            input.invoice[index].unitPrice && refInvoice[`unitPrice${index}`] && (refInvoice[`unitPrice${index}`].current.value = parseFloat(input.invoice[index].unitPrice).toLocaleString());
+
+            input.invoice[index].fare && refInvoice[`fare${index}`] && (refInvoice[`fare${index}`].current.value = parseFloat(input.invoice[index].fare).toLocaleString());
         }
 
     }, [isNewInvoice]);
@@ -614,13 +625,6 @@ const AddConcreteSalesInvoice = () => {
         await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
             setConcreteSalesInvoices(response.data.concreteSalesInvoices);
         });
-    }
-
-    /**
-     * نمایش تگ بازشو برای انتخاب نوع مشتری
-     */
-    const showDivCustomerType = () => {
-        divItemCustomerType.current.classList.toggle('--hidden');
     }
 
     const changeDay = (e, i) => {
@@ -905,12 +909,11 @@ const AddConcreteSalesInvoice = () => {
      */
     const handleSaveValInput = (e, input, i, customer = false) => {
         let { value } = e.target;
-        input == 'unitPrice' && setUnitPrice(value);
-        input == 'fare' && setFare(value);
-        input == 'address' && setAddress(value);
-        input == 'concretingPosition' && setConcretingPosition(value);
-        input == 'vahed' && setVahed(value);
-        let result = value.replace(/,/g, '');
+        // input == 'unitPrice' && setUnitPrice(value);
+        // input == 'fare' && setFare(value);
+        // input == 'address' && setAddress(value);
+        // input == 'concretingPosition' && setConcretingPosition(value);
+        // input == 'vahed' && setVahed(value);
 
         switch (input) {
             case 'unitPrice':
@@ -983,16 +986,25 @@ const AddConcreteSalesInvoice = () => {
      */
     const clearInputError = (e, refErr, types = false, date = false) => {
         e.target.classList.remove('borderRedFB');
+        /**
+                 * دو خط کد زیر برای زمانی است‌ که کلاس مورد
+                 *  نظر بر روی پدر تگهااعمال شده‌است
+                 * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
+                 *  و سپس کلاس را از تگ پدر حذف 
+                 * می‌‌کند، این کدها معمولا برای کامپوننتی
+                 *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
+                */
+        const parentWithClass = e.target.closest('.borderRedFB');
+        parentWithClass && parentWithClass.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '')
         date && date.current.classList.remove('borderRedFB');
-        types && typesDiv.current.classList.remove('borderRedFB');
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true)
+        // setLoading(true)
         await axios.post(
-            '/api/v1/addCustomer',
+            '/api/v1/addConcreteSalesInvoice',
             { ...input },
             {
                 headers:
@@ -1002,7 +1014,7 @@ const AddConcreteSalesInvoice = () => {
                 }
             }
         ).then((response) => {
-            setCustomers(prev => [...prev, response.data.concreteSalesInvoice]);
+            // setCustomers(prev => [...prev, response.data.concreteSalesInvoice]);
             form.current.reset();
             MySwal.fire({
                 icon: "success",
@@ -1023,7 +1035,8 @@ const AddConcreteSalesInvoice = () => {
                     if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
-                        id.includes('type') && (id = 'types');
+                        console.log(id);
+                        // id.includes('type') && (id = 'types');
 
                         const element = document.getElementById(id);
                         let scrollPosition = window.scrollY || window.pageYOffset;
@@ -1089,28 +1102,29 @@ const AddConcreteSalesInvoice = () => {
                     if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
-                        id.includes('types') && (id = 'types');
 
-                        const element = document.getElementById(id);
-                        let scrollPosition = window.scrollY || window.pageYOffset;
+                        // id.includes('types') && (id = 'types');
 
-                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
-                        window.scrollTo({
-                            top: top,
-                            behavior: 'smooth'
-                        });
+                        // const element = document.getElementById(id);
+                        // let scrollPosition = window.scrollY || window.pageYOffset;
 
-                        Object.entries(error.response.data.errors).map(([key, val]) => {
-                            key.includes('type') && (key = 'types');
-                            document.getElementById(key).classList.add('borderRedFB');
+                        // const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                        // window.scrollTo({
+                        //     top: top,
+                        //     behavior: 'smooth'
+                        // });
 
-                            document.getElementById(key + 'Error').innerHTML = val;
-                            if (key == 'date') {
-                                day || daySelect.current.classList.add('borderRedFB');
-                                month || monthSelect.current.classList.add('borderRedFB');
-                                year || yearSelect.current.classList.add('borderRedFB');
-                            }
-                        });
+                        // Object.entries(error.response.data.errors).map(([key, val]) => {
+                        //     key.includes('type') && (key = 'types');
+                        //     document.getElementById(key).classList.add('borderRedFB');
+
+                        //     document.getElementById(key + 'Error').innerHTML = val;
+                        //     if (key == 'date') {
+                        //         day || daySelect.current.classList.add('borderRedFB');
+                        //         month || monthSelect.current.classList.add('borderRedFB');
+                        //         year || yearSelect.current.classList.add('borderRedFB');
+                        //     }
+                        // });
 
                     }
                 }
@@ -1141,7 +1155,6 @@ const AddConcreteSalesInvoice = () => {
       * @param {ref} ref 
       */
     const formatNub = (input, i) => {
-        console.log(refInvoice[`weight${i}`]);
         let val,
             checkDthot,
             resalt,
@@ -1182,7 +1195,6 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    console.log(input.invoice);
 
     /**
     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
@@ -1346,7 +1358,7 @@ const AddConcreteSalesInvoice = () => {
 
                             <div className="containerInputFB">
                                 <div className="divInputFB">
-                                    <label htmlFor="customer_id"> مشتری </label>
+                                    <label htmlFor="customer_id"> خریدار </label>
                                     <div
                                         id="customer_id"
                                         onClick={e => clearInputError(e, customer_idErrorRef)}
@@ -1360,8 +1372,8 @@ const AddConcreteSalesInvoice = () => {
                                     </div>
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
-                                {/* <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div> */}
-                                <div className="errorContainerFB elementError" id="customer_idError" > </div>
+                                <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div>
+
                             </div>
 
                         </div>
@@ -1388,7 +1400,7 @@ const AddConcreteSalesInvoice = () => {
                                             <div className="divInputFB ">
                                                 <label htmlFor="day"> ساعت </label>
                                                 <div className="divDateBirth">
-                                                    <div className="divUpDateAcus element" id="hour"
+                                                    <div className="divUpDateAcus element" id={`invoice.${i}.time`}
                                                         ref={refDate['hour' + (i)]}
                                                     >
                                                         <input
@@ -1398,7 +1410,7 @@ const AddConcreteSalesInvoice = () => {
                                                             id="hour"
                                                             value={second || ''}
                                                             onInput={(e) => changeSecond(e, i)}
-                                                            onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true)}
 
                                                         />
                                                         <span>:</span>
@@ -1408,7 +1420,7 @@ const AddConcreteSalesInvoice = () => {
                                                             placeholder="00"
                                                             value={minute || ''}
                                                             onInput={(e) => changeMinute(e, i)}
-                                                            onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true)}
 
                                                         />
                                                         <span>:</span>
@@ -1418,7 +1430,7 @@ const AddConcreteSalesInvoice = () => {
                                                             placeholder="00"
                                                             value={hour || ''}
                                                             onInput={(e) => { changeHour(e, i) }}
-                                                            onFocus={(e) => clearInputError(e, dateErrorRef, false, true)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true)}
 
                                                         />
                                                         <i className="icofont-ui-rating starFB" />
@@ -1430,7 +1442,7 @@ const AddConcreteSalesInvoice = () => {
                                                             value={second}
                                                             ref={daySelect}
                                                             onChange={(e) => changeSecond(e, i)}
-                                                        // onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true)}
 
                                                         >
                                                             <option value=""> ثانیه </option>
@@ -1441,7 +1453,7 @@ const AddConcreteSalesInvoice = () => {
                                                             value={minute}
                                                             ref={monthSelect}
                                                             onChange={(e) => changeMinute(e, i)}
-                                                            onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true)}
 
                                                         >
                                                             <option value=""> دقیقه </option>
@@ -1452,7 +1464,7 @@ const AddConcreteSalesInvoice = () => {
                                                             value={hour}
                                                             ref={yearSelect}
                                                             onChange={(e) => { changeHour(e, i) }}
-                                                            onClick={(e) => clearInputError(e, dateErrorRef, false, true)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true)}
 
                                                         >
                                                             <option value=""> ساعت </option>
@@ -1461,7 +1473,7 @@ const AddConcreteSalesInvoice = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="errorContainerFB elementError" id="dateError" ref={dateErrorRef}> </div>
+                                            <div className="errorContainerFB elementError" id={`invoice.${i}.timeError`} ref={refInvoice[`timeError${i}`]}> </div>
                                         </div>
 
                                         <div className="containerInputFB">
@@ -1561,7 +1573,7 @@ const AddConcreteSalesInvoice = () => {
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div> */}
+                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={}> </div> */}
                                             <div className="errorContainerFB elementError" id="concrete_idError" > </div>
                                         </div>
 
@@ -1701,10 +1713,10 @@ const AddConcreteSalesInvoice = () => {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="customer_id"> میکسر </label>
+                                                <label htmlFor={`invoice.${i}.truck_id`}> میکسر </label>
                                                 <div
-                                                    id="customer_id"
-                                                    onClick={e => { setInvoiceIndexForMixer(i) }}
+                                                    id={`invoice.${i}.truck_id`}
+                                                    onClick={e => { clearInputError(e, refInvoice[`truck_idError${i}`]); setInvoiceIndexForMixer(i) }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
@@ -1715,8 +1727,8 @@ const AddConcreteSalesInvoice = () => {
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div> */}
-                                            <div className="errorContainerFB elementError" id="customer_idError" > </div>
+                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={}> </div> */}
+                                            <div className="errorContainerFB elementError" id={`invoice.${i}.truck_idError`} ref={refInvoice[`truck_idError${i}`]} > </div>
                                         </div>
 
                                         <div className="containerInputFB">
@@ -1724,7 +1736,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor="customer_id"> راننده </label>
                                                 <div
                                                     id="customer_id"
-                                                    onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, customer_idErrorRef); }}
+                                                    onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e,); }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
@@ -1735,7 +1747,7 @@ const AddConcreteSalesInvoice = () => {
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={customer_idErrorRef}> </div> */}
+                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={}> </div> */}
                                             <div className="errorContainerFB elementError" id="customer_idError" > </div>
                                         </div>
 

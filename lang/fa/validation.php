@@ -52,6 +52,7 @@ return [
     'exists'               => 'The selected :attribute is invalid.',
     'file'                 => 'The :attribute must be a file.',
     'filled'               => 'The :attribute field must have a value.',
+    'time'               => 'ساعت را صحیح وارد کنید.',
     'gt'                   => [
         'numeric' => 'The :attribute must be greater than :value.',
         'file'    => 'The :attribute must be greater than :value kilobytes.',
@@ -251,6 +252,16 @@ return [
         'totalPrice'=>'قیمت کل',
         'vahed'=>'واحد',
         'concretingPosition'=>'موقعیت بتن ریزی',
+        'time'=>'ساعت',
+        'invoice.*.time'=>'ساعت',
+        'invoice.*.date'=>'تاریخ',
+        'invoice.*.concrete_id'=>'عیار بتن',
+        'invoice.*.untiPrice'=>'قیمت واحد بتن',
+        'invoice.*.weight'=>'وزن خالص بار',
+        'invoice.*.truck_id'=>'میکسر',
+        'invoice.*.driver_id'=>'راننده',
+        'invoice.*.fare'=>'کرایه میکسر',
+        'invoice.*.vahed'=>'شماره واحد',
         
 
     ],

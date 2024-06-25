@@ -36,5 +36,11 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('numberplate', function ($attribute, $value, $parameters, $validator) {
             return preg_match('/^[0-9]{2}-[0-9]{3}-[0-9]{2}-[آ-ی]{1}$/u', $value);
         });
+
+        Validator::extend('time', function ($attribute, $value, $parameters, $validator) {
+            return preg_match('/^(?:[01]?\\d|2[0-3]):(?:[0-5]\\d):(?:[0-5]\\d)$/', $value);
+        });
+        
+
     }
 }

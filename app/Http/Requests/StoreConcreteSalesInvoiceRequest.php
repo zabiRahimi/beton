@@ -23,18 +23,21 @@ class StoreConcreteSalesInvoiceRequest extends FormRequest
     {
         return [
             'customer_id' => ['required', 'bail','numeric'],
-            'truck_id' => ['required','bail','numeric'],
-            'driver_id' => ['required','bail','numeric'],
-            'concrete_id' => ['required','bail','numeric'],
-            'date' => ['required','bail','date'],
-            'weight' => ['required','bail','numeric'],
-            'cubicMeters' => ['required','bail','numeric'],
-            'unitPrice' => ['required','bail','numeric'],
-            'totalPrice' => ['required','bail','numeric'],
-            'maskanMeli' => ['nullable','bail','string'],
-            'vahed' => ['nullable','required_with:maskanMeli','bail','numeric'],
-            'address' => ['nullable','bail','string'],
-            'concretingPosition' => ['nullable','bail','string'],
+            'invoice' => ['required', 'array'],
+            'invoice.*.time' => ['required','bail','time'],
+
+            'invoice.*.truck_id' => ['required','bail','numeric'],
+            'invoice.*.driver_id' => ['required','bail','numeric'],
+            'invoice.*.concrete_id' => ['required','bail','numeric'],
+            'invoice.*.date' => ['required','bail','date'],
+            'invoice.*.weight' => ['required','bail','numeric'],
+            'invoice.*.cubicMeters' => ['required','bail','numeric'],
+            'invoice.*.unitPrice' => ['required','bail','numeric'],
+            'invoice.*.totalPrice' => ['required','bail','numeric'],
+            'invoice.*.maskanMeli' => ['nullable','bail','string'],
+            'invoice.*.vahed' => ['nullable','required_with:maskanMeli','bail','numeric'],
+            'invoice.*.address' => ['nullable','bail','string'],
+            'invoice.*.concretingPosition' => ['nullable','bail','string'],
         ];
     }
 
