@@ -149,7 +149,7 @@ const AddConcreteSalesInvoice = () => {
             concrete_id: '',
             truck_id: '',
             driver_id: '',
-            cementStore_id:'',
+            cementStore_id: '',
             unitPrice: '',
             totalPrice: '',
             fare: '',
@@ -215,7 +215,7 @@ const AddConcreteSalesInvoice = () => {
         getConcreteSalesInvoices();
     }, []);
 
-console.log(input.invoice);
+    console.log(input.invoice);
 
     /**
     * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -256,7 +256,9 @@ console.log(input.invoice);
                 acc[`vahed${i}`] = createRef();
                 acc[`vahedError${i}`] = createRef();
                 acc[`address${i}`] = createRef();
+                acc[`addressError${i}`] = createRef();
                 acc[`concretingPosition${i}`] = createRef();
+                acc[`concretingPositionError${i}`] = createRef();
                 acc[`checkBaxEmam${i}`] = createRef();
                 acc[`checkBaxShahid${i}`] = createRef();
                 acc[`checkedMaskanEmam${i}`] = createRef();
@@ -387,6 +389,7 @@ console.log(input.invoice);
             input.invoice[index].unitPrice && refInvoice[`unitPrice${index}`] && (refInvoice[`unitPrice${index}`].current.value = parseFloat(input.invoice[index].unitPrice).toLocaleString());
 
             input.invoice[index].fare && refInvoice[`fare${index}`] && (refInvoice[`fare${index}`].current.value = parseFloat(input.invoice[index].fare).toLocaleString());
+
         }
 
     }, [isNewInvoice]);
@@ -904,7 +907,7 @@ console.log(input.invoice);
                 concrete_id: '',
                 truck_id: '',
                 driver_id: '',
-                cementStore_id:'',
+                cementStore_id: '',
                 unitPrice: '',
                 totalPrice: '',
                 fare: '',
@@ -1018,7 +1021,7 @@ console.log(input.invoice);
                         concrete_id: '',
                         truck_id: '',
                         driver_id: '',
-                        cementStore_id:'',
+                        cementStore_id: '',
                         unitPrice: '',
                         totalPrice: '',
                         fare: '',
@@ -1044,26 +1047,38 @@ console.log(input.invoice);
      * @param {*} e 
      * @param {رف مربوط به تگ نمایش خطا} refErr 
      */
-    const clearInputError = (e, refErr, types = false, dateAndTime = false, idDivDateAndTime='') => {
-       if (!dateAndTime) {
-        
-       
-        e.target.classList.remove('borderRedFB');
-        /**
-                 * دو خط کد زیر برای زمانی است‌ که کلاس مورد
-                 *  نظر بر روی پدر تگهااعمال شده‌است
-                 * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
-                 *  و سپس کلاس را از تگ پدر حذف 
-                 * می‌‌کند، این کدها معمولا برای کامپوننتی
-                 *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
-                */
-        const parentWithClass = e.target.closest('.borderRedFB');
-        parentWithClass && parentWithClass.classList.remove('borderRedFB');
-    }else{
-      const element=  document.getElementById(idDivDateAndTime);
-      element.classList.remove('borderRedFB');
-    }
-        refErr.current && (refErr.current.innerHTML = '')
+    const clearInputError = (e, refErr, types = false, dateAndTime = false, idDivDateAndTime = '', i = null) => {
+        if (i !== null && Number(i) >= 0) {
+            console.log('notttt');
+            const addressElemnt= document.getElementById(`invoice.${i}.address`);
+            const vahedElemnt= document.getElementById(`invoice.${i}.vahed`);
+
+            addressElemnt.classList.remove('borderRedFB');
+            refInvoice[`addressError${i}`].current.innerHTML = '';
+
+            vahedElemnt.classList.remove('borderRedFB');
+            refInvoice[`vahedError${i}`].current.innerHTML = '';
+        } else {
+            if (!dateAndTime) {
+
+
+                e.target.classList.remove('borderRedFB');
+                /**
+                         * دو خط کد زیر برای زمانی است‌ که کلاس مورد
+                         *  نظر بر روی پدر تگهااعمال شده‌است
+                         * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
+                         *  و سپس کلاس را از تگ پدر حذف 
+                         * می‌‌کند، این کدها معمولا برای کامپوننتی
+                         *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
+                        */
+                const parentWithClass = e.target.closest('.borderRedFB');
+                parentWithClass && parentWithClass.classList.remove('borderRedFB');
+            } else {
+                const element = document.getElementById(idDivDateAndTime);
+                element.classList.remove('borderRedFB');
+            }
+            refErr.current && (refErr.current.innerHTML = '')
+        }
         // date && date.current.classList.remove('borderRedFB');
     }
 
@@ -1110,31 +1125,31 @@ console.log(input.invoice);
                             console.log(id);
                             const element = document.getElementById(id);
                             let scrollPosition = window.scrollY || window.pageYOffset;
-    
+
                             const top = element.getBoundingClientRect().top + scrollPosition - 20;
                             window.scrollTo({
                                 top: top,
                                 behavior: 'smooth'
                             });
                         }
-                            Object.entries(error.response.data.errors).map(([key, val]) => {
-                                // key.includes('type') && (key = 'types');
-                                if (!key.includes('cubicMeters') && !key.includes('totalPrice') ) {
-                                    document.getElementById(key).classList.add('borderRedFB');
-    
-                                    document.getElementById(key + 'Error').innerHTML = val;
-                                } 
-                                // document.getElementById(key).classList.add('borderRedFB');
-    
-                                // document.getElementById(key + 'Error').innerHTML = val;
-                                // if (key == 'date') {
-                                //     day || daySelect.current.classList.add('borderRedFB');
-                                //     month || monthSelect.current.classList.add('borderRedFB');
-                                //     year || yearSelect.current.classList.add('borderRedFB');
-                                // }
-                            });
-                        
-                       
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            // key.includes('type') && (key = 'types');
+                            if (!key.includes('cubicMeters') && !key.includes('totalPrice')) {
+                                document.getElementById(key).classList.add('borderRedFB');
+
+                                document.getElementById(key + 'Error').innerHTML = val;
+                            }
+                            // document.getElementById(key).classList.add('borderRedFB');
+
+                            // document.getElementById(key + 'Error').innerHTML = val;
+                            // if (key == 'date') {
+                            //     day || daySelect.current.classList.add('borderRedFB');
+                            //     month || monthSelect.current.classList.add('borderRedFB');
+                            //     year || yearSelect.current.classList.add('borderRedFB');
+                            // }
+                        });
+
+
 
                     }
                 }
@@ -1346,7 +1361,7 @@ console.log(input.invoice);
         let maskanMeli = handleSetMaskanMeliForNewInvoice();
         // handleSetUnitPriceForNewInvoice();
         setInput(prevInput => {
-            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id:'', unitPrice, totalPrice: '', fare, maskanMeli, vahed: '', address, concretingPosition }];
+            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id: '', unitPrice, totalPrice: '', fare, maskanMeli, vahed: '', address, concretingPosition }];
 
             return { ...prevInput, invoice: newInvoice };
         });
@@ -1478,7 +1493,7 @@ console.log(input.invoice);
                                                 <label htmlFor="day"> ساعت </label>
                                                 <div className="divDateBirth">
                                                     <div className="divUpDateAcus element" id={`invoice.${i}.time`}
-                                                        // ref={refDate['hour' + (i)]}
+                                                    // ref={refDate['hour' + (i)]}
                                                     >
                                                         <input
                                                             type="text"
@@ -1558,7 +1573,7 @@ console.log(input.invoice);
                                                 <label htmlFor="day">تاریخ  </label>
                                                 <div className="divDateBirth">
                                                     <div className="divUpDateAcus element" id={`invoice.${i}.date`}
-                                                        // ref={refDate['date' + (i)]}
+                                                    // ref={refDate['date' + (i)]}
                                                     >
                                                         <input
                                                             type="text"
@@ -1639,7 +1654,7 @@ console.log(input.invoice);
                                                 <label htmlFor={`invoice.${i}.concrete_id`}> عیار بتن </label>
                                                 <div
                                                     id={`invoice.${i}.concrete_id`}
-                                                    onClick={e => { setInvoiceIndexForConcrete(i); clearInputError(e,refInvoice[`concrete_idError${i}`]) }}
+                                                    onClick={e => { setInvoiceIndexForConcrete(i); clearInputError(e, refInvoice[`concrete_idError${i}`]) }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
@@ -1650,7 +1665,7 @@ console.log(input.invoice);
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            <div className="errorContainerFB elementError" id={`invoice.${i}.concrete_idError`} ref={refInvoice[`concrete_idError${i}`] }> </div>
+                                            <div className="errorContainerFB elementError" id={`invoice.${i}.concrete_idError`} ref={refInvoice[`concrete_idError${i}`]}> </div>
                                         </div>
 
                                         <div className="containerInputFB">
@@ -1825,10 +1840,10 @@ console.log(input.invoice);
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="customer_id"> راننده </label>
+                                                <label htmlFor={`invoice.${i}.driver_id`}> راننده </label>
                                                 <div
-                                                    id="customer_id"
-                                                    onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e,); }}
+                                                    id={`invoice.${i}.driver_id`}
+                                                    onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, refInvoice[`driver_idError${i}`]); }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
@@ -1840,15 +1855,15 @@ console.log(input.invoice);
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
                                             {/* <div className="errorContainerFB elementError" id="customer_idError" ref={}> </div> */}
-                                            <div className="errorContainerFB elementError" id="customer_idError" > </div>
+                                            <div className="errorContainerFB elementError" id={`invoice.${i}.driver_idError`} ref={refInvoice[`driver_idError${i}`]} > </div>
                                         </div>
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor={`fare${i}`}> کرایه میکسر </label>
+                                                <label htmlFor={`invoice.${i}.fare`}> کرایه میکسر </label>
                                                 <input
                                                     type="text"
-                                                    id={`fare${i}`}
+                                                    id={`invoice.${i}.fare`}
                                                     className="inputTextUnitFB ltrFB element"
                                                     defaultValue={fare}
                                                     ref={refInvoice[`fare${i}`]}
@@ -1857,11 +1872,11 @@ console.log(input.invoice);
                                                         formatNub('fare', i);
                                                     }
                                                     }
-                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
+                                                    onFocus={e => clearInputError(e, refInvoice[`fareError${i}`])}
                                                 />
                                                 <span
                                                     className="unitFB"
-                                                    onClick={() => htmlFor(`fare${i}`)}
+                                                    onClick={() => htmlFor(`invoice.${i}.fare`)}
                                                 >
                                                     تومان
                                                 </span>
@@ -1869,8 +1884,8 @@ console.log(input.invoice);
                                             </div>
                                             <div
                                                 className="errorContainerFB elementError"
-                                                id="concreteNameCodeError"
-                                                ref={unitPriceErrorRef}
+                                                id={`invoice.${i}.fareError`}
+                                                ref={refInvoice[`fareError${i}`]}
                                             >
                                             </div>
                                         </div>
@@ -1883,12 +1898,13 @@ console.log(input.invoice);
 
                                                 <input
                                                     type="checkbox"
-                                                    id="nationalCode"
-                                                    className="inputCheckboxFB  element"
+                                                    id={`invoice.${i}.emam`}
+                                                    className="inputCheckboxFB  element pointerFB"
                                                     value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${i}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
 
                                                     onChange={e => {
                                                         handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i);
+                                                        clearInputError(e, '', false, false, '', i);
                                                     }}
 
 
@@ -1897,8 +1913,8 @@ console.log(input.invoice);
 
                                                     ref={refInvoice[`checkBaxEmam${i}`]}
                                                 />
-                                                <label htmlFor="nationalCode"
-                                                    className={`labelCheckboxFB  ${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
+                                                <label htmlFor={`invoice.${i}.emam`}
+                                                    className={`labelCheckboxFB pointerFB  ${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
                                                     id={`labelEmam${i}`}>مسکن ملی (شهرک امام خمینی) </label>
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
@@ -1925,13 +1941,14 @@ console.log(input.invoice);
 
                                                 <input
                                                     type="checkbox"
-                                                    id="nationalCode"
-                                                    className="inputCheckboxFB  element"
+                                                    id={`invoice.${i}.shahid`}
+                                                    className="inputCheckboxFB  element pointerFB"
 
                                                     value={refInvoice[`checkedMaskanShahid${i}`] && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
 
                                                     onChange={e => {
                                                         handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `shahid${i}`, i);
+                                                        clearInputError(e, '', false, false, '', i);
                                                     }}
 
 
@@ -1940,8 +1957,8 @@ console.log(input.invoice);
                                                     ref={refInvoice[`checkBaxShahid${i}`]}
 
                                                 />
-                                                <label htmlFor="nationalCode"
-                                                    className={`labelCheckboxFB ${maskan[i] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
+                                                <label htmlFor={`invoice.${i}.shahid`}
+                                                    className={`labelCheckboxFB pointerFB ${maskan[i] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
                                                 >مسکن ملی (شهرک شهید رئیسی) </label>
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
@@ -1949,49 +1966,49 @@ console.log(input.invoice);
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="nationalCode" className={`${(maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
+                                                <label htmlFor={`invoice.${i}.vahed`} className={`${(maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
                                                 <input
                                                     type="text"
-                                                    id="nationalCode"
+                                                    id={`invoice.${i}.vahed`}
                                                     className="inputTextFB ltrFB element"
 
-                                                    defaultValue={vahed}
+                                                    defaultValue={input.invoice[i].vahed}
                                                     onInput={e => handleSaveValInput(e, 'vahed', i)}
-                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
+                                                    onFocus={(e) => clearInputError(e, refInvoice[`vahedError${i}`])}
                                                     disabled={maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی'}
                                                 />
                                             </div>
-                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                            <div className="errorContainerFB elementError" id={`invoice.${i}.vahedError`} ref={refInvoice[`vahedError${i}`]}> </div>
                                         </div>
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="address">آدرس</label>
+                                                <label htmlFor={`invoice.${i}.address`}>آدرس</label>
                                                 <textarea
-                                                    id="address"
+                                                    id={`invoice.${i}.address`}
                                                     className="textareaAddressCSI_FB"
                                                     defaultValue={address}
                                                     onInput={e => handleSaveValInput(e, 'address', i)}
-                                                    onFocus={(e) => clearInputError(e, addressErrorRef)}
+                                                    onFocus={(e) => clearInputError(e, refInvoice[`addressError${i}`])}
 
                                                 />
                                             </div>
-                                            <div className="errorContainerFB elementError" id="addressError" ref={addressErrorRef}> </div>
+                                            <div className="errorContainerFB elementError" id={`invoice.${i}.addressError`} ref={refInvoice[`addressError${i}`]}> </div>
                                         </div>
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor="concretingPosition" >موقعیت بتن‌ریزی </label>
+                                                <label htmlFor={`invoice.${i}.concretingPosition`} >موقعیت بتن‌ریزی </label>
                                                 <textarea
-                                                    id="concretingPosition"
+                                                    id={`invoice.${i}.concretingPosition`}
                                                     className="textareaAddressCSI_FB"
                                                     defaultValue={concretingPosition}
                                                     onInput={e => handleSaveValInput(e, 'concretingPosition', i)}
-                                                    onFocus={(e) => clearInputError(e, addressErrorRef)}
+                                                    onFocus={(e) => clearInputError(e, refInvoice[`concretingPositionError${i}`])}
 
                                                 />
                                             </div>
-                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                            <div className="errorContainerFB elementError" id={`invoice.${i}.concretingPositionError`} ref={refInvoice[`concretingPositionError${i}`]}> </div>
                                         </div>
 
                                     </div>

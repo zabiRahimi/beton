@@ -36,9 +36,9 @@ class StoreConcreteSalesInvoiceRequest extends FormRequest
             'invoice.*.driver_id' => ['required','bail','numeric'],
             'invoice.*.fare' => ['required','bail','numeric'],
             'invoice.*.maskanMeli' => ['nullable','bail','string'],
-            'invoice.*.vahed' => ['nullable','required_with:maskanMeli','bail','numeric'],
-            'invoice.*.address' => ['nullable','bail','string'],
-            'invoice.*.concretingPosition' => ['nullable','bail','string'],
+            'invoice.*.vahed' => ['nullable','required_with:invoice.*.maskanMeli','bail','numeric'],
+            'invoice.*.address' => ['nullable','required_without:invoice.*.maskanMeli','bail','string'],
+            'invoice.*.concretingPosition' => ['required','bail','string'],
         ];
     }
 
@@ -46,18 +46,8 @@ class StoreConcreteSalesInvoiceRequest extends FormRequest
     {
         return [
             'customer_id.required' => 'خریدار را انتخاب کنید',
-            'truck_id.required' => 'پلاک میکسر را انتخاب کنید',
-            'driver_id.required' => 'راننده را انتخاب کنید',
-            'concrete_id.required' => 'عیار بتن را انتخاب کنید',
-
-            'weight.required' => 'وزن بار را بر اساس کیلو‌گرم وارد کنید',
-            'weight.numeric' => 'وزن بار را به عدد وارد کنید',
-
-            'cubicMeters.required' => 'وزن بار را براساس متر‌مکعب وارد کنید',
-            'cubicMeters.numeric' => 'متر‌مکعب را به عدد وارد کنید',
-
-            'vahed.required_with' => 'هنگام انتخاب مسکن ملی لازم است واحد را وارد کنید',
-            'vahed.numeric' => 'واحد را به عدد وارد کنید',
+            'invoice.*.address.required_without'=>'آدرس را وارد کنید و اگر بار برای یکی از مسکن‌های ملی است، بجای وارد کردن آدرس آن را انتخاب کنید',
+            'invoice.*.vahed.required_with' => 'هنگامی که مسکن ملی را انتخاب می‌کنید لازم است شماره واحد را وارد کنید.',
             
         ];
     }

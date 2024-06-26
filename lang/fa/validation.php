@@ -264,6 +264,7 @@ return [
         'invoice.*.driver_id'=>'راننده',
         'invoice.*.fare'=>'کرایه میکسر',
         'invoice.*.vahed'=>'شماره واحد',
+        'invoice.*.concretingPosition'=>'موقعیت بتن ریزی',
     ],
 
 ];
