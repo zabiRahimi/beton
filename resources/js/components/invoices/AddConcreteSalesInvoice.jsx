@@ -131,6 +131,7 @@ const AddConcreteSalesInvoice = () => {
     const [isNewInvoice, setIsNewInvoice] = useState(false);
     const [indexNewInvoice, setIndexNewInvoice] = useState('');
     const [concreteName, setConcreteName] = useState('');
+    const [cementStoreName, setCementStoreName] = useState('');
     const [unitPrice, setUnitPrice] = useState('');
     const [vahed, setVahed] = useState('');
     const [address, setAddress] = useState('');
@@ -159,6 +160,8 @@ const AddConcreteSalesInvoice = () => {
             concretingPosition: ''
         }],
     });
+
+    
 
     /**
      * id to edit the model
@@ -215,7 +218,6 @@ const AddConcreteSalesInvoice = () => {
         getConcreteSalesInvoices();
     }, []);
 
-    console.log(input.invoice);
 
     /**
     * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -227,10 +229,10 @@ const AddConcreteSalesInvoice = () => {
             //     acc['date' + (i + 1)] = createRef();
             //     return acc;
             // }, {});
-            const refWeight = invoice.reduce((acc, value, i) => {
-                acc['weight' + (i + 1)] = createRef();
-                return acc;
-            }, {});
+            // const refWeight = invoice.reduce((acc, value, i) => {
+            //     acc['weight' + (i + 1)] = createRef();
+            //     return acc;
+            // }, {});
             let refs = invoice.reduce((acc, cur, i) => {
                 acc[`time${i}`] = createRef();
                 acc[`timeError${i}`] = createRef();
@@ -377,6 +379,18 @@ const AddConcreteSalesInvoice = () => {
             concreteName && refInvoice[`concrete_id${indexNewInvoice}`].current.updateData(<div className="defaultConcreteNameACSI_FB"><span>بتن</span> <span>{concreteName}</span></div>);
         }
 
+
+        setIsNewInvoice(false);
+
+
+    }, [isNewInvoice, isRef]);
+
+    useEffect(() => {
+
+        if (isRef && refInvoice[`cementStore_id${indexNewInvoice}`]) {
+            cementStoreName && refInvoice[`cementStore_id${indexNewInvoice}`].current.updateData(<div className="defaultConcreteNameACSI_FB"> <span>{cementStoreName}</span></div>);
+        }
+
         setIsNewInvoice(false);
 
 
@@ -503,6 +517,7 @@ const AddConcreteSalesInvoice = () => {
                     setCementStores(perv => ([...perv, {
 
                         value: data.id,
+                        cementStoreName: data.silo,
                         html: <div className="mixerAptionSelectFB">
                             <span className="mixerOwnerSelectFB">
                                 {data.silo}
@@ -1049,9 +1064,8 @@ const AddConcreteSalesInvoice = () => {
      */
     const clearInputError = (e, refErr, types = false, dateAndTime = false, idDivDateAndTime = '', i = null) => {
         if (i !== null && Number(i) >= 0) {
-            console.log('notttt');
-            const addressElemnt= document.getElementById(`invoice.${i}.address`);
-            const vahedElemnt= document.getElementById(`invoice.${i}.vahed`);
+            const addressElemnt = document.getElementById(`invoice.${i}.address`);
+            const vahedElemnt = document.getElementById(`invoice.${i}.vahed`);
 
             addressElemnt.classList.remove('borderRedFB');
             refInvoice[`addressError${i}`].current.innerHTML = '';
@@ -1117,12 +1131,10 @@ const AddConcreteSalesInvoice = () => {
                     if (error.response && error.response.status == 422) {
 
                         let id = Object.keys(error.response.data.errors)[0];
-                        console.log(id);
                         const checkCubicMeters = /^invoice\.\d+\.cubicMeters$/;
                         const checkTotalPrice = /^invoice\.\d+\.totalPrice$/;
                         // id.includes('type') && (id = 'types');
                         if (!checkCubicMeters.test(id) && !checkTotalPrice.test(id)) {
-                            console.log(id);
                             const element = document.getElementById(id);
                             let scrollPosition = window.scrollY || window.pageYOffset;
 
@@ -1350,6 +1362,19 @@ const AddConcreteSalesInvoice = () => {
         setIsChecked(false)
     }
 
+    const handleCubicMetersCalculation=(e, i)=>{
+        let {value}=e.target;
+        value = value.replace(/,/g, '');
+        let result=value / 2300;
+        result=Number(result);
+        if (!Number.isInteger(result)) {
+            result= result.toFixed(2);
+        }
+        refInvoice[`cubicMeters${i}`].current.innerHTML=result;
+       
+      
+    }
+
     const handleAddNewInvoice = (e) => {
         e.preventDefault();
 
@@ -1359,9 +1384,10 @@ const AddConcreteSalesInvoice = () => {
         let date = handleSetDateForNewInvoice();
         let concrete_id = handleSetConcreteForNewInvoice();
         let maskanMeli = handleSetMaskanMeliForNewInvoice();
+        let cementStore_id = handleSetCementStoreForNewInvoice();
         // handleSetUnitPriceForNewInvoice();
         setInput(prevInput => {
-            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id: '', unitPrice, totalPrice: '', fare, maskanMeli, vahed: '', address, concretingPosition }];
+            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
 
             return { ...prevInput, invoice: newInvoice };
         });
@@ -1387,7 +1413,12 @@ const AddConcreteSalesInvoice = () => {
         let concrete_id = input.invoice[invoice.length - 1].concrete_id;
         concrete_id && (setConcreteName(concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']));
         return concrete_id;
+    }
 
+    const handleSetCementStoreForNewInvoice = () => {
+        let cementStore_id = input.invoice[invoice.length - 1].cementStore_id;
+        cementStore_id && (setCementStoreName(cementStores.filter(cementStore => cementStore.value == cementStore_id)[0]['cementStoreName']));
+        return cementStore_id;
     }
 
     const handleSetMaskanMeliForNewInvoice = () => {
@@ -1399,7 +1430,12 @@ const AddConcreteSalesInvoice = () => {
         return maskanMeli;
     }
 
-
+    const handleDelInvoice = (i) => {
+        const updatedInputInvoice = input.invoice.slice(0, -1);
+        const updatedInvoice = invoice.slice(0, -1);
+        setInvoice(updatedInvoice);
+        setInput({ ...input, invoice: updatedInputInvoice });
+    }
 
     // const handleSetUnitPriceForNewInvoice =()=>{
     //     const unitPrice=input.invoice[invoice.length - 1].unitPrice;
@@ -1484,6 +1520,23 @@ const AddConcreteSalesInvoice = () => {
                                                 </div>
                                             </div>
                                             <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                        </div>
+
+                                        <div className="containerInputFB">
+                                            <div className="divDelInvoiceACSL_FB">
+                                                {
+                                                    i != 0 && i == invoice.length - 1 && <button
+                                                        type="button"
+                                                        className="--styleLessBtn btnDelInvoiceACSL_FB"
+                                                        onClick={e =>
+                                                            handleDelInvoice(i)
+                                                        }
+                                                    >
+                                                        <span className="spanDelInvoiceACSL_FB"> حذف فاکتور </span>
+                                                        <i className="icofont-ui-delete iDelInvoiceACSL_FB" />
+                                                    </button>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="sectionFB">
@@ -1713,6 +1766,7 @@ const AddConcreteSalesInvoice = () => {
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'weight', i);
                                                         formatNub('weight', i);
+                                                        handleCubicMetersCalculation(e, i)
                                                     }
                                                     }
                                                     onFocus={e => clearInputError(e, refInvoice[`weightError${i}`])}
@@ -1734,8 +1788,15 @@ const AddConcreteSalesInvoice = () => {
                                         </div>
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor={`cubicMeters${i}`}> حجم بار </label>
-                                                <input
+                                                <label> حجم بار </label>
+                                                <div className="mainCubicMetersACSL_FB">
+                                                    <div className="cubicMetersACSL_FB"
+                                                    ref={refInvoice[`cubicMeters${i}`]}>0</div>
+                                                    <span className="spanCubicMetersACSL_FB">
+                                                        متر مکعب
+                                                    </span>
+                                                </div>
+                                                {/* <input
                                                     type="text"
                                                     id={`cubicMeters${i}`}
                                                     className="inputTextUnitFB ltrFB element"
@@ -1753,7 +1814,7 @@ const AddConcreteSalesInvoice = () => {
                                                 >
                                                     مترمکعب
                                                 </span>
-                                                <i className="icofont-ui-rating starFB" />
+                                                <i className="icofont-ui-rating starFB" /> */}
                                             </div>
                                             <div
                                                 className="errorContainerFB elementError"
@@ -1774,7 +1835,7 @@ const AddConcreteSalesInvoice = () => {
                                                         primaryLabel='انتخاب'
                                                         options={cementStores}
                                                         saveOption={setCementStoreId}
-                                                    // ref={customerSelectChild}
+                                                        ref={refInvoice[`cementStore_id${i}`]}
                                                     />
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
@@ -1785,8 +1846,16 @@ const AddConcreteSalesInvoice = () => {
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label htmlFor={`totalPrice${i}`}> قیمت کل </label>
-                                                <input
+                                                <label> قیمت کل </label>
+                                                <div className="mainTotalPriceACSL_FB">
+                                                    <div className="totalPriceACSL_FB"
+                                                    ref={refInvoice[`totalPrice${i}`]}
+                                                    >0</div>
+                                                    <span className="spanTotalPriceACSL_FB">
+                                                        تومان
+                                                    </span>
+                                                </div>
+                                                {/* <input
                                                     type="text"
                                                     id={`totalPrice${i}`}
                                                     className="inputTextUnitFB ltrFB element"
@@ -1805,7 +1874,7 @@ const AddConcreteSalesInvoice = () => {
                                                 >
                                                     تومان
                                                 </span>
-                                                <i className="icofont-ui-rating starFB" />
+                                                <i className="icofont-ui-rating starFB" /> */}
                                             </div>
                                             <div
                                                 className="errorContainerFB elementError"
@@ -1972,7 +2041,8 @@ const AddConcreteSalesInvoice = () => {
                                                     id={`invoice.${i}.vahed`}
                                                     className="inputTextFB ltrFB element"
 
-                                                    defaultValue={input.invoice[i].vahed}
+                                                    // defaultValue={input.invoice[i].vahed}
+                                                    defaultValue={vahed}
                                                     onInput={e => handleSaveValInput(e, 'vahed', i)}
                                                     onFocus={(e) => clearInputError(e, refInvoice[`vahedError${i}`])}
                                                     disabled={maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی'}

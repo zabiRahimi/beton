@@ -93,7 +93,9 @@
 .inputTextFB,
 .inputTextUnitFB,
 .inputShabaFB,
-.divRadioFB {
+.divRadioFB,
+.mainCubicMetersACSL_FB,
+.mainTotalPriceACSL_FB  {
     width: 200px;
     height: 30px;
     padding: 0 7px;
@@ -606,12 +608,52 @@
     color: #008000;
     font-size: 1.3rem;
 }
+.divDelInvoiceACSL_FB{
+    padding-left: 50px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.btnDelInvoiceACSL_FB{
+    padding: 2px 8px;
+    background-color: #f0c6c6 !important;
+    border: 1px solid #f54242 !important;
+    color: #a20101;
+    border-radius: 3px;
+}
+
+.btnDelInvoiceACSL_FB:hover{
+    background-color:  #f09c9c !important; 
+}
 
 .defaultConcreteNameACSI_FB{
     padding: 0 6px 0 15px;
     display: flex;
     justify-content: space-between;
 }
+
+.mainCubicMetersACSL_FB,
+.mainTotalPriceACSL_FB{
+    display: flex;
+     background-color: #f3f1f1;
+    
+    align-items: center;
+}
+
+.cubicMetersACSL_FB,
+.totalPriceACSL_FB{
+    text-align: left;
+    flex-grow: 1;
+}
+
+.spanCubicMetersACSL_FB,
+.spanTotalPriceACSL_FB{
+    padding: 0 8px 0 6px;
+    font-size: 0.72rem;
+    color: #747474;
+}
+
 
 
 
@@ -644,7 +686,9 @@
     .selectFB,
     .divExampleNumberplate,
     .divRadioFB,
-    .mainTicketNumberACSI_FB {
+    .mainTicketNumberACSI_FB,
+    .mainCubicMetersACSL_FB,
+    .mainTotalPriceACSL_FB {
         width: 230px;
     }
 
