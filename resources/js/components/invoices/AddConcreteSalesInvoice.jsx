@@ -161,7 +161,7 @@ const AddConcreteSalesInvoice = () => {
         }],
     });
 
-    
+
 
     /**
      * id to edit the model
@@ -1362,18 +1362,49 @@ const AddConcreteSalesInvoice = () => {
         setIsChecked(false)
     }
 
-    const handleCubicMetersCalculation=(e, i)=>{
-        let {value}=e.target;
+    const handleCubicMetersCalculation = (e, i) => {
+        let { value } = e.target;
         value = value.replace(/,/g, '');
-        let result=value / 2300;
-        result=Number(result);
-        if (!Number.isInteger(result)) {
-            result= result.toFixed(2);
+        let cubicMeters = value / 2300;
+        cubicMeters = Number(cubicMeters);
+        if (!Number.isInteger(cubicMeters)) {
+            cubicMeters = cubicMeters.toFixed(2);
         }
-        refInvoice[`cubicMeters${i}`].current.innerHTML=result;
-       
-      
+        refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
+        setInput(prevInput => {
+            let newInvoice;
+            newInvoice = [...prevInput.invoice];
+            newInvoice[i] = { ...newInvoice[i], cubicMeters };
+            return { ...prevInput, invoice: newInvoice };
+        });
     }
+
+    const handleTotalPriceCalculation = (e, i) => {
+        let { value } = e.target;
+        value = value.replace(/,/g, '');
+        let cubicMeters = value / 2300;
+        cubicMeters = Number(cubicMeters);
+        if (!Number.isInteger(cubicMeters)) {
+            cubicMeters = cubicMeters.toFixed(2);
+        }
+        let unitPrice=input.invoice[i].unitPrice;
+        if (Number.isInteger(Number(unitPrice))) {
+            let totalPrice= unitPrice* cubicMeters;
+            console.warn(totalPrice);
+            // refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice;
+            // setInput(prevInput => {
+            //     let newInvoice;
+            //     newInvoice = [...prevInput.invoice];
+            //     newInvoice[i] = { ...newInvoice[i], cubicMeters };
+            //     return { ...prevInput, invoice: newInvoice };
+            // });
+            console.log('ok');
+        }else{
+            console.error('not');
+        }
+       
+    }
+    // console.log(input.invoice);
 
     const handleAddNewInvoice = (e) => {
         e.preventDefault();
@@ -1766,7 +1797,8 @@ const AddConcreteSalesInvoice = () => {
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'weight', i);
                                                         formatNub('weight', i);
-                                                        handleCubicMetersCalculation(e, i)
+                                                        handleCubicMetersCalculation(e, i);
+                                                        handleTotalPriceCalculation(e, i);
                                                     }
                                                     }
                                                     onFocus={e => clearInputError(e, refInvoice[`weightError${i}`])}
@@ -1791,7 +1823,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label> حجم بار </label>
                                                 <div className="mainCubicMetersACSL_FB">
                                                     <div className="cubicMetersACSL_FB"
-                                                    ref={refInvoice[`cubicMeters${i}`]}>0</div>
+                                                        ref={refInvoice[`cubicMeters${i}`]}>0</div>
                                                     <span className="spanCubicMetersACSL_FB">
                                                         متر مکعب
                                                     </span>
@@ -1849,7 +1881,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label> قیمت کل </label>
                                                 <div className="mainTotalPriceACSL_FB">
                                                     <div className="totalPriceACSL_FB"
-                                                    ref={refInvoice[`totalPrice${i}`]}
+                                                        ref={refInvoice[`totalPrice${i}`]}
                                                     >0</div>
                                                     <span className="spanTotalPriceACSL_FB">
                                                         تومان
