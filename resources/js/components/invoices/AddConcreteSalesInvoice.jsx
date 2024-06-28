@@ -50,6 +50,7 @@ const AddConcreteSalesInvoice = () => {
     const hasCalledGetDrivers = useRef(false);
     const hasCalledGetCementStores = useRef(false);
 
+    const customer_idRef = useRef(null);
     const customer_idErrorRef = useRef(null);
     const lastNameErrorRef = useRef(null);
     const fatherErrorRef = useRef(null);
@@ -948,17 +949,16 @@ const AddConcreteSalesInvoice = () => {
         setAddress('');
         setConcretingPosition('');
 
-        refInvoice[`cubicMeters0`].current.innerHTML='0';
-        refInvoice[`totalPrice0`].current.innerHTML='0';
+        refInvoice[`cubicMeters0`].current.innerHTML = '0';
+        refInvoice[`totalPrice0`].current.innerHTML = '0';
 
-        sectionBank2.current.classList.add('--displayNone');
-        sectionBank3.current.classList.add('--displayNone');
-        sectionBank4.current.classList.add('--displayNone');
-        sectionBank5.current.classList.add('--displayNone');
-        moreBank1.current.classList.remove('--displayNone');
-        moreBank2.current.classList.remove('--displayNone');
-        moreBank3.current.classList.remove('--displayNone');
-        moreBank4.current.classList.remove('--displayNone');
+        customer_idRef.current.updateData('انتخاب');
+        refInvoice[`concrete_id0`].current.updateData('انتخاب');
+        refInvoice[`cementStore_id0`].current.updateData('انتخاب');
+        refInvoice[`truck_id0`].current.updateData('انتخاب');
+        refInvoice[`driver_id0`].current.updateData('انتخاب');
+
+        // sectionBank2.current.classList.add('--displayNone');
 
         var elements = document.getElementsByClassName('element');
         for (var i = 0; i < elements.length; i++) {
@@ -1415,8 +1415,8 @@ const AddConcreteSalesInvoice = () => {
                     return { ...prevInput, invoice: newInvoice };
                 });
                 refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-                
-            } 
+
+            }
 
         } else if (element == 'unitPrice') {
             let weight = input.invoice[i].weight;
@@ -1433,7 +1433,7 @@ const AddConcreteSalesInvoice = () => {
                     return { ...prevInput, invoice: newInvoice };
                 });
                 refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-            } 
+            }
         }
 
 
@@ -1554,13 +1554,14 @@ const AddConcreteSalesInvoice = () => {
                                     <label htmlFor="customer_id"> خریدار </label>
                                     <div
                                         id="customer_id"
+                                        className="element"
                                         onClick={e => clearInputError(e, customer_idErrorRef)}
                                     >
                                         <SelectZabi
                                             primaryLabel='انتخاب'
                                             options={concreteBuyers}
                                             saveOption={setCustomerId}
-                                        // ref={customerSelectChild}
+                                            ref={customer_idRef}
                                         />
                                     </div>
                                     <i className="icofont-ui-rating starFB" />
@@ -1772,6 +1773,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor={`invoice.${i}.concrete_id`}> عیار بتن </label>
                                                 <div
                                                     id={`invoice.${i}.concrete_id`}
+                                                    className="element"
                                                     onClick={e => { setInvoiceIndexForConcrete(i); clearInputError(e, refInvoice[`concrete_idError${i}`]) }}
                                                 >
                                                     <SelectZabi
@@ -1863,32 +1865,8 @@ const AddConcreteSalesInvoice = () => {
                                                         متر مکعب
                                                     </span>
                                                 </div>
-                                                {/* <input
-                                                    type="text"
-                                                    id={`cubicMeters${i}`}
-                                                    className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.invoice[i].cubicMeters}
-                                                    ref={unitPriceRef}
-                                                    onInput={e => {
-                                                        handleSaveValInput(e, 'cubicMeters', i);
-                                                    }
-                                                    }
-                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
-                                                />
-                                                <span
-                                                    className="unitFB"
-                                                    onClick={() => htmlFor(`cubicMeters${i}`)}
-                                                >
-                                                    مترمکعب
-                                                </span>
-                                                <i className="icofont-ui-rating starFB" /> */}
                                             </div>
-                                            <div
-                                                className="errorContainerFB elementError"
-                                                id="concreteNameCodeError"
-                                                ref={unitPriceErrorRef}
-                                            >
-                                            </div>
+                                           
                                         </div>
 
                                         <div className="containerInputFB">
@@ -1896,6 +1874,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor={`invoice.${i}.cementStore_id`}> سیلوی سیمان </label>
                                                 <div
                                                     id={`invoice.${i}.cementStore_id`}
+                                                    className="element"
                                                     onClick={e => { clearInputError(e, refInvoice[`cementStore_idError${i}`]); setInvoiceIndexForCementStore(i) }}
                                                 >
                                                     <SelectZabi
@@ -1922,33 +1901,8 @@ const AddConcreteSalesInvoice = () => {
                                                         تومان
                                                     </span>
                                                 </div>
-                                                {/* <input
-                                                    type="text"
-                                                    id={`totalPrice${i}`}
-                                                    className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.totalPrice}
-                                                    ref={unitPriceRef}
-                                                    onInput={e => {
-                                                        handleSaveValInput(e, 'totalPrice', i);
-                                                        formatNub(unitPriceRef);
-                                                    }
-                                                    }
-                                                    onFocus={e => clearInputError(e, unitPriceErrorRef)}
-                                                />
-                                                <span
-                                                    className="unitFB"
-                                                    onClick={() => htmlFor(`totalPrice${i}`)}
-                                                >
-                                                    تومان
-                                                </span>
-                                                <i className="icofont-ui-rating starFB" /> */}
                                             </div>
-                                            <div
-                                                className="errorContainerFB elementError"
-                                                id="concreteNameCodeError"
-                                                ref={unitPriceErrorRef}
-                                            >
-                                            </div>
+                                            
                                         </div>
                                     </div>
 
@@ -1959,13 +1913,14 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor={`invoice.${i}.truck_id`}> میکسر </label>
                                                 <div
                                                     id={`invoice.${i}.truck_id`}
+                                                    className="element"
                                                     onClick={e => { clearInputError(e, refInvoice[`truck_idError${i}`]); setInvoiceIndexForMixer(i) }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
                                                         options={mixers}
                                                         saveOption={setTruckId}
-                                                    // ref={customerSelectChild}
+                                                        ref={refInvoice[`truck_id${i}`]}
                                                     />
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
@@ -1979,18 +1934,18 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor={`invoice.${i}.driver_id`}> راننده </label>
                                                 <div
                                                     id={`invoice.${i}.driver_id`}
+                                                    className="element"
                                                     onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, refInvoice[`driver_idError${i}`]); }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
                                                         options={drivers}
                                                         saveOption={setDriverId}
-                                                    // ref={customerSelectChild}
+                                                    ref={refInvoice[`driver_id${i}`]}
                                                     />
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={}> </div> */}
                                             <div className="errorContainerFB elementError" id={`invoice.${i}.driver_idError`} ref={refInvoice[`driver_idError${i}`]} > </div>
                                         </div>
 
@@ -2057,19 +2012,6 @@ const AddConcreteSalesInvoice = () => {
                                         </div>
 
                                         <div className="containerInputFB">
-                                            {/* <div className="divInputFB">
-                                                <label htmlFor="vahed" className={`${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
-                                                <input
-                                                    type="text"
-                                                    id="vahed"
-                                                    className="inputTextFB ltrFB element"
-                                                    disabled={maskan[i] != 'مسکن ملی شهرک امام خمینی'}
-                                                    defaultValue={input.vahed}
-                                                    onInput={e => handleSaveValInput(e, 'vahed', i)}
-                                                    onFocus={(e) => clearInputError(e, nationalCodeErrorRef)}
-                                                />
-                                            </div>
-                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div> */}
                                         </div>
 
                                         <div className="containerInputFB">
@@ -2123,7 +2065,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor={`invoice.${i}.address`}>آدرس</label>
                                                 <textarea
                                                     id={`invoice.${i}.address`}
-                                                    className="textareaAddressCSI_FB"
+                                                    className="textareaAddressCSI_FB element"
                                                     defaultValue={address}
                                                     onInput={e => handleSaveValInput(e, 'address', i)}
                                                     onFocus={(e) => clearInputError(e, refInvoice[`addressError${i}`])}
@@ -2138,7 +2080,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label htmlFor={`invoice.${i}.concretingPosition`} >موقعیت بتن‌ریزی </label>
                                                 <textarea
                                                     id={`invoice.${i}.concretingPosition`}
-                                                    className="textareaAddressCSI_FB"
+                                                    className="textareaAddressCSI_FB element"
                                                     defaultValue={concretingPosition}
                                                     onInput={e => handleSaveValInput(e, 'concretingPosition', i)}
                                                     onFocus={(e) => clearInputError(e, refInvoice[`concretingPositionError${i}`])}
