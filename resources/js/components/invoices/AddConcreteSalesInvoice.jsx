@@ -934,9 +934,22 @@ const AddConcreteSalesInvoice = () => {
         });
 
 
+        setHour('');
+        setMinute('');
+        setSecond('');
+
         setDay('');
         setMonth('');
         setYear('');
+
+        setUnitPrice('');
+        setFare('');
+        setVahed('');
+        setAddress('');
+        setConcretingPosition('');
+
+        refInvoice[`cubicMeters0`].current.innerHTML='0';
+        refInvoice[`totalPrice0`].current.innerHTML='0';
 
         sectionBank2.current.classList.add('--displayNone');
         sectionBank3.current.classList.add('--displayNone');
@@ -1379,32 +1392,53 @@ const AddConcreteSalesInvoice = () => {
         });
     }
 
-    const handleTotalPriceCalculation = (e, i) => {
-        let { value } = e.target;
+    const handleTotalPriceCalculation = (e, i, element) => {
+        let cubicMeters,
+            totalPrice,
+            { value } = e.target;
         value = value.replace(/,/g, '');
-        let cubicMeters = value / 2300;
-        cubicMeters = Number(cubicMeters);
-        if (!Number.isInteger(cubicMeters)) {
-            cubicMeters = cubicMeters.toFixed(2);
+        value = Number(value);
+
+
+        if (element == 'weight') {
+            cubicMeters = value / 2300;
+            if (!Number.isInteger(cubicMeters)) {
+                cubicMeters = cubicMeters.toFixed(2);
+            }
+            let unitPrice = input.invoice[i].unitPrice;
+            if (Number.isInteger(Number(unitPrice))) {
+                totalPrice = unitPrice * cubicMeters;
+                setInput(prevInput => {
+                    let newInvoice;
+                    newInvoice = [...prevInput.invoice];
+                    newInvoice[i] = { ...newInvoice[i], totalPrice };
+                    return { ...prevInput, invoice: newInvoice };
+                });
+                refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+                
+            } 
+
+        } else if (element == 'unitPrice') {
+            let weight = input.invoice[i].weight;
+            if (weight && Number(weight)) {
+                cubicMeters = weight / 2300;
+                if (!Number.isInteger(cubicMeters)) {
+                    cubicMeters = cubicMeters.toFixed(2);
+                }
+                totalPrice = value * cubicMeters;
+                setInput(prevInput => {
+                    let newInvoice;
+                    newInvoice = [...prevInput.invoice];
+                    newInvoice[i] = { ...newInvoice[i], totalPrice };
+                    return { ...prevInput, invoice: newInvoice };
+                });
+                refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+            } 
         }
-        let unitPrice=input.invoice[i].unitPrice;
-        if (Number.isInteger(Number(unitPrice))) {
-            let totalPrice= unitPrice* cubicMeters;
-            console.warn(totalPrice);
-            // refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice;
-            // setInput(prevInput => {
-            //     let newInvoice;
-            //     newInvoice = [...prevInput.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], cubicMeters };
-            //     return { ...prevInput, invoice: newInvoice };
-            // });
-            console.log('ok');
-        }else{
-            console.error('not');
-        }
-       
+
+
     }
-    // console.log(input.invoice);
+    console.log(input.invoice);
 
     const handleAddNewInvoice = (e) => {
         e.preventDefault();
@@ -1764,6 +1798,7 @@ const AddConcreteSalesInvoice = () => {
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'unitPrice', i);
                                                         formatNub('unitPrice', i);
+                                                        handleTotalPriceCalculation(e, i, 'unitPrice');
                                                     }
                                                     }
                                                     onFocus={e => clearInputError(e, refInvoice[`unitPriceError${i}`])}
@@ -1798,7 +1833,7 @@ const AddConcreteSalesInvoice = () => {
                                                         handleSaveValInput(e, 'weight', i);
                                                         formatNub('weight', i);
                                                         handleCubicMetersCalculation(e, i);
-                                                        handleTotalPriceCalculation(e, i);
+                                                        handleTotalPriceCalculation(e, i, 'weight');
                                                     }
                                                     }
                                                     onFocus={e => clearInputError(e, refInvoice[`weightError${i}`])}
