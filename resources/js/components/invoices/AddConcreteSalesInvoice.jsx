@@ -722,7 +722,7 @@ const AddConcreteSalesInvoice = () => {
         });
 
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
-        daySelect.current.classList.remove('borderRedFB');
+        // daySelect.current.classList.remove('borderRedFB');
     }
 
     const changeMonth = (e, i) => {
@@ -742,7 +742,7 @@ const AddConcreteSalesInvoice = () => {
             return { ...prevInput, invoice: newInvoice };
         });
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
-        monthSelect.current.classList.remove('borderRedFB');
+        // monthSelect.current.classList.remove('borderRedFB');
     }
 
     const changeYear = (e, i) => {
@@ -759,7 +759,7 @@ const AddConcreteSalesInvoice = () => {
             return { ...prevInput, invoice: newInvoice };
         });
         // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
-        yearSelect.current.classList.remove('borderRedFB');
+        // yearSelect.current.classList.remove('borderRedFB');
 
     }
 
@@ -780,7 +780,7 @@ const AddConcreteSalesInvoice = () => {
             return { ...prevInput, invoice: newInvoice };
         });
 
-        daySelect.current.classList.remove('borderRedFB');
+        // daySelect.current.classList.remove('borderRedFB');
     }
 
     const changeMinute = (e, i) => {
@@ -799,8 +799,8 @@ const AddConcreteSalesInvoice = () => {
             newInvoice[i] = { ...newInvoice[i], time };
             return { ...prevInput, invoice: newInvoice };
         });
-        // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
-        monthSelect.current.classList.remove('borderRedFB');
+        // // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
+        // monthSelect.current.classList.remove('borderRedFB');
     }
 
     const changeSecond = (e, i) => {
@@ -819,8 +819,8 @@ const AddConcreteSalesInvoice = () => {
             newInvoice[i] = { ...newInvoice[i], time };
             return { ...prevInput, invoice: newInvoice };
         });
-        // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
-        yearSelect.current.classList.remove('borderRedFB');
+        // // پاک کردن رنگ خط قرمز کادر سلکت از دریافت خطا
+        // yearSelect.current.classList.remove('borderRedFB');
 
     }
 
@@ -913,6 +913,7 @@ const AddConcreteSalesInvoice = () => {
     }
 
     const resetForm = (apply = true) => {
+        setInvoice([sampleInvoice]);
         setInput({
             customer_id: '',
             invoice: [{
@@ -934,6 +935,14 @@ const AddConcreteSalesInvoice = () => {
             }],
         });
 
+       
+        
+        setCustomerId('');
+        setConcreteId('');
+        setTruckId('');
+        setDriverId('');
+        setCementStoreId('');
+        setCheckedMaskanMeli();
 
         setHour('');
         setMinute('');
@@ -945,6 +954,10 @@ const AddConcreteSalesInvoice = () => {
 
         setUnitPrice('');
         setFare('');
+
+        setCheckedValue('');
+        setMaskan(['']);
+
         setVahed('');
         setAddress('');
         setConcretingPosition('');
@@ -1438,7 +1451,6 @@ const AddConcreteSalesInvoice = () => {
 
 
     }
-    console.log(input.invoice);
 
     const handleAddNewInvoice = (e) => {
         e.preventDefault();
@@ -1866,7 +1878,7 @@ const AddConcreteSalesInvoice = () => {
                                                     </span>
                                                 </div>
                                             </div>
-                                           
+
                                         </div>
 
                                         <div className="containerInputFB">
@@ -1902,7 +1914,7 @@ const AddConcreteSalesInvoice = () => {
                                                     </span>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
 
@@ -1941,7 +1953,7 @@ const AddConcreteSalesInvoice = () => {
                                                         primaryLabel='انتخاب'
                                                         options={drivers}
                                                         saveOption={setDriverId}
-                                                    ref={refInvoice[`driver_id${i}`]}
+                                                        ref={refInvoice[`driver_id${i}`]}
                                                     />
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
@@ -2008,7 +2020,8 @@ const AddConcreteSalesInvoice = () => {
                                                     className={`labelCheckboxFB pointerFB  ${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
                                                     id={`labelEmam${i}`}>مسکن ملی (شهرک امام خمینی) </label>
                                             </div>
-                                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                            <div className="errorContainerFB elementError" > </div>
+                                            {/* <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div> */}
                                         </div>
 
                                         <div className="containerInputFB">
