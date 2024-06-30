@@ -11,6 +11,7 @@ use App\Models\CementStore;
 use App\Models\Concrete;
 use App\Models\Customer;
 use App\Models\Driver;
+use App\Models\SandStore;
 use App\Models\Truck;
 
 class ConcreteSalesInvoiceController extends Controller
@@ -43,7 +44,8 @@ class ConcreteSalesInvoiceController extends Controller
             // dd($request->validated()['invoice']);
             foreach ($request->validated()['invoice'] as $typeDetailData) {
 
-                $this->getAmountSand($typeDetailData['concrete_id']);
+                // $this->getAmountSand($typeDetailData['concrete_id']);
+                $this->sandDeduction($typeDetailData['concrete_id']);
                 // $this->cementDeduction($typeDetailData['cementStore_id'], $typeDetailData['concrete_id']);
                 // $concreteSalesInvoice = new ConcreteSalesInvoice;
                 // $concreteSalesInvoice->customer_id =  $customer_id;
@@ -178,11 +180,11 @@ class ConcreteSalesInvoiceController extends Controller
 
     private function sandDeduction($concreteId)
     {
-        $amountCement = $this->getAmountCement($concreteId);
+        $amountSand = $this->getAmountSand($concreteId);
 
-        $cementStore = CementStore::find($amountCement);
-        $cementStore->amount -= $amountCement;
-        $cementStore->save();
+        $sandStore = SandStore::find(1);
+        $sandStore->amount -= $amountSand;
+        $sandStore->save();
     }
 
     private function customerDebt()
@@ -207,19 +209,12 @@ class ConcreteSalesInvoiceController extends Controller
 
     private function getAmountSand(int $concreteId)
     {
-        // $amountSand = Concrete::find($concreteId)->selectRaw('SUM(amountSand + amountGravel) as total')
-        // ->value('total');
-        // dd($concreteId);
-        // $amountSand = Concrete::find($concreteId)->value('amountSand');
+        
         $concrete= Concrete::find($concreteId);
         $amountSand=$concrete->amountSand;
         $amountGravel=$concrete->amountGravel;
-        // $amountGravel = Concrete::find($concreteId)->value('amountGravel');
-        // ->sum(function ($row) {
-        //     return $row->amountSand + $row->amountGravel;
-        // });
-        // dd($amountSand + $amountGravel, $concreteId, $amountGravel, $amountSand);
-        dd( $concreteId, $amountGravel, $amountSand);
-        // return $amountSand;
+        $totalSand=$amountSand + $amountGravel;
+        
+        return $totalSand;
     }
 }
