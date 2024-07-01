@@ -13,6 +13,7 @@ use App\Models\Customer;
 use App\Models\Driver;
 use App\Models\SandStore;
 use App\Models\Truck;
+use App\Models\WaterStore;
 
 class ConcreteSalesInvoiceController extends Controller
 {
@@ -42,14 +43,16 @@ class ConcreteSalesInvoiceController extends Controller
         try {
             // $customer_id = $request->validated()['customer_id'];
             // dd($request->validated()['invoice']);
-            foreach ($request->validated()['invoice'] as $typeDetailData) {
+            foreach ($request->validated()['invoice'] as $key) {
 
-                // $this->getAmountSand($typeDetailData['concrete_id']);
-                $this->sandDeduction($typeDetailData['concrete_id']);
-                // $this->cementDeduction($typeDetailData['cementStore_id'], $typeDetailData['concrete_id']);
+                
+                $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
+                $this->sandDeduction($key['concrete_id']);
+                $this->waterDeduction($key['concrete_id']);
+
                 // $concreteSalesInvoice = new ConcreteSalesInvoice;
                 // $concreteSalesInvoice->customer_id =  $customer_id;
-                // $concreteSalesInvoice->fill($typeDetailData);
+                // $concreteSalesInvoice->fill($key);
                 // $concreteSalesInvoice->save();
             }
             dd('ok');
@@ -95,22 +98,6 @@ class ConcreteSalesInvoiceController extends Controller
         // }
 
         // return response()->json(['customer' =>  $customer], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ConcreteSalesInvoice $concreteSalesInvoice)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ConcreteSalesInvoice $concreteSalesInvoice)
-    {
-        //
     }
 
     /**
@@ -160,61 +147,112 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['cementStores' => $cementStores]);
     }
 
-    private function waterDeduction(int $concreteId)
-    {
-        $amountWater = $this->getAmountWater($concreteId);
 
-        $cementStore = CementStore::find($amountWater);
-        $cementStore->amount -= $amountWater;
-        $cementStore->save();
-    }
 
-    private function cementDeduction(int $cementStoreId, int $concreteId)
+    /**
+     * مقدار سیمان مصرف شده را از سیلو مورد نظر کم می کند
+     */
+    private function cementDeduction(int $cementStoreId, int $concreteId, int|float $cubicMeters)
     {
-        $amountCement = $this->getAmountCement($concreteId);
+        $amountCement = $this->returnsCementUsed($concreteId, $cubicMeters);
 
         $cementStore = CementStore::find($cementStoreId);
         $cementStore->amount -= $amountCement;
         $cementStore->save();
     }
 
+    /**
+     * مقدار شن و ماسه مصرف شده را کم می کند
+     */
     private function sandDeduction($concreteId)
     {
-        $amountSand = $this->getAmountSand($concreteId);
+        $amountSand = $this->returnUnitAmountSand($concreteId);
 
         $sandStore = SandStore::find(1);
         $sandStore->amount -= $amountSand;
         $sandStore->save();
     }
 
+    /**
+     * مقدار مصرف شده آب در یک بار کامیون را از مخزن کم می کند
+     */
+    private function waterDeduction(int $concreteId)
+    {
+        $amountWater = $this->returnUnitAmountWater($concreteId);
+
+        $waterStore = WaterStore::find(1);
+        $waterStore->amount -= $amountWater;
+        $waterStore->save();
+    }
+
+    /**
+     * محاسبه کل سیمان مصرف شده در بار
+     */
+    private function returnsCementUsed(int $concreteId, int|float $cubicMeters)
+    {
+        $unitAmountCement = $this->returnUnitAmountCement($concreteId);
+        dd($unitAmountCement);
+    }
+
+    /**
+     * محاسبه کل شن و ماسه مصرف شده در بار
+     */
+    private function returnsSandUsed()
+    {
+    }
+
+    /**
+     * محاسبه کل آب مصرف شده در بار
+     */
+    private function returnsWaterUsed()
+    {
+    }
+
+    /**
+     * مقدار مصرفی سیمان در هر متر بتن بسته به نوع بتن را برمی‌گرداند
+     */
+    private function returnUnitAmountCement(int $concreteId)
+    {
+        $concrete = Concrete::find($concreteId);
+        $unitAmountCement = $concrete->amountCement;
+        return $unitAmountCement;
+    }
+
+     /**
+     * مجموع مقدار شن و ماسه مصرفی در هر متر بتن
+     */
+    private function returnUnitAmountSand(int $concreteId)
+    {
+        $concrete = Concrete::find($concreteId);
+        $unitAmountSand = $concrete->amountSand;
+        $unitAmountGravel = $concrete->amountGravel;
+        $totalUnitSand = $unitAmountSand + $unitAmountGravel;
+        return $totalUnitSand;
+    }
+
+    /**
+     * مقدار مصرف آب در هر متر بتن
+     */
+    private function returnUnitAmountWater(int $concreteId)
+    {
+        $concrete = Concrete::find($concreteId);
+        $unitAmountWater = $concrete->amountWater;
+        return $unitAmountWater;
+    }
+
+   
+
+    /**
+     * مبلغ بتن را به بدهی مشتری اضافه می کند
+     */
     private function customerDebt()
     {
     }
 
+    /**
+     * کرایه میکسر را به حساب مالک اضافه می کند
+     */
     private function mixerOwnerSalary()
     {
-    }
-
-    private function getAmountCement(int $concreteId)
-    {
-        $amountCement = Concrete::find($concreteId)->value('amountCement');
-        return $amountCement;
-    }
-
-    private function getAmountWater(int $concreteId)
-    {
-        $amountWater = Concrete::find($concreteId)->value('amountWater');
-        return $amountWater;
-    }
-
-    private function getAmountSand(int $concreteId)
-    {
-        
-        $concrete= Concrete::find($concreteId);
-        $amountSand=$concrete->amountSand;
-        $amountGravel=$concrete->amountGravel;
-        $totalSand=$amountSand + $amountGravel;
-        
-        return $totalSand;
     }
 }
