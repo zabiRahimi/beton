@@ -45,9 +45,11 @@ class ConcreteSalesInvoiceController extends Controller
             // dd($request->validated()['invoice']);
             foreach ($request->validated()['invoice'] as $key) {
 
-                
                 $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
-                $this->sandDeduction($key['concrete_id']);
+                $this->sandDeduction(
+                    $key['concrete_id'],
+                    $key['cubicMeters']
+                );
                 $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
 
                 // $concreteSalesInvoice = new ConcreteSalesInvoice;
@@ -164,9 +166,9 @@ class ConcreteSalesInvoiceController extends Controller
     /**
      * مقدار شن و ماسه مصرف شده را کم می کند
      */
-    private function sandDeduction($concreteId)
+    private function sandDeduction(int $concreteId, int|float $cubicMeters)
     {
-        $amountSand = $this->returnUnitAmountSand($concreteId);
+        $amountSand = $this->returnsSandUsed($concreteId, $cubicMeters);
 
         $sandStore = SandStore::find(1);
         $sandStore->amount -= $amountSand;
@@ -178,7 +180,7 @@ class ConcreteSalesInvoiceController extends Controller
      */
     private function waterDeduction(int $concreteId, int|float $cubicMeters)
     {
-        $amountWater = $this->returnsWaterUsed($concreteId);
+        $amountWater = $this->returnsWaterUsed($concreteId, $cubicMeters);
 
         $waterStore = WaterStore::find(1);
         $waterStore->amount -= $amountWater;
@@ -191,10 +193,9 @@ class ConcreteSalesInvoiceController extends Controller
     private function returnsCementUsed(int $concreteId, int|float $cubicMeters)
     {
         $unitAmountCement = $this->returnUnitAmountCement($concreteId);
-        $amountCement=$unitAmountCement * $cubicMeters;
-       
+        $amountCement = $unitAmountCement * $cubicMeters;
+
         return $amountCement;
-        
     }
 
     /**
@@ -202,8 +203,9 @@ class ConcreteSalesInvoiceController extends Controller
      */
     private function returnsSandUsed(int $concreteId, int|float $cubicMeters)
     {
-        $unitAmountCement = $this->returnUnitAmountSand( $concreteId);
-        $amountCement=$unitAmountCement * $cubicMeters;
+        $unitAmountSand = $this->returnUnitAmountSand($concreteId);
+        $amountSand = $unitAmountSand * $cubicMeters;
+        return $amountSand;
     }
 
     /**
@@ -212,8 +214,8 @@ class ConcreteSalesInvoiceController extends Controller
     private function returnsWaterUsed(int $concreteId, int|float $cubicMeters)
     {
         $unitAmountWater = $this->returnUnitAmountWater($concreteId);
-        $amountWater=$unitAmountWater * $cubicMeters;
-       
+        $amountWater = $unitAmountWater * $cubicMeters;
+
         return $amountWater;
     }
 
@@ -227,7 +229,7 @@ class ConcreteSalesInvoiceController extends Controller
         return $unitAmountCement;
     }
 
-     /**
+    /**
      * مجموع مقدار شن و ماسه مصرفی در هر متر بتن
      */
     private function returnUnitAmountSand(int $concreteId)
@@ -249,7 +251,7 @@ class ConcreteSalesInvoiceController extends Controller
         return $unitAmountWater;
     }
 
-   
+
 
     /**
      * مبلغ بتن را به بدهی مشتری اضافه می کند
