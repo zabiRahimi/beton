@@ -48,7 +48,7 @@ class ConcreteSalesInvoiceController extends Controller
                 
                 $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
                 $this->sandDeduction($key['concrete_id']);
-                $this->waterDeduction($key['concrete_id']);
+                $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
 
                 // $concreteSalesInvoice = new ConcreteSalesInvoice;
                 // $concreteSalesInvoice->customer_id =  $customer_id;
@@ -176,9 +176,9 @@ class ConcreteSalesInvoiceController extends Controller
     /**
      * مقدار مصرف شده آب در یک بار کامیون را از مخزن کم می کند
      */
-    private function waterDeduction(int $concreteId)
+    private function waterDeduction(int $concreteId, int|float $cubicMeters)
     {
-        $amountWater = $this->returnUnitAmountWater($concreteId);
+        $amountWater = $this->returnsWaterUsed($concreteId);
 
         $waterStore = WaterStore::find(1);
         $waterStore->amount -= $amountWater;
@@ -191,21 +191,30 @@ class ConcreteSalesInvoiceController extends Controller
     private function returnsCementUsed(int $concreteId, int|float $cubicMeters)
     {
         $unitAmountCement = $this->returnUnitAmountCement($concreteId);
-        dd($unitAmountCement);
+        $amountCement=$unitAmountCement * $cubicMeters;
+       
+        return $amountCement;
+        
     }
 
     /**
      * محاسبه کل شن و ماسه مصرف شده در بار
      */
-    private function returnsSandUsed()
+    private function returnsSandUsed(int $concreteId, int|float $cubicMeters)
     {
+        $unitAmountCement = $this->returnUnitAmountSand( $concreteId);
+        $amountCement=$unitAmountCement * $cubicMeters;
     }
 
     /**
      * محاسبه کل آب مصرف شده در بار
      */
-    private function returnsWaterUsed()
+    private function returnsWaterUsed(int $concreteId, int|float $cubicMeters)
     {
+        $unitAmountWater = $this->returnUnitAmountWater($concreteId);
+        $amountWater=$unitAmountWater * $cubicMeters;
+       
+        return $amountWater;
     }
 
     /**
