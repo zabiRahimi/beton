@@ -51,6 +51,7 @@ class ConcreteSalesInvoiceController extends Controller
                     $key['cubicMeters']
                 );
                 $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
+                $this->mixerOwnerSalary($key['concrete_id'], $key['fare']);
 
                 // $concreteSalesInvoice = new ConcreteSalesInvoice;
                 // $concreteSalesInvoice->customer_id =  $customer_id;
@@ -263,7 +264,12 @@ class ConcreteSalesInvoiceController extends Controller
     /**
      * کرایه میکسر را به حساب مالک اضافه می کند
      */
-    private function mixerOwnerSalary()
+    private function mixerOwnerSalary(int $customerId, int $fare)
     {
+        $customer = Customer::updateOrCreate(
+            ['customer_id' => $customerId],
+            ['creditor' => DB::raw('creditor + ' . $fare)]
+        );
+        
     }
 }
