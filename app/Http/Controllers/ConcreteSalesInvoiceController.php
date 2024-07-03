@@ -11,6 +11,7 @@ use App\Models\CementStore;
 use App\Models\Concrete;
 use App\Models\Customer;
 use App\Models\Driver;
+use App\Models\Financial;
 use App\Models\SandStore;
 use App\Models\Truck;
 use App\Models\WaterStore;
@@ -51,7 +52,7 @@ class ConcreteSalesInvoiceController extends Controller
                     $key['cubicMeters']
                 );
                 $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
-                $this->mixerOwnerSalary($key['concrete_id'], $key['fare']);
+                $this->mixerOwnerSalary($key['ownerId'], $key['fare']);
 
                 // $concreteSalesInvoice = new ConcreteSalesInvoice;
                 // $concreteSalesInvoice->customer_id =  $customer_id;
@@ -266,7 +267,7 @@ class ConcreteSalesInvoiceController extends Controller
      */
     private function mixerOwnerSalary(int $customerId, int $fare)
     {
-        $customer = Customer::updateOrCreate(
+        $customer = Financial::updateOrCreate(
             ['customer_id' => $customerId],
             ['creditor' => DB::raw('creditor + ' . $fare)]
         );

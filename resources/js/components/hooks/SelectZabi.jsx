@@ -2,7 +2,7 @@ import { useState, useEffect, useRef,forwardRef, useImperativeHandle } from 'rea
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-const SelectZabi=forwardRef(({options, primaryLabel, saveOption},ref)=> {
+const SelectZabi=forwardRef(({options, primaryLabel, saveOption, saveOption2=null, saveOption3=null},ref)=> {
     const labelRef= useRef(null);
     const mainOptionRef= useRef(null);
     const [currentElement, setCurrentElement] = useState(primaryLabel);
@@ -31,8 +31,21 @@ const SelectZabi=forwardRef(({options, primaryLabel, saveOption},ref)=> {
         }
     }
 
-    const changeHandle =(val)=>{
+    const changeHandle =(val, val2, val3)=>{
         saveOption(val);
+        console.log(`val = ${val} ---- val2 = ${val2}`);
+        if (val2 && typeof saveOption2 === 'function') {
+            // console.log('ok');
+            console.error(val2);
+          }
+
+          if (typeof saveOption === 'function') {
+            // console.log('ok');
+            console.error('ok');
+          }
+          
+       
+        // val2 && saveOption2 && saveOption2(val2); 
         optionDisplayHandle();
     }
 

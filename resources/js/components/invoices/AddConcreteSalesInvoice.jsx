@@ -120,10 +120,12 @@ const AddConcreteSalesInvoice = () => {
     const [customerId, setCustomerId] = useState('');
     const [concreteId, setConcreteId] = useState('');
     const [truckId, setTruckId] = useState('');
+    const [ownerId, setOwnerId] = useState('');
     const [driverId, setDriverId] = useState('');
     const [cementStoreId, setCementStoreId] = useState('');
     const [maskanMeli, setMaskanMeli] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
+    console.warn(ownerId);
 
     /**
      * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
@@ -352,7 +354,7 @@ const AddConcreteSalesInvoice = () => {
     useEffect(() => {
         truckId && setInput(prevInput => {
             let invoices = [...prevInput.invoice];
-            invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId };
+            invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
             return { ...prevInput, invoice: invoices };
         });
     }, [truckId, invoiceIndexForMixer]);
@@ -597,6 +599,7 @@ const AddConcreteSalesInvoice = () => {
                     setMixers(perv => ([...perv, {
 
                         value: data.id,
+                        value2: data.customer.id,
                         html: <div className="mixerAptionSelectFB">
                             <span className="mixerNamberpalteSelectFB">
                                 <div className="numberplateDiv">
@@ -923,6 +926,7 @@ const AddConcreteSalesInvoice = () => {
                 cubicMeters: "",
                 concrete_id: '',
                 truck_id: '',
+                ownerId: '',
                 driver_id: '',
                 cementStore_id: '',
                 unitPrice: '',
@@ -940,6 +944,7 @@ const AddConcreteSalesInvoice = () => {
         setCustomerId('');
         setConcreteId('');
         setTruckId('');
+        setOwnerId('');
         setDriverId('');
         setCementStoreId('');
         setCheckedMaskanMeli();
@@ -1061,6 +1066,7 @@ const AddConcreteSalesInvoice = () => {
                         cubicMeters: "",
                         concrete_id: '',
                         truck_id: '',
+                        ownerId: '',
                         driver_id: '',
                         cementStore_id: '',
                         unitPrice: '',
@@ -1159,8 +1165,9 @@ const AddConcreteSalesInvoice = () => {
                         let id = Object.keys(error.response.data.errors)[0];
                         const checkCubicMeters = /^invoice\.\d+\.cubicMeters$/;
                         const checkTotalPrice = /^invoice\.\d+\.totalPrice$/;
+                        const checkOwnerId = /^invoice\.\d+\.ownerId$/;
                         // id.includes('type') && (id = 'types');
-                        if (!checkCubicMeters.test(id) && !checkTotalPrice.test(id)) {
+                        if (!checkCubicMeters.test(id) && !checkTotalPrice.test(id) && !checkOwnerId.test(id)) {
                             const element = document.getElementById(id);
                             let scrollPosition = window.scrollY || window.pageYOffset;
 
@@ -1172,7 +1179,7 @@ const AddConcreteSalesInvoice = () => {
                         }
                         Object.entries(error.response.data.errors).map(([key, val]) => {
                             // key.includes('type') && (key = 'types');
-                            if (!key.includes('cubicMeters') && !key.includes('totalPrice')) {
+                            if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
                                 document.getElementById(key).classList.add('borderRedFB');
 
                                 document.getElementById(key + 'Error').innerHTML = val;
@@ -1932,6 +1939,7 @@ const AddConcreteSalesInvoice = () => {
                                                         primaryLabel='انتخاب'
                                                         options={mixers}
                                                         saveOption={setTruckId}
+                                                        saveOption2={setOwnerId}
                                                         ref={refInvoice[`truck_id${i}`]}
                                                     />
                                                 </div>
