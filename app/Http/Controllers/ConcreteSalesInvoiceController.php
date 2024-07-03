@@ -42,7 +42,7 @@ class ConcreteSalesInvoiceController extends Controller
     public function store(StoreConcreteSalesInvoiceRequest $request)
     {
         try {
-            // $customer_id = $request->validated()['customer_id'];
+            $customer_id = $request->validated()['customer_id'];
             // dd($request->validated()['invoice']);
             foreach ($request->validated()['invoice'] as $key) {
 
@@ -53,15 +53,17 @@ class ConcreteSalesInvoiceController extends Controller
                 );
                 $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
                 $this->mixerOwnerSalary($key['ownerId'], $key['fare']);
+                $this->customerDebt($customer_id, $key['totalPrice']);
 
-                // $concreteSalesInvoice = new ConcreteSalesInvoice;
-                // $concreteSalesInvoice->customer_id =  $customer_id;
-                // $concreteSalesInvoice->fill($key);
-                // $concreteSalesInvoice->save();
+                $concreteSalesInvoice = new ConcreteSalesInvoice;
+                $concreteSalesInvoice->customer_id =  $customer_id;
+                $concreteSalesInvoice->fill($key);
+                $concreteSalesInvoice->save();
             }
-            dd('ok');
+          
         } catch (\Throwable $th) {
             throw $th;
+            dd('not');
         }
         // try {
         //     DB::beginTransaction();
@@ -258,17 +260,21 @@ class ConcreteSalesInvoiceController extends Controller
     /**
      * مبلغ بتن را به بدهی مشتری اضافه می کند
      */
-    private function customerDebt()
+    private function customerDebt(int $customerId, int $totalPrice)
     {
+        Financial::updateOrCreate(
+            ['customer_id' => $customerId],
+            ['debtor' => DB::raw('debtor + ' . $totalPrice)]
+        );
     }
 
     /**
      * کرایه میکسر را به حساب مالک اضافه می کند
      */
-    private function mixerOwnerSalary(int $customerId, int $fare)
+    private function mixerOwnerSalary(int $ownerId, int $fare)
     {
-        $customer = Financial::updateOrCreate(
-            ['customer_id' => $customerId],
+        Financial::updateOrCreate(
+            ['customer_id' => $ownerId],
             ['creditor' => DB::raw('creditor + ' . $fare)]
         );
         

@@ -125,7 +125,7 @@ const AddConcreteSalesInvoice = () => {
     const [cementStoreId, setCementStoreId] = useState('');
     const [maskanMeli, setMaskanMeli] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
-    console.warn(ownerId);
+    
 
     /**
      * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
@@ -164,7 +164,7 @@ const AddConcreteSalesInvoice = () => {
         }],
     });
 
-
+console.log(input);
 
     /**
      * id to edit the model

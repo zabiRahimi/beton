@@ -22,16 +22,16 @@ class StoreConcreteSalesInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'customer_id' => ['required', 'bail','numeric'],
-            // 'invoice' => ['required', 'array'],
+            'customer_id' => ['required', 'bail','numeric'],
+            'invoice' => ['required', 'array'],
             // 'invoice.*.time' => ['required','bail','time'],
             // 'invoice.*.date' => ['required','bail','date'],
             'invoice.*.concrete_id' => ['required','bail','numeric'],
-            // 'invoice.*.unitPrice' => ['required','bail','numeric'],
+            'invoice.*.unitPrice' => ['required','bail','numeric'],
             // 'invoice.*.weight' => ['required','bail','numeric'],
             'invoice.*.cubicMeters' => ['required','bail','numeric'],
             'invoice.*.cementStore_id' => ['required','bail','numeric'],
-            // 'invoice.*.totalPrice' => ['required','bail','numeric'],
+            'invoice.*.totalPrice' => ['required','bail','numeric'],
             // 'invoice.*.truck_id' => ['required','bail','numeric'],
             'invoice.*.ownerId' => ['required','bail','numeric'],
             // 'invoice.*.driver_id' => ['required','bail','numeric'],
