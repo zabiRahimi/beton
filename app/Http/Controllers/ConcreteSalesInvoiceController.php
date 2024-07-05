@@ -23,9 +23,9 @@ class ConcreteSalesInvoiceController extends Controller
      */
     public function index()
     {
-        $oncreteSalesInvoices = ConcreteSalesInvoice::orderBy('id')->get();
+        $concreteSalesInvoices = ConcreteSalesInvoice::orderBy('id')->get();
 
-        return response()->json(['oncreteSalesInvoices' => $oncreteSalesInvoices], 200);
+        return response()->json(['concreteSalesInvoices' => $concreteSalesInvoices], 200);
     }
 
     /**
@@ -45,6 +45,7 @@ class ConcreteSalesInvoiceController extends Controller
             $customer_id = $request->validated()['customer_id'];
             // dd($request->validated()['invoice']);
             foreach ($request->validated()['invoice'] as $key) {
+              
 
                 $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
                 $this->sandDeduction(

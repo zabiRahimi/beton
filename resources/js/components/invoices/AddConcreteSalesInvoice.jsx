@@ -44,6 +44,7 @@ const AddConcreteSalesInvoice = () => {
     const unitPriceRef = useRef(null);
     const unitPriceErrorRef = useRef(null);
 
+    const hasCalledGetConcreteSalesInvoices=useRef(false);
     const hasCalledGetConcreteBuyers = useRef(false);
     const hasCalledGetConcretes = useRef(false);
     const hasCalledGetMixers = useRef(false);
@@ -106,7 +107,7 @@ const AddConcreteSalesInvoice = () => {
     const [drivers, setDrivers] = useState([]);
     const [cementStores, setCementStores] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
-    const [ticketNumber, setTicketNumber] = useState(1);
+    const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
 
     /**
@@ -164,7 +165,7 @@ const AddConcreteSalesInvoice = () => {
         }],
     });
 
-console.log(input);
+
 
     /**
      * id to edit the model
@@ -180,6 +181,14 @@ console.log(input);
         }
 
     }, [invoice]);
+
+    useEffect(() => {
+        // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
+        if (!hasCalledGetConcreteSalesInvoices.current) {
+            getConcreteSalesInvoices();
+            hasCalledGetConcreteSalesInvoices.current = true;
+        }
+    }, []);
 
     useEffect(() => {
         // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
@@ -217,9 +226,9 @@ console.log(input);
         }
     }, []);
 
-    useEffect(() => {
-        getConcreteSalesInvoices();
-    }, []);
+    // useEffect(() => {
+    //     getConcreteSalesInvoices();
+    // }, []);
 
 
     /**
@@ -410,6 +419,15 @@ console.log(input);
         }
 
     }, [isNewInvoice]);
+
+   
+
+    async function getConcreteSalesInvoices() {
+        await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
+            // setConcreteSalesInvoices(response.data.concreteSalesInvoices);
+            setTicketNumber(response.data.concreteSalesInvoices.length);
+        });
+    }
 
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
@@ -701,11 +719,7 @@ console.log(input);
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-    async function getConcreteSalesInvoices() {
-        await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
-            setConcreteSalesInvoices(response.data.concreteSalesInvoices);
-        });
-    }
+   
 
     const changeDay = (e, i) => {
         let { value } = e.target;
@@ -1142,6 +1156,7 @@ console.log(input);
                 }
             }
         ).then((response) => {
+            setTicketNumber(ticketNumber+1);
             // setCustomers(prev => [...prev, response.data.concreteSalesInvoice]);
             form.current.reset();
             MySwal.fire({
