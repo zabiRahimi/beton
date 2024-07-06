@@ -110,6 +110,7 @@ const AddConcreteSalesInvoice = () => {
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
 
+    console.error(concreteSalesInvoices);
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
      * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
@@ -424,7 +425,7 @@ const AddConcreteSalesInvoice = () => {
 
     async function getConcreteSalesInvoices() {
         await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
-            // setConcreteSalesInvoices(response.data.concreteSalesInvoices);
+            setConcreteSalesInvoices(response.data.concreteSalesInvoices);
             setTicketNumber(response.data.concreteSalesInvoices.length);
         });
     }
@@ -648,48 +649,26 @@ const AddConcreteSalesInvoice = () => {
      * @returns 
      */
     const returnCreatedCustomerRecords = () => {
+        console.log('returnCreatedCustomerRecords');
         let numberRow = concreteSalesInvoices.length;
         const reversedCustomers = concreteSalesInvoices.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedCustomers.map((concreteSalesInvoice, i) => {
 
             return <div className="rowListShowGe" key={i}>
-                <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="nameShowGE">{concreteSalesInvoice['name']}</span>
-                <span className="lastNameShowGE">{concreteSalesInvoice['lastName']}</span>
-                <div className="typeShowGe">
-                    <div className="typeTitleShowGe" onClick={() => showListTypes(concreteSalesInvoice.id)}>
-                        <span className="typeTitleSpanShowGe">
-                            {concreteSalesInvoice['customer_type'].map((customerType, iType) => {
-                                return (iType > 0 ? '، ' + customerType['type'] + ' ' + (customerType['subtype'] || '') : customerType['type'] + ' ' + (customerType['subtype'] || ''))
-                            })}
-                        </span>
-                        <i
-                            className="icofont-rounded-down"
-                            key={'down' + concreteSalesInvoice.id}
-                            ref={refDownIcons['down' + concreteSalesInvoice.id]}
-                        />
-                        <i
-                            className="icofont-rounded-up  --displayNone"
-                            key={'up' + concreteSalesInvoice.id}
-                            ref={refUpIcons['up' + concreteSalesInvoice.id]}
-                        />
-                    </div>
-                    <div
-                        className="TypeBodyShowGe --displayNone"
-                        key={'list' + concreteSalesInvoice.id}
-                        ref={refListTypes['list' + concreteSalesInvoice.id]}
-                    >
-                        {concreteSalesInvoice['customer_type'].map((customerType, iType) => {
-                            return <div
-                                className="TypeBodyItemShowGe"
-                                key={iType}
-                            >
-                                {customerType['type']} {customerType['subtype']}
-                            </div>
-                        })}
-                    </div>
-
-                </div>
+                <span className="rowNumShowACSI_Ge">51210</span>{/* ردیف */}
+                <span className="ticketNumberACSI_Ge">98562</span>{/* قبض */}
+                <span className="customerACSI_Ge">محمود رحیمی رضا</span>{/* خریدار */}
+                <span className="concreteACSI_Ge">450</span>{/* بتن */}
+                <span className="truckACSI_Ge"><div className="numberplateDiv">
+                                    <span className="numberplateDivS1">23</span>
+                                    <span className="numberplateDivS2">الف</span>
+                                    <span className="numberplateDivS3">849</span>
+                                    <span className="numberplateDivS4">98</span>
+                                </div></span>{/* میکسر */}
+                <span className="driverACSI_Ge">قاسم جلالی اصغر</span>{/* راننده */}
+                <span className="dateACSI_Ge">03/05/1403</span>{/* تاریخ */}
+                <span className="timeACSI_Ge">08:25:23</span>{/* ساعت */}
+                
 
                 <div className="divEditGe">
                     <button className="--styleLessBtn btnEditGe" title=" ویرایش "
@@ -2185,10 +2164,15 @@ const AddConcreteSalesInvoice = () => {
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
-                            <span className="nameShowGE ">نام مشتری</span>
-                            <span className="lastNameShowGE">نام خانوادگی</span>
+                            <span className="rowNumShowGe ">قبض</span>
+                            <span className="nameShowGE ">خریدار</span>
+                            <span className="lastNameShowGE">نوع بتن</span>
 
-                            <span className="typeShowGe headTypeShowGe">نوع مشتری</span>
+                            <span className="typeShowGe headTypeShowGe">میکسر</span>
+                            <span className="typeShowGe headTypeShowGe">راننده</span>
+                            <span className="typeShowGe headTypeShowGe">تاریخ</span>
+                            <span className="typeShowGe headTypeShowGe">ساعت</span>
+
 
                             <span className="headEditShowGe"> ویرایش  </span>
                             <span className="headDelShowGe"> حذف </span>
