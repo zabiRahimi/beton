@@ -66,7 +66,8 @@
 }
 
 .headRowListShowGe,
-.rowListShowGe {
+.rowListShowGe,
+.rowListShowACSI_Ge {
     width: 100%;
     padding: 5px 8px;
     display: flex;
@@ -104,15 +105,18 @@
     text-align: center;
 }
 
-.rowListShowGe:nth-child(even) {
+.rowListShowGe:nth-child(even),
+.rowListShowACSI_Ge:nth-child(even) {
     background-color: #ececec;
 }
 
-.rowListShowGe:nth-child(odd) {
+.rowListShowGe:nth-child(odd),
+.rowListShowACSI_Ge:nth-child(odd) {
     background-color: #e2e2e2;
 }
 
-.rowListShowGe:hover {
+.rowListShowGe:hover,
+.rowListShowACSI_Ge:hover {
     background-color: #98c4ca;
 }
 
@@ -195,7 +199,7 @@
 
 .licensePlateShowGe {
     width: 22%;
-    padding: 0 15px ;
+    padding: 0 15px;
     text-align: center;
 
 }
@@ -211,9 +215,9 @@
 }
 
 .numberplateDivS4 {
-   padding-left:4px;
+    padding-left: 4px;
     border-left: 1px solid #7f8084;
-  
+
 }
 
 .truckOwnerShowGe {
@@ -261,8 +265,9 @@
     width: 15%;
 }
 
-.APSfatherNameShowGe{
-    color: #5a5b5b;;
+.APSfatherNameShowGe {
+    color: #5a5b5b;
+    ;
     font-size: 0.8rem;
 }
 
@@ -295,3 +300,55 @@
     display: none !important;
 }
 
+
+/**********************       مربوط به فایل فاکتور فروش بتن  *************/
+
+.rowListShowACSI_Ge {
+    padding: 5px 1px;
+    justify-content: start;
+}
+
+.rowNumShowACSI_Ge {
+    width: 7%;
+    text-align: center;
+    color: #58595a;
+}
+
+.ticketNumberACSI_Ge {
+    width: 7%;
+    text-align: center;
+    color:#08366d ;
+
+}
+.textAlignCenter{
+    text-align: center;
+}
+
+.customerACSI_Ge {
+    width: 18%;
+}
+
+.concreteACSI_Ge {
+    width:7%;
+    text-align: center;
+}
+
+.truckACSI_Ge {
+    width: 16%;
+    text-align: center;
+}
+
+.driverACSI_Ge {
+    width: 16%;
+}
+
+.dateACSI_Ge {
+    width: 13%;
+    text-align: center;
+
+}
+
+.timeACSI_Ge {
+    width: 13%;
+    text-align: center;
+}

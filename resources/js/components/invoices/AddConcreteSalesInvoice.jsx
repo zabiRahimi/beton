@@ -654,7 +654,7 @@ const AddConcreteSalesInvoice = () => {
         const reversedCustomers = concreteSalesInvoices.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedCustomers.map((concreteSalesInvoice, i) => {
 
-            return <div className="rowListShowGe" key={i}>
+            return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">51210</span>{/* ردیف */}
                 <span className="ticketNumberACSI_Ge">98562</span>{/* قبض */}
                 <span className="customerACSI_Ge">محمود رحیمی رضا</span>{/* خریدار */}
@@ -2162,16 +2162,16 @@ const AddConcreteSalesInvoice = () => {
                     <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
                     <div className="divListShowGe">
 
-                        <div className="rowListShowGe headRowListShowGe">
-                            <span className="rowNumShowGe ">ردیف</span>
-                            <span className="rowNumShowGe ">قبض</span>
-                            <span className="nameShowGE ">خریدار</span>
-                            <span className="lastNameShowGE">نوع بتن</span>
+                        <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
+                            <span className="rowNumShowACSI_Ge ">ردیف</span>
+                            <span className="ticketNumberACSI_Ge ">قبض</span>
+                            <span className="customerACSI_Ge textAlignCenter">خریدار</span>
+                            <span className="concreteACSI_Ge textAlignCenter">نوع بتن</span>
 
-                            <span className="typeShowGe headTypeShowGe">میکسر</span>
-                            <span className="typeShowGe headTypeShowGe">راننده</span>
-                            <span className="typeShowGe headTypeShowGe">تاریخ</span>
-                            <span className="typeShowGe headTypeShowGe">ساعت</span>
+                            <span className="truckACSI_Ge textAlignCenter">میکسر</span>
+                            <span className="driverACSI_Ge textAlignCenter">راننده</span>
+                            <span className="dateACSI_Ge textAlignCenter">تاریخ</span>
+                            <span className="timeACSI_Ge textAlignCenter">ساعت</span>
 
 
                             <span className="headEditShowGe"> ویرایش  </span>
