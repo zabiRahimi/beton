@@ -657,7 +657,7 @@ const AddConcreteSalesInvoice = () => {
             return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">51210</span>{/* ردیف */}
                 <span className="ticketNumberACSI_Ge">98562</span>{/* قبض */}
-                <span className="customerACSI_Ge">محمود رحیمی رضا</span>{/* خریدار */}
+                <span className="customerACSI_Ge">محمود رحیمی رشا ربی ارسنجان</span>{/* خریدار */}
                 <span className="concreteACSI_Ge">450</span>{/* بتن */}
                 <span className="truckACSI_Ge"><div className="numberplateDiv">
                                     <span className="numberplateDivS1">23</span>
@@ -670,17 +670,17 @@ const AddConcreteSalesInvoice = () => {
                 <span className="timeACSI_Ge">08:25:23</span>{/* ساعت */}
                 
 
-                <div className="divEditGe">
-                    <button className="--styleLessBtn btnEditGe" title=" ویرایش "
+                <div className="divEditACSI_Ge">
+                    <button className="--styleLessBtn btnEditACSI_Ge" title=" ویرایش "
                         onClick={() => showEditForm(concreteSalesInvoice.id)}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </button>
                 </div>
 
-                <div className="divDelGe">
+                <div className="divDelACSI_Ge">
 
-                    <button className="--styleLessBtn btnDelGe" title=" حذف ">
+                    <button className="--styleLessBtn btnDelACSI_Ge" title=" حذف ">
                         <i className="icofont-trash iDelGe" />
                     </button>
                 </div>
@@ -2165,17 +2165,17 @@ const AddConcreteSalesInvoice = () => {
                         <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                             <span className="rowNumShowACSI_Ge ">ردیف</span>
                             <span className="ticketNumberACSI_Ge ">قبض</span>
-                            <span className="customerACSI_Ge textAlignCenter">خریدار</span>
-                            <span className="concreteACSI_Ge textAlignCenter">نوع بتن</span>
+                            <span className="customerHeadACSI_Ge">خریدار</span>
+                            <span className="concreteACSI_Ge textAlignCenter"> بتن</span>
 
                             <span className="truckACSI_Ge textAlignCenter">میکسر</span>
-                            <span className="driverACSI_Ge textAlignCenter">راننده</span>
+                            <span className="driverHeadACSI_Ge">راننده</span>
                             <span className="dateACSI_Ge textAlignCenter">تاریخ</span>
                             <span className="timeACSI_Ge textAlignCenter">ساعت</span>
 
 
-                            <span className="headEditShowGe"> ویرایش  </span>
-                            <span className="headDelShowGe"> حذف </span>
+                            <span className="editHeadShowACSI_Ge"> ویرایش  </span>
+                            <span className="delHeadShowACSI_Ge"> حذف </span>
 
                         </div>
 

@@ -1,6 +1,6 @@
 .rightSide{
-    width: 210px;
-    min-height: 100vh;
+    width: 180px;
+    min-height: 100%;
     background-color: #5382bd;
     display: flex;
     flex-direction: column;

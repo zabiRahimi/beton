@@ -310,6 +310,7 @@
 
 .rowNumShowACSI_Ge {
     width: 7%;
+    font-size: 0.9rem;
     text-align: center;
     color: #58595a;
 }
@@ -317,38 +318,85 @@
 .ticketNumberACSI_Ge {
     width: 7%;
     text-align: center;
-    color:#08366d ;
+    color: #08366d;
 
 }
-.textAlignCenter{
+
+.textAlignCenter {
     text-align: center;
+}
+
+.customerHeadACSI_Ge,
+.customerACSI_Ge {
+    width: 20%;
+    padding-right: 25px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .customerACSI_Ge {
-    width: 18%;
+    padding-right: 10px;
+
 }
 
 .concreteACSI_Ge {
-    width:7%;
+    width: 5%;
     text-align: center;
+    font-size: 0.85rem;
 }
 
+
 .truckACSI_Ge {
-    width: 16%;
+    width: 15%;
     text-align: center;
+    font-size: 0.8rem;
+}
+
+.driverHeadACSI_Ge,
+.driverACSI_Ge {
+    width: 18%;
+    padding-right: 25px;
+    font-size: 0.73rem;
 }
 
 .driverACSI_Ge {
-    width: 16%;
-}
-
-.dateACSI_Ge {
-    width: 13%;
-    text-align: center;
+    padding-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 }
 
+
+.dateACSI_Ge,
 .timeACSI_Ge {
-    width: 13%;
+    width: 10%;
     text-align: center;
+    font-size: 0.8rem;
+}
+
+
+
+.editHeadShowACSI_Ge,
+.delHeadShowACSI_Ge {
+    width: 5%;
+    font-size: 0.7rem;
+    text-align: center;
+
+}
+
+.editHeadShowACSI_Ge {
+    margin-left: 5px;
+}
+
+.divEditACSI_Ge,
+.divDelACSI_Ge {
+    width: 5%;
+    text-align: center;
+}
+
+.divEditACSI_Ge {
+    margin-left: 5px;
 }
