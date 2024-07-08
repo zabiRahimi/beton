@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('cementStore_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
             $table->date('date');
+            $table->string('time');
             $table->string('weight');
             $table->string('cubicMeters')->comment('متر مکعب');
             $table->string('unitPrice')->comment('قیمت واحد');
