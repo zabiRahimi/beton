@@ -23,7 +23,7 @@ class ConcreteSalesInvoiceController extends Controller
      */
     public function index()
     {
-        $concreteSalesInvoices = ConcreteSalesInvoice::orderBy('id')->get();
+        $concreteSalesInvoices = ConcreteSalesInvoice::orderBy('id')->with(['customer', 'concrete', 'truck', 'driver'])->get();
 
         return response()->json(['concreteSalesInvoices' => $concreteSalesInvoices], 200);
     }

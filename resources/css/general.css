@@ -400,3 +400,65 @@
 .divEditACSI_Ge {
     margin-left: 5px;
 }
+
+@media screen and (min-width:1200px) {
+    .rowNumShowACSI_Ge {
+        font-size: 1rem;
+    }
+
+    .customerHeadACSI_Ge,
+    .customerACSI_Ge {
+        font-size: 1rem;
+    }
+
+    .customerACSI_Ge {
+        padding-right: 10px;
+    }
+
+    .concreteACSI_Ge {
+        width: 8%;
+        font-size: 1rem;
+    }
+
+    .truckACSI_Ge {
+        width: 11%;
+        font-size: 1rem;
+    }
+
+    .driverHeadACSI_Ge,
+    .driverACSI_Ge {
+        padding-right: 30px;
+        font-size: 1rem;
+    }
+
+    .driverACSI_Ge {
+        padding-right: 20px;
+    }
+
+    .dateACSI_Ge,
+    .timeACSI_Ge {
+        width: 8%;
+        font-size: 1rem;
+    }
+
+    .editHeadShowACSI_Ge,
+    .delHeadShowACSI_Ge {
+        width: 5%;
+        font-size: 1rem;
+    }
+
+    .editHeadShowACSI_Ge {
+        margin-left: 5px;
+    }
+
+    .divEditACSI_Ge,
+    .divDelACSI_Ge {
+        width: 5%;
+        text-align: center;
+    }
+
+    .divEditACSI_Ge {
+        margin-left: 5px;
+    }
+
+}

@@ -56,6 +56,10 @@ class Customer extends Model
         return $this->hasOne(Financial::class);
     }
 
+    public function concreteSalesInvoice(): HasMany
+    {
+        return $this->hasMany(ConcreteSalesInvoice::class);
+    }
     
 
     public function scopeConcreteBuyers($query)

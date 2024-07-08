@@ -44,7 +44,7 @@ const AddConcreteSalesInvoice = () => {
     const unitPriceRef = useRef(null);
     const unitPriceErrorRef = useRef(null);
 
-    const hasCalledGetConcreteSalesInvoices=useRef(false);
+    const hasCalledGetConcreteSalesInvoices = useRef(false);
     const hasCalledGetConcreteBuyers = useRef(false);
     const hasCalledGetConcretes = useRef(false);
     const hasCalledGetMixers = useRef(false);
@@ -127,7 +127,7 @@ const AddConcreteSalesInvoice = () => {
     const [cementStoreId, setCementStoreId] = useState('');
     const [maskanMeli, setMaskanMeli] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
-    
+
 
     /**
      * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
@@ -421,7 +421,7 @@ const AddConcreteSalesInvoice = () => {
 
     }, [isNewInvoice]);
 
-   
+
 
     async function getConcreteSalesInvoices() {
         await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
@@ -614,7 +614,7 @@ const AddConcreteSalesInvoice = () => {
             } else {
                 // setPersonnels2(datas);
                 datas.map((data, i) => {
-                    let arr = data.numberplate.split('-')
+                    let arr = data.numberplate.split('-');
                     setMixers(perv => ([...perv, {
 
                         value: data.id,
@@ -642,33 +642,32 @@ const AddConcreteSalesInvoice = () => {
             }
         });
     }
-
-
+    console.log(concreteSalesInvoices);
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
      * @returns 
      */
     const returnCreatedCustomerRecords = () => {
-        console.log('returnCreatedCustomerRecords');
         let numberRow = concreteSalesInvoices.length;
         const reversedCustomers = concreteSalesInvoices.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedCustomers.map((concreteSalesInvoice, i) => {
-
+            let numberplate =concreteSalesInvoice['truck'].numberplate.split('-');
+            let date =concreteSalesInvoice['date'].split('-');
             return <div className="rowListShowACSI_Ge" key={i}>
-                <span className="rowNumShowACSI_Ge">51210</span>{/* ردیف */}
-                <span className="ticketNumberACSI_Ge">98562</span>{/* قبض */}
-                <span className="customerACSI_Ge">محمود رحیمی رشا ربی ارسنجان</span>{/* خریدار */}
-                <span className="concreteACSI_Ge">450</span>{/* بتن */}
+                <span className="rowNumShowACSI_Ge">{i + 1}</span>{/* ردیف */}
+                <span className="ticketNumberACSI_Ge">{concreteSalesInvoice['id']}</span>{/* قبض */}
+                <span className="customerACSI_Ge">{concreteSalesInvoice['customer'].name}{'  '}{ concreteSalesInvoice['customer'].lastName}</span>{/* خریدار */}
+                <span className="concreteACSI_Ge">{concreteSalesInvoice['concrete'].concreteName}</span>{/* بتن */}
                 <span className="truckACSI_Ge"><div className="numberplateDiv">
-                                    <span className="numberplateDivS1">23</span>
-                                    <span className="numberplateDivS2">الف</span>
-                                    <span className="numberplateDivS3">849</span>
-                                    <span className="numberplateDivS4">98</span>
-                                </div></span>{/* میکسر */}
-                <span className="driverACSI_Ge">قاسم جلالی اصغر</span>{/* راننده */}
-                <span className="dateACSI_Ge">03/05/1403</span>{/* تاریخ */}
-                <span className="timeACSI_Ge">08:25:23</span>{/* ساعت */}
-                
+                    <span className="numberplateDivS1">{numberplate[0]}</span>
+                    <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
+                    <span className="numberplateDivS3">{numberplate[1]}</span>
+                    <span className="numberplateDivS4">{numberplate[2]}</span>
+                </div></span>{/* میکسر */}
+                <span className="driverACSI_Ge"> {concreteSalesInvoice['driver'].name}{'  '}{ concreteSalesInvoice['driver'].lastName}</span>{/* راننده */}
+                <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>{/* تاریخ */}
+                <span className="timeACSI_Ge">{concreteSalesInvoice['time']}</span>{/* ساعت */}
+
 
                 <div className="divEditACSI_Ge">
                     <button className="--styleLessBtn btnEditACSI_Ge" title=" ویرایش "
@@ -698,7 +697,7 @@ const AddConcreteSalesInvoice = () => {
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-   
+
 
     const changeDay = (e, i) => {
         let { value } = e.target;
@@ -932,8 +931,8 @@ const AddConcreteSalesInvoice = () => {
             }],
         });
 
-       
-        
+
+
         setCustomerId('');
         setConcreteId('');
         setTruckId('');
@@ -1135,7 +1134,7 @@ const AddConcreteSalesInvoice = () => {
                 }
             }
         ).then((response) => {
-            setTicketNumber(ticketNumber+1);
+            setTicketNumber(ticketNumber + 1);
             // setCustomers(prev => [...prev, response.data.concreteSalesInvoice]);
             form.current.reset();
             MySwal.fire({

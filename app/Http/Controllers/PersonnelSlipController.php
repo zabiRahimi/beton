@@ -83,7 +83,6 @@ class PersonnelSlipController extends Controller
         })->with(['customerType' => function ($query) {
             $query->where('type', 'پرسنل');
         }])->get();
-        // dd($personnels);
         
         return response()->json(['personnels'=>  $personnels],200);
     }
