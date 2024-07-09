@@ -110,7 +110,7 @@ const AddConcreteSalesInvoice = () => {
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
 
-    console.error(concreteSalesInvoices);
+    // console.error(concreteSalesInvoices);
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
      * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
@@ -642,7 +642,7 @@ const AddConcreteSalesInvoice = () => {
             }
         });
     }
-    console.log(concreteSalesInvoices);
+    
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
      * @returns 
@@ -1135,6 +1135,7 @@ const AddConcreteSalesInvoice = () => {
             }
         ).then((response) => {
             setTicketNumber(ticketNumber + 1);
+            console.log(response.data.concreteSalesInvoice);
             // setCustomers(prev => [...prev, response.data.concreteSalesInvoice]);
             form.current.reset();
             MySwal.fire({

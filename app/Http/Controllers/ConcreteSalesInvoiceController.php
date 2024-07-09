@@ -60,6 +60,8 @@ class ConcreteSalesInvoiceController extends Controller
                 $concreteSalesInvoice->customer_id =  $customer_id;
                 $concreteSalesInvoice->fill($key);
                 $concreteSalesInvoice->save();
+                $concreteSalesInvoice=[$concreteSalesInvoice, $concreteSalesInvoice->customer, $concreteSalesInvoice->truck];
+
             }
           
         } catch (\Throwable $th) {
@@ -104,7 +106,7 @@ class ConcreteSalesInvoiceController extends Controller
         //     throw $e;
         // }
 
-        // return response()->json(['customer' =>  $customer], 200);
+        return response()->json(['concreteSalesInvoice' =>  $concreteSalesInvoice], 200);
     }
 
     /**
