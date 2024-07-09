@@ -45,7 +45,7 @@ class ConcreteSalesInvoiceController extends Controller
             $customer_id = $request->validated()['customer_id'];
             // dd($request->validated()['invoice']);
             foreach ($request->validated()['invoice'] as $key) {
-              
+
 
                 $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
                 $this->sandDeduction(
@@ -56,14 +56,31 @@ class ConcreteSalesInvoiceController extends Controller
                 $this->mixerOwnerSalary($key['ownerId'], $key['fare']);
                 $this->customerDebt($customer_id, $key['totalPrice']);
 
-                $concreteSalesInvoice = new ConcreteSalesInvoice;
-                $concreteSalesInvoice->customer_id =  $customer_id;
-                $concreteSalesInvoice->fill($key);
-                $concreteSalesInvoice->save();
-                $concreteSalesInvoice=[$concreteSalesInvoice, $concreteSalesInvoice->customer, $concreteSalesInvoice->truck];
+                // $concreteSalesInvoice = new ConcreteSalesInvoice;
+                // $concreteSalesInvoice->customer_id =  $customer_id;
+                // $concreteSalesInvoice->fill($key);
+                // $concreteSalesInvoice->save();
 
+                $concreteSalesInvoice = ConcreteSalesInvoice::with('customer', 'truck')->create([
+                    'customer_id' => $customer_id,
+                    'time' => $key['time'],
+                    'date' => $key['date'],
+                    'concrete_id' => $key['concrete_id'],
+                    'unitPrice' => $key['unitPrice'],
+                    'weight' => $key['weight'],
+                    'cubicMeters' => $key['cubicMeters'],
+                    'cementStore_id' => $key['cementStore_id'],
+                    'totalPrice' => $key['totalPrice'],
+                    'truck_id' => $key['truck_id'],
+                    'ownerId' => $key['ownerId'],
+                    'driver_id' => $key['driver_id'],
+                    'fare' => $key['fare'],
+                    'maskanMeli' => $key['maskanMeli'],
+                    'vahed' => $key['vahed'],
+                    'address' => $key['address'],
+                    'concretingPosition' => $key['concretingPosition']
+                ]);
             }
-          
         } catch (\Throwable $th) {
             throw $th;
             dd('not');
@@ -108,6 +125,28 @@ class ConcreteSalesInvoiceController extends Controller
 
         return response()->json(['concreteSalesInvoice' =>  $concreteSalesInvoice], 200);
     }
+
+    // public function store(StoreConcreteSalesInvoiceRequest $request)
+    // {
+    //     try {
+    //         $customer_id = $request->validated()['customer_id'];
+    //         foreach ($request->validated()['invoice'] as $key) {
+
+    //             $concreteSalesInvoice = new ConcreteSalesInvoice;
+    //             $concreteSalesInvoice->customer_id =  $customer_id;
+    //             $concreteSalesInvoice->fill($key);
+    //             $concreteSalesInvoice->save();
+
+
+    //         }
+
+    //     } catch (\Throwable $th) {
+    //         throw $th;
+    //     }
+
+
+    //     return response()->json(['concreteSalesInvoice' =>  $concreteSalesInvoice], 200);
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -280,6 +319,5 @@ class ConcreteSalesInvoiceController extends Controller
             ['customer_id' => $ownerId],
             ['creditor' => DB::raw('creditor + ' . $fare)]
         );
-        
     }
 }
