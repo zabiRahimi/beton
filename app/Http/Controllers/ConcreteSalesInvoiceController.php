@@ -56,30 +56,32 @@ class ConcreteSalesInvoiceController extends Controller
                 $this->mixerOwnerSalary($key['ownerId'], $key['fare']);
                 $this->customerDebt($customer_id, $key['totalPrice']);
 
-                // $concreteSalesInvoice = new ConcreteSalesInvoice;
-                // $concreteSalesInvoice->customer_id =  $customer_id;
-                // $concreteSalesInvoice->fill($key);
-                // $concreteSalesInvoice->save();
+                $concreteSalesInvoice = new ConcreteSalesInvoice;
+                $concreteSalesInvoice->customer_id =  $customer_id;
+                $concreteSalesInvoice->fill($key);
+                $concreteSalesInvoice->save();
 
-                $concreteSalesInvoice = ConcreteSalesInvoice::with('customer', 'truck')->create([
-                    'customer_id' => $customer_id,
-                    'time' => $key['time'],
-                    'date' => $key['date'],
-                    'concrete_id' => $key['concrete_id'],
-                    'unitPrice' => $key['unitPrice'],
-                    'weight' => $key['weight'],
-                    'cubicMeters' => $key['cubicMeters'],
-                    'cementStore_id' => $key['cementStore_id'],
-                    'totalPrice' => $key['totalPrice'],
-                    'truck_id' => $key['truck_id'],
-                    'ownerId' => $key['ownerId'],
-                    'driver_id' => $key['driver_id'],
-                    'fare' => $key['fare'],
-                    'maskanMeli' => $key['maskanMeli'],
-                    'vahed' => $key['vahed'],
-                    'address' => $key['address'],
-                    'concretingPosition' => $key['concretingPosition']
-                ]);
+                // $concreteSalesInvoice = ConcreteSalesInvoice::create([
+                //     'customer_id' => $customer_id,
+                //     'time' => $key['time'],
+                //     'date' => $key['date'],
+                //     'concrete_id' => $key['concrete_id'],
+                //     'unitPrice' => $key['unitPrice'],
+                //     'weight' => $key['weight'],
+                //     'cubicMeters' => $key['cubicMeters'],
+                //     'cementStore_id' => $key['cementStore_id'],
+                //     'totalPrice' => $key['totalPrice'],
+                //     'truck_id' => $key['truck_id'],
+                //     'ownerId' => $key['ownerId'],
+                //     'driver_id' => $key['driver_id'],
+                //     'fare' => $key['fare'],
+                //     'maskanMeli' => $key['maskanMeli'],
+                //     'vahed' => $key['vahed'],
+                //     'address' => $key['address'],
+                //     'concretingPosition' => $key['concretingPosition']
+                // ]);
+            $concreteSalesInvoice->load('customer','concrete', 'truck', 'driver');
+
             }
         } catch (\Throwable $th) {
             throw $th;

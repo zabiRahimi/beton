@@ -426,7 +426,7 @@ const AddConcreteSalesInvoice = () => {
     async function getConcreteSalesInvoices() {
         await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
             setConcreteSalesInvoices(response.data.concreteSalesInvoices);
-            setTicketNumber(response.data.concreteSalesInvoices.length);
+            setTicketNumber(response.data.concreteSalesInvoices.length + 1);
         });
     }
 
@@ -642,6 +642,7 @@ const AddConcreteSalesInvoice = () => {
             }
         });
     }
+    console.log(concreteSalesInvoices);
     
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -1136,7 +1137,7 @@ const AddConcreteSalesInvoice = () => {
         ).then((response) => {
             setTicketNumber(ticketNumber + 1);
             console.log(response.data.concreteSalesInvoice);
-            // setCustomers(prev => [...prev, response.data.concreteSalesInvoice]);
+            setConcreteSalesInvoices(prev => [...prev, response.data.concreteSalesInvoice]);
             form.current.reset();
             MySwal.fire({
                 icon: "success",
