@@ -44,6 +44,7 @@ class ConcreteSalesInvoiceController extends Controller
         try {
             $customer_id = $request->validated()['customer_id'];
             // dd($request->validated()['invoice']);
+            $allResult=[];
             foreach ($request->validated()['invoice'] as $key) {
 
 
@@ -80,7 +81,7 @@ class ConcreteSalesInvoiceController extends Controller
                 //     'address' => $key['address'],
                 //     'concretingPosition' => $key['concretingPosition']
                 // ]);
-            $concreteSalesInvoice->load('customer','concrete', 'truck', 'driver');
+                $allResult[]= $concreteSalesInvoice->load('customer','concrete', 'truck', 'driver');
 
             }
         } catch (\Throwable $th) {
@@ -125,7 +126,7 @@ class ConcreteSalesInvoiceController extends Controller
         //     throw $e;
         // }
 
-        return response()->json(['concreteSalesInvoice' =>  $concreteSalesInvoice], 200);
+        return response()->json(['concreteSalesInvoice' =>  $allResult], 200);
     }
 
     // public function store(StoreConcreteSalesInvoiceRequest $request)

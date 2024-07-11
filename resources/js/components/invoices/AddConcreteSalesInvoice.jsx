@@ -1136,8 +1136,12 @@ const AddConcreteSalesInvoice = () => {
             }
         ).then((response) => {
             setTicketNumber(ticketNumber + 1);
+           
             console.log(response.data.concreteSalesInvoice);
-            setConcreteSalesInvoices(prev => [...prev, response.data.concreteSalesInvoice]);
+            // setConcreteSalesInvoices(prev => [...prev, response.data.concreteSalesInvoice]);
+            response.data.concreteSalesInvoice.map((invoice)=>{
+                setConcreteSalesInvoices(prev => [...prev, invoice]);
+            })
             form.current.reset();
             MySwal.fire({
                 icon: "success",
