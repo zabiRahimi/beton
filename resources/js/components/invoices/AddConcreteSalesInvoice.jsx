@@ -642,8 +642,7 @@ const AddConcreteSalesInvoice = () => {
             }
         });
     }
-    console.log(concreteSalesInvoices);
-    
+
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
      * @returns 
@@ -652,12 +651,12 @@ const AddConcreteSalesInvoice = () => {
         let numberRow = concreteSalesInvoices.length;
         const reversedCustomers = concreteSalesInvoices.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedCustomers.map((concreteSalesInvoice, i) => {
-            let numberplate =concreteSalesInvoice['truck'].numberplate.split('-');
-            let date =concreteSalesInvoice['date'].split('-');
+            let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
+            let date = concreteSalesInvoice['date'].split('-');
             return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">{i + 1}</span>{/* ردیف */}
                 <span className="ticketNumberACSI_Ge">{concreteSalesInvoice['id']}</span>{/* قبض */}
-                <span className="customerACSI_Ge">{concreteSalesInvoice['customer'].name}{'  '}{ concreteSalesInvoice['customer'].lastName}</span>{/* خریدار */}
+                <span className="customerACSI_Ge">{concreteSalesInvoice['customer'].name}{'  '}{concreteSalesInvoice['customer'].lastName}</span>{/* خریدار */}
                 <span className="concreteACSI_Ge">{concreteSalesInvoice['concrete'].concreteName}</span>{/* بتن */}
                 <span className="truckACSI_Ge"><div className="numberplateDiv">
                     <span className="numberplateDivS1">{numberplate[0]}</span>
@@ -665,7 +664,7 @@ const AddConcreteSalesInvoice = () => {
                     <span className="numberplateDivS3">{numberplate[1]}</span>
                     <span className="numberplateDivS4">{numberplate[2]}</span>
                 </div></span>{/* میکسر */}
-                <span className="driverACSI_Ge"> {concreteSalesInvoice['driver'].name}{'  '}{ concreteSalesInvoice['driver'].lastName}</span>{/* راننده */}
+                <span className="driverACSI_Ge"> {concreteSalesInvoice['driver'].name}{'  '}{concreteSalesInvoice['driver'].lastName}</span>{/* راننده */}
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>{/* تاریخ */}
                 <span className="timeACSI_Ge">{concreteSalesInvoice['time']}</span>{/* ساعت */}
 
@@ -691,14 +690,6 @@ const AddConcreteSalesInvoice = () => {
 
         return value;
     }
-
-    const showListTypes = (id) => {
-        refDownIcons['down' + id].current.classList.toggle('--displayNone');
-        refUpIcons['up' + id].current.classList.toggle('--displayNone');
-        refListTypes['list' + id].current.classList.toggle('--displayNone');
-    }
-
-
 
     const changeDay = (e, i) => {
         let { value } = e.target;
@@ -829,63 +820,15 @@ const AddConcreteSalesInvoice = () => {
         let concreteSalesInvoice = concreteSalesInvoices.find(concreteSalesInvoice => concreteSalesInvoice.id === id0);
         concreteSalesInvoice && setId(id0);
         const { id, created_at, updated_at, ...rest } = concreteSalesInvoice;//نادیده گرفتن کلید های مشخص شده
-        renameKey(rest, 'customer_type', 'types');
-        renameKey(rest, 'bank_info', 'bankInfo');
 
-        /**
-         * چنانچه یک رکورد حاوی تعداد زیادی اطلاعات بانکی است
-         * این اطلاعات را نشان می دهد
-         */
-        rest.bankInfo.map((_, i) => {
-            switch (i) {
-                case 1:
-                    sectionBank2.current.classList.remove('--displayNone');
-                    moreBank1.current.classList.add('--displayNone');
-                    break;
-                case 2:
-                    sectionBank3.current.classList.remove('--displayNone');
-                    moreBank2.current.classList.add('--displayNone');
-                    break;
-                case 3:
-                    sectionBank4.current.classList.remove('--displayNone');
-                    moreBank3.current.classList.add('--displayNone');
-                    break;
-                case 4:
-                    sectionBank5.current.classList.remove('--displayNone');
-                    moreBank4.current.classList.add('--displayNone');
-                    break;
-            }
-        })
+
+
 
         // کپی از شی برای انجام تغییرات
         let datas = { ...rest };
 
-        /**
-         * هنگام فراخوانی رکورد از دیتابیس اطلاعات اضافی رکورد نیز برگردانده می‌شود
-         * که مورد نیاز نیست، برای حذف ستونهای اضافی از کد زیر استفاده می‌شود
-         * در واقع کد زیر ستونهای مورد نیاز را برمیگرداند 
-         */
-        datas['types'] = datas['types'].map(function (item) {
-            let code = item.code;
-            let type = item.type;
-            let subtype = item.subtype;
-            return ({ code, type, subtype });
-        });
 
-        /**
-         * به کامنت کد بالا مراجعه کنید
-         */
-        if (datas['bankInfo'].length > 0) {
-            datas['bankInfo'] = datas['bankInfo'].map(function (item) {
-                let bank = item.bank,
-                    account = item.account,
-                    card = item.card,
-                    shaba = item.shaba;
-                return ({ bank, account, card, shaba });
-            });
-        } else {
-            datas['bankInfo'] = [{ bank: '', account: '', card: '', shaba: '' }]
-        }
+
 
         setInput(datas);
 
@@ -898,13 +841,7 @@ const AddConcreteSalesInvoice = () => {
         }
 
 
-        // updatedCustomerTypes.map((type, i) => {
 
-        //     lableCustomerType.current.textContent += i == 0 ? type.type + ' ' + (type.subtype || '') : '، ' + type.type + ' ' + (type.subtype || '');
-
-        //     let ref = refs[type.code];
-        //     ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-        // });
 
     }
 
@@ -1135,13 +1072,11 @@ const AddConcreteSalesInvoice = () => {
                 }
             }
         ).then((response) => {
-            setTicketNumber(ticketNumber + 1);
-           
-            console.log(response.data.concreteSalesInvoice);
-            // setConcreteSalesInvoices(prev => [...prev, response.data.concreteSalesInvoice]);
-            response.data.concreteSalesInvoice.map((invoice)=>{
+            response.data.concreteSalesInvoice.map((invoice) => {
                 setConcreteSalesInvoices(prev => [...prev, invoice]);
-            })
+            });
+            setTicketNumber(ticketNumber + response.data.concreteSalesInvoice.length);
+
             form.current.reset();
             MySwal.fire({
                 icon: "success",
@@ -1590,7 +1525,510 @@ const AddConcreteSalesInvoice = () => {
 
                         </div>
 
-                        {invoice.map((inv, i) => {
+                        <div key={1}>
+                            <div className="containerCSI_FB">
+                                <div className="sectionFB">
+                                    <div className="containerInputFB">
+                                        <div className="divInputFB">
+                                            <label htmlFor="nationalCode">شماره قبض </label>
+                                            <div className="mainTicketNumberACSI_FB">
+                                                <div className="ticketNumberACSI_FB">
+                                                    {/* {ticketNumber + i} */}
+                                                    12
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                    </div>
+                                </div>
+                                <div className="sectionFB">
+
+                                    <div className="containerInputFB">
+                                        <div className="divInputFB ">
+                                            <label htmlFor="day"> ساعت </label>
+                                            <div className="divDateBirth">
+                                                <div className="divUpDateAcus element" id='timeEdit'
+                                                // ref={refDate['hour' + (i)]}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputDayTDACus element"
+                                                        placeholder="00"
+                                                        id="hour"
+                                                        value={second || ''}
+                                                        onInput={(e) => changeSecond(e, i)}
+                                                        onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    />
+                                                    <span>:</span>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputMonthTDACus element"
+                                                        placeholder="00"
+                                                        value={minute || ''}
+                                                        onInput={(e) => changeMinute(e, i)}
+                                                        onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    />
+                                                    <span>:</span>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputYearTDACus element"
+                                                        placeholder="00"
+                                                        value={hour || ''}
+                                                    // onInput={(e) => { changeHour(e, i) }}
+                                                    // onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    />
+                                                    <i className="icofont-ui-rating starFB" />
+                                                </div>
+
+                                                <div className="divDownDateAcus" >
+                                                    <select
+                                                        className="element"
+                                                        value={second}
+                                                    // ref={daySelect}
+                                                    // onChange={(e) => changeSecond(e, i)}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    >
+                                                        <option value=""> ثانیه </option>
+                                                        {optionSeconds}
+                                                    </select>
+                                                    <select
+                                                        className="element"
+                                                        value={minute}
+                                                    // ref={monthSelect}
+                                                    // onChange={(e) => changeMinute(e, i)}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    >
+                                                        <option value=""> دقیقه </option>
+                                                        {optionMinutes}
+                                                    </select>
+                                                    <select
+                                                        className="element"
+                                                        value={hour}
+                                                    // ref={yearSelect}
+                                                    // onChange={(e) => { changeHour(e, i) }}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    >
+                                                        <option value=""> ساعت </option>
+                                                        {optionHours}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* <div className="errorContainerFB elementError" id={`invoice.${i}.timeError`} ref={refInvoice[`timeError${i}`]}> </div> */}
+                                    </div>
+
+                                    <div className="containerInputFB">
+                                        <div className="divInputFB ">
+                                            <label htmlFor="day">تاریخ  </label>
+                                            <div className="divDateBirth">
+                                                <div className="divUpDateAcus element" id="dateEdit"
+                                                // ref={refDate['date' + (i)]}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputDayTDACus element"
+                                                        placeholder="1"
+                                                        id="day"
+                                                        value={day || ''}
+                                                    // onInput={(e) => changeDay(e, i)}
+                                                    // onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    />
+                                                    <span>/</span>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputMonthTDACus element"
+                                                        placeholder="1"
+                                                        value={month || ''}
+                                                    // onInput={(e) => changeMonth(e, i)}
+                                                    // onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    />
+                                                    <span>/</span>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputYearTDACus element"
+                                                        placeholder="1300"
+                                                        value={year || ''}
+                                                    // onInput={(e) => { changeYear(e, i) }}
+                                                    // onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    />
+                                                    <i className="icofont-ui-rating starFB" />
+                                                </div>
+
+                                                <div className="divDownDateAcus" >
+                                                    <select
+                                                        className="element"
+                                                        value={day}
+                                                    // ref={daySelect}
+                                                    // onChange={(e) => changeDay(e, i)}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    >
+                                                        <option value="">روز</option>
+                                                        {optionDays}
+                                                    </select>
+                                                    <select
+                                                        className="element"
+                                                        value={month}
+                                                    // ref={monthSelect}
+                                                    // onChange={(e) => changeMonth(e, i)}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    >
+                                                        <option value="">ماه</option>
+                                                        {optionMonth}
+                                                    </select>
+                                                    <select
+                                                        className="element"
+                                                        value={year}
+                                                        ref={yearSelect}
+                                                    // onChange={(e) => { changeYear(e, i) }}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    >
+                                                        <option value="">سال</option>
+                                                        {optionShortYears}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* <div className="errorContainerFB elementError" id={`invoice.${i}.dateError`} ref={refInvoice[`dateError${i}`]}> </div> */}
+                                    </div>
+                                </div>
+                                <div className="sectionFB">
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor='concrete_id'> عیار بتن </label>
+                                        <div
+                                            id={`concrete_id`}
+                                            className="element"
+                                            onClick={e => { setInvoiceIndexForConcrete(i); clearInputError(e, refInvoice[`concrete_idError`]) }}
+                                        >
+                                            <SelectZabi
+                                                primaryLabel='انتخاب'
+                                                options={concretes}
+                                                saveOption={setConcreteId}
+                                                // ref={refInvoice[`concrete_id${i}`]}
+                                            />
+                                        </div>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.concrete_idError`} ref={refInvoice[`concrete_idError${i}`]}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.unitPrice`}> قیمت واحد بتن (مترمکعب) </label>
+                                        <input
+                                            type="text"
+                                            id={`invoice.${i}.unitPrice`}
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={unitPrice}
+                                            ref={refInvoice[`unitPrice${i}`]}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'unitPrice', i);
+                                                formatNub('unitPrice', i);
+                                                handleTotalPriceCalculation(e, i, 'unitPrice');
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, refInvoice[`unitPriceError${i}`])}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor(`invoice.${i}.unitPrice`)}
+                                        >
+                                            تومان
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id={`invoice.${i}.unitPriceError`}
+                                        ref={refInvoice[`unitPriceError${i}`]}
+                                    >
+                                    </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.weight`}> وزن خالص بار </label>
+                                        <input
+                                            type="text"
+                                            id={`invoice.${i}.weight`}
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={input.invoice[i].weight}
+                                            ref={refInvoice[`weight${i}`]}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'weight', i);
+                                                formatNub('weight', i);
+                                                handleCubicMetersCalculation(e, i);
+                                                handleTotalPriceCalculation(e, i, 'weight');
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, refInvoice[`weightError${i}`])}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor(`invoice.${i}.weight`)}
+                                        >
+                                            کیلو گرم
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id={`invoice.${i}.weightError`}
+                                        ref={refInvoice[`weightError${i}`]}
+                                    >
+                                    </div>
+                                </div>
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label> حجم بار </label>
+                                        <div className="mainCubicMetersACSL_FB">
+                                            <div className="cubicMetersACSL_FB"
+                                                ref={refInvoice[`cubicMeters${i}`]}>0</div>
+                                            <span className="spanCubicMetersACSL_FB">
+                                                متر مکعب
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.cementStore_id`}> سیلوی سیمان </label>
+                                        <div
+                                            id={`invoice.${i}.cementStore_id`}
+                                            className="element"
+                                            onClick={e => { clearInputError(e, refInvoice[`cementStore_idError${i}`]); setInvoiceIndexForCementStore(i) }}
+                                        >
+                                            <SelectZabi
+                                                primaryLabel='انتخاب'
+                                                options={cementStores}
+                                                saveOption={setCementStoreId}
+                                                ref={refInvoice[`cementStore_id${i}`]}
+                                            />
+                                        </div>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.cementStore_idError`} ref={refInvoice[`cementStore_idError${i}`]} > </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label> قیمت کل </label>
+                                        <div className="mainTotalPriceACSL_FB">
+                                            <div className="totalPriceACSL_FB"
+                                                ref={refInvoice[`totalPrice${i}`]}
+                                            >0</div>
+                                            <span className="spanTotalPriceACSL_FB">
+                                                تومان
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                                {/* <div className="sectionFB">
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.truck_id`}> میکسر </label>
+                                        <div
+                                            id={`invoice.${i}.truck_id`}
+                                            className="element"
+                                            onClick={e => { clearInputError(e, refInvoice[`truck_idError${i}`]); setInvoiceIndexForMixer(i) }}
+                                        >
+                                            <SelectZabi
+                                                primaryLabel='انتخاب'
+                                                options={mixers}
+                                                saveOption={setTruckId}
+                                                saveOption2={setOwnerId}
+                                                ref={refInvoice[`truck_id${i}`]}
+                                            />
+                                        </div>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.truck_idError`} ref={refInvoice[`truck_idError${i}`]} > </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.driver_id`}> راننده </label>
+                                        <div
+                                            id={`invoice.${i}.driver_id`}
+                                            className="element"
+                                            onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, refInvoice[`driver_idError${i}`]); }}
+                                        >
+                                            <SelectZabi
+                                                primaryLabel='انتخاب'
+                                                options={drivers}
+                                                saveOption={setDriverId}
+                                                ref={refInvoice[`driver_id${i}`]}
+                                            />
+                                        </div>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.driver_idError`} ref={refInvoice[`driver_idError${i}`]} > </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.fare`}> کرایه میکسر </label>
+                                        <input
+                                            type="text"
+                                            id={`invoice.${i}.fare`}
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={fare}
+                                            ref={refInvoice[`fare${i}`]}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'fare', i);
+                                                formatNub('fare', i);
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, refInvoice[`fareError${i}`])}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor(`invoice.${i}.fare`)}
+                                        >
+                                            تومان
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id={`invoice.${i}.fareError`}
+                                        ref={refInvoice[`fareError${i}`]}
+                                    >
+                                    </div>
+                                </div>
+
+                            </div> */}
+
+                                {/* <div className="sectionFB">
+                                <div className="containerInputFB">
+                                    <div className="divInputCheckboxFB">
+
+                                        <input
+                                            type="checkbox"
+                                            id={`invoice.${i}.emam`}
+                                            className="inputCheckboxFB  element pointerFB"
+                                            value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${i}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
+
+                                            onChange={e => {
+                                                handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i);
+                                                clearInputError(e, '', false, false, '', i);
+                                            }}
+
+
+
+                                            checked={checkedMaskanMeli == `emam${i}` || maskan[i] == 'مسکن ملی شهرک امام خمینی'}
+
+                                            ref={refInvoice[`checkBaxEmam${i}`]}
+                                        />
+                                        <label htmlFor={`invoice.${i}.emam`}
+                                            className={`labelCheckboxFB pointerFB  ${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
+                                            id={`labelEmam${i}`}>مسکن ملی (شهرک امام خمینی) </label>
+                                    </div>
+                                    <div className="errorContainerFB elementError" > </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputCheckboxFB">
+
+                                        <input
+                                            type="checkbox"
+                                            id={`invoice.${i}.shahid`}
+                                            className="inputCheckboxFB  element pointerFB"
+
+                                            value={refInvoice[`checkedMaskanShahid${i}`] && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
+
+                                            onChange={e => {
+                                                handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `shahid${i}`, i);
+                                                clearInputError(e, '', false, false, '', i);
+                                            }}
+
+
+                                            checked={checkedMaskanMeli == `shahid${i}` || maskan[i] == 'مسکن ملی شهرک شهید رییسی'}
+
+                                            ref={refInvoice[`checkBaxShahid${i}`]}
+
+                                        />
+                                        <label htmlFor={`invoice.${i}.shahid`}
+                                            className={`labelCheckboxFB pointerFB ${maskan[i] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
+                                        >مسکن ملی (شهرک شهید رئیسی) </label>
+                                    </div>
+                                    <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.vahed`} className={`${(maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
+                                        <input
+                                            type="text"
+                                            id={`invoice.${i}.vahed`}
+                                            className="inputTextFB ltrFB element"
+
+                                            defaultValue={vahed}
+                                            onInput={e => handleSaveValInput(e, 'vahed', i)}
+                                            onFocus={(e) => clearInputError(e, refInvoice[`vahedError${i}`])}
+                                            disabled={maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی'}
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.vahedError`} ref={refInvoice[`vahedError${i}`]}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.address`}>آدرس</label>
+                                        <textarea
+                                            id={`invoice.${i}.address`}
+                                            className="textareaAddressCSI_FB element"
+                                            defaultValue={address}
+                                            onInput={e => handleSaveValInput(e, 'address', i)}
+                                            onFocus={(e) => clearInputError(e, refInvoice[`addressError${i}`])}
+
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.addressError`} ref={refInvoice[`addressError${i}`]}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.concretingPosition`} >موقعیت بتن‌ریزی </label>
+                                        <textarea
+                                            id={`invoice.${i}.concretingPosition`}
+                                            className="textareaAddressCSI_FB element"
+                                            defaultValue={concretingPosition}
+                                            onInput={e => handleSaveValInput(e, 'concretingPosition', i)}
+                                            onFocus={(e) => clearInputError(e, refInvoice[`concretingPositionError${i}`])}
+
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.concretingPositionError`} ref={refInvoice[`concretingPositionError${i}`]}> </div>
+                                </div>
+
+                            </div> */}
+
+                            </div>
+                        </div>
+
+                        {!editMode ? (invoice.map((inv, i) => {
                             return <div key={i}>
                                 <div className="containerCSI_FB">
                                     <div className="sectionFB">
@@ -1847,7 +2285,6 @@ const AddConcreteSalesInvoice = () => {
                                                     id={`invoice.${i}.weight`}
                                                     className="inputTextUnitFB ltrFB element"
                                                     defaultValue={input.invoice[i].weight}
-                                                    // ref={refWeight['weight' + (i + 1)]}
                                                     ref={refInvoice[`weight${i}`]}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'weight', i);
@@ -1904,7 +2341,7 @@ const AddConcreteSalesInvoice = () => {
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={}> </div> */}
+
                                             <div className="errorContainerFB elementError" id={`invoice.${i}.cementStore_idError`} ref={refInvoice[`cementStore_idError${i}`]} > </div>
                                         </div>
 
@@ -1924,7 +2361,7 @@ const AddConcreteSalesInvoice = () => {
                                         </div>
                                     </div>
 
-                                    <div className="sectionFB">
+                                    {/* <div className="sectionFB">
 
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
@@ -1944,7 +2381,6 @@ const AddConcreteSalesInvoice = () => {
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            {/* <div className="errorContainerFB elementError" id="customer_idError" ref={}> </div> */}
                                             <div className="errorContainerFB elementError" id={`invoice.${i}.truck_idError`} ref={refInvoice[`truck_idError${i}`]} > </div>
                                         </div>
 
@@ -2000,9 +2436,9 @@ const AddConcreteSalesInvoice = () => {
                                             </div>
                                         </div>
 
-                                    </div>
+                                    </div> */}
 
-                                    <div className="sectionFB">
+                                    {/* <div className="sectionFB">
                                         <div className="containerInputFB">
                                             <div className="divInputCheckboxFB">
 
@@ -2028,7 +2464,6 @@ const AddConcreteSalesInvoice = () => {
                                                     id={`labelEmam${i}`}>مسکن ملی (شهرک امام خمینی) </label>
                                             </div>
                                             <div className="errorContainerFB elementError" > </div>
-                                            {/* <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div> */}
                                         </div>
 
                                         <div className="containerInputFB">
@@ -2069,8 +2504,6 @@ const AddConcreteSalesInvoice = () => {
                                                     type="text"
                                                     id={`invoice.${i}.vahed`}
                                                     className="inputTextFB ltrFB element"
-
-                                                    // defaultValue={input.invoice[i].vahed}
                                                     defaultValue={vahed}
                                                     onInput={e => handleSaveValInput(e, 'vahed', i)}
                                                     onFocus={(e) => clearInputError(e, refInvoice[`vahedError${i}`])}
@@ -2110,18 +2543,523 @@ const AddConcreteSalesInvoice = () => {
                                             <div className="errorContainerFB elementError" id={`invoice.${i}.concretingPositionError`} ref={refInvoice[`concretingPositionError${i}`]}> </div>
                                         </div>
 
-                                    </div>
+                                    </div> */}
 
                                 </div>
                             </div>
 
-                        })}
-                        <div className="divBtnAddInmoiceCSI_FB">
+                        })) : (<div>
+                            <div className="containerCSI_FB">
+                                <div className="sectionFB">
+                                    <div className="containerInputFB">
+                                        <div className="divInputFB">
+                                            <label htmlFor="nationalCode">شماره قبض </label>
+                                            <div className="mainTicketNumberACSI_FB">
+                                                <div className="ticketNumberACSI_FB">
+                                                    {/* {ticketNumber + i} */}
+                                                    12
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                    </div>
+                                </div>
+                                <div className="sectionFB">
+
+                                    <div className="containerInputFB">
+                                        <div className="divInputFB ">
+                                            <label htmlFor="day"> ساعت </label>
+                                            <div className="divDateBirth">
+                                                <div className="divUpDateAcus element" id='timeEdit'
+                                                // ref={refDate['hour' + (i)]}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputDayTDACus element"
+                                                        placeholder="00"
+                                                        id="hour"
+                                                        value={second || ''}
+                                                        onInput={(e) => changeSecond(e, i)}
+                                                        onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    />
+                                                    <span>:</span>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputMonthTDACus element"
+                                                        placeholder="00"
+                                                        value={minute || ''}
+                                                        onInput={(e) => changeMinute(e, i)}
+                                                        onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    />
+                                                    <span>:</span>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputYearTDACus element"
+                                                        placeholder="00"
+                                                        value={hour || ''}
+                                                    // onInput={(e) => { changeHour(e, i) }}
+                                                    // onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    />
+                                                    <i className="icofont-ui-rating starFB" />
+                                                </div>
+
+                                                <div className="divDownDateAcus" >
+                                                    <select
+                                                        className="element"
+                                                        value={second}
+                                                    // ref={daySelect}
+                                                    // onChange={(e) => changeSecond(e, i)}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    >
+                                                        <option value=""> ثانیه </option>
+                                                        {optionSeconds}
+                                                    </select>
+                                                    <select
+                                                        className="element"
+                                                        value={minute}
+                                                    // ref={monthSelect}
+                                                    // onChange={(e) => changeMinute(e, i)}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    >
+                                                        <option value=""> دقیقه </option>
+                                                        {optionMinutes}
+                                                    </select>
+                                                    <select
+                                                        className="element"
+                                                        value={hour}
+                                                    // ref={yearSelect}
+                                                    // onChange={(e) => { changeHour(e, i) }}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], false, true, `invoice.${i}.time`)}
+
+                                                    >
+                                                        <option value=""> ساعت </option>
+                                                        {optionHours}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* <div className="errorContainerFB elementError" id={`invoice.${i}.timeError`} ref={refInvoice[`timeError${i}`]}> </div> */}
+                                    </div>
+
+                                    <div className="containerInputFB">
+                                        <div className="divInputFB ">
+                                            <label htmlFor="day">تاریخ  </label>
+                                            <div className="divDateBirth">
+                                                <div className="divUpDateAcus element" id="dateEdit"
+                                                // ref={refDate['date' + (i)]}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputDayTDACus element"
+                                                        placeholder="1"
+                                                        id="day"
+                                                        value={day || ''}
+                                                    // onInput={(e) => changeDay(e, i)}
+                                                    // onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    />
+                                                    <span>/</span>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputMonthTDACus element"
+                                                        placeholder="1"
+                                                        value={month || ''}
+                                                    // onInput={(e) => changeMonth(e, i)}
+                                                    // onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    />
+                                                    <span>/</span>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextDateACus inputYearTDACus element"
+                                                        placeholder="1300"
+                                                        value={year || ''}
+                                                    // onInput={(e) => { changeYear(e, i) }}
+                                                    // onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    />
+                                                    <i className="icofont-ui-rating starFB" />
+                                                </div>
+
+                                                <div className="divDownDateAcus" >
+                                                    <select
+                                                        className="element"
+                                                        value={day}
+                                                    // ref={daySelect}
+                                                    // onChange={(e) => changeDay(e, i)}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    >
+                                                        <option value="">روز</option>
+                                                        {optionDays}
+                                                    </select>
+                                                    <select
+                                                        className="element"
+                                                        value={month}
+                                                    // ref={monthSelect}
+                                                    // onChange={(e) => changeMonth(e, i)}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    >
+                                                        <option value="">ماه</option>
+                                                        {optionMonth}
+                                                    </select>
+                                                    <select
+                                                        className="element"
+                                                        value={year}
+                                                        ref={yearSelect}
+                                                    // onChange={(e) => { changeYear(e, i) }}
+                                                    // onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], false, true, `invoice.${i}.date`)}
+
+                                                    >
+                                                        <option value="">سال</option>
+                                                        {optionShortYears}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* <div className="errorContainerFB elementError" id={`invoice.${i}.dateError`} ref={refInvoice[`dateError${i}`]}> </div> */}
+                                    </div>
+                                </div>
+                                {/* <div className="sectionFB">
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.concrete_id`}> عیار بتن </label>
+                                        <div
+                                            id={`invoice.${i}.concrete_id`}
+                                            className="element"
+                                            onClick={e => { setInvoiceIndexForConcrete(i); clearInputError(e, refInvoice[`concrete_idError${i}`]) }}
+                                        >
+                                            <SelectZabi
+                                                primaryLabel='انتخاب'
+                                                options={concretes}
+                                                saveOption={setConcreteId}
+                                                ref={refInvoice[`concrete_id${i}`]}
+                                            />
+                                        </div>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.concrete_idError`} ref={refInvoice[`concrete_idError${i}`]}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.unitPrice`}> قیمت واحد بتن (مترمکعب) </label>
+                                        <input
+                                            type="text"
+                                            id={`invoice.${i}.unitPrice`}
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={unitPrice}
+                                            ref={refInvoice[`unitPrice${i}`]}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'unitPrice', i);
+                                                formatNub('unitPrice', i);
+                                                handleTotalPriceCalculation(e, i, 'unitPrice');
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, refInvoice[`unitPriceError${i}`])}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor(`invoice.${i}.unitPrice`)}
+                                        >
+                                            تومان
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id={`invoice.${i}.unitPriceError`}
+                                        ref={refInvoice[`unitPriceError${i}`]}
+                                    >
+                                    </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.weight`}> وزن خالص بار </label>
+                                        <input
+                                            type="text"
+                                            id={`invoice.${i}.weight`}
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={input.invoice[i].weight}
+                                            ref={refInvoice[`weight${i}`]}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'weight', i);
+                                                formatNub('weight', i);
+                                                handleCubicMetersCalculation(e, i);
+                                                handleTotalPriceCalculation(e, i, 'weight');
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, refInvoice[`weightError${i}`])}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor(`invoice.${i}.weight`)}
+                                        >
+                                            کیلو گرم
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id={`invoice.${i}.weightError`}
+                                        ref={refInvoice[`weightError${i}`]}
+                                    >
+                                    </div>
+                                </div>
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label> حجم بار </label>
+                                        <div className="mainCubicMetersACSL_FB">
+                                            <div className="cubicMetersACSL_FB"
+                                                ref={refInvoice[`cubicMeters${i}`]}>0</div>
+                                            <span className="spanCubicMetersACSL_FB">
+                                                متر مکعب
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.cementStore_id`}> سیلوی سیمان </label>
+                                        <div
+                                            id={`invoice.${i}.cementStore_id`}
+                                            className="element"
+                                            onClick={e => { clearInputError(e, refInvoice[`cementStore_idError${i}`]); setInvoiceIndexForCementStore(i) }}
+                                        >
+                                            <SelectZabi
+                                                primaryLabel='انتخاب'
+                                                options={cementStores}
+                                                saveOption={setCementStoreId}
+                                                ref={refInvoice[`cementStore_id${i}`]}
+                                            />
+                                        </div>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.cementStore_idError`} ref={refInvoice[`cementStore_idError${i}`]} > </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label> قیمت کل </label>
+                                        <div className="mainTotalPriceACSL_FB">
+                                            <div className="totalPriceACSL_FB"
+                                                ref={refInvoice[`totalPrice${i}`]}
+                                            >0</div>
+                                            <span className="spanTotalPriceACSL_FB">
+                                                تومان
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div> */}
+
+                                {/* <div className="sectionFB">
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.truck_id`}> میکسر </label>
+                                        <div
+                                            id={`invoice.${i}.truck_id`}
+                                            className="element"
+                                            onClick={e => { clearInputError(e, refInvoice[`truck_idError${i}`]); setInvoiceIndexForMixer(i) }}
+                                        >
+                                            <SelectZabi
+                                                primaryLabel='انتخاب'
+                                                options={mixers}
+                                                saveOption={setTruckId}
+                                                saveOption2={setOwnerId}
+                                                ref={refInvoice[`truck_id${i}`]}
+                                            />
+                                        </div>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.truck_idError`} ref={refInvoice[`truck_idError${i}`]} > </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.driver_id`}> راننده </label>
+                                        <div
+                                            id={`invoice.${i}.driver_id`}
+                                            className="element"
+                                            onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, refInvoice[`driver_idError${i}`]); }}
+                                        >
+                                            <SelectZabi
+                                                primaryLabel='انتخاب'
+                                                options={drivers}
+                                                saveOption={setDriverId}
+                                                ref={refInvoice[`driver_id${i}`]}
+                                            />
+                                        </div>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.driver_idError`} ref={refInvoice[`driver_idError${i}`]} > </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.fare`}> کرایه میکسر </label>
+                                        <input
+                                            type="text"
+                                            id={`invoice.${i}.fare`}
+                                            className="inputTextUnitFB ltrFB element"
+                                            defaultValue={fare}
+                                            ref={refInvoice[`fare${i}`]}
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'fare', i);
+                                                formatNub('fare', i);
+                                            }
+                                            }
+                                            onFocus={e => clearInputError(e, refInvoice[`fareError${i}`])}
+                                        />
+                                        <span
+                                            className="unitFB"
+                                            onClick={() => htmlFor(`invoice.${i}.fare`)}
+                                        >
+                                            تومان
+                                        </span>
+                                        <i className="icofont-ui-rating starFB" />
+                                    </div>
+                                    <div
+                                        className="errorContainerFB elementError"
+                                        id={`invoice.${i}.fareError`}
+                                        ref={refInvoice[`fareError${i}`]}
+                                    >
+                                    </div>
+                                </div>
+
+                            </div> */}
+
+                                {/* <div className="sectionFB">
+                                <div className="containerInputFB">
+                                    <div className="divInputCheckboxFB">
+
+                                        <input
+                                            type="checkbox"
+                                            id={`invoice.${i}.emam`}
+                                            className="inputCheckboxFB  element pointerFB"
+                                            value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${i}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
+
+                                            onChange={e => {
+                                                handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i);
+                                                clearInputError(e, '', false, false, '', i);
+                                            }}
+
+
+
+                                            checked={checkedMaskanMeli == `emam${i}` || maskan[i] == 'مسکن ملی شهرک امام خمینی'}
+
+                                            ref={refInvoice[`checkBaxEmam${i}`]}
+                                        />
+                                        <label htmlFor={`invoice.${i}.emam`}
+                                            className={`labelCheckboxFB pointerFB  ${maskan[i] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
+                                            id={`labelEmam${i}`}>مسکن ملی (شهرک امام خمینی) </label>
+                                    </div>
+                                    <div className="errorContainerFB elementError" > </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputCheckboxFB">
+
+                                        <input
+                                            type="checkbox"
+                                            id={`invoice.${i}.shahid`}
+                                            className="inputCheckboxFB  element pointerFB"
+
+                                            value={refInvoice[`checkedMaskanShahid${i}`] && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
+
+                                            onChange={e => {
+                                                handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `shahid${i}`, i);
+                                                clearInputError(e, '', false, false, '', i);
+                                            }}
+
+
+                                            checked={checkedMaskanMeli == `shahid${i}` || maskan[i] == 'مسکن ملی شهرک شهید رییسی'}
+
+                                            ref={refInvoice[`checkBaxShahid${i}`]}
+
+                                        />
+                                        <label htmlFor={`invoice.${i}.shahid`}
+                                            className={`labelCheckboxFB pointerFB ${maskan[i] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
+                                        >مسکن ملی (شهرک شهید رئیسی) </label>
+                                    </div>
+                                    <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeErrorRef}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.vahed`} className={`${(maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
+                                        <input
+                                            type="text"
+                                            id={`invoice.${i}.vahed`}
+                                            className="inputTextFB ltrFB element"
+
+                                            defaultValue={vahed}
+                                            onInput={e => handleSaveValInput(e, 'vahed', i)}
+                                            onFocus={(e) => clearInputError(e, refInvoice[`vahedError${i}`])}
+                                            disabled={maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی'}
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.vahedError`} ref={refInvoice[`vahedError${i}`]}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.address`}>آدرس</label>
+                                        <textarea
+                                            id={`invoice.${i}.address`}
+                                            className="textareaAddressCSI_FB element"
+                                            defaultValue={address}
+                                            onInput={e => handleSaveValInput(e, 'address', i)}
+                                            onFocus={(e) => clearInputError(e, refInvoice[`addressError${i}`])}
+
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.addressError`} ref={refInvoice[`addressError${i}`]}> </div>
+                                </div>
+
+                                <div className="containerInputFB">
+                                    <div className="divInputFB">
+                                        <label htmlFor={`invoice.${i}.concretingPosition`} >موقعیت بتن‌ریزی </label>
+                                        <textarea
+                                            id={`invoice.${i}.concretingPosition`}
+                                            className="textareaAddressCSI_FB element"
+                                            defaultValue={concretingPosition}
+                                            onInput={e => handleSaveValInput(e, 'concretingPosition', i)}
+                                            onFocus={(e) => clearInputError(e, refInvoice[`concretingPositionError${i}`])}
+
+                                        />
+                                    </div>
+                                    <div className="errorContainerFB elementError" id={`invoice.${i}.concretingPositionError`} ref={refInvoice[`concretingPositionError${i}`]}> </div>
+                                </div>
+
+                            </div> */}
+
+                            </div>
+                        </div>)}
+
+
+                        <div className={`divBtnAddInmoiceCSI_FB ${!editMode ? '' : 'hideGe'}`}>
                             <button onClick={e => { handleAddNewInvoice(e) }}>
                                 <i className='icofont-plus' />
                                 اضافه کردن فاکتور جدید
                             </button>
                         </div>
+
+
 
 
 
