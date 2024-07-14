@@ -41,7 +41,7 @@ const AddConcreteSalesInvoice = () => {
 
     const refTimeErrorEdit = useRef(null);
     const refDateErrorEdit = useRef(null);
-    const refConcrete_idEdit = useRef(null);
+    const refConcrete_idEdit = createRef();
     const refConcrete_idErrorEdit = useRef(null);
     const refUnitPriceEdit = useRef(null);
     const refUnitPriceErrorEdit = useRef(null);
@@ -58,8 +58,8 @@ const AddConcreteSalesInvoice = () => {
     const refFareEdit = useRef(null);
     const refFareErrorEdit = useRef(null);
     const refMaskanMeliErrorEdit = useRef(null);
-    const refCheckBaxEmamEdit =useRef(null);
-    const refCheckBaxShahidEdit =useRef(null);
+    const refCheckBaxEmamEdit = useRef(null);
+    const refCheckBaxShahidEdit = useRef(null);
     const refVahedErrorEdit = useRef(null);
     const refAddressErrorEdit = useRef(null);
     const refConcretingPositionErrorEdit = useRef(null);
@@ -188,6 +188,25 @@ const AddConcreteSalesInvoice = () => {
             address: '',
             concretingPosition: ''
         }],
+    });
+
+    const [inputEdit, setInputEdit] = useState({
+        customer_id: '',
+        date: '',
+        time: '',
+        weight: '',
+        cubicMeters: "",
+        concrete_id: '',
+        truck_id: '',
+        driver_id: '',
+        cementStore_id: '',
+        unitPrice: '',
+        totalPrice: '',
+        fare: '',
+        maskanMeli: '',
+        vahed: '',
+        address: '',
+        concretingPosition: ''
     });
 
     /**
@@ -443,7 +462,7 @@ const AddConcreteSalesInvoice = () => {
 
     }, [isNewInvoice]);
 
-
+   
 
     async function getConcreteSalesInvoices() {
         await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
@@ -842,10 +861,35 @@ const AddConcreteSalesInvoice = () => {
         // کپی از شی برای انجام تغییرات
         let datas = { ...rest };
 
+        console.error(datas);
+        console.log(datas.customer_id);
 
 
+       
+        setInputEdit({
+            customer_id: datas.customer_id,
+            date: datas.date,
+            time: datas.time,
+            weight: datas.weight,
+            cubicMeters: datas.cubicMeters,
+            concrete_id: datas.concrete_id,
+            truck_id: datas.truck_id,
+            driver_id: datas.driver_id,
+            cementStore_id: datas.cementStore_id,
+            unitPrice: datas.unitPrice,
+            totalPrice: datas.totalPrice,
+            fare: datas.fare,
+            maskanMeli: datas.maskanMeli,
+            vahed: datas.vahed,
+            address: datas.address,
+            concretingPosition: datas.concretingPosition
+        });
+        refCustomer_id.current && refCustomer_id.current.updateData(datas.customer.name + ' ' + datas.customer.lastName);
+        // refConcrete_idEdit.current && refConcrete_idEdit.current.updateData(datas.concrete.concreteName);
+        refConcrete_idEdit.current && refConcrete_idEdit.current.updateData('sss');
+        refConcrete_idEdit.current && console.log(refConcrete_idEdit.current);
+        console.log(refConcrete_idEdit.current);
 
-        setInput(datas);
 
 
         if (rest.date) {
@@ -940,6 +984,8 @@ const AddConcreteSalesInvoice = () => {
     }
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+
+   
 
     /**
      * این متد نام کلید یک آرایه یا یک آبجکت را تغییر می دهد
@@ -2055,8 +2101,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label>شماره قبض </label>
                                                 <div className="mainTicketNumberACSI_FB">
                                                     <div className="ticketNumberACSI_FB">
-                                                        {/* {ticketNumber + i} */}
-                                                        12
+                                                        {id}
                                                     </div>
                                                 </div>
                                             </div>
@@ -2246,7 +2291,7 @@ const AddConcreteSalesInvoice = () => {
                                                     type="text"
                                                     id='unitPriceEdit'
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={unitPrice}
+                                                    defaultValue={inputEdit.unitPrice}
                                                     ref={refUnitPriceEdit}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'unitPrice', 0);
@@ -2279,7 +2324,7 @@ const AddConcreteSalesInvoice = () => {
                                                     type="text"
                                                     id='weightEdit'
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={input.invoice[0].weight}
+                                                    defaultValue={inputEdit.weight}
                                                     ref={refWeightEdit}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'weight', 0);
@@ -2310,7 +2355,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <label> حجم بار </label>
                                                 <div className="mainCubicMetersACSL_FB">
                                                     <div className="cubicMetersACSL_FB"
-                                                        ref={refCubicMetersEdit}>0</div>
+                                                        ref={refCubicMetersEdit}>{inputEdit.cubicMeters}</div>
                                                     <span className="spanCubicMetersACSL_FB">
                                                         متر مکعب
                                                     </span>
@@ -2349,7 +2394,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <div className="mainTotalPriceACSL_FB">
                                                     <div className="totalPriceACSL_FB"
                                                         ref={refTotalPriceEdit}
-                                                    >0</div>
+                                                    >{inputEdit.totalPrice}</div>
                                                     <span className="spanTotalPriceACSL_FB">
                                                         تومان
                                                     </span>
@@ -2417,7 +2462,7 @@ const AddConcreteSalesInvoice = () => {
                                                     type="text"
                                                     id='fareEdit'
                                                     className="inputTextUnitFB ltrFB element"
-                                                    defaultValue={fare}
+                                                    defaultValue={inputEdit.fare}
                                                     ref={refFareEdit}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'fare', 0);
@@ -2497,7 +2542,7 @@ const AddConcreteSalesInvoice = () => {
 
                                                 />
                                                 <label htmlFor='shahidEdit'
-                                                    className={`labelCheckboxFB pointerFB ${maskan[i] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
+                                                    className={`labelCheckboxFB pointerFB ${maskan[0] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
                                                 >مسکن ملی (شهرک شهید رئیسی) </label>
                                             </div>
                                             <div className="errorContainerFB elementError" > </div>
@@ -2511,7 +2556,7 @@ const AddConcreteSalesInvoice = () => {
                                                     id='vahedEdit'
                                                     className="inputTextFB ltrFB element"
 
-                                                    defaultValue={vahed}
+                                                    defaultValue={inputEdit.vahed}
                                                     onInput={e => handleSaveValInput(e, 'vahed', 0)}
                                                     onFocus={(e) => clearInputError(e, refVahedErrorEdit)}
                                                     disabled={maskan[0] != 'مسکن ملی شهرک شهید رییسی' && maskan[0] != 'مسکن ملی شهرک امام خمینی'}
@@ -2526,7 +2571,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <textarea
                                                     id='addressEdit'
                                                     className="textareaAddressCSI_FB element"
-                                                    defaultValue={address}
+                                                    defaultValue={inputEdit.address}
                                                     onInput={e => handleSaveValInput(e, 'address', 0)}
                                                     onFocus={(e) => clearInputError(e, refAddressErrorEdit)}
 
@@ -2545,7 +2590,7 @@ const AddConcreteSalesInvoice = () => {
                                                 <textarea
                                                     id='concretingPositionEdit'
                                                     className="textareaAddressCSI_FB element"
-                                                    defaultValue={concretingPosition}
+                                                    defaultValue={inputEdit.concretingPosition}
                                                     onInput={e => handleSaveValInput(e, 'concretingPosition', 0)}
                                                     onFocus={(e) => clearInputError(e, refConcretingPositionErrorEdit)}
 
