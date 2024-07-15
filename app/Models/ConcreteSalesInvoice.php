@@ -21,6 +21,11 @@ class ConcreteSalesInvoice extends Model
         return $this->belongsTo(Concrete::class);
     }
 
+    public function cementStore(): BelongsTo
+    {
+        return $this->belongsTo(CementStore::class);
+    }
+
     public function truck(): BelongsTo
     {
         return $this->belongsTo(Truck::class);

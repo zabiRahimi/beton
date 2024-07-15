@@ -81,7 +81,7 @@ class ConcreteSalesInvoiceController extends Controller
                 //     'address' => $key['address'],
                 //     'concretingPosition' => $key['concretingPosition']
                 // ]);
-                $allResult[]= $concreteSalesInvoice->load('customer','concrete', 'truck', 'driver');
+                $allResult[]= $concreteSalesInvoice->load('customer','concrete', 'cementStore', 'truck', 'driver');
 
             }
         } catch (\Throwable $th) {
