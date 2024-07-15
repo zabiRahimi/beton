@@ -853,6 +853,8 @@ const AddConcreteSalesInvoice = () => {
     const pasteDataForEditing = (id0) => {
         let concreteSalesInvoice = concreteSalesInvoices.find(concreteSalesInvoice => concreteSalesInvoice.id === id0);
         concreteSalesInvoice && setId(id0);
+        console.log(concreteSalesInvoice);
+
         const { id, created_at, updated_at, ...rest } = concreteSalesInvoice;//نادیده گرفتن کلید های مشخص شده
 
         // کپی از شی برای انجام تغییرات
@@ -885,7 +887,7 @@ const AddConcreteSalesInvoice = () => {
             </span>
         </div>);
 
-refCementStore_idEdit.current && refCementStore_idEdit.current.updateData(datas.cementStore.silo);
+        refCementStore_idEdit.current && refCementStore_idEdit.current.updateData(datas.cement_store.silo);
 
 
 
