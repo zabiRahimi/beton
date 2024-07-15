@@ -854,6 +854,8 @@ const AddConcreteSalesInvoice = () => {
         let concreteSalesInvoice = concreteSalesInvoices.find(concreteSalesInvoice => concreteSalesInvoice.id === id0);
         concreteSalesInvoice && setId(id0);
         console.log(concreteSalesInvoice);
+        let numberplate = concreteSalesInvoice.truck.numberplate.split("-");
+        
 
         const { id, created_at, updated_at, ...rest } = concreteSalesInvoice;//نادیده گرفتن کلید های مشخص شده
 
@@ -888,6 +890,33 @@ const AddConcreteSalesInvoice = () => {
         </div>);
 
         refCementStore_idEdit.current && refCementStore_idEdit.current.updateData(datas.cement_store.silo);
+        refTruck_idEdit.current && refTruck_idEdit.current.updateData( <div className="mixerAptionSelectFB">
+        <span className="mixerNamberpalteSelectFB">
+            <div className="numberplateDiv">
+                <span className="numberplateDivS1">{numberplate[0]}</span>
+                <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
+                <span className="numberplateDivS3">{numberplate[1]}</span>
+                <span className="numberplateDivS4">{numberplate[2]}</span>
+            </div>
+        </span>
+
+        <span className="mixerOwnerSelectFB">
+            {datas.truck.customer.name}
+            {' '}
+            {datas.truck.customer.lastName}
+        </span>
+
+    </div>);
+        refDriver_idEdit.current && refDriver_idEdit.current.updateData(<div className="personnelAption_addPerS">
+        <span className="name_addPers">{datas.driver.name}
+            {' '}
+            {datas.driver.lastName}</span>
+
+        <span className="fther_addPers">
+            {datas.driver.father || ''}
+        </span>
+
+    </div>);
 
 
 
@@ -899,7 +928,14 @@ const AddConcreteSalesInvoice = () => {
             setDay(parts[2]);
         }
 
+        if (rest.time) {
+            let parts = rest.time.split(":");
+            setHour(parts[0]);
+            setMinute(parts[1]);
+            setSecond(parts[2]);
+        }
 
+setMaskanMeli(datas.maskanMeli);
 
 
     }
@@ -2498,19 +2534,19 @@ const AddConcreteSalesInvoice = () => {
                                                 // value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${i}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
 
                                                 onChange={e => {
-                                                    handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeli(e, `emam${0}`, 0);
+                                                    handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeli(e, `emam`, 0);
                                                     clearInputError(e, '', false, '', 0);
                                                 }}
 
 
 
-                                                checked={checkedMaskanMeli == `emam${0}` || maskan[0] == 'مسکن ملی شهرک امام خمینی'}
+                                                checked={checkedMaskanMeli == `emam` || maskanMeli == 'مسکن ملی شهرک امام خمینی'}
 
                                                 ref={refCheckBaxEmamEdit}
                                             />
                                             <label htmlFor='emamEdit'
-                                                className={`labelCheckboxFB pointerFB  ${maskan[0] != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
-                                                id={`labelEmam${0}`}>مسکن ملی (شهرک امام خمینی) </label>
+                                                className={`labelCheckboxFB pointerFB  ${maskanMeli != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
+                                                id={`labelEmam`}>مسکن ملی (شهرک امام خمینی) </label>
                                         </div>
                                         <div className="errorContainerFB elementError" > </div>
                                     </div>
@@ -2526,21 +2562,21 @@ const AddConcreteSalesInvoice = () => {
                                                 id='shahidEdit'
                                                 className="inputCheckboxFB  element pointerFB"
 
-                                                // value={refCheckedMaskanShahidEdit && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
+                                                value={refCheckedMaskanShahidEdit && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
 
                                                 onChange={e => {
-                                                    handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeli(e, `shahid${0}`, 0);
+                                                    handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeli(e, `shahid`, 0);
                                                     clearInputError(e, '', false, '', 0);
                                                 }}
 
 
-                                                checked={checkedMaskanMeli == `shahid${0}` || maskan[0] == 'مسکن ملی شهرک شهید رییسی'}
+                                                checked={checkedMaskanMeli == `shahid` || maskanMeli == 'مسکن ملی شهرک شهید رییسی'}
 
                                                 ref={refCheckBaxShahidEdit}
 
                                             />
                                             <label htmlFor='shahidEdit'
-                                                className={`labelCheckboxFB pointerFB ${maskan[0] != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
+                                                className={`labelCheckboxFB pointerFB ${maskanMeli != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
                                             >مسکن ملی (شهرک شهید رئیسی) </label>
                                         </div>
                                         <div className="errorContainerFB elementError" > </div>
@@ -2548,7 +2584,7 @@ const AddConcreteSalesInvoice = () => {
 
                                     <div className="containerInputFB">
                                         <div className="divInputFB">
-                                            <label htmlFor='vahedEdit' className={`${(maskan[0] != 'مسکن ملی شهرک شهید رییسی' && maskan[0] != 'مسکن ملی شهرک امام خمینی') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
+                                            <label htmlFor='vahedEdit' className={`${(maskanMeli != 'مسکن ملی شهرک شهید رییسی' && maskanMeli != 'مسکن ملی شهرک امام خمینی') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
                                             <input
                                                 type="text"
                                                 id='vahedEdit'
@@ -2557,7 +2593,7 @@ const AddConcreteSalesInvoice = () => {
                                                 defaultValue={inputEdit.vahed}
                                                 onInput={e => handleSaveValInput(e, 'vahed', 0)}
                                                 onFocus={(e) => clearInputError(e, refVahedErrorEdit)}
-                                                disabled={maskan[0] != 'مسکن ملی شهرک شهید رییسی' && maskan[0] != 'مسکن ملی شهرک امام خمینی'}
+                                                disabled={maskanMeli != 'مسکن ملی شهرک شهید رییسی' && maskanMeli != 'مسکن ملی شهرک امام خمینی'}
                                             />
                                         </div>
                                         <div className="errorContainerFB elementError" id='vahedErrorEdit' ref={refVahedErrorEdit}> </div>
