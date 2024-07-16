@@ -85,6 +85,8 @@ const AddConcreteSalesInvoice = () => {
     const hasCalledGetDrivers = useRef(false);
     const hasCalledGetCementStores = useRef(false);
 
+    const refCheckedMaskanShahidEdit = useRef(null);
+
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
@@ -151,6 +153,7 @@ const AddConcreteSalesInvoice = () => {
     const [cementStoreId, setCementStoreId] = useState('');
     const [maskanMeli, setMaskanMeli] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
+    const [checkedMaskanMeliEdit, setCheckedMaskanMeliEdit] = useState('');
 
 
     /**
@@ -855,7 +858,7 @@ const AddConcreteSalesInvoice = () => {
         concreteSalesInvoice && setId(id0);
         console.log(concreteSalesInvoice);
         let numberplate = concreteSalesInvoice.truck.numberplate.split("-");
-        
+
 
         const { id, created_at, updated_at, ...rest } = concreteSalesInvoice;//نادیده گرفتن کلید های مشخص شده
 
@@ -890,33 +893,33 @@ const AddConcreteSalesInvoice = () => {
         </div>);
 
         refCementStore_idEdit.current && refCementStore_idEdit.current.updateData(datas.cement_store.silo);
-        refTruck_idEdit.current && refTruck_idEdit.current.updateData( <div className="mixerAptionSelectFB">
-        <span className="mixerNamberpalteSelectFB">
-            <div className="numberplateDiv">
-                <span className="numberplateDivS1">{numberplate[0]}</span>
-                <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
-                <span className="numberplateDivS3">{numberplate[1]}</span>
-                <span className="numberplateDivS4">{numberplate[2]}</span>
-            </div>
-        </span>
+        refTruck_idEdit.current && refTruck_idEdit.current.updateData(<div className="mixerAptionSelectFB">
+            <span className="mixerNamberpalteSelectFB">
+                <div className="numberplateDiv">
+                    <span className="numberplateDivS1">{numberplate[0]}</span>
+                    <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
+                    <span className="numberplateDivS3">{numberplate[1]}</span>
+                    <span className="numberplateDivS4">{numberplate[2]}</span>
+                </div>
+            </span>
 
-        <span className="mixerOwnerSelectFB">
-            {datas.truck.customer.name}
-            {' '}
-            {datas.truck.customer.lastName}
-        </span>
+            <span className="mixerOwnerSelectFB">
+                {datas.truck.customer.name}
+                {' '}
+                {datas.truck.customer.lastName}
+            </span>
 
-    </div>);
+        </div>);
         refDriver_idEdit.current && refDriver_idEdit.current.updateData(<div className="personnelAption_addPerS">
-        <span className="name_addPers">{datas.driver.name}
-            {' '}
-            {datas.driver.lastName}</span>
+            <span className="name_addPers">{datas.driver.name}
+                {' '}
+                {datas.driver.lastName}</span>
 
-        <span className="fther_addPers">
-            {datas.driver.father || ''}
-        </span>
+            <span className="fther_addPers">
+                {datas.driver.father || ''}
+            </span>
 
-    </div>);
+        </div>);
 
 
 
@@ -935,7 +938,18 @@ const AddConcreteSalesInvoice = () => {
             setSecond(parts[2]);
         }
 
-setMaskanMeli(datas.maskanMeli);
+        //    setMaskanMeli(datas.maskanMeli);
+        if (datas.maskanMeli == 'مسکن ملی شهرک امام خمینی') {
+            setCheckedMaskanMeliEdit('emam');
+        }
+        else if (datas.maskanMeli == 'مسکن ملی شهرک شهید رییسی') {
+            setCheckedMaskanMeliEdit('shahid');
+
+        }
+        else {
+            setCheckedMaskanMeliEdit('');
+
+        }
 
 
     }
@@ -1040,7 +1054,7 @@ setMaskanMeli(datas.maskanMeli);
      * @param {*} e 
      * @param {*} input 
      */
-    const handleSaveValInput = (e, input, i, customer = false) => {
+    const handleSaveValInput = (e, input, i, customer = false, edit = false) => {
         let { value } = e.target;
         // input == 'unitPrice' && setUnitPrice(value);
         // input == 'fare' && setFare(value);
@@ -1070,49 +1084,61 @@ setMaskanMeli(datas.maskanMeli);
                 setConcretingPosition(value);
                 break;
         }
-        if (input == 'maskanMeli') {
-            const copyMaskan = [...maskan];
-            copyMaskan[i] = value;
-            copyMaskan[maskan.length - 1] = value;
-            setMaskan(copyMaskan);
-        }
+        /**
+         * چک می‌کند که کاربر در حال ایجاد یک فاکتور جدید است یا 
+         * در حال ویرایش یک فاکتور موجود است
+         */
+        if (!edit) {
 
-        if (!customer) {
-            setInput(prevInput => {
-                let newInvoice;
-                if (Array.isArray(prevInput.invoice)) {
-                    newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], [input]: value };
-                } else {
-                    newInvoice[i] = {
-                        date: '',
-                        time: '',
-                        weight: '',
-                        cubicMeters: "",
-                        concrete_id: '',
-                        truck_id: '',
-                        ownerId: '',
-                        driver_id: '',
-                        cementStore_id: '',
-                        unitPrice: '',
-                        totalPrice: '',
-                        fare: '',
-                        maskanMeli: '',
-                        vahed: '',
-                        address: '',
-                        concretingPosition: ''
+            if (input == 'maskanMeli') {
+                const copyMaskan = [...maskan];
+                copyMaskan[i] = value;
+                copyMaskan[maskan.length - 1] = value;
+                setMaskan(copyMaskan);
+            }
+
+            if (!customer) {
+                setInput(prevInput => {
+                    let newInvoice;
+                    if (Array.isArray(prevInput.invoice)) {
+                        newInvoice = [...prevInput.invoice];
+                        newInvoice[i] = { ...newInvoice[i], [input]: value };
+                    } else {
+                        newInvoice[i] = {
+                            date: '',
+                            time: '',
+                            weight: '',
+                            cubicMeters: "",
+                            concrete_id: '',
+                            truck_id: '',
+                            ownerId: '',
+                            driver_id: '',
+                            cementStore_id: '',
+                            unitPrice: '',
+                            totalPrice: '',
+                            fare: '',
+                            maskanMeli: '',
+                            vahed: '',
+                            address: '',
+                            concretingPosition: ''
+                        }
+                        newInvoice[i] = { ...newInvoice[i], [input]: value };
                     }
-                    newInvoice[i] = { ...newInvoice[i], [input]: value };
-                }
 
-                return { ...prevInput, invoice: newInvoice };
-            });
+                    return { ...prevInput, invoice: newInvoice };
+                });
+
+            } else {
+
+                setInput(prev => ({ ...prev, [input]: value }));
+            }
 
         } else {
 
-            setInput(prev => ({ ...prev, [input]: value }));
         }
+
     }
+
 
     /**
      * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
@@ -1414,6 +1440,15 @@ setMaskanMeli(datas.maskanMeli);
 
 
         setIsChecked(false)
+    }
+
+    const handleCheckedMaskanMeliEdit = (e, value) => {
+        if (value == 'emam') {
+            checkedMaskanMeliEdit == "emam" ? setCheckedMaskanMeliEdit('') : setCheckedMaskanMeliEdit('emam');
+        } else {
+            checkedMaskanMeliEdit == "shahid" ? setCheckedMaskanMeliEdit('') : setCheckedMaskanMeliEdit('shahid');
+
+        }
     }
 
     const handleCubicMetersCalculation = (e, i) => {
@@ -2534,18 +2569,18 @@ setMaskanMeli(datas.maskanMeli);
                                                 // value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${i}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
 
                                                 onChange={e => {
-                                                    handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeli(e, `emam`, 0);
+                                                    handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeliEdit(e, `emam`);
                                                     clearInputError(e, '', false, '', 0);
                                                 }}
 
 
 
-                                                checked={checkedMaskanMeli == `emam` || maskanMeli == 'مسکن ملی شهرک امام خمینی'}
+                                                checked={checkedMaskanMeliEdit == `emam`}
 
                                                 ref={refCheckBaxEmamEdit}
                                             />
                                             <label htmlFor='emamEdit'
-                                                className={`labelCheckboxFB pointerFB  ${maskanMeli != 'مسکن ملی شهرک امام خمینی' && 'inactiveLabelCSI_FB'}`}
+                                                className={`labelCheckboxFB pointerFB  ${checkedMaskanMeliEdit != 'emam' && 'inactiveLabelCSI_FB'}`}
                                                 id={`labelEmam`}>مسکن ملی (شهرک امام خمینی) </label>
                                         </div>
                                         <div className="errorContainerFB elementError" > </div>
@@ -2562,21 +2597,21 @@ setMaskanMeli(datas.maskanMeli);
                                                 id='shahidEdit'
                                                 className="inputCheckboxFB  element pointerFB"
 
-                                                value={refCheckedMaskanShahidEdit && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
+                                                value={refCheckedMaskanShahidEdit && refCheckedMaskanShahidEdit.current ? 'مسکن ملی شهرک شهید رییسی' : ''}
 
                                                 onChange={e => {
-                                                    handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeli(e, `shahid`, 0);
+                                                    handleSaveValInput(e, 'maskanMeli', 0, true); handleCheckedMaskanMeliEdit(e, `shahid`);
                                                     clearInputError(e, '', false, '', 0);
                                                 }}
 
 
-                                                checked={checkedMaskanMeli == `shahid` || maskanMeli == 'مسکن ملی شهرک شهید رییسی'}
+                                                checked={checkedMaskanMeliEdit == `shahid`}
 
                                                 ref={refCheckBaxShahidEdit}
 
                                             />
                                             <label htmlFor='shahidEdit'
-                                                className={`labelCheckboxFB pointerFB ${maskanMeli != 'مسکن ملی شهرک شهید رییسی' && 'inactiveLabelCSI_FB'}`}
+                                                className={`labelCheckboxFB pointerFB ${checkedMaskanMeliEdit != `shahid` && 'inactiveLabelCSI_FB'}`}
                                             >مسکن ملی (شهرک شهید رئیسی) </label>
                                         </div>
                                         <div className="errorContainerFB elementError" > </div>
@@ -2584,7 +2619,7 @@ setMaskanMeli(datas.maskanMeli);
 
                                     <div className="containerInputFB">
                                         <div className="divInputFB">
-                                            <label htmlFor='vahedEdit' className={`${(maskanMeli != 'مسکن ملی شهرک شهید رییسی' && maskanMeli != 'مسکن ملی شهرک امام خمینی') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
+                                            <label htmlFor='vahedEdit' className={`${(checkedMaskanMeliEdit != 'emam' && checkedMaskanMeliEdit != 'shahid') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
                                             <input
                                                 type="text"
                                                 id='vahedEdit'
@@ -2593,7 +2628,7 @@ setMaskanMeli(datas.maskanMeli);
                                                 defaultValue={inputEdit.vahed}
                                                 onInput={e => handleSaveValInput(e, 'vahed', 0)}
                                                 onFocus={(e) => clearInputError(e, refVahedErrorEdit)}
-                                                disabled={maskanMeli != 'مسکن ملی شهرک شهید رییسی' && maskanMeli != 'مسکن ملی شهرک امام خمینی'}
+                                                disabled={checkedMaskanMeliEdit != 'emam' && checkedMaskanMeliEdit != 'shahid'}
                                             />
                                         </div>
                                         <div className="errorContainerFB elementError" id='vahedErrorEdit' ref={refVahedErrorEdit}> </div>
