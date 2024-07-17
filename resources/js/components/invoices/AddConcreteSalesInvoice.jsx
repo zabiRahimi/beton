@@ -136,7 +136,6 @@ const AddConcreteSalesInvoice = () => {
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
 
-    // console.error(concreteSalesInvoices);
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
      * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
@@ -394,39 +393,97 @@ const AddConcreteSalesInvoice = () => {
     }, []);
 
     useEffect(() => {
-        customerId && setInput(prev => ({ ...prev, customer_id: customerId }));
+        if(customerId){
+            !editMode ?  setInput(prev => ({ ...prev, customer_id: customerId })):setInputEdit(prev => ({ ...prev, customer_id: customerId }));
+
+        }
     }, [customerId]);
+    console.log(input);
+    console.warn(inputEdit);
 
     useEffect(() => {
-        concreteId && setInput(prevInput => {
-            let invoices = [...prevInput.invoice];
-            invoices[invoiceIndexForConcrete] = { ...invoices[invoiceIndexForConcrete], concrete_id: concreteId };
-            return { ...prevInput, invoice: invoices };
-        });
+        if (concreteId) {
+            if (!editMode) {
+                setInput(prevInput => {
+                    let invoices = [...prevInput.invoice];
+                    invoices[invoiceIndexForConcrete] = { ...invoices[invoiceIndexForConcrete], concrete_id: concreteId };
+                    return { ...prevInput, invoice: invoices };
+                }); 
+            }else{
+                setInputEdit(prev => ({ ...prev, concrete_id: concreteId }));
+            }
+            
+        }
+        // concreteId && setInput(prevInput => {
+        //     let invoices = [...prevInput.invoice];
+        //     invoices[invoiceIndexForConcrete] = { ...invoices[invoiceIndexForConcrete], concrete_id: concreteId };
+        //     return { ...prevInput, invoice: invoices };
+        // });
     }, [concreteId, invoiceIndexForConcrete]);
 
     useEffect(() => {
-        truckId && setInput(prevInput => {
-            let invoices = [...prevInput.invoice];
-            invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
-            return { ...prevInput, invoice: invoices };
-        });
+        if (truckId) {
+            if (!editMode) {
+                setInput(prevInput => {
+                    let invoices = [...prevInput.invoice];
+                    invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
+                    return { ...prevInput, invoice: invoices };
+                });
+                
+            } else {
+                setInputEdit(prev => ({ ...prev, truck_id: truckId }));
+                
+            }
+            
+        } 
+        // truckId && setInput(prevInput => {
+        //     let invoices = [...prevInput.invoice];
+        //     invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
+        //     return { ...prevInput, invoice: invoices };
+        // });
     }, [truckId, invoiceIndexForMixer]);
 
     useEffect(() => {
-        driverId && setInput(prevInput => {
-            let invoices = [...prevInput.invoice];
-            invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
-            return { ...prevInput, invoice: invoices };
-        });
+        if (driverId) {
+            if (!editMode) {
+                setInput(prevInput => {
+                    let invoices = [...prevInput.invoice];
+                    invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
+                    return { ...prevInput, invoice: invoices };
+                });
+                
+            } else {
+                setInputEdit(prev => ({ ...prev, driver_id: driverId }));
+                
+            }
+            
+        } 
+        // driverId && setInput(prevInput => {
+        //     let invoices = [...prevInput.invoice];
+        //     invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
+        //     return { ...prevInput, invoice: invoices };
+        // });
     }, [driverId, invoiceIndexForDriver]);
 
     useEffect(() => {
-        cementStoreId && setInput(prevInput => {
-            let invoices = [...prevInput.invoice];
-            invoices[invoiceIndexForCementStore] = { ...invoices[invoiceIndexForCementStore], cementStore_id: cementStoreId };
-            return { ...prevInput, invoice: invoices };
-        });
+        if (cementStoreId) {
+            if (!editMode) {
+                setInput(prevInput => {
+                    let invoices = [...prevInput.invoice];
+                    invoices[invoiceIndexForCementStore] = { ...invoices[invoiceIndexForCementStore], cementStore_id: cementStoreId };
+                    return { ...prevInput, invoice: invoices };
+                }); 
+            } else {
+                setInputEdit(prev => ({ ...prev, cementStore_id: cementStoreId }));
+                
+            }
+            
+        } 
+        // cementStoreId && setInput(prevInput => {
+        //     let invoices = [...prevInput.invoice];
+        //     invoices[invoiceIndexForCementStore] = { ...invoices[invoiceIndexForCementStore], cementStore_id: cementStoreId };
+        //     return { ...prevInput, invoice: invoices };
+        // });
     }, [cementStoreId, invoiceIndexForCementStore]);
 
 
@@ -856,7 +913,6 @@ const AddConcreteSalesInvoice = () => {
     const pasteDataForEditing = (id0) => {
         let concreteSalesInvoice = concreteSalesInvoices.find(concreteSalesInvoice => concreteSalesInvoice.id === id0);
         concreteSalesInvoice && setId(id0);
-        console.log(concreteSalesInvoice);
         let numberplate = concreteSalesInvoice.truck.numberplate.split("-");
 
 
@@ -1054,14 +1110,14 @@ const AddConcreteSalesInvoice = () => {
      * @param {*} e 
      * @param {*} input 
      */
-    const handleSaveValInput = (e, input, i, customer = false, edit = false) => {
+    const handleSaveValInput = (e, input, i, customer = false) => {
         let { value } = e.target;
         // input == 'unitPrice' && setUnitPrice(value);
         // input == 'fare' && setFare(value);
         // input == 'address' && setAddress(value);
         // input == 'concretingPosition' && setConcretingPosition(value);
         // input == 'vahed' && setVahed(value);
-
+        console.log(editMode);
         switch (input) {
             case 'unitPrice':
                 value = value.replace(/,/g, '');
@@ -1088,9 +1144,14 @@ const AddConcreteSalesInvoice = () => {
          * چک می‌کند که کاربر در حال ایجاد یک فاکتور جدید است یا 
          * در حال ویرایش یک فاکتور موجود است
          */
-        if (!edit) {
+        if (!editMode) {
 
             if (input == 'maskanMeli') {
+                /**
+                 * چنانچه کاربر مبادرت به ایجاد بیش از یک فاکتور کند
+                 * کدهای زیر جهت نمایش مسکن ملی بطور پیش فرض در فاکتور جدید
+                 * اقدام می‌کنند
+                 */
                 const copyMaskan = [...maskan];
                 copyMaskan[i] = value;
                 copyMaskan[maskan.length - 1] = value;
@@ -1134,11 +1195,11 @@ const AddConcreteSalesInvoice = () => {
             }
 
         } else {
+            setInputEdit(prev => ({ ...prev, [input]: value }));
 
         }
 
     }
-
 
     /**
      * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
