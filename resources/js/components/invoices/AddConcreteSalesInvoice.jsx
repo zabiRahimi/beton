@@ -398,8 +398,7 @@ const AddConcreteSalesInvoice = () => {
 
         }
     }, [customerId]);
-    console.log(input);
-    console.warn(inputEdit);
+   
 
     useEffect(() => {
         if (concreteId) {
@@ -522,7 +521,7 @@ const AddConcreteSalesInvoice = () => {
 
     }, [isNewInvoice]);
 
-
+  
 
     async function getConcreteSalesInvoices() {
         await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
@@ -1091,6 +1090,24 @@ const AddConcreteSalesInvoice = () => {
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
+    useEffect(() => {
+        // let index = invoice.length - 1;
+        if (editMode) {
+
+            refUnitPriceEdit && (refUnitPriceEdit.current.value = parseFloat(inputEdit.unitPrice).toLocaleString());
+
+            refWeightEdit && (refWeightEdit.current.value = parseFloat(inputEdit.weight).toLocaleString());
+
+            refTotalPriceEdit && (refTotalPriceEdit.current.innerHTML = parseFloat(inputEdit.totalPrice).toLocaleString());
+
+            refFareEdit && (refFareEdit.current.value = parseFloat(inputEdit.fare).toLocaleString());
+
+            // input.invoice[index].fare && refInvoice[`fare${index}`] && (refInvoice[`fare${index}`].current.value = parseFloat(input.invoice[index].fare).toLocaleString());
+
+        }
+
+    }, [editMode]);
+
     /**
      * این متد نام کلید یک آرایه یا یک آبجکت را تغییر می دهد
      * @param {نام آبجکت یا آرایه} obj 
@@ -1440,6 +1457,53 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
+     /**
+      * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
+      * به صورت دهگان،صدگان و ...
+      * @param {ref} ref 
+      */
+     const formatNubEdit = (input) => {
+        let val,
+            checkDthot,
+            resalt,
+            refCurrent;
+        switch (input) {
+            case 'unitPrice':
+                resalt = refUnitPriceEdit.current.value.replace(/[\s,]/g, "");
+                refCurrent = refUnitPriceEdit.current;
+                break;
+            case 'weight':
+                resalt = refWeightEdit.current.value.replace(/[\s,]/g, "");
+                refCurrent = refWeightEdit.current;
+                break;
+            
+            // case 'totalPrice':
+            //     resalt = refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
+            //     refCurrent = refInvoice[`totalPrice${i}`].current;
+            //     break;
+            case 'fare':
+                resalt = refFareEdit.current.value.replace(/[\s,]/g, "");
+                refCurrent = refFareEdit.current;
+                break;
+        }
+        // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
+        if (resalt.slice(-1) == '.') {
+            checkDthot = true;
+        } else {
+            checkDthot = false;
+        }
+        // چک می کند فقط رشته عددی باشد
+        if (parseFloat(resalt)) {
+            val = parseFloat(resalt);
+            /**
+             * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
+             * علامت را به آخر رشته اضافه می کند
+             */
+            val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
+            refCurrent.value = val;
+        }
+    }
+
 
     /**
     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
@@ -1512,7 +1576,7 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const handleCubicMetersCalculation = (e, i) => {
+    const handleCubicMetersCalculation = (e, i=null) => {
         let { value } = e.target;
         value = value.replace(/,/g, '');
         let cubicMeters = value / 2300;
@@ -1520,14 +1584,23 @@ const AddConcreteSalesInvoice = () => {
         if (!Number.isInteger(cubicMeters)) {
             cubicMeters = cubicMeters.toFixed(2);
         }
-        refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
-        setInput(prevInput => {
-            let newInvoice;
-            newInvoice = [...prevInput.invoice];
-            newInvoice[i] = { ...newInvoice[i], cubicMeters };
-            return { ...prevInput, invoice: newInvoice };
-        });
+
+        if (!editMode) {
+            refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], cubicMeters };
+                return { ...prevInput, invoice: newInvoice };
+            });  
+        } else {
+            refCubicMetersEdit.current.innerHTML = cubicMeters;
+            setInputEdit(prev => ({ ...prev, cubicMeters}));
+
+        }
+       
     }
+    console.log(inputEdit);
 
     const handleTotalPriceCalculation = (e, i, element) => {
         let cubicMeters,
@@ -1542,35 +1615,53 @@ const AddConcreteSalesInvoice = () => {
             if (!Number.isInteger(cubicMeters)) {
                 cubicMeters = cubicMeters.toFixed(2);
             }
-            let unitPrice = input.invoice[i].unitPrice;
-            if (Number.isInteger(Number(unitPrice))) {
-                totalPrice = unitPrice * cubicMeters;
-                setInput(prevInput => {
-                    let newInvoice;
-                    newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], totalPrice };
-                    return { ...prevInput, invoice: newInvoice };
-                });
-                refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
 
+            if (!editMode) {
+                let unitPrice = input.invoice[i].unitPrice;
+                if (Number.isInteger(Number(unitPrice))) {
+                    totalPrice = unitPrice * cubicMeters;
+                    setInput(prevInput => {
+                        let newInvoice;
+                        newInvoice = [...prevInput.invoice];
+                        newInvoice[i] = { ...newInvoice[i], totalPrice };
+                        return { ...prevInput, invoice: newInvoice };
+                    });
+                    refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+    
+                }
+            } else {
+                let unitPrice = inputEdit.unitPrice;
+                if (Number.isInteger(Number(unitPrice))) {
+                    totalPrice = unitPrice * cubicMeters;
+                    setInputEdit(prev => ({ ...prev, totalPrice}));
+
+                    refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
+    
+                }  
             }
+           
 
         } else if (element == 'unitPrice') {
-            let weight = input.invoice[i].weight;
-            if (weight && Number(weight)) {
-                cubicMeters = weight / 2300;
-                if (!Number.isInteger(cubicMeters)) {
-                    cubicMeters = cubicMeters.toFixed(2);
-                }
-                totalPrice = value * cubicMeters;
-                setInput(prevInput => {
-                    let newInvoice;
-                    newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], totalPrice };
-                    return { ...prevInput, invoice: newInvoice };
-                });
-                refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+            if (!editMode) {
+                let weight = input.invoice[i].weight;
+                if (weight && Number(weight)) {
+                    cubicMeters = weight / 2300;
+                    if (!Number.isInteger(cubicMeters)) {
+                        cubicMeters = cubicMeters.toFixed(2);
+                    }
+                    totalPrice = value * cubicMeters;
+                    setInput(prevInput => {
+                        let newInvoice;
+                        newInvoice = [...prevInput.invoice];
+                        newInvoice[i] = { ...newInvoice[i], totalPrice };
+                        return { ...prevInput, invoice: newInvoice };
+                    });
+                    refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+                } 
+            } else {
+                
             }
+            
         }
 
 
@@ -2425,7 +2516,7 @@ const AddConcreteSalesInvoice = () => {
                                                 ref={refUnitPriceEdit}
                                                 onInput={e => {
                                                     handleSaveValInput(e, 'unitPrice', 0);
-                                                    formatNub('unitPrice', 0);
+                                                    formatNubEdit('unitPrice');
                                                     handleTotalPriceCalculation(e, 0, 'unitPrice');
                                                 }
                                                 }
@@ -2458,9 +2549,9 @@ const AddConcreteSalesInvoice = () => {
                                                 ref={refWeightEdit}
                                                 onInput={e => {
                                                     handleSaveValInput(e, 'weight', 0);
-                                                    formatNub('weight', 0);
-                                                    handleCubicMetersCalculation(e, 0);
-                                                    handleTotalPriceCalculation(e, 0, 'weight');
+                                                    formatNubEdit('weight');
+                                                    handleCubicMetersCalculation(e);
+                                                    handleTotalPriceCalculation(e, '', 'weight');
                                                 }
                                                 }
                                                 onFocus={e => clearInputError(e, refWeightErrorEdit)}
@@ -2596,7 +2687,7 @@ const AddConcreteSalesInvoice = () => {
                                                 ref={refFareEdit}
                                                 onInput={e => {
                                                     handleSaveValInput(e, 'fare', 0);
-                                                    formatNub('fare', 0);
+                                                    formatNubEdit('fare');
                                                 }
                                                 }
                                                 onFocus={e => clearInputError(e, refFareErrorEdit)}
