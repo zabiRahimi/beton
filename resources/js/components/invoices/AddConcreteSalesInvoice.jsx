@@ -1023,6 +1023,7 @@ const AddConcreteSalesInvoice = () => {
 
 
         if (rest.date) {
+            console.log(rest.date);
             let parts = rest.date.split("-");
             setYear(parts[0]);
             setMonth(parts[1]);
@@ -1582,11 +1583,9 @@ const AddConcreteSalesInvoice = () => {
         else {
             if (value == `emam${i}`) {
                 checked = refInvoice[`checkedMaskanEmam${i}`].current;
-
             } else if (value == `shahid${i}`) {
                 checked = refInvoice[`checkedMaskanShahid${i}`].current;
             }
-
 
             if (value == `emam${i}`) {
                 refInvoice[`checkedMaskanEmam${i}`].current = !checked;
@@ -1597,15 +1596,12 @@ const AddConcreteSalesInvoice = () => {
             }
         }
 
-
         if (checked) {
             setCheckedMaskanMeli(value);
 
         } else {
             setCheckedMaskanMeli('');
         }
-
-
         setIsChecked(false)
     }
 
@@ -1642,7 +1638,6 @@ const AddConcreteSalesInvoice = () => {
         }
 
     }
-
     const handleTotalPriceCalculation = (e, i, element) => {
         let cubicMeters,
             totalPrice,
@@ -1650,8 +1645,8 @@ const AddConcreteSalesInvoice = () => {
         value = value.replace(/,/g, '');
         value = Number(value);
 
-
         if (element == 'weight') {
+            console.log('wieght');
             cubicMeters = value / 2300;
             if (!Number.isInteger(cubicMeters)) {
                 cubicMeters = cubicMeters.toFixed(2);
@@ -1660,6 +1655,7 @@ const AddConcreteSalesInvoice = () => {
             if (!editMode) {
                 let unitPrice = input.invoice[i].unitPrice;
                 if (Number.isInteger(Number(unitPrice))) {
+                    // totalPrice = (unitPrice * cubicMeters).toFixed();
                     totalPrice = unitPrice * cubicMeters;
                     setInput(prevInput => {
                         let newInvoice;
@@ -1668,20 +1664,18 @@ const AddConcreteSalesInvoice = () => {
                         return { ...prevInput, invoice: newInvoice };
                     });
                     refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-
                 }
             } else {
                 let unitPrice = inputEdit.unitPrice;
                 if (Number.isInteger(Number(unitPrice))) {
                     totalPrice = unitPrice * cubicMeters;
+
                     setInputEdit(prev => ({ ...prev, totalPrice }));
 
                     refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
-
+                    // refTotalPriceEdit.current.innerHTML = 555;
                 }
             }
-
-
         } else if (element == 'unitPrice') {
             if (!editMode) {
                 let weight = input.invoice[i].weight;
@@ -1712,10 +1706,7 @@ const AddConcreteSalesInvoice = () => {
                     refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
                 }
             }
-
         }
-
-
     }
 
     const handleAddNewInvoice = (e) => {
@@ -2681,7 +2672,9 @@ const AddConcreteSalesInvoice = () => {
                                             <div className="mainTotalPriceACSL_FB">
                                                 <div className="totalPriceACSL_FB"
                                                     ref={refTotalPriceEdit}
-                                                >{inputEdit.totalPrice}</div>
+                                                >
+                                                    {/* {inputEdit.totalPrice} */}
+                                                    </div>
                                                 <span className="spanTotalPriceACSL_FB">
                                                     تومان
                                                 </span>
