@@ -291,6 +291,12 @@ const AddConcreteSalesInvoice = () => {
             // }, {});
             let refs = invoice.reduce((acc, cur, i) => {
                 acc[`time${i}`] = createRef();
+                acc[`secondInput${i}`] = createRef();
+                acc[`secondSelect${i}`] = createRef();
+                acc[`minuteInput${i}`] = createRef();
+                acc[`minuteSelect${i}`] = createRef();
+                acc[`hourInput${i}`] = createRef();
+                acc[`hourSelect${i}`] = createRef();
                 acc[`timeError${i}`] = createRef();
                 acc[`date${i}`] = createRef();
                 acc[`dateError${i}`] = createRef();
@@ -884,7 +890,7 @@ const AddConcreteSalesInvoice = () => {
 
     }
 
-    const changeSecond = (e, i) => {
+    const changeSecond = (e, i, element) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
@@ -892,6 +898,13 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
             setSecond(value);
+            
+            refInvoice[`secondSelect${i}`].current.value=value;
+            refInvoice[`secondInput${i}`].current.value=value;
+
+        }else{
+
+            e.target.value=second;
         }
         let time = hour + ':' + minute + ':' + value;
         setInput(prevInput => {
@@ -1659,7 +1672,17 @@ const AddConcreteSalesInvoice = () => {
                     refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
                 } 
             } else {
-                
+                let weight = inputEdit.weight;
+                if (weight && Number(weight)) {
+                    cubicMeters = weight / 2300;
+                    if (!Number.isInteger(cubicMeters)) {
+                        cubicMeters = cubicMeters.toFixed(2);
+                    }
+                    totalPrice = value * cubicMeters;
+                    setInputEdit(prev => ({ ...prev, totalPrice}));
+                   
+                    refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
+                } 
             }
             
         }
@@ -1846,9 +1869,10 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="00"
                                                             id="hour"
-                                                            value={second || ''}
-                                                            onInput={(e) => changeSecond(e, i)}
+                                                            // defaultValue={second || ''}
+                                                            onInput={(e) => changeSecond(e, i, 'input')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            ref={refInvoice[`secondInput${i}`]}
 
                                                         />
                                                         <span>:</span>
@@ -1856,7 +1880,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputMonthTDACus element"
                                                             placeholder="00"
-                                                            value={minute || ''}
+                                                            // value={minute || ''}
                                                             onInput={(e) => changeMinute(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
 
@@ -1866,7 +1890,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="00"
-                                                            value={hour || ''}
+                                                            // value={hour || ''}
                                                             onInput={(e) => { changeHour(e, i) }}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
 
@@ -1877,9 +1901,10 @@ const AddConcreteSalesInvoice = () => {
                                                     <div className="divDownDateAcus" >
                                                         <select
                                                             className="element"
-                                                            value={second}
-                                                            onChange={(e) => changeSecond(e, i)}
+                                                            // defaultValue={second}
+                                                            onChange={(e) => changeSecond(e, i, 'select')}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            ref={refInvoice[`secondSelect${i}`]}
 
                                                         >
                                                             <option value=""> ثانیه </option>
@@ -1887,7 +1912,7 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            value={minute}
+                                                            // value={minute}
                                                             onChange={(e) => changeMinute(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
 
@@ -1897,7 +1922,7 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            value={hour}
+                                                            // value={hour}
                                                             onChange={(e) => { changeHour(e, i) }}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
 
@@ -2517,7 +2542,7 @@ const AddConcreteSalesInvoice = () => {
                                                 onInput={e => {
                                                     handleSaveValInput(e, 'unitPrice', 0);
                                                     formatNubEdit('unitPrice');
-                                                    handleTotalPriceCalculation(e, 0, 'unitPrice');
+                                                    handleTotalPriceCalculation(e, '', 'unitPrice');
                                                 }
                                                 }
                                                 onFocus={e => clearInputError(e, refUnitPriceErrorEdit)}
