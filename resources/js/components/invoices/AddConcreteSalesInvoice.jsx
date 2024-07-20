@@ -299,6 +299,12 @@ const AddConcreteSalesInvoice = () => {
                 acc[`hourSelect${i}`] = createRef();
                 acc[`timeError${i}`] = createRef();
                 acc[`date${i}`] = createRef();
+                acc[`dayInput${i}`] = createRef();
+                acc[`daySelect${i}`] = createRef();
+                acc[`monthInput${i}`] = createRef();
+                acc[`monthSelect${i}`] = createRef();
+                acc[`yearInput${i}`] = createRef();
+                acc[`yearSelect${i}`] = createRef();
                 acc[`dateError${i}`] = createRef();
                 acc[`weight${i}`] = createRef();
                 acc[`weightError${i}`] = createRef();
@@ -399,12 +405,12 @@ const AddConcreteSalesInvoice = () => {
     }, []);
 
     useEffect(() => {
-        if(customerId){
-            !editMode ?  setInput(prev => ({ ...prev, customer_id: customerId })):setInputEdit(prev => ({ ...prev, customer_id: customerId }));
+        if (customerId) {
+            !editMode ? setInput(prev => ({ ...prev, customer_id: customerId })) : setInputEdit(prev => ({ ...prev, customer_id: customerId }));
 
         }
     }, [customerId]);
-   
+
 
     useEffect(() => {
         if (concreteId) {
@@ -413,11 +419,11 @@ const AddConcreteSalesInvoice = () => {
                     let invoices = [...prevInput.invoice];
                     invoices[invoiceIndexForConcrete] = { ...invoices[invoiceIndexForConcrete], concrete_id: concreteId };
                     return { ...prevInput, invoice: invoices };
-                }); 
-            }else{
+                });
+            } else {
                 setInputEdit(prev => ({ ...prev, concrete_id: concreteId }));
             }
-            
+
         }
         // concreteId && setInput(prevInput => {
         //     let invoices = [...prevInput.invoice];
@@ -434,13 +440,13 @@ const AddConcreteSalesInvoice = () => {
                     invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
                     return { ...prevInput, invoice: invoices };
                 });
-                
+
             } else {
                 setInputEdit(prev => ({ ...prev, truck_id: truckId }));
-                
+
             }
-            
-        } 
+
+        }
         // truckId && setInput(prevInput => {
         //     let invoices = [...prevInput.invoice];
         //     invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
@@ -456,13 +462,13 @@ const AddConcreteSalesInvoice = () => {
                     invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
                     return { ...prevInput, invoice: invoices };
                 });
-                
+
             } else {
                 setInputEdit(prev => ({ ...prev, driver_id: driverId }));
-                
+
             }
-            
-        } 
+
+        }
         // driverId && setInput(prevInput => {
         //     let invoices = [...prevInput.invoice];
         //     invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
@@ -477,13 +483,13 @@ const AddConcreteSalesInvoice = () => {
                     let invoices = [...prevInput.invoice];
                     invoices[invoiceIndexForCementStore] = { ...invoices[invoiceIndexForCementStore], cementStore_id: cementStoreId };
                     return { ...prevInput, invoice: invoices };
-                }); 
+                });
             } else {
                 setInputEdit(prev => ({ ...prev, cementStore_id: cementStoreId }));
-                
+
             }
-            
-        } 
+
+        }
         // cementStoreId && setInput(prevInput => {
         //     let invoices = [...prevInput.invoice];
         //     invoices[invoiceIndexForCementStore] = { ...invoices[invoiceIndexForCementStore], cementStore_id: cementStoreId };
@@ -527,7 +533,7 @@ const AddConcreteSalesInvoice = () => {
 
     }, [isNewInvoice]);
 
-  
+
 
     async function getConcreteSalesInvoices() {
         await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
@@ -805,6 +811,10 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
             setDay(value);
+            refInvoice[`dayInput${i}`].current.value=value;
+            refInvoice[`daySelect${i}`].current.value=value;
+        }else{
+            e.target.value=day;
         }
         let date = year + '-' + month + '-' + value;
         setInput(prevInput => {
@@ -825,6 +835,11 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
             setMonth(value);
+            refInvoice[`monthInput${i}`].current.value=value;
+            refInvoice[`monthSelect${i}`].current.value=value;
+        }
+        else{
+            e.target.value=month;
         }
         let date = year + '-' + value + '-' + day;
         setInput(prevInput => {
@@ -840,7 +855,12 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
             setYear(value);
+            refInvoice[`yearInput${i}`].current.value=value;
+            refInvoice[`yearSelect${i}`].current.value=value;
+        }else{
+            e.target.value=year;
         }
+
         let date = value + '-' + month + '-' + day;
         setInput(prevInput => {
             let newInvoice;
@@ -860,7 +880,12 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
             setHour(value);
+            refInvoice[`hourSelect${i}`].current.value = value;
+            refInvoice[`hourInput${i}`].current.value = value;
+        }else{
+            e.target.value=hour;
         }
+
         let time = value + ':' + minute + ':' + second;
         setInput(prevInput => {
             let newInvoice;
@@ -879,7 +904,12 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
             setMinute(value);
+            refInvoice[`minuteSelect${i}`].current.value = value;
+            refInvoice[`minuteInput${i}`].current.value = value;
+        }else{
+            e.target.value=minute;
         }
+
         let time = hour + ':' + value + ':' + second;
         setInput(prevInput => {
             let newInvoice;
@@ -890,7 +920,7 @@ const AddConcreteSalesInvoice = () => {
 
     }
 
-    const changeSecond = (e, i, element) => {
+    const changeSecond = (e, i) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
@@ -898,13 +928,13 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
             setSecond(value);
-            
-            refInvoice[`secondSelect${i}`].current.value=value;
-            refInvoice[`secondInput${i}`].current.value=value;
 
-        }else{
+            refInvoice[`secondSelect${i}`].current.value = value;
+            refInvoice[`secondInput${i}`].current.value = value;
 
-            e.target.value=second;
+        } else {
+
+            e.target.value = second;
         }
         let time = hour + ':' + minute + ':' + value;
         setInput(prevInput => {
@@ -1147,7 +1177,6 @@ const AddConcreteSalesInvoice = () => {
         // input == 'address' && setAddress(value);
         // input == 'concretingPosition' && setConcretingPosition(value);
         // input == 'vahed' && setVahed(value);
-        console.log(editMode);
         switch (input) {
             case 'unitPrice':
                 value = value.replace(/,/g, '');
@@ -1470,12 +1499,12 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-     /**
-      * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
-      * به صورت دهگان،صدگان و ...
-      * @param {ref} ref 
-      */
-     const formatNubEdit = (input) => {
+    /**
+     * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
+     * به صورت دهگان،صدگان و ...
+     * @param {ref} ref 
+     */
+    const formatNubEdit = (input) => {
         let val,
             checkDthot,
             resalt,
@@ -1489,7 +1518,7 @@ const AddConcreteSalesInvoice = () => {
                 resalt = refWeightEdit.current.value.replace(/[\s,]/g, "");
                 refCurrent = refWeightEdit.current;
                 break;
-            
+
             // case 'totalPrice':
             //     resalt = refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
             //     refCurrent = refInvoice[`totalPrice${i}`].current;
@@ -1589,7 +1618,7 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const handleCubicMetersCalculation = (e, i=null) => {
+    const handleCubicMetersCalculation = (e, i = null) => {
         let { value } = e.target;
         value = value.replace(/,/g, '');
         let cubicMeters = value / 2300;
@@ -1605,15 +1634,15 @@ const AddConcreteSalesInvoice = () => {
                 newInvoice = [...prevInput.invoice];
                 newInvoice[i] = { ...newInvoice[i], cubicMeters };
                 return { ...prevInput, invoice: newInvoice };
-            });  
+            });
         } else {
             refCubicMetersEdit.current.innerHTML = cubicMeters;
-            setInputEdit(prev => ({ ...prev, cubicMeters}));
+            setInputEdit(prev => ({ ...prev, cubicMeters }));
 
         }
-       
+
     }
-    console.log(inputEdit);
+    console.log(input.invoice["*"].date);
 
     const handleTotalPriceCalculation = (e, i, element) => {
         let cubicMeters,
@@ -1640,19 +1669,19 @@ const AddConcreteSalesInvoice = () => {
                         return { ...prevInput, invoice: newInvoice };
                     });
                     refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-    
+
                 }
             } else {
                 let unitPrice = inputEdit.unitPrice;
                 if (Number.isInteger(Number(unitPrice))) {
                     totalPrice = unitPrice * cubicMeters;
-                    setInputEdit(prev => ({ ...prev, totalPrice}));
+                    setInputEdit(prev => ({ ...prev, totalPrice }));
 
                     refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
-    
-                }  
+
+                }
             }
-           
+
 
         } else if (element == 'unitPrice') {
             if (!editMode) {
@@ -1670,7 +1699,7 @@ const AddConcreteSalesInvoice = () => {
                         return { ...prevInput, invoice: newInvoice };
                     });
                     refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-                } 
+                }
             } else {
                 let weight = inputEdit.weight;
                 if (weight && Number(weight)) {
@@ -1679,12 +1708,12 @@ const AddConcreteSalesInvoice = () => {
                         cubicMeters = cubicMeters.toFixed(2);
                     }
                     totalPrice = value * cubicMeters;
-                    setInputEdit(prev => ({ ...prev, totalPrice}));
-                   
+                    setInputEdit(prev => ({ ...prev, totalPrice }));
+
                     refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
-                } 
+                }
             }
-            
+
         }
 
 
@@ -1870,7 +1899,7 @@ const AddConcreteSalesInvoice = () => {
                                                             placeholder="00"
                                                             id="hour"
                                                             // defaultValue={second || ''}
-                                                            onInput={(e) => changeSecond(e, i, 'input')}
+                                                            onInput={(e) => changeSecond(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondInput${i}`]}
 
@@ -1883,6 +1912,7 @@ const AddConcreteSalesInvoice = () => {
                                                             // value={minute || ''}
                                                             onInput={(e) => changeMinute(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            ref={refInvoice[`minuteInput${i}`]}
 
                                                         />
                                                         <span>:</span>
@@ -1893,7 +1923,7 @@ const AddConcreteSalesInvoice = () => {
                                                             // value={hour || ''}
                                                             onInput={(e) => { changeHour(e, i) }}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
-
+                                                            ref={refInvoice[`hourInput${i}`]}
                                                         />
                                                         <i className="icofont-ui-rating starFB" />
                                                     </div>
@@ -1902,7 +1932,7 @@ const AddConcreteSalesInvoice = () => {
                                                         <select
                                                             className="element"
                                                             // defaultValue={second}
-                                                            onChange={(e) => changeSecond(e, i, 'select')}
+                                                            onChange={(e) => changeSecond(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondSelect${i}`]}
 
@@ -1915,7 +1945,7 @@ const AddConcreteSalesInvoice = () => {
                                                             // value={minute}
                                                             onChange={(e) => changeMinute(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
-
+                                                            ref={refInvoice[`minuteSelect${i}`]}
                                                         >
                                                             <option value=""> دقیقه </option>
                                                             {optionMinutes}
@@ -1925,7 +1955,7 @@ const AddConcreteSalesInvoice = () => {
                                                             // value={hour}
                                                             onChange={(e) => { changeHour(e, i) }}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
-
+                                                            ref={refInvoice[`hourSelect${i}`]}
                                                         >
                                                             <option value=""> ساعت </option>
                                                             {optionHours}
@@ -1948,30 +1978,30 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="1"
                                                             id="day"
-                                                            value={day || ''}
+                                                            // value={day || ''}
                                                             onInput={(e) => changeDay(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
-
+                                                            ref={refInvoice[`dayInput${i}`]}
                                                         />
                                                         <span>/</span>
                                                         <input
                                                             type="text"
                                                             className="inputTextDateACus inputMonthTDACus element"
                                                             placeholder="1"
-                                                            value={month || ''}
+                                                            // value={month || ''}
                                                             onInput={(e) => changeMonth(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
-
+                                                            ref={refInvoice[`monthInput${i}`]}
                                                         />
                                                         <span>/</span>
                                                         <input
                                                             type="text"
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="1300"
-                                                            value={year || ''}
+                                                            // value={year || ''}
                                                             onInput={(e) => { changeYear(e, i) }}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
-
+                                                            ref={refInvoice[`yearInput${i}`]}
                                                         />
                                                         <i className="icofont-ui-rating starFB" />
                                                     </div>
@@ -1979,9 +2009,10 @@ const AddConcreteSalesInvoice = () => {
                                                     <div className="divDownDateAcus" >
                                                         <select
                                                             className="element"
-                                                            value={day}
+                                                            // value={day}
                                                             onChange={(e) => changeDay(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
+                                                            ref={refInvoice[`daySelect${i}`]}
 
                                                         >
                                                             <option value="">روز</option>
@@ -1989,9 +2020,10 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            value={month}
+                                                            // value={month}
                                                             onChange={(e) => changeMonth(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
+                                                            ref={refInvoice[`monthSelect${i}`]}
 
                                                         >
                                                             <option value="">ماه</option>
@@ -1999,10 +2031,10 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            value={year}
+                                                            // value={year}
                                                             onChange={(e) => { changeYear(e, i) }}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
-
+                                                            ref={refInvoice[`yearSelect${i}`]}
                                                         >
                                                             <option value="">سال</option>
                                                             {optionShortYears}
