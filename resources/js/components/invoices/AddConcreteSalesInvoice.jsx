@@ -1642,7 +1642,6 @@ const AddConcreteSalesInvoice = () => {
         }
 
     }
-    console.log(input.invoice["*"].date);
 
     const handleTotalPriceCalculation = (e, i, element) => {
         let cubicMeters,
@@ -1978,6 +1977,7 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="1"
                                                             id="day"
+                                                            defaultValue={day}
                                                             // value={day || ''}
                                                             onInput={(e) => changeDay(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
@@ -1988,6 +1988,8 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputMonthTDACus element"
                                                             placeholder="1"
+                                                            defaultValue={month}
+
                                                             // value={month || ''}
                                                             onInput={(e) => changeMonth(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
@@ -1998,6 +2000,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="1300"
+                                                            defaultValue={year}
                                                             // value={year || ''}
                                                             onInput={(e) => { changeYear(e, i) }}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
@@ -2010,6 +2013,8 @@ const AddConcreteSalesInvoice = () => {
                                                         <select
                                                             className="element"
                                                             // value={day}
+                                                            defaultValue={day}
+
                                                             onChange={(e) => changeDay(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`daySelect${i}`]}
@@ -2020,6 +2025,8 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
+                                                            defaultValue={month}
+
                                                             // value={month}
                                                             onChange={(e) => changeMonth(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
@@ -2032,6 +2039,8 @@ const AddConcreteSalesInvoice = () => {
                                                         <select
                                                             className="element"
                                                             // value={year}
+                                                            defaultValue={year}
+
                                                             onChange={(e) => { changeYear(e, i) }}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`yearSelect${i}`]}
