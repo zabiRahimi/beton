@@ -442,7 +442,7 @@ const AddConcreteSalesInvoice = () => {
                 });
 
             } else {
-                setInputEdit(prev => ({ ...prev, truck_id: truckId }));
+                setInputEdit(prev => ({ ...prev, truck_id: truckId, ownerId }));
 
             }
 
@@ -811,20 +811,25 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
             setDay(value);
-            refInvoice[`dayInput${i}`].current.value=value;
-            refInvoice[`daySelect${i}`].current.value=value;
+            if (!editMode) {
+                refInvoice[`dayInput${i}`].current.value=value;
+                refInvoice[`daySelect${i}`].current.value=value;  
+            }
+           
         }else{
             e.target.value=day;
         }
         let date = year + '-' + month + '-' + value;
-        setInput(prevInput => {
-            let newInvoice;
-            newInvoice = [...prevInput.invoice];
-            newInvoice[i] = { ...newInvoice[i], date };
-            return { ...prevInput, invoice: newInvoice };
-        });
-
-
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput=>({...prevInput, date}));
+        }
     }
 
     const changeMonth = (e, i) => {
@@ -835,19 +840,26 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
             setMonth(value);
-            refInvoice[`monthInput${i}`].current.value=value;
-            refInvoice[`monthSelect${i}`].current.value=value;
+            if (!editMode) {
+                refInvoice[`monthInput${i}`].current.value=value;
+                refInvoice[`monthSelect${i}`].current.value=value; 
+            }
+            
         }
         else{
             e.target.value=month;
         }
         let date = year + '-' + value + '-' + day;
-        setInput(prevInput => {
-            let newInvoice;
-            newInvoice = [...prevInput.invoice];
-            newInvoice[i] = { ...newInvoice[i], date };
-            return { ...prevInput, invoice: newInvoice };
-        });
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput=>({...prevInput, date}));
+        }
     }
 
     const changeYear = (e, i) => {
@@ -855,21 +867,26 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
             setYear(value);
-            refInvoice[`yearInput${i}`].current.value=value;
-            refInvoice[`yearSelect${i}`].current.value=value;
+            if (!editMode) {
+                refInvoice[`yearInput${i}`].current.value=value;
+                refInvoice[`yearSelect${i}`].current.value=value; 
+            }
+         
         }else{
             e.target.value=year;
         }
 
         let date = value + '-' + month + '-' + day;
-        setInput(prevInput => {
-            let newInvoice;
-            newInvoice = [...prevInput.invoice];
-            newInvoice[i] = { ...newInvoice[i], date };
-            return { ...prevInput, invoice: newInvoice };
-        });
-
-
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput=>({...prevInput, date}));
+        }
     }
 
     const changeHour = (e, i) => {
@@ -880,19 +897,26 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
             setHour(value);
-            refInvoice[`hourSelect${i}`].current.value = value;
-            refInvoice[`hourInput${i}`].current.value = value;
+            if (!editMode) {
+                refInvoice[`hourSelect${i}`].current.value = value;
+                refInvoice[`hourInput${i}`].current.value = value;
+            }
+           
         }else{
             e.target.value=hour;
         }
 
         let time = value + ':' + minute + ':' + second;
-        setInput(prevInput => {
-            let newInvoice;
-            newInvoice = [...prevInput.invoice];
-            newInvoice[i] = { ...newInvoice[i], time };
-            return { ...prevInput, invoice: newInvoice };
-        });
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], time };
+                return { ...prevInput, invoice: newInvoice };
+            }); 
+        } else {
+            setInputEdit(prevInput => ({...prevInput, time})); 
+        }
 
     }
 
@@ -904,19 +928,27 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
             setMinute(value);
-            refInvoice[`minuteSelect${i}`].current.value = value;
-            refInvoice[`minuteInput${i}`].current.value = value;
+            if (!editMode) {
+                refInvoice[`minuteSelect${i}`].current.value = value;
+                refInvoice[`minuteInput${i}`].current.value = value;  
+            }
+            
         }else{
             e.target.value=minute;
         }
 
         let time = hour + ':' + value + ':' + second;
-        setInput(prevInput => {
-            let newInvoice;
-            newInvoice = [...prevInput.invoice];
-            newInvoice[i] = { ...newInvoice[i], time };
-            return { ...prevInput, invoice: newInvoice };
-        });
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], time };
+                return { ...prevInput, invoice: newInvoice };
+            }); 
+        } else {
+            setInputEdit(prevInput => ({...prevInput, time})); 
+        }
+      
 
     }
 
@@ -928,21 +960,28 @@ const AddConcreteSalesInvoice = () => {
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
             setSecond(value);
-
-            refInvoice[`secondSelect${i}`].current.value = value;
-            refInvoice[`secondInput${i}`].current.value = value;
+            if (!editMode) {
+                refInvoice[`secondSelect${i}`].current.value = value;
+                refInvoice[`secondInput${i}`].current.value = value;  
+            }
+           
 
         } else {
 
             e.target.value = second;
         }
         let time = hour + ':' + minute + ':' + value;
-        setInput(prevInput => {
-            let newInvoice;
-            newInvoice = [...prevInput.invoice];
-            newInvoice[i] = { ...newInvoice[i], time };
-            return { ...prevInput, invoice: newInvoice };
-        });
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], time };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput => ({...prevInput, time})); 
+        }
+        
 
 
     }
@@ -955,6 +994,7 @@ const AddConcreteSalesInvoice = () => {
     const pasteDataForEditing = (id0) => {
         let concreteSalesInvoice = concreteSalesInvoices.find(concreteSalesInvoice => concreteSalesInvoice.id === id0);
         concreteSalesInvoice && setId(id0);
+        console.log(concreteSalesInvoice);
         let numberplate = concreteSalesInvoice.truck.numberplate.split("-");
 
 
@@ -971,6 +1011,7 @@ const AddConcreteSalesInvoice = () => {
             cubicMeters: datas.cubicMeters,
             concrete_id: datas.concrete_id,
             truck_id: datas.truck_id,
+            ownerId:datas.truck.customer.id,
             driver_id: datas.driver_id,
             cementStore_id: datas.cementStore_id,
             unitPrice: datas.unitPrice,
@@ -1023,7 +1064,6 @@ const AddConcreteSalesInvoice = () => {
 
 
         if (rest.date) {
-            console.log(rest.date);
             let parts = rest.date.split("-");
             setYear(parts[0]);
             setMonth(parts[1]);
@@ -1378,10 +1418,10 @@ const AddConcreteSalesInvoice = () => {
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
         setLoading(true)
-
+        console.warn(inputEdit.maskanMeli);
         await axios.patch(
-            `/api/v1/editCustomer/${id}`,
-            { ...input },
+            `/api/v1/editConcreteSalesInvoice/${id}`,
+            { ...inputEdit },
             {
                 headers:
                 {
@@ -1423,13 +1463,13 @@ const AddConcreteSalesInvoice = () => {
                         //     behavior: 'smooth'
                         // });
 
-                        // Object.entries(error.response.data.errors).map(([key, val]) => {
-                        //     key.includes('type') && (key = 'types');
-                        //     document.getElementById(key).classList.add('borderRedFB');
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            console.error(val);
+                            // document.getElementById(key).classList.add('borderRedFB');
 
-                        //     document.getElementById(key + 'Error').innerHTML = val;
+                            // document.getElementById(key + 'Error').innerHTML = val;
 
-                        // });
+                        });
 
                     }
                 }
@@ -1646,7 +1686,6 @@ const AddConcreteSalesInvoice = () => {
         value = Number(value);
 
         if (element == 'weight') {
-            console.log('wieght');
             cubicMeters = value / 2300;
             if (!Number.isInteger(cubicMeters)) {
                 cubicMeters = cubicMeters.toFixed(2);

@@ -81,7 +81,7 @@ class ConcreteSalesInvoiceController extends Controller
                 //     'address' => $key['address'],
                 //     'concretingPosition' => $key['concretingPosition']
                 // ]);
-                $allResult[]= $concreteSalesInvoice->load('customer','concrete', 'cementStore', 'truck', 'driver');
+                $allResult[]= $concreteSalesInvoice->load('customer','concrete', 'cementStore', 'truck.customer', 'driver');
 
             }
         } catch (\Throwable $th) {
@@ -156,7 +156,8 @@ class ConcreteSalesInvoiceController extends Controller
      */
     public function update(UpdateConcreteSalesInvoiceRequest $request, ConcreteSalesInvoice $concreteSalesInvoice)
     {
-        //
+        $concreteSalesInvoice->update($request->all());
+        dd('dddd');
     }
 
     /**
