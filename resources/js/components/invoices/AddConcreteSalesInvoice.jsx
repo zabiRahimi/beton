@@ -1465,6 +1465,7 @@ const AddConcreteSalesInvoice = () => {
 
                         Object.entries(error.response.data.errors).map(([key, val]) => {
                             console.error(val);
+                            console.error(key);
                             // document.getElementById(key).classList.add('borderRedFB');
 
                             // document.getElementById(key + 'Error').innerHTML = val;
@@ -1646,12 +1647,16 @@ const AddConcreteSalesInvoice = () => {
     }
 
     const handleCheckedMaskanMeliEdit = (e, value) => {
+        let maskanMeli;
         if (value == 'emam') {
-            checkedMaskanMeliEdit == "emam" ? setCheckedMaskanMeliEdit('') : setCheckedMaskanMeliEdit('emam');
+            checkedMaskanMeliEdit == "emam" ? (setCheckedMaskanMeliEdit(''),maskanMeli='' ): (setCheckedMaskanMeliEdit('emam'),maskanMeli='مسکن ملی شهرک امام خمینی');
         } else {
-            checkedMaskanMeliEdit == "shahid" ? setCheckedMaskanMeliEdit('') : setCheckedMaskanMeliEdit('shahid');
+            checkedMaskanMeliEdit == "shahid" ? (setCheckedMaskanMeliEdit(''), maskanMeli='') : (setCheckedMaskanMeliEdit('shahid'), maskanMeli='مسکن ملی شهرک شهید رییسی');
 
         }
+
+        setInputEdit(pre=>({...pre, maskanMeli}));
+
     }
 
     const handleCubicMetersCalculation = (e, i = null) => {
