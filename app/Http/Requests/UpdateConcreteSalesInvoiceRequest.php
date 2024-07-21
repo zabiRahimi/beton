@@ -58,6 +58,7 @@ class UpdateConcreteSalesInvoiceRequest extends FormRequest
 
             'vahed.required_with' => 'هنگام انتخاب مسکن ملی لازم است واحد را وارد کنید',
             'vahed.numeric' => 'واحد را به عدد وارد کنید',
+            'address.required_without' => 'لطفا آدرس را وارد کنید.',
             
         ];
     }
