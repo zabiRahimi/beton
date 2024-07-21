@@ -254,6 +254,7 @@ return [
         'vahed'=>'واحد',
         'concretingPosition'=>'موقعیت بتن ریزی',
         'time'=>'ساعت',
+        'date'=>'تاریخ',
         'invoice.*.time'=>'ساعت',
         'invoice.*.date'=>'تاریخ',
         'invoice.*.concrete_id'=>'عیار بتن',

@@ -47,7 +47,7 @@ class StoreConcreteSalesInvoiceRequest extends FormRequest
     {
         return [
             'customer_id.required' => 'خریدار را انتخاب کنید',
-            'invoice.*.address.required_without'=>'آدرس را وارد کنید و اگر بار برای یکی از مسکن‌های ملی است، بجای وارد کردن آدرس آن را انتخاب کنید',
+            'invoice.*.address.required_without'=>'آدرس را وارد کنید و اگر بتن برای یکی از مسکن‌های ملی است، بجای وارد کردن آدرس آن را انتخاب کنید',
             'invoice.*.vahed.required_with' => 'هنگامی که مسکن ملی را انتخاب می‌کنید لازم است شماره واحد را وارد کنید.',
             
         ];

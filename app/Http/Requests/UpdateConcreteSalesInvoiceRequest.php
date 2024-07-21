@@ -56,9 +56,12 @@ class UpdateConcreteSalesInvoiceRequest extends FormRequest
             'cubicMeters.required' => 'وزن بار را براساس متر‌مکعب وارد کنید',
             'cubicMeters.numeric' => 'متر‌مکعب را به عدد وارد کنید',
 
+            'fare.required' => 'کرایه میکسر را وارد کنید',
+            'fare.numeric' => 'کرایه میکسر را صحیح وارد کنید.',
+
             'vahed.required_with' => 'هنگام انتخاب مسکن ملی لازم است واحد را وارد کنید',
             'vahed.numeric' => 'واحد را به عدد وارد کنید',
-            'address.required_without' => 'لطفا آدرس را وارد کنید.',
+            'address.required_without' => 'آدرس را وارد کنید و اگر بتن برای یکی از مسکن‌های ملی است، بجای وارد کردن آدرس آن را انتخاب کنید',
             
         ];
     }
