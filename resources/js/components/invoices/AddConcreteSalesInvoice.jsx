@@ -2513,7 +2513,7 @@ const AddConcreteSalesInvoice = () => {
                                                         placeholder="1"
                                                         value={month || ''}
                                                         onInput={(e) => changeMonth(e, 0)}
-                                                        onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateError')}
+                                                        onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
 
                                                     />
                                                     <span>/</span>

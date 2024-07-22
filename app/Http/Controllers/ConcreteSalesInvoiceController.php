@@ -45,7 +45,7 @@ class ConcreteSalesInvoiceController extends Controller
             DB::beginTransaction();
             $customer_id = $request->validated()['customer_id'];
             // dd($request->validated()['invoice']);
-            $allResult=[];
+            $allResult = [];
             foreach ($request->validated()['invoice'] as $key) {
 
 
@@ -82,11 +82,9 @@ class ConcreteSalesInvoiceController extends Controller
                 //     'address' => $key['address'],
                 //     'concretingPosition' => $key['concretingPosition']
                 // ]);
-                $allResult[]= $concreteSalesInvoice->load('customer','concrete', 'cementStore', 'truck.customer', 'driver');
-
+                $allResult[] = $concreteSalesInvoice->load('customer', 'concrete', 'cementStore', 'truck.customer', 'driver');
             }
             DB::commit();
-
         } catch (\Throwable $th) {
             DB::rollback();
 
@@ -163,13 +161,16 @@ class ConcreteSalesInvoiceController extends Controller
     {
         try {
             DB::beginTransaction();
-             $concreteSalesInvoice->update($request->all());
-           
-        $concreteSalesInvoice->update($request->all());
-        dd($concreteSalesInvoice);
-           
-            DB::commit();
+            $preConcreteSalesInvoice = ConcreteSalesInvoice::find($concreteSalesInvoice->id);
+         
 
+            
+            $this->updateCementDeduction($request->cementStore_id, $request->concrete_id, $request->cubicMeters, $preConcreteSalesInvoice->cementStore_id, $preConcreteSalesInvoice->concrete_id, $preConcreteSalesInvoice->cubicMeters);
+
+            $concreteSalesInvoice->update($request->all());
+
+            DB::commit();
+            dd($concreteSalesInvoice);
         } catch (\Throwable $th) {
             DB::rollback();
 
@@ -344,4 +345,108 @@ class ConcreteSalesInvoiceController extends Controller
             ['creditor' => DB::raw('creditor + ' . $fare)]
         );
     }
+
+    /**
+     * مقدار سیمان مصرف شده را در سیلو مورد نظر اصلاح می کند
+     * لازمه این کار این است که ابتدا میزان سیمان کسر شده به سیلو اضافه شود
+     */
+    // private function updateCementDeduction(int $cementStoreId, int $concreteId, int|float $cubicMeters, int $preCementStoreId, int $preConcreteId, int|float $preCubicMeters)
+    // {
+    //    if ($cementStoreId==$preCementStoreId && $concreteId==$preConcreteId && $cubicMeters== $preCubicMeters) {
+    //     /**
+    //      * چون هیچ تغییری در سیلو، نوع سیمان و مقدار بتن ایجاد 
+    //      * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
+    //      */
+    //     dd('همه چیز برابر');
+    //    } else if($cementStoreId==$preCementStoreId) {
+    //     $preAmountCement = $this->returnsCementUsed($preConcreteId, $preCubicMeters);
+    //     $amountCement = $this->returnsCementUsed($concreteId, $cubicMeters);
+
+    //     $cementStore = CementStore::find($cementStoreId);
+    //     $cementStore->amount += $preAmountCement;
+    //     $cementStore->amount -= $amountCement;
+    //     $cementStore->save();
+    //     dd('سیلو برابر', $preAmountCement, $amountCement, $cementStore->amount);
+    //    } else{
+    //     $preAmountCement = $this->returnsCementUsed($preConcreteId, $preCubicMeters);
+    //     $amountCement = $this->returnsCementUsed($concreteId, $cubicMeters);
+
+    //     $perCementStore = CementStore::find($preCementStoreId);
+    //     $perCementStore->amount += $preAmountCement;
+    //     $perCementStore->save();
+
+    //     $cementStore = CementStore::find($preCementStoreId);
+    //     $cementStore->amount -= $amountCement;
+    //     $cementStore->save();
+    //     dd('سیلو تغییر کرده');
+
+    //    }
+       
+      
+    // }
+
+    private function updateCementDeduction(int $cementStoreId, int $concreteId, int|float $cubicMeters, int $preCementStoreId, int $preConcreteId, int|float $preCubicMeters)
+{
+    if ($cementStoreId == $preCementStoreId && $concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
+        dd('همه چیز برابر');
+    } else if ($cementStoreId == $preCementStoreId) {
+        $this->updateSameCementStore($cementStoreId, $concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+    } else {
+        $this->updateDifferentCementStore($cementStoreId, $concreteId, $cubicMeters, $preCementStoreId, $preConcreteId, $preCubicMeters);
+    }
+}
+
+private function updateSameCementStore($cementStoreId, $concreteId, $cubicMeters, $preConcreteId, $preCubicMeters)
+{
+    $preAmountCement = $this->returnsCementUsed($preConcreteId, $preCubicMeters);
+    $amountCement = $this->returnsCementUsed($concreteId, $cubicMeters);
+
+    $cementStore = CementStore::find($cementStoreId);
+    $cementStore->amount += $preAmountCement;
+    $cementStore->amount -= $amountCement;
+    $cementStore->save();
+    dd('سیلو برابر', $preAmountCement, $amountCement, $cementStore->amount);
+}
+
+// private function updateDifferentCementStore($cementStoreId, $concreteId, $cubicMeters, $preCementStoreId, $preConcreteId, $preCubicMeters)
+// {
+//     $preAmountCement = $this->returnsCementUsed($preConcreteId, $preCubicMeters);
+//     $amountCement = $this->returnsCementUsed($concreteId, $cubicMeters);
+
+//     $perCementStore = CementStore::find($preCementStoreId);
+//     $perCementStore->amount += $preAmountCement;
+//     $perCementStore->save();
+
+//     $cementStore = CementStore::find($preCementStoreId);
+//     $cementStore->amount -= $amountCement;
+//     $cementStore->save();
+//     dd('سیلو تغییر کرده');
+// }
+
+
+    private function updateDifferentCementStore($cementStoreId, $concreteId, $cubicMeters, $preCementStoreId, $preConcreteId, $preCubicMeters)
+{
+    $preAmountCement = $this->returnsCementUsed($preConcreteId, $preCubicMeters);
+    $amountCement = $this->returnsCementUsed($concreteId, $cubicMeters);
+
+    $this->increaseCementInStore($preCementStoreId, $preAmountCement);
+    $this->decreaseCementInStore($cementStoreId, $amountCement);
+
+    dd('سیلو تغییر کرده');
+}
+
+private function increaseCementInStore($storeId, $amount)
+{
+    $store = CementStore::find($storeId);
+    $store->amount += $amount;
+    $store->save();
+}
+
+private function decreaseCementInStore($storeId, $amount)
+{
+    $store = CementStore::find($storeId);
+    $store->amount -= $amount;
+    $store->save();
+}
+
 }
