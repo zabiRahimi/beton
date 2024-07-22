@@ -42,6 +42,7 @@ class ConcreteSalesInvoiceController extends Controller
     public function store(StoreConcreteSalesInvoiceRequest $request)
     {
         try {
+            DB::beginTransaction();
             $customer_id = $request->validated()['customer_id'];
             // dd($request->validated()['invoice']);
             $allResult=[];
@@ -84,7 +85,11 @@ class ConcreteSalesInvoiceController extends Controller
                 $allResult[]= $concreteSalesInvoice->load('customer','concrete', 'cementStore', 'truck.customer', 'driver');
 
             }
+            DB::commit();
+
         } catch (\Throwable $th) {
+            DB::rollback();
+
             throw $th;
             dd('not');
         }
@@ -156,8 +161,23 @@ class ConcreteSalesInvoiceController extends Controller
      */
     public function update(UpdateConcreteSalesInvoiceRequest $request, ConcreteSalesInvoice $concreteSalesInvoice)
     {
+        try {
+            DB::beginTransaction();
+             $concreteSalesInvoice->update($request->all());
+           
         $concreteSalesInvoice->update($request->all());
-        dd('dddd');
+        dd($concreteSalesInvoice);
+           
+            DB::commit();
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+
+            throw $th;
+            dd('not');
+        }
+        // return response()->json(['concreteSalesInvoice' =>  $allResult], 200);
+
     }
 
     /**
