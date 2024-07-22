@@ -994,7 +994,6 @@ const AddConcreteSalesInvoice = () => {
     const pasteDataForEditing = (id0) => {
         let concreteSalesInvoice = concreteSalesInvoices.find(concreteSalesInvoice => concreteSalesInvoice.id === id0);
         concreteSalesInvoice && setId(id0);
-        console.log(concreteSalesInvoice);
         let numberplate = concreteSalesInvoice.truck.numberplate.split("-");
 
 
@@ -1308,14 +1307,26 @@ const AddConcreteSalesInvoice = () => {
      */
     const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', i = null) => {
         if (i !== null && Number(i) >= 0) {
-            const addressElemnt = document.getElementById(`invoice.${i}.address`);
-            const vahedElemnt = document.getElementById(`invoice.${i}.vahed`);
-
-            addressElemnt.classList.remove('borderRedFB');
-            refInvoice[`addressError${i}`].current.innerHTML = '';
-
-            vahedElemnt.classList.remove('borderRedFB');
-            refInvoice[`vahedError${i}`].current.innerHTML = '';
+            if (!editMode) {
+                const addressElemnt = document.getElementById(`invoice.${i}.address`);
+                const vahedElemnt = document.getElementById(`invoice.${i}.vahed`);
+    
+                addressElemnt.classList.remove('borderRedFB');
+                refInvoice[`addressError${i}`].current.innerHTML = '';
+    
+                vahedElemnt.classList.remove('borderRedFB');
+                refInvoice[`vahedError${i}`].current.innerHTML = '';
+            } else {
+                const addressElemnt = document.getElementById('addressEdit');
+                const vahedElemnt = document.getElementById('vahedEdit');
+    
+                addressElemnt.classList.remove('borderRedFB');
+                refAddressEditError.current.innerHTML = '';
+    
+                vahedElemnt.classList.remove('borderRedFB');
+                refVahedEditError.current.innerHTML = '';
+            }
+           
         } else {
             if (!dateAndTime) {
 
@@ -1382,7 +1393,7 @@ const AddConcreteSalesInvoice = () => {
                         const checkCubicMeters = /^invoice\.\d+\.cubicMeters$/;
                         const checkTotalPrice = /^invoice\.\d+\.totalPrice$/;
                         const checkOwnerId = /^invoice\.\d+\.ownerId$/;
-                        // id.includes('type') && (id = 'types');
+                        
                         if (!checkCubicMeters.test(id) && !checkTotalPrice.test(id) && !checkOwnerId.test(id)) {
                             const element = document.getElementById(id);
                             let scrollPosition = window.scrollY || window.pageYOffset;
@@ -1401,9 +1412,6 @@ const AddConcreteSalesInvoice = () => {
                             }
 
                         });
-
-
-
                     }
                 }
             )
@@ -1414,7 +1422,6 @@ const AddConcreteSalesInvoice = () => {
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
         setLoading(true)
-        console.warn(inputEdit.date);
         await axios.patch(
             `/api/v1/editConcreteSalesInvoice/${id}`,
             { ...inputEdit },
@@ -1428,7 +1435,6 @@ const AddConcreteSalesInvoice = () => {
         ).then((response) => {
 
             replaceObject(id, response.data.concreteSalesInvoice);
-
             MySwal.fire({
                 icon: "success",
                 title: "با موفقیت ویرایش شد",
@@ -1465,8 +1471,6 @@ const AddConcreteSalesInvoice = () => {
                             }
 
                         });
-
-
                     }
                 }
             )
@@ -1555,11 +1559,6 @@ const AddConcreteSalesInvoice = () => {
                 resalt = refWeightEdit.current.value.replace(/[\s,]/g, "");
                 refCurrent = refWeightEdit.current;
                 break;
-
-            // case 'totalPrice':
-            //     resalt = refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
-            //     refCurrent = refInvoice[`totalPrice${i}`].current;
-            //     break;
             case 'fare':
                 resalt = refFareEdit.current.value.replace(/[\s,]/g, "");
                 refCurrent = refFareEdit.current;
@@ -1582,7 +1581,6 @@ const AddConcreteSalesInvoice = () => {
             refCurrent.value = val;
         }
     }
-
 
     /**
     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
@@ -1647,11 +1645,9 @@ const AddConcreteSalesInvoice = () => {
             checkedMaskanMeliEdit == "emam" ? (setCheckedMaskanMeliEdit(''), maskanMeli = '') : (setCheckedMaskanMeliEdit('emam'), maskanMeli = 'مسکن ملی شهرک امام خمینی');
         } else {
             checkedMaskanMeliEdit == "shahid" ? (setCheckedMaskanMeliEdit(''), maskanMeli = '') : (setCheckedMaskanMeliEdit('shahid'), maskanMeli = 'مسکن ملی شهرک شهید رییسی');
-
         }
 
         setInputEdit(pre => ({ ...pre, maskanMeli }));
-
     }
 
     const handleCubicMetersCalculation = (e, i = null) => {
@@ -1674,10 +1670,9 @@ const AddConcreteSalesInvoice = () => {
         } else {
             refCubicMetersEdit.current.innerHTML = cubicMeters;
             setInputEdit(prev => ({ ...prev, cubicMeters }));
-
         }
-
     }
+
     const handleTotalPriceCalculation = (e, i, element) => {
         let cubicMeters,
             totalPrice,
@@ -1710,9 +1705,7 @@ const AddConcreteSalesInvoice = () => {
                     totalPrice = unitPrice * cubicMeters;
 
                     setInputEdit(prev => ({ ...prev, totalPrice }));
-
                     refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
-                    // refTotalPriceEdit.current.innerHTML = 555;
                 }
             }
         } else if (element == 'unitPrice') {
@@ -1758,18 +1751,15 @@ const AddConcreteSalesInvoice = () => {
         let concrete_id = handleSetConcreteForNewInvoice();
         let maskanMeli = handleSetMaskanMeliForNewInvoice();
         let cementStore_id = handleSetCementStoreForNewInvoice();
-        // handleSetUnitPriceForNewInvoice();
         setInput(prevInput => {
             let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
 
             return { ...prevInput, invoice: newInvoice };
         });
-        // handleSetConcreteForNewInvoice();
 
         handleClearTime();
         setIsChecked(true)
     }
-
 
     const handleClearTime = () => {
         setHour('');
@@ -1809,10 +1799,6 @@ const AddConcreteSalesInvoice = () => {
         setInvoice(updatedInvoice);
         setInput({ ...input, invoice: updatedInputInvoice });
     }
-
-    // const handleSetUnitPriceForNewInvoice =()=>{
-    //     const unitPrice=input.invoice[invoice.length - 1].unitPrice;
-    // }
 
     return (
         <div ref={container}>
@@ -2687,7 +2673,7 @@ const AddConcreteSalesInvoice = () => {
                                             <div
                                                 id='cementStore_idEdit'
                                                 className="element"
-                                                onClick={e => { clearInputError(e, refCementStore_idEditError); setInvoiceIndexForCementStore(i) }}
+                                                onClick={e => { clearInputError(e, refCementStore_idEditError); }}
                                             >
                                                 <SelectZabi
                                                     primaryLabel='انتخاب'
