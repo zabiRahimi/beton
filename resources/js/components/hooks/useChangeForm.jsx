@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 function useChangeForm(args) {
-  const { formCurrent, resetForm, pasteDataForEditing } = args
+  const { formCurrent, resetForm, pasteDataForEditing , resetForm2=null} = args
   const containerShowGeRef = useRef(null);
   // ایجاد state برای آرگومان‌ها
   //   const [args, setArgs] = useState(initialArgs);
@@ -17,13 +17,18 @@ function useChangeForm(args) {
   /**
    * نمایش فرم اضافه کردن اطلاعات و ایجاد رکورد جدید
    */
-  const showAddForm = () => {
+  const showAddForm = (useResetForm=true) => {
     formCurrent && formCurrent.reset();
     setDisabledBtnShowRecords(false);
     setDisabledBtnShowForm(true);
     setFlexDirection('columnGe');
     setEditMode(false)
-    resetForm();
+    if (useResetForm) {
+      resetForm();
+    } else {
+      resetForm2();
+    }
+    
   };
 
   /**
@@ -43,7 +48,6 @@ function useChangeForm(args) {
    * نمایش فرم ویرایش رکوردهای ثبت شده
    */
   const showEditForm = (id) => {
-    // console.log(id);
     setDisabledBtnShowRecords(false);
     setDisabledBtnShowForm(false);
     setFlexDirection('columnGe');

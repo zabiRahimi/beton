@@ -51,25 +51,6 @@ class ConcreteSalesInvoiceController extends Controller
                 $concreteSalesInvoice->fill($key);
                 $concreteSalesInvoice->save();
 
-                // $concreteSalesInvoice = ConcreteSalesInvoice::create([
-                //     'customer_id' => $customer_id,
-                //     'time' => $key['time'],
-                //     'date' => $key['date'],
-                //     'concrete_id' => $key['concrete_id'],
-                //     'unitPrice' => $key['unitPrice'],
-                //     'weight' => $key['weight'],
-                //     'cubicMeters' => $key['cubicMeters'],
-                //     'cementStore_id' => $key['cementStore_id'],
-                //     'totalPrice' => $key['totalPrice'],
-                //     'truck_id' => $key['truck_id'],
-                //     'ownerId' => $key['ownerId'],
-                //     'driver_id' => $key['driver_id'],
-                //     'fare' => $key['fare'],
-                //     'maskanMeli' => $key['maskanMeli'],
-                //     'vahed' => $key['vahed'],
-                //     'address' => $key['address'],
-                //     'concretingPosition' => $key['concretingPosition']
-                // ]);
                 $allResult[] = $concreteSalesInvoice->load('customer', 'concrete', 'cementStore', 'truck.customer', 'driver');
             }
             DB::commit();
@@ -127,14 +108,17 @@ class ConcreteSalesInvoiceController extends Controller
     {
         try {
             DB::beginTransaction();
-            $preConcreteSalesInvoice = ConcreteSalesInvoice::find($concreteSalesInvoice->id);
+           
+            $preConcreteSalesInvoice = ConcreteSalesInvoice::with(['truck'])->find($concreteSalesInvoice->id);
 
             $this->updateCement($request->cementStore_id, $request->concrete_id, $request->cubicMeters, $preConcreteSalesInvoice->cementStore_id, $preConcreteSalesInvoice->concrete_id, $preConcreteSalesInvoice->cubicMeters);
 
             $this->updateSand($request->concrete_id, $request->cubicMeters, $preConcreteSalesInvoice->concrete_id, $preConcreteSalesInvoice->cubicMeters);
 
             $this->updateWater($request->concrete_id, $request->cubicMeters, $preConcreteSalesInvoice->concrete_id, $preConcreteSalesInvoice->cubicMeters);
-
+            
+            $this->updateMixerOwner($request->ownerId, $request->fare, $preConcreteSalesInvoice->truck->customer_id, $preConcreteSalesInvoice->fare);
+            
             $concreteSalesInvoice->update($request->all());
             DB::commit();
             dd('done');
@@ -351,6 +335,18 @@ class ConcreteSalesInvoiceController extends Controller
         }
     }
 
+    private function updateMixerOwner(int $ownerId, int $fare, int $preOwnerId, int $preFare){
+        if ($ownerId == $preOwnerId && $fare==$preFare) {
+            # هیچ تغییری در تعویض کامیون و کرایه بار ایجاد نشده
+            # بر همین اساس هیچ عملیاتی صورت نمی‌گیرد
+        } elseif($ownerId == $preOwnerId) {
+            $this->updateSameMixerOwnerSalary($ownerId, $fare, $preFare);
+        }else{
+            $this->updateDifferentMixerOwnerSalary($ownerId, $fare, $preOwnerId, $preFare);
+        }
+        
+    }
+
     /**
      * هنگامی که سیلو تغییر نکرده است، ولی نوع بتن و یا مقدار بتن و یا هردو 
      * تغییر کرده باشد، ابتدا مقدار سیمانی که قبلا از سیلو کسر شده، به سیلو
@@ -426,4 +422,39 @@ class ConcreteSalesInvoiceController extends Controller
         $waterStore->save();
         
     }
+
+    private function updateSameMixerOwnerSalary(int $ownerId, int $fare, int $preFare){
+        $financial =Financial::where('customer_id', $ownerId)->first();
+        $financial->creditor -= $preFare;
+        $financial->creditor += $fare;
+        $financial->save();
+    }
+
+     /**
+     * هنگامی که سیلو تغییر کرده باشد، ابتدا مقدار سیمانی که قبلا از سیلوی قبلی کم
+     * شده بود به همان سیلو اضافه می شود و سپس مقدار سیمان مصرف شده جدید از سیلوی 
+     * فعلی کم می شود
+     */
+    private function updateDifferentMixerOwnerSalary(int $ownerId, int $fare, int $preOwnerId, int $preFare)
+    {
+        $this->decreaseMixerOwnerSalary($preOwnerId, $preFare);
+        $this->increaseMixerOwnerSalary($ownerId,  $fare);
+    }
+
+    private function decreaseMixerOwnerSalary(int $preOwnerId, int $preFare)
+    {
+        
+        $financial = Financial::where('customer_id', $preOwnerId)->first();
+        $financial->creditor -= $preFare;
+        $financial->save();
+    }
+
+    private function increaseMixerOwnerSalary(int $ownerId, int $fare)
+    {
+        $financial = Financial::where('customer_id', $ownerId)->first();
+        $financial->creditor += $fare;
+        $financial->save();
+    }
+
+    
 }

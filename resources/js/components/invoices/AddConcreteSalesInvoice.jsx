@@ -1145,6 +1145,7 @@ const AddConcreteSalesInvoice = () => {
         setConcretingPosition('');
 
         refInvoice[`cubicMeters0`].current.innerHTML = '0';
+        
         refInvoice[`totalPrice0`].current.innerHTML = '0';
 
         refCustomer_id.current.updateData('انتخاب');
@@ -1171,7 +1172,57 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+    const resetForm2 = () => {
+        setInvoice([sampleInvoice]);
+        setInput({
+            customer_id: '',
+            invoice: [{
+                date: '',
+                time: '',
+                weight: '',
+                cubicMeters: "",
+                concrete_id: '',
+                truck_id: '',
+                ownerId: '',
+                driver_id: '',
+                cementStore_id: '',
+                unitPrice: '',
+                totalPrice: '',
+                fare: '',
+                maskanMeli: '',
+                vahed: '',
+                address: '',
+                concretingPosition: ''
+            }],
+        });
+
+        setCustomerId('');
+        setConcreteId('');
+        setTruckId('');
+        setOwnerId('');
+        setDriverId('');
+        setCementStoreId('');
+        setCheckedMaskanMeli();
+
+        setHour('');
+        setMinute('');
+        setSecond('');
+
+        setDay('');
+        setMonth('');
+        setYear('');
+
+        setUnitPrice('');
+        setFare('');
+
+        setCheckedValue('');
+        setMaskan(['']);
+
+        setVahed('');
+        setAddress('');
+        setConcretingPosition('');
+    }
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing, resetForm2 });
 
     useEffect(() => {
         // let index = invoice.length - 1;
@@ -1819,7 +1870,7 @@ const AddConcreteSalesInvoice = () => {
             <div className="headPageGe">
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddForm}
+                    ref={btnAddGeRef} onClick={()=>showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     ایجاد فاکتور
