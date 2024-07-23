@@ -35,7 +35,7 @@ class ConcreteSalesInvoiceController extends Controller
         try {
             DB::beginTransaction();
             $customer_id = $request->validated()['customer_id'];
-            
+
             $allResult = [];
             foreach ($request->validated()['invoice'] as $key) {
 
@@ -58,7 +58,6 @@ class ConcreteSalesInvoiceController extends Controller
             DB::rollback();
 
             throw $th;
-            
         }
         // try {
         //     DB::beginTransaction();
@@ -108,7 +107,7 @@ class ConcreteSalesInvoiceController extends Controller
     {
         try {
             DB::beginTransaction();
-           
+
             $preConcreteSalesInvoice = ConcreteSalesInvoice::with(['truck'])->find($concreteSalesInvoice->id);
 
             $this->updateCement($request->cementStore_id, $request->concrete_id, $request->cubicMeters, $preConcreteSalesInvoice->cementStore_id, $preConcreteSalesInvoice->concrete_id, $preConcreteSalesInvoice->cubicMeters);
@@ -116,13 +115,14 @@ class ConcreteSalesInvoiceController extends Controller
             $this->updateSand($request->concrete_id, $request->cubicMeters, $preConcreteSalesInvoice->concrete_id, $preConcreteSalesInvoice->cubicMeters);
 
             $this->updateWater($request->concrete_id, $request->cubicMeters, $preConcreteSalesInvoice->concrete_id, $preConcreteSalesInvoice->cubicMeters);
-            
+
             $this->updateMixerOwner($request->ownerId, $request->fare, $preConcreteSalesInvoice->truck->customer_id, $preConcreteSalesInvoice->fare);
-            
+
+            $this->updateCustomer($request->customer, $request->totalPrice, $preConcreteSalesInvoice->customer, $preConcreteSalesInvoice->totalPrice);
+
             $concreteSalesInvoice->update($request->all());
             DB::commit();
             dd('done');
-            
         } catch (\Throwable $th) {
             DB::rollback();
 
@@ -272,8 +272,6 @@ class ConcreteSalesInvoiceController extends Controller
         return $unitAmountWater;
     }
 
-
-
     /**
      * مبلغ بتن را به بدهی مشتری اضافه می کند
      */
@@ -303,7 +301,6 @@ class ConcreteSalesInvoiceController extends Controller
              * چون هیچ تغییری در سیلو، نوع سیمان و مقدار بتن ایجاد 
              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
              */
-          
         } else if ($cementStoreId == $preCementStoreId) {
             $this->updateSameCementStore($cementStoreId, $concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
         } else {
@@ -311,40 +308,50 @@ class ConcreteSalesInvoiceController extends Controller
         }
     }
 
-    private function updateSand(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters ){
+    private function updateSand(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+    {
         if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
             /**
              * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
              */
-          
-        }else{
+        } else {
             $this->updateSandStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
         }
     }
 
-    private function updateWater(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters ){
+    private function updateWater(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+    {
         if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
             /**
              * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
              */
-          
-        }else{
+        } else {
             $this->updateWaterStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
         }
     }
 
-    private function updateMixerOwner(int $ownerId, int $fare, int $preOwnerId, int $preFare){
-        if ($ownerId == $preOwnerId && $fare==$preFare) {
+    private function updateMixerOwner(int $ownerId, int $fare, int $preOwnerId, int $preFare)
+    {
+        if ($ownerId == $preOwnerId && $fare == $preFare) {
             # هیچ تغییری در تعویض کامیون و کرایه بار ایجاد نشده
             # بر همین اساس هیچ عملیاتی صورت نمی‌گیرد
-        } elseif($ownerId == $preOwnerId) {
+        } elseif ($ownerId == $preOwnerId) {
             $this->updateSameMixerOwnerSalary($ownerId, $fare, $preFare);
-        }else{
+        } else {
             $this->updateDifferentMixerOwnerSalary($ownerId, $fare, $preOwnerId, $preFare);
         }
-        
+    }
+
+    private function updateCustomer(int $customer, int $totalPrice, int $preCustomer, int $pretotalPrice)
+    {
+        if ($customer == $preCustomer && $totalPrice == $pretotalPrice) {
+        } else if ($customer == $preCustomer) {
+            $this->updateSameCustomerDept($customer, $totalPrice, $pretotalPrice);
+        } else {
+            $this->updateDifferentCustomerDept($customer, $totalPrice, $preCustomer, $pretotalPrice);
+        }
     }
 
     /**
@@ -361,7 +368,6 @@ class ConcreteSalesInvoiceController extends Controller
         $cementStore->amount += $preAmountCement;
         $cementStore->amount -= $amountCement;
         $cementStore->save();
-        
     }
 
     /**
@@ -391,11 +397,11 @@ class ConcreteSalesInvoiceController extends Controller
         $store->save();
     }
 
-      /**
+    /**
      *  ابتدا مقدار شن‌و‌ماسه که قبلا از سیلو کسر شده، به سیلو
      * اضافه می شود و سپس مقدار شن‌وماسه مصرف شده جدید از سیلو کم می‌شود
      */
-    private function updateSandStore( int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+    private function updateSandStore(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
     {
         $preAmountSand = $this->returnsSandUsed($preConcreteId, $preCubicMeters);
         $amountSand = $this->returnsSandUsed($concreteId, $cubicMeters);
@@ -404,14 +410,13 @@ class ConcreteSalesInvoiceController extends Controller
         $sandStore->amount += $preAmountSand;
         $sandStore->amount -= $amountSand;
         $sandStore->save();
-        
     }
 
-     /**
+    /**
      *  ابتدا مقدار شن‌و‌ماسه که قبلا از سیلو کسر شده، به سیلو
      * اضافه می شود و سپس مقدار شن‌وماسه مصرف شده جدید از سیلو کم می‌شود
      */
-    private function updateWaterStore( int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+    private function updateWaterStore(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
     {
         $preAmountWater = $this->returnsWaterUsed($preConcreteId, $preCubicMeters);
         $amountWater = $this->returnsWaterUsed($concreteId, $cubicMeters);
@@ -420,17 +425,17 @@ class ConcreteSalesInvoiceController extends Controller
         $waterStore->amount += $preAmountWater;
         $waterStore->amount -= $amountWater;
         $waterStore->save();
-        
     }
 
-    private function updateSameMixerOwnerSalary(int $ownerId, int $fare, int $preFare){
-        $financial =Financial::where('customer_id', $ownerId)->first();
+    private function updateSameMixerOwnerSalary(int $ownerId, int $fare, int $preFare)
+    {
+        $financial = Financial::where('customer_id', $ownerId)->first();
         $financial->creditor -= $preFare;
         $financial->creditor += $fare;
         $financial->save();
     }
 
-     /**
+    /**
      * هنگامی که سیلو تغییر کرده باشد، ابتدا مقدار سیمانی که قبلا از سیلوی قبلی کم
      * شده بود به همان سیلو اضافه می شود و سپس مقدار سیمان مصرف شده جدید از سیلوی 
      * فعلی کم می شود
@@ -443,7 +448,7 @@ class ConcreteSalesInvoiceController extends Controller
 
     private function decreaseMixerOwnerSalary(int $preOwnerId, int $preFare)
     {
-        
+
         $financial = Financial::where('customer_id', $preOwnerId)->first();
         $financial->creditor -= $preFare;
         $financial->save();
@@ -456,5 +461,11 @@ class ConcreteSalesInvoiceController extends Controller
         $financial->save();
     }
 
-    
+    private function  updateSameCustomerDept()
+    {
+    }
+
+    private function updateDifferentCustomerDept()
+    {
+    }
 }
