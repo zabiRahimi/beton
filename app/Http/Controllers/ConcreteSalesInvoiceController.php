@@ -116,9 +116,9 @@ class ConcreteSalesInvoiceController extends Controller
 
             $this->updateWater($request->concrete_id, $request->cubicMeters, $preConcreteSalesInvoice->concrete_id, $preConcreteSalesInvoice->cubicMeters);
 
-            $this->updateMixerOwner($request->ownerId, $request->fare, $preConcreteSalesInvoice->truck->customer_id, $preConcreteSalesInvoice->fare);
+            $this->updateMixerOwnerAccount($request->ownerId, $request->fare, $preConcreteSalesInvoice->truck->customer_id, $preConcreteSalesInvoice->fare);
 
-            $this->updateCustomer($request->customer, $request->totalPrice, $preConcreteSalesInvoice->customer, $preConcreteSalesInvoice->totalPrice);
+            $this->updateCustomerAccount($request->customer, $request->totalPrice, $preConcreteSalesInvoice->customer, $preConcreteSalesInvoice->totalPrice);
 
             $concreteSalesInvoice->update($request->all());
             DB::commit();
@@ -308,51 +308,18 @@ class ConcreteSalesInvoiceController extends Controller
         }
     }
 
-    private function updateSand(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
-    {
-        if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
-            /**
-             * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
-             * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
-             */
-        } else {
-            $this->updateSandStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
-        }
-    }
+  
 
-    private function updateWater(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
-    {
-        if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
-            /**
-             * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
-             * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
-             */
-        } else {
-            $this->updateWaterStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
-        }
-    }
+   
 
-    private function updateMixerOwner(int $ownerId, int $fare, int $preOwnerId, int $preFare)
-    {
-        if ($ownerId == $preOwnerId && $fare == $preFare) {
-            # هیچ تغییری در تعویض کامیون و کرایه بار ایجاد نشده
-            # بر همین اساس هیچ عملیاتی صورت نمی‌گیرد
-        } elseif ($ownerId == $preOwnerId) {
-            $this->updateSameMixerOwnerSalary($ownerId, $fare, $preFare);
-        } else {
-            $this->updateDifferentMixerOwnerSalary($ownerId, $fare, $preOwnerId, $preFare);
-        }
-    }
+   
+    /**
+     * #########
+     * ###################### update cement store
+     * #########
+     */
 
-    private function updateCustomer(int $customer, int $totalPrice, int $preCustomer, int $pretotalPrice)
-    {
-        if ($customer == $preCustomer && $totalPrice == $pretotalPrice) {
-        } else if ($customer == $preCustomer) {
-            $this->updateSameCustomerDept($customer, $totalPrice, $pretotalPrice);
-        } else {
-            $this->updateDifferentCustomerDept($customer, $totalPrice, $preCustomer, $pretotalPrice);
-        }
-    }
+
 
     /**
      * هنگامی که سیلو تغییر نکرده است، ولی نوع بتن و یا مقدار بتن و یا هردو 
@@ -397,6 +364,24 @@ class ConcreteSalesInvoiceController extends Controller
         $store->save();
     }
 
+     /**
+     * #########
+     * ###################### update sand store
+     * #########
+     */
+
+     private function updateSand(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+     {
+         if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
+             /**
+              * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
+              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
+              */
+         } else {
+             $this->updateSandStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+         }
+     }
+
     /**
      *  ابتدا مقدار شن‌و‌ماسه که قبلا از سیلو کسر شده، به سیلو
      * اضافه می شود و سپس مقدار شن‌وماسه مصرف شده جدید از سیلو کم می‌شود
@@ -412,9 +397,27 @@ class ConcreteSalesInvoiceController extends Controller
         $sandStore->save();
     }
 
+     /**
+     * #########
+     * ###################### update water store
+     * #########
+     */
+
+     private function updateWater(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+     {
+         if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
+             /**
+              * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
+              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
+              */
+         } else {
+             $this->updateWaterStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+         }
+     }
+
     /**
-     *  ابتدا مقدار شن‌و‌ماسه که قبلا از سیلو کسر شده، به سیلو
-     * اضافه می شود و سپس مقدار شن‌وماسه مصرف شده جدید از سیلو کم می‌شود
+     *  ابتدا مقدار آب که قبلا از مخزن کسر شده، به مخزن
+     * اضافه می شود و سپس مقدار آب مصرف شده جدید از مخزن کم می‌شود
      */
     private function updateWaterStore(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
     {
@@ -426,6 +429,24 @@ class ConcreteSalesInvoiceController extends Controller
         $waterStore->amount -= $amountWater;
         $waterStore->save();
     }
+
+     /**
+     * #########
+     * ###################### update mixer owner account
+     * #########
+     */
+
+     private function updateMixerOwnerAccount(int $ownerId, int $fare, int $preOwnerId, int $preFare)
+     {
+         if ($ownerId == $preOwnerId && $fare == $preFare) {
+             # هیچ تغییری در تعویض کامیون و کرایه بار ایجاد نشده
+             # بر همین اساس هیچ عملیاتی صورت نمی‌گیرد
+         } elseif ($ownerId == $preOwnerId) {
+             $this->updateSameMixerOwnerSalary($ownerId, $fare, $preFare);
+         } else {
+             $this->updateDifferentMixerOwnerSalary($ownerId, $fare, $preOwnerId, $preFare);
+         }
+     }
 
     private function updateSameMixerOwnerSalary(int $ownerId, int $fare, int $preFare)
     {
@@ -461,11 +482,53 @@ class ConcreteSalesInvoiceController extends Controller
         $financial->save();
     }
 
-    private function  updateSameCustomerDept()
+    /**
+     * #########
+     * #########
+     */
+
+    private function updateCustomerAccount(int $customerId, int $totalPrice, int $preCustomerId, int $pretotalPrice)
     {
+        if ($customerId == $preCustomerId && $totalPrice == $pretotalPrice) {
+            #چون هیچ تغییری در کامیون و کرایه کامیون نشده است
+            #هیچ عملیاتی صورت نمی‌گیرد
+        } else if ($customerId == $preCustomerId) {
+            $this->updateSameCustomerDept($customerId, $totalPrice, $pretotalPrice);
+        } else {
+            $this->updateDifferentCustomerDept($customerId, $totalPrice, $preCustomerId, $pretotalPrice);
+        }
     }
 
-    private function updateDifferentCustomerDept()
+
+    private function  updateSameCustomerDept(int $customerId, int $totalPrice, int $pretotalPrice)
     {
+        $financial = Financial::where('customer_id', $customerId)->first();
+        $financial->debtor -= $pretotalPrice;
+        $financial->debtor += $totalPrice;
+        $financial->save();
+    }
+
+
+
+    private function updateDifferentCustomerDept(int $customerId, int $totalPrice, int $preCustomerId, int $preTotalPrice)
+    {
+        $this->decreaseCustomerDept($preCustomerId, $preTotalPrice);
+        $this->increaseCustomerDept($customerId, $totalPrice);
+    }
+
+
+    private function decreaseCustomerDept(int $perCustomerId, int $perTotalPrice)
+    {
+        $financial = Financial::where('customer_id', $perCustomerId)->first();
+        $financial->debtor -= $perTotalPrice;
+        $financial->save();
+    }
+
+
+    private function increaseCustomerDept(int $customerId, int $totalPrice)
+    {
+        $financial = Financial::where('customer_id', $customerId)->first();
+        $financial->debtor += $totalPrice;
+        $financial->save();
     }
 }
