@@ -8,60 +8,69 @@ function useChangeForm(args) {
   // ایجاد متدها
   const [flexDirection, setFlexDirection] = useState('columnGe');
   const [hideCreatedRecord, setHideCreatedRecord] = useState(true);
+  const [hideShowForm, setHideShowForm] = useState(false);
   const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
   const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
 
   /** ست کردن موارد لازم هنگامی که کاربر ویرایش یک رکورد را انتخاب می‌کند */
   const [editMode, setEditMode] = useState(false);
 
+
   /**
    * نمایش فرم اضافه کردن اطلاعات و ایجاد رکورد جدید
    */
-  const showAddForm = (useResetForm=true) => {
+  const showAddForm = (chengeResetForm=false) => {
     formCurrent && formCurrent.reset();
     setDisabledBtnShowRecords(false);
     setDisabledBtnShowForm(true);
     setFlexDirection('columnGe');
-    setEditMode(false)
-    if (useResetForm) {
+    setEditMode(false);
+    setHideCreatedRecord(true);
+
+    if (!chengeResetForm) {
       resetForm();
     } else {
       resetForm2();
     }
-    
+    setHideShowForm(false);//آزمایشی
+   document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   /**
    * نمایش لیست رکوردهای ثبت شده
    */
-  const showCreatedRecord = () => {
+  const showCreatedRecord = (chengeResetForm=false) => {
     formCurrent && formCurrent.reset();
-    resetForm();
+    if (!chengeResetForm) {
+      resetForm();
+    } else {
+      resetForm2();
+    }
     setDisabledBtnShowForm(false);
     setDisabledBtnShowRecords(true);
     setFlexDirection('columnReverseGe');
     setHideCreatedRecord(false);
-
+    setHideShowForm(true);//آزمایشی
+   document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   /**
    * نمایش فرم ویرایش رکوردهای ثبت شده
    */
-  const showEditForm = (id) => {
+  const showEditForm = async(id) => {
     setDisabledBtnShowRecords(false);
     setDisabledBtnShowForm(false);
     setFlexDirection('columnGe');
     setEditMode(true);
-    pasteDataForEditing(id)
+    setHideCreatedRecord(true);
+    setHideShowForm(false);
+    await pasteDataForEditing(id);
+   document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+
   }
 
-  // استفاده از useEffect برای بروزرسانی آرگومان‌ها
-  //   useEffect(() => {
-  //     // بروزرسانی args...
-  //   }, [args]);
-
   // برگرداندن متدها و تابع بروزرسانی
-  return { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef };
+  return { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm };
 }
 
 export default useChangeForm;
