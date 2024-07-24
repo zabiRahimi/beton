@@ -39,7 +39,6 @@ class ConcreteSalesInvoiceController extends Controller
             $allResult = [];
             foreach ($request->validated()['invoice'] as $key) {
 
-
                 $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
                 $this->sandDeduction($key['concrete_id'], $key['cubicMeters']);
                 $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
@@ -59,43 +58,6 @@ class ConcreteSalesInvoiceController extends Controller
 
             throw $th;
         }
-        // try {
-        //     DB::beginTransaction();
-
-        //     $customer = new Customer;
-        //     $customer->fill($request->validated());
-        //     $customer->save();
-        //     foreach ($request->validated()['types'] as $typeDetailData) {
-
-        //         $typeDetail = new CustomerType();
-        //         $typeDetail->fill($typeDetailData);
-        //         $typeDetail->customer_id = $customer->id;
-        //         $typeDetail->save();
-        //     }
-
-        //     try {
-
-        //         if (isset($request->validated()['bankInfo']) && count($request->validated()['bankInfo']) > 0) {
-        //             foreach ($request->validated()['bankInfo'] as $info) {
-
-        //                 $bankDetail = new BankInfo;
-        //                 $bankDetail->fill($info);
-        //                 $bankDetail->customer_id = $customer->id;
-        //                 $bankDetail->save();
-        //             }
-        //         }
-        //     } catch (\Exception $e) {
-
-        //         // \Log::error($e->getMessage());
-        //     }
-        //     // اضافه کردن رکوردهای ذخیره شده در دو جدول دیگر به متغییر زیر
-        //     $customer->load('customerType', 'bankInfo');
-        //     DB::commit();
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     // \Log::error($e->getMessage());
-        //     throw $e;
-        // }
 
         return response()->json(['concreteSalesInvoice' =>  $allResult], 200);
     }
@@ -118,18 +80,21 @@ class ConcreteSalesInvoiceController extends Controller
 
             $this->updateMixerOwnerAccount($request->ownerId, $request->fare, $preConcreteSalesInvoice->truck->customer_id, $preConcreteSalesInvoice->fare);
 
-            $this->updateCustomerAccount($request->customer, $request->totalPrice, $preConcreteSalesInvoice->customer, $preConcreteSalesInvoice->totalPrice);
+            $this->updateCustomerAccount($request->customer_id, $request->totalPrice, $preConcreteSalesInvoice->customer_id, $preConcreteSalesInvoice->totalPrice);
 
             $concreteSalesInvoice->update($request->all());
+
+            $concreteSalesInvoice->load('customer', 'concrete', 'cementStore', 'truck.customer', 'driver');
             DB::commit();
-            dd('done');
+            
         } catch (\Throwable $th) {
             DB::rollback();
 
             throw $th;
             dd('not');
         }
-        // return response()->json(['concreteSalesInvoice' =>  $allResult], 200);
+        
+        return response()->json(['concreteSalesInvoice' =>  $concreteSalesInvoice], 200);
 
     }
 
@@ -144,7 +109,6 @@ class ConcreteSalesInvoiceController extends Controller
     public function getCSIConcreteBuyers()
     {
         $concreteBuyers = Customer::concreteBuyers()->get();
-
         return response()->json(['concreteBuyers' => $concreteBuyers]);
     }
 
@@ -178,7 +142,6 @@ class ConcreteSalesInvoiceController extends Controller
     private function cementDeduction(int $cementStoreId, int $concreteId, int|float $cubicMeters)
     {
         $amountCement = $this->returnsCementUsed($concreteId, $cubicMeters);
-
         $cementStore = CementStore::find($cementStoreId);
         $cementStore->amount -= $amountCement;
         $cementStore->save();
@@ -190,7 +153,6 @@ class ConcreteSalesInvoiceController extends Controller
     private function sandDeduction(int $concreteId, int|float $cubicMeters)
     {
         $amountSand = $this->returnsSandUsed($concreteId, $cubicMeters);
-
         $sandStore = SandStore::find(1);
         $sandStore->amount -= $amountSand;
         $sandStore->save();
@@ -202,7 +164,6 @@ class ConcreteSalesInvoiceController extends Controller
     private function waterDeduction(int $concreteId, int|float $cubicMeters)
     {
         $amountWater = $this->returnsWaterUsed($concreteId, $cubicMeters);
-
         $waterStore = WaterStore::find(1);
         $waterStore->amount -= $amountWater;
         $waterStore->save();
@@ -215,7 +176,6 @@ class ConcreteSalesInvoiceController extends Controller
     {
         $unitAmountCement = $this->returnUnitAmountCement($concreteId);
         $amountCement = $unitAmountCement * $cubicMeters;
-
         return $amountCement;
     }
 
@@ -236,7 +196,6 @@ class ConcreteSalesInvoiceController extends Controller
     {
         $unitAmountWater = $this->returnUnitAmountWater($concreteId);
         $amountWater = $unitAmountWater * $cubicMeters;
-
         return $amountWater;
     }
 
@@ -294,32 +253,25 @@ class ConcreteSalesInvoiceController extends Controller
         );
     }
 
-    private function updateCement(int $cementStoreId, int $concreteId, int|float $cubicMeters, int $preCementStoreId, int $preConcreteId, int|float $preCubicMeters)
-    {
-        if ($cementStoreId == $preCementStoreId && $concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
-            /**
-             * چون هیچ تغییری در سیلو، نوع سیمان و مقدار بتن ایجاد 
-             * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
-             */
-        } else if ($cementStoreId == $preCementStoreId) {
-            $this->updateSameCementStore($cementStoreId, $concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
-        } else {
-            $this->updateDifferentCementStore($cementStoreId, $concreteId, $cubicMeters, $preCementStoreId, $preConcreteId, $preCubicMeters);
-        }
-    }
-
-  
-
-   
-
-   
     /**
      * #########
      * ###################### update cement store
      * #########
      */
 
-
+     private function updateCement(int $cementStoreId, int $concreteId, int|float $cubicMeters, int $preCementStoreId, int $preConcreteId, int|float $preCubicMeters)
+     {
+         if ($cementStoreId == $preCementStoreId && $concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
+             /**
+              * چون هیچ تغییری در سیلو، نوع سیمان و مقدار بتن ایجاد 
+              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
+              */
+         } else if ($cementStoreId == $preCementStoreId) {
+             $this->updateSameCementStore($cementStoreId, $concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+         } else {
+             $this->updateDifferentCementStore($cementStoreId, $concreteId, $cubicMeters, $preCementStoreId, $preConcreteId, $preCubicMeters);
+         }
+     }
 
     /**
      * هنگامی که سیلو تغییر نکرده است، ولی نوع بتن و یا مقدار بتن و یا هردو 
@@ -499,7 +451,6 @@ class ConcreteSalesInvoiceController extends Controller
         }
     }
 
-
     private function  updateSameCustomerDept(int $customerId, int $totalPrice, int $pretotalPrice)
     {
         $financial = Financial::where('customer_id', $customerId)->first();
@@ -508,14 +459,11 @@ class ConcreteSalesInvoiceController extends Controller
         $financial->save();
     }
 
-
-
     private function updateDifferentCustomerDept(int $customerId, int $totalPrice, int $preCustomerId, int $preTotalPrice)
     {
         $this->decreaseCustomerDept($preCustomerId, $preTotalPrice);
         $this->increaseCustomerDept($customerId, $totalPrice);
     }
-
 
     private function decreaseCustomerDept(int $perCustomerId, int $perTotalPrice)
     {
@@ -523,7 +471,6 @@ class ConcreteSalesInvoiceController extends Controller
         $financial->debtor -= $perTotalPrice;
         $financial->save();
     }
-
 
     private function increaseCustomerDept(int $customerId, int $totalPrice)
     {
