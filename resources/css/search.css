@@ -20,10 +20,7 @@
 
 .stringFromDate_Se,
 .stringUntilDate_Se {
-<<<<<<< HEAD
-=======
     padding-left: 4px;
->>>>>>> 32a96c265cacfd8eb4f01020ffa329fb3158b2b4
     font-size: 0.7rem;
     display: flex;
     align-items: center;
@@ -31,20 +28,6 @@
 
 .stringUntilDate_Se {}
 
-<<<<<<< HEAD
-.dayDate_Se {
-    width: 40px;
-    border-left: none;
-}
-
-.slashDate_Se {
-    border: 1px solid #8f8f9d;
-    border-right: none;
-    border-left: none;
-    background-color: #fff;
-}
-
-=======
 .inputDate_Se {
     border: 1px solid #8f8f9d;
     display: flex;
@@ -68,7 +51,6 @@
     align-items: center;
 }
 
->>>>>>> 32a96c265cacfd8eb4f01020ffa329fb3158b2b4
 .monthDate_Se {
     width: 50px;
     border-right: none;
@@ -77,9 +59,6 @@
 
 .yearDate_Se {
     width: 50px;
-<<<<<<< HEAD
-}
-=======
     border-right: none;
     border-radius: 3px 0 0 3px;
 }
@@ -206,5 +185,4 @@ font-size: 0.6rem;
     color: #fff;
 }
 
->>>>>>> 32a96c265cacfd8eb4f01020ffa329fb3158b2b4
 

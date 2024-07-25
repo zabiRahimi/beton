@@ -89,7 +89,9 @@ const AddConcreteSalesInvoice = () => {
     const [refInvoice, setRefInvoice] = useState({});
 
     const [loading, setLoading] = useState(false);
-    const [concreteBuyers, setConcreteBuyers] = useState([]);
+    const [customers, setCustomers] = useState([]);
+    const [customersSearch, setCustomersSearch] = useState([]);
+    const [concretesSearch, setConcretesSearch] = useState([]);
     const [concretes, setConcretes] = useState([]);
     const [mixers, setMixers] = useState([]);
     const [mixersSearch, setMixersSearch] = useState([]);
@@ -429,7 +431,7 @@ const AddConcreteSalesInvoice = () => {
                 });
             } else {
                 datas.map((data, i) => {
-                    setConcreteBuyers(perv => ([...perv, {
+                    setCustomers(perv => ([...perv, {
                         value: data.id,
                         html: <div className="personnelAption_addPerS">
                             <span className="name_addPers">{data.name}
@@ -441,7 +443,21 @@ const AddConcreteSalesInvoice = () => {
                             </span>
 
                         </div>
-                    }]))
+                    }]));
+
+                    setCustomersSearch(perv => ([...perv, {
+                        value: data.id,
+                        html: <div className="personnelAption_addPerS">
+                            <span className="name_addPers">{data.name}
+                                {' '}
+                                {data.lastName}</span>
+
+                            <span className="fther_addPers">
+                                {data.father || ''}
+                            </span>
+
+                        </div>
+                    }]));
                 })
             }
         });
@@ -478,7 +494,21 @@ const AddConcreteSalesInvoice = () => {
                             </span>
 
                         </div>
-                    }]))
+                    }]));
+
+                    setConcretesSearch(perv => ([...perv, {
+                        value: data.id,
+                        concreteName: data.concreteName,
+                        html: <div className="concreteAptionSelectFB">
+                            <span className="concreteLabelSelectFB">بتن
+                            </span>
+
+                            <span className="concreteSelectFB">
+                                {data.concreteName}
+                            </span>
+
+                        </div>
+                    }]));
                 })
             }
         });
@@ -511,7 +541,7 @@ const AddConcreteSalesInvoice = () => {
                                 {data.silo}
                             </span>
                         </div>
-                    }]))
+                    }]));
                 })
             }
         });
@@ -1753,7 +1783,7 @@ const AddConcreteSalesInvoice = () => {
                                     >
                                         <SelectZabi
                                             primaryLabel='انتخاب'
-                                            options={concreteBuyers}
+                                            options={customers}
                                             saveOption={setCustomerId}
                                             ref={refCustomer_id}
                                         />
@@ -2846,11 +2876,25 @@ const AddConcreteSalesInvoice = () => {
                             <div className="containerCustAConc_Se">
                                 <div className="customer_Se">
                                     <sapn className="stringCustAConc_Se stringCustomer_Se"> خریدار </sapn>
-                                    <input type="text" className="inputCustAConc_Se inputCustomer_Se" />
+                                    <div className="divSelectSearch_Se">
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={customersSearch}
+                                        saveOption={setCustomerSearchId}
+                                        ref={refCustomerSearch}
+                                    />
+                                    </div>
                                 </div>
                                 <div className="concrete_Se">
                                     <sapn className="stringCustAConc_Se stringConcrete_Se"> بتن </sapn>
-                                    <input type="text" className="inputCustAConc_Se inputConcrete_Se" />
+                                    <div className="divSelectSearch_Se">
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={concretesSearch}
+                                        saveOption={setConcreteSearchId}
+                                        ref={refConcreteSearch}
+                                    />
+                                    </div>
                                 </div>
                             </div>
 
