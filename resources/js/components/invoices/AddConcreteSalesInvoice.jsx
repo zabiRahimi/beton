@@ -37,11 +37,13 @@ const AddConcreteSalesInvoice = () => {
     const form = useRef(null);
     const formCurrent = form.current;
 
+    const refCustomerSearch = useRef(null);
     const refCustomer_id = useRef(null);
     const refCustomer_idError = useRef(null);
 
     const refTimeEditError = useRef(null);
     const refDateEditError = useRef(null);
+    const refConcreteSearch = createRef();
     const refConcrete_idEdit = createRef();
     const refConcrete_idEditError = useRef(null);
     const refUnitPriceEdit = useRef(null);
@@ -52,8 +54,10 @@ const AddConcreteSalesInvoice = () => {
     const refCementStore_idEdit = useRef(null);
     const refCementStore_idEditError = useRef(null);
     const refTotalPriceEdit = useRef(null);
+    const refTruckSearch = useRef(null);
     const refTruck_idEdit = useRef(null);
     const refTruck_idEditError = useRef(null);
+    const refDriverSearch = useRef(null);
     const refDriver_idEdit = useRef(null);
     const refDriver_idEditError = useRef(null);
     const refFareEdit = useRef(null);
@@ -88,7 +92,9 @@ const AddConcreteSalesInvoice = () => {
     const [concreteBuyers, setConcreteBuyers] = useState([]);
     const [concretes, setConcretes] = useState([]);
     const [mixers, setMixers] = useState([]);
+    const [mixersSearch, setMixersSearch] = useState([]);
     const [drivers, setDrivers] = useState([]);
+    const [driversSearch, setDriversSearch] = useState([]);
     const [cementStores, setCementStores] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState('');
@@ -103,10 +109,14 @@ const AddConcreteSalesInvoice = () => {
     const [invoiceIndexForDriver, setInvoiceIndexForDriver] = useState('');
     const [invoiceIndexForCementStore, setInvoiceIndexForCementStore] = useState('');
     const [customerId, setCustomerId] = useState('');
+    const [customerSearchId, setCustomerSearchId] = useState('');
     const [concreteId, setConcreteId] = useState('');
+    const [concreteSearchId, setConcreteSearchId] = useState('');
     const [truckId, setTruckId] = useState('');
+    const [truckSearchId, setTruckSearchId] = useState('');
     const [ownerId, setOwnerId] = useState('');
     const [driverId, setDriverId] = useState('');
+    const [driverSearchId, setDriverSearchId] = useState('');
     const [cementStoreId, setCementStoreId] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
     const [checkedMaskanMeliEdit, setCheckedMaskanMeliEdit] = useState('');
@@ -538,7 +548,20 @@ const AddConcreteSalesInvoice = () => {
                             </span>
 
                         </div>
-                    }]))
+                    }]));
+                    setDriversSearch(perv => ([...perv, {
+                        value: data.id,
+                        html: <div className="containerOption_Se containerOptionDriver_Se">
+                            <span className="nameDriver_Se">{data.name}
+                                {' '}
+                                {data.lastName}</span>
+
+                            <span className="ftherDriver_Se">
+                                {data.father || ''}
+                            </span>
+
+                        </div>
+                    }]));
                 })
             }
         });
@@ -584,7 +607,29 @@ const AddConcreteSalesInvoice = () => {
                             </span>
 
                         </div>
-                    }]))
+                    }]));
+
+                    setMixersSearch(perv => ([...perv, {
+                        value: data.id,
+                        value2: data.customer.id,
+                        html: <div className="containerOption_Se containerOptionMixer_Se">
+                            <span className="mixerNamberpalteSelectFB">
+                                <div className="numberplateDiv">
+                                    <span className="numberplateDivS1">{arr[0]}</span>
+                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                                    <span className="numberplateDivS3">{arr[1]}</span>
+                                    <span className="numberplateDivS4">{arr[2]}</span>
+                                </div>
+                            </span>
+
+                            <span className="divOwnerMixer_Se">
+                                {data.customer.name}
+                                {' '}
+                                {data.customer.lastName}
+                            </span>
+
+                        </div>
+                    }]));
                 })
             }
         });
@@ -2760,19 +2805,19 @@ const AddConcreteSalesInvoice = () => {
                                     <span className="stringFromDate_Se"> از تاریخ </span>
                                     <input
                                         type="text"
-                                        className="dayDate_Se"
+                                        className="inputDate_Se dayDate_Se"
                                         placeholder="روز"
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
-                                        className="monthDate_Se"
+                                        className="inputDate_Se monthDate_Se"
                                         placeholder="ماه"
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
-                                        className="yearDate_Se"
+                                        className="inputDate_Se yearDate_Se"
                                         placeholder="سال"
                                     />
 
@@ -2780,22 +2825,71 @@ const AddConcreteSalesInvoice = () => {
                                 <div className="endtDate_Se">
                                     <span className="stringUntilDate_Se"> تا تاریخ </span>
                                     <input
-                                        className="dayDate_Se"
+                                        className="inputDate_Se dayDate_Se"
                                         type="text"
                                         placeholder="روز"
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
-                                        className="monthDate_Se"
+                                        className="inputDate_Se monthDate_Se"
                                         placeholder="ماه"
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
-                                        className="yearDate_Se"
+                                        className="inputDate_Se yearDate_Se"
                                         placeholder="سال"
                                     />
+                                </div>
+                            </div>
+                            <div className="containerCustAConc_Se">
+                                <div className="customer_Se">
+                                    <sapn className="stringCustAConc_Se stringCustomer_Se"> خریدار </sapn>
+                                    <input type="text" className="inputCustAConc_Se inputCustomer_Se" />
+                                </div>
+                                <div className="concrete_Se">
+                                    <sapn className="stringCustAConc_Se stringConcrete_Se"> بتن </sapn>
+                                    <input type="text" className="inputCustAConc_Se inputConcrete_Se" />
+                                </div>
+                            </div>
+
+                            <div className="containerMixADri_Se">
+                                <div className="mixer_Se">
+                                    <sapn className="stringMixADri_Se stringMixer_Se"> میکسر </sapn>
+                                    <div className="divSelectSearch_Se">
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={mixersSearch}
+                                        saveOption={setTruckSearchId}
+                                        ref={refTruckSearch}
+                                        
+                                    />
+                                    </div>
+                                </div>
+                                <div className="driver_Se">
+                                    <sapn className="stringMixADri_Se stringDriver_Se"> راننده </sapn>
+                                    <div className="divSelectSearch_Se">
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={driversSearch}
+                                        saveOption={setDriverSearchId}
+                                        ref={refDriverSearch}
+                                        
+                                    />
+                                    </div>
+                                    
+                                    {/* <input type="text" className="inputMixADri_Se inputDriver_Se" /> */}
+                                </div>
+                            </div>
+
+                            <div className="divSearch_Se">
+                                <div className="firstElementSearch_Se"></div>
+                                <div className="divBtnSearch_Se">
+                                    <button className="--styleLessBtn btnSearch">
+                                        <span className="sritngSearch_Se"> جستجو </span>
+                                        <i className="icofont-search-2 icofontSearch_Se"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
