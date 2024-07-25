@@ -1,46 +1,45 @@
-.containerSearch_Se{
+.containerSearch_Se {
     width: 100%;
     padding: 0 5px;
     margin: 0 0 6px 0;
     display: flex;
 }
 
-.containerDate_Se{
+.containerDate_Se {
     width: fit-content;
     margin: 2px;
     display: flex;
     flex-direction: column;
 }
+
 .startDate_Se,
-.endtDate_Se{
+.endtDate_Se {
     margin: 1px 0 1px 0;
 }
 
 .stringFromDate_Se,
-.stringUntilDate_Se{
+.stringUntilDate_Se {
     font-size: 0.7rem;
 }
 
-.stringUntilDate_Se{
+.stringUntilDate_Se {}
 
+.dayDate_Se {
+    width: 40px;
+    border-left: none;
 }
 
-.dayDate_Se{
-width: 40px;
-border-left: none;
+.slashDate_Se {
+    border: 1px solid #8f8f9d;
+    border-right: none;
+    border-left: none;
+    background-color: #fff;
 }
 
-.slashDate_Se{
- border: 1px solid #8f8f9d;
- border-right: none;
- border-left: none;
- background-color: #fff;
-}
-
-.monthDate_Se{
+.monthDate_Se {
     width: 50px;
 }
 
-.yearDate_Se{
+.yearDate_Se {
     width: 50px;
 }
