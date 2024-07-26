@@ -90,17 +90,58 @@ const AddConcreteSalesInvoice = () => {
 
     const [loading, setLoading] = useState(false);
     const [customers, setCustomers] = useState([]);
-    const [customersSearch, setCustomersSearch] = useState([]);
-    const [concretesSearch, setConcretesSearch] = useState([]);
     const [concretes, setConcretes] = useState([]);
     const [mixers, setMixers] = useState([]);
-    const [mixersSearch, setMixersSearch] = useState([]);
     const [drivers, setDrivers] = useState([]);
-    const [driversSearch, setDriversSearch] = useState([]);
     const [cementStores, setCementStores] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
+
+    /**
+     * ###
+     * #### استیت‌های مربوط به سرچ و جستجوی فاکتورهای ایجاد شده
+     * ###
+     */
+
+    const [customersSearch, setCustomersSearch] = useState([{
+        value: 0,
+        html: <div className="personnelAption_addPerS">
+            <span className="name_addPers">همه خریداران</span>
+        </div>
+    }]);
+    const [concretesSearch, setConcretesSearch] = useState([{
+        value: 0,
+        html: <div className="personnelAption_addPerS">
+            <span className="name_addPers">همه بتن‌ها</span>
+        </div>
+    }]);
+    const [mixersSearch, setMixersSearch] = useState([{
+        value: 0,
+        html: <div className="personnelAption_addPerS">
+            <span className="name_addPers">همه میکسر‌ها</span>
+        </div>
+    }]);
+    const [driversSearch, setDriversSearch] = useState([{
+        value: 0,
+        html: <div className="personnelAption_addPerS">
+            <span className="name_addPers">همه رانندگان</span>
+        </div>
+    }]);
+    const [fromDateSearch, setFromDateSearch] = useState('');
+    const [dayFromSearch, setDayFromSearch] = useState('');
+    const [monthFromSearch, setMonthFromSearch] = useState('');
+    const [yearFromSearch, setYearFromSearch] = useState('');
+    const [untilDateSearch, setUntilDateSearch] = useState('');
+    const [dayUntilSearch, setDayUntilSearch] = useState('');
+    const [monthUntilSearch, setUntilMonthSearch] = useState('');
+    const [yearUntilSearch, setYearUntilSearch] = useState('');
+    const [customerSearchId, setCustomerSearchId] = useState('');
+    const [concreteSearchId, setConcreteSearchId] = useState('');
+    const [truckSearchId, setTruckSearchId] = useState('');
+    const [driverSearchId, setDriverSearchId] = useState('');
+
+
 
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
@@ -111,14 +152,10 @@ const AddConcreteSalesInvoice = () => {
     const [invoiceIndexForDriver, setInvoiceIndexForDriver] = useState('');
     const [invoiceIndexForCementStore, setInvoiceIndexForCementStore] = useState('');
     const [customerId, setCustomerId] = useState('');
-    const [customerSearchId, setCustomerSearchId] = useState('');
     const [concreteId, setConcreteId] = useState('');
-    const [concreteSearchId, setConcreteSearchId] = useState('');
     const [truckId, setTruckId] = useState('');
-    const [truckSearchId, setTruckSearchId] = useState('');
     const [ownerId, setOwnerId] = useState('');
     const [driverId, setDriverId] = useState('');
-    const [driverSearchId, setDriverSearchId] = useState('');
     const [cementStoreId, setCementStoreId] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
     const [checkedMaskanMeliEdit, setCheckedMaskanMeliEdit] = useState('');
@@ -770,6 +807,174 @@ const AddConcreteSalesInvoice = () => {
     }
 
     const changeYear = (e, i) => {
+        let { value } = e.target;
+        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+            setYear(value);
+            if (!editMode) {
+                refInvoice[`yearInput${i}`].current.value = value;
+                refInvoice[`yearSelect${i}`].current.value = value;
+            }
+
+        } else {
+            e.target.value = year;
+        }
+
+        let date = value + '-' + month + '-' + day;
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput => ({ ...prevInput, date }));
+        }
+    }
+
+    const changeDayFromSearch = (e, i) => {
+        let { value } = e.target;
+        value = value.toString();
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+            setDay(value);
+            if (!editMode) {
+                refInvoice[`dayInput${i}`].current.value = value;
+                refInvoice[`daySelect${i}`].current.value = value;
+            }
+
+        } else {
+            e.target.value = day;
+        }
+        let date = year + '-' + month + '-' + value;
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput => ({ ...prevInput, date }));
+        }
+    }
+
+    const changeMonthFromSearch = (e, i) => {
+        let { value } = e.target;
+        value = value.toString();
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
+            setMonth(value);
+            if (!editMode) {
+                refInvoice[`monthInput${i}`].current.value = value;
+                refInvoice[`monthSelect${i}`].current.value = value;
+            }
+        }
+        else {
+            e.target.value = month;
+        }
+        let date = year + '-' + value + '-' + day;
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput => ({ ...prevInput, date }));
+        }
+    }
+
+    const changeYearFromSearch = (e, i) => {
+        let { value } = e.target;
+        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+            setYear(value);
+            if (!editMode) {
+                refInvoice[`yearInput${i}`].current.value = value;
+                refInvoice[`yearSelect${i}`].current.value = value;
+            }
+
+        } else {
+            e.target.value = year;
+        }
+
+        let date = value + '-' + month + '-' + day;
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput => ({ ...prevInput, date }));
+        }
+    }
+
+    const changeDayUntilSearch = (e, i) => {
+        let { value } = e.target;
+        value = value.toString();
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+            setDay(value);
+            if (!editMode) {
+                refInvoice[`dayInput${i}`].current.value = value;
+                refInvoice[`daySelect${i}`].current.value = value;
+            }
+
+        } else {
+            e.target.value = day;
+        }
+        let date = year + '-' + month + '-' + value;
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput => ({ ...prevInput, date }));
+        }
+    }
+
+    const changeMonthUntilSearch = (e, i) => {
+        let { value } = e.target;
+        value = value.toString();
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
+            setMonth(value);
+            if (!editMode) {
+                refInvoice[`monthInput${i}`].current.value = value;
+                refInvoice[`monthSelect${i}`].current.value = value;
+            }
+        }
+        else {
+            e.target.value = month;
+        }
+        let date = year + '-' + value + '-' + day;
+        if (!editMode) {
+            setInput(prevInput => {
+                let newInvoice;
+                newInvoice = [...prevInput.invoice];
+                newInvoice[i] = { ...newInvoice[i], date };
+                return { ...prevInput, invoice: newInvoice };
+            });
+        } else {
+            setInputEdit(prevInput => ({ ...prevInput, date }));
+        }
+    }
+
+    const changeYearUntilSearch = (e, i) => {
         let { value } = e.target;
         if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
             setYear(value);
@@ -2877,23 +3082,23 @@ const AddConcreteSalesInvoice = () => {
                                 <div className="customer_Se">
                                     <sapn className="stringCustAConc_Se stringCustomer_Se"> خریدار </sapn>
                                     <div className="divSelectSearch_Se">
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={customersSearch}
-                                        saveOption={setCustomerSearchId}
-                                        ref={refCustomerSearch}
-                                    />
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={customersSearch}
+                                            saveOption={setCustomerSearchId}
+                                            ref={refCustomerSearch}
+                                        />
                                     </div>
                                 </div>
                                 <div className="concrete_Se">
                                     <sapn className="stringCustAConc_Se stringConcrete_Se"> بتن </sapn>
                                     <div className="divSelectSearch_Se">
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={concretesSearch}
-                                        saveOption={setConcreteSearchId}
-                                        ref={refConcreteSearch}
-                                    />
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={concretesSearch}
+                                            saveOption={setConcreteSearchId}
+                                            ref={refConcreteSearch}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -2902,27 +3107,27 @@ const AddConcreteSalesInvoice = () => {
                                 <div className="mixer_Se">
                                     <sapn className="stringMixADri_Se stringMixer_Se"> میکسر </sapn>
                                     <div className="divSelectSearch_Se">
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={mixersSearch}
-                                        saveOption={setTruckSearchId}
-                                        ref={refTruckSearch}
-                                        
-                                    />
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={mixersSearch}
+                                            saveOption={setTruckSearchId}
+                                            ref={refTruckSearch}
+
+                                        />
                                     </div>
                                 </div>
                                 <div className="driver_Se">
                                     <sapn className="stringMixADri_Se stringDriver_Se"> راننده </sapn>
                                     <div className="divSelectSearch_Se">
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={driversSearch}
-                                        saveOption={setDriverSearchId}
-                                        ref={refDriverSearch}
-                                        
-                                    />
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={driversSearch}
+                                            saveOption={setDriverSearchId}
+                                            ref={refDriverSearch}
+
+                                        />
                                     </div>
-                                    
+
                                     {/* <input type="text" className="inputMixADri_Se inputDriver_Se" /> */}
                                 </div>
                             </div>
