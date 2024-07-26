@@ -134,7 +134,7 @@ const AddConcreteSalesInvoice = () => {
     const [yearFromSearch, setYearFromSearch] = useState('');
     const [untilDateSearch, setUntilDateSearch] = useState('');
     const [dayUntilSearch, setDayUntilSearch] = useState('');
-    const [monthUntilSearch, setUntilMonthSearch] = useState('');
+    const [monthUntilSearch, setMonthUntilSearch] = useState('');
     const [yearUntilSearch, setYearUntilSearch] = useState('');
     const [customerSearchId, setCustomerSearchId] = useState('');
     const [concreteSearchId, setConcreteSearchId] = useState('');
@@ -832,172 +832,75 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const changeDayFromSearch = (e, i) => {
+    const changeDayFromSearch = (e) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-            setDay(value);
-            if (!editMode) {
-                refInvoice[`dayInput${i}`].current.value = value;
-                refInvoice[`daySelect${i}`].current.value = value;
-            }
-
-        } else {
-            e.target.value = day;
+            setDayFromSearch(value);
         }
-        let date = year + '-' + month + '-' + value;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
-        }
+        let date = yearFromSearch + '-' + monthFromSearch + '-' + value;
+        setFromDateSearch(date);
     }
 
-    const changeMonthFromSearch = (e, i) => {
+    const changeMonthFromSearch = (e) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-            setMonth(value);
-            if (!editMode) {
-                refInvoice[`monthInput${i}`].current.value = value;
-                refInvoice[`monthSelect${i}`].current.value = value;
-            }
+            setMonthFromSearch(value);
         }
-        else {
-            e.target.value = month;
-        }
-        let date = year + '-' + value + '-' + day;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
-        }
+        let date = yearFromSearch + '-' + value + '-' + dayFromSearch;
+        setFromDateSearch(date);
     }
 
-    const changeYearFromSearch = (e, i) => {
+    const changeYearFromSearch = (e) => {
         let { value } = e.target;
         if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-            setYear(value);
-            if (!editMode) {
-                refInvoice[`yearInput${i}`].current.value = value;
-                refInvoice[`yearSelect${i}`].current.value = value;
-            }
-
-        } else {
-            e.target.value = year;
+            setYearFromSearch(value);
         }
-
-        let date = value + '-' + month + '-' + day;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
-        }
+        let date = value + '-' + monthFromSearch + '-' + dayFromSearch;
+        setFromDateSearch(date);
     }
 
-    const changeDayUntilSearch = (e, i) => {
+    const changeDayUntilSearch = (e) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-            setDay(value);
-            if (!editMode) {
-                refInvoice[`dayInput${i}`].current.value = value;
-                refInvoice[`daySelect${i}`].current.value = value;
-            }
-
-        } else {
-            e.target.value = day;
+            setDayUntilSearch(value);
         }
-        let date = year + '-' + month + '-' + value;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
-        }
+        let date = yearUntilSearch + '-' + monthUntilSearch + '-' + value;
+        setUntilDateSearch(date);
     }
 
-    const changeMonthUntilSearch = (e, i) => {
+    const changeMonthUntilSearch = (e) => {
         let { value } = e.target;
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
         if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-            setMonth(value);
-            if (!editMode) {
-                refInvoice[`monthInput${i}`].current.value = value;
-                refInvoice[`monthSelect${i}`].current.value = value;
-            }
+            setMonthUntilSearch(value);
         }
-        else {
-            e.target.value = month;
-        }
-        let date = year + '-' + value + '-' + day;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
-        }
+        let date = yearUntilSearch + '-' + value + '-' + dayUntilSearch;
+        setUntilDateSearch(date);
     }
 
-    const changeYearUntilSearch = (e, i) => {
+    const changeYearUntilSearch = (e) => {
         let { value } = e.target;
         if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-            setYear(value);
-            if (!editMode) {
-                refInvoice[`yearInput${i}`].current.value = value;
-                refInvoice[`yearSelect${i}`].current.value = value;
-            }
-
-        } else {
-            e.target.value = year;
+            setYearUntilSearch(value);
         }
 
-        let date = value + '-' + month + '-' + day;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
-        }
+        let date = value + '-' + monthUntilSearch + '-' + dayUntilSearch;
+        setUntilDateSearch(date);
     }
 
     const changeHour = (e, i) => {
@@ -1334,7 +1237,6 @@ const AddConcreteSalesInvoice = () => {
 
     }, [editMode]);
 
-
     /**
      * ذخیره مقادیر ورودی‌های کاربر در استیت
      * @param {*} e 
@@ -1472,6 +1374,12 @@ const AddConcreteSalesInvoice = () => {
             }
             refErr.current && (refErr.current.innerHTML = '')
         }
+    }
+
+    const handleSearch=()=>{
+        let date=['1400-01-11','1401-02-18','1402-03-15','1403-04-31','1404-05-06','1405-06-23','1405-07-19','1406-08-20','1407-09-21',];
+        concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']
+
     }
 
     const handleSubmit = async (e) => {
@@ -1938,7 +1846,8 @@ const AddConcreteSalesInvoice = () => {
         document.getElementById('customer_id').classList.remove('borderRedFB');
         document.getElementById('customer_idError').innerHTML = '';
     }
-
+   
+    console.log(truckSearchId);
     return (
         <div ref={container}>
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
@@ -3042,18 +2951,21 @@ const AddConcreteSalesInvoice = () => {
                                         type="text"
                                         className="inputDate_Se dayDate_Se"
                                         placeholder="روز"
+                                        onInput={e => changeDayFromSearch(e)}
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
                                         className="inputDate_Se monthDate_Se"
                                         placeholder="ماه"
+                                        onInput={e => changeMonthFromSearch(e)}
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
                                         className="inputDate_Se yearDate_Se"
                                         placeholder="سال"
+                                        onInput={e => changeYearFromSearch(e)}
                                     />
 
                                 </div>
@@ -3063,18 +2975,21 @@ const AddConcreteSalesInvoice = () => {
                                         className="inputDate_Se dayDate_Se"
                                         type="text"
                                         placeholder="روز"
+                                        onInput={e => changeDayUntilSearch(e)}
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
                                         className="inputDate_Se monthDate_Se"
                                         placeholder="ماه"
+                                        onInput={e => changeMonthUntilSearch(e)}
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
                                         className="inputDate_Se yearDate_Se"
                                         placeholder="سال"
+                                        onInput={e => changeYearUntilSearch(e)}
                                     />
                                 </div>
                             </div>
