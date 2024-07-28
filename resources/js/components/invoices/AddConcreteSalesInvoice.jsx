@@ -1377,8 +1377,17 @@ const AddConcreteSalesInvoice = () => {
     }
 
     const handleSearch=()=>{
+        let start = fromDateSearch.replace(/-/g, ''); 
+        let end = untilDateSearch.replace(/-/g, ''); 
         let date=['1400-01-11','1401-02-18','1402-03-15','1403-04-31','1404-05-06','1405-06-23','1405-07-19','1406-08-20','1407-09-21',];
-        concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']
+        // concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']
+        let  filteredArray= concreteSalesInvoices.filter(invoice => {
+            let date2 = invoice.date.replace(/-/g, ''); // حذف خط فاصله از تاریخ و تبدیل آن به یک رشته عددی
+            // return car.color === 'white' && car.weight < 1200 && date >= start && date <= end;
+            return date2 >= start && date2 <= end;
+        });
+
+        console.log(filteredArray);
 
     }
 
@@ -1847,7 +1856,6 @@ const AddConcreteSalesInvoice = () => {
         document.getElementById('customer_idError').innerHTML = '';
     }
    
-    console.log(truckSearchId);
     return (
         <div ref={container}>
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
@@ -3050,7 +3058,10 @@ const AddConcreteSalesInvoice = () => {
                             <div className="divSearch_Se">
                                 <div className="firstElementSearch_Se"></div>
                                 <div className="divBtnSearch_Se">
-                                    <button className="--styleLessBtn btnSearch">
+                                    <button
+                                     className="--styleLessBtn btnSearch"
+                                     onClick={handleSearch}
+                                     >
                                         <span className="sritngSearch_Se"> جستجو </span>
                                         <i className="icofont-search-2 icofontSearch_Se"></i>
                                     </button>
