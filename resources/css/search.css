@@ -114,9 +114,11 @@
 
 .divBtnSearch_Se {}
 
-.btnSearch {
-    width: 95px;
+.btnSearch,
+.btnDelSearch {
+    width: 125px;
     padding: 3px 6px;
+    margin: 1px;
     background-color: #3b3baa !important;
     color: #fff;
     border: 1px solid #26269a !important;
@@ -129,6 +131,24 @@
 .sritngSearch_Se {}
 
 .icofontSearch_Se {}
+
+.divBtnDelSearch_Se{
+    
+}
+
+.btnDelSearch{
+    background-color: #d74939 !important;
+    border: 1px solid #ff0000 !important;
+}
+
+.sritngDelSearch_Se{
+    
+}
+
+.icofontDelSearch_Se{
+    
+}
+
 
 .divSelectSearch_Se{
     width: 170px;
@@ -185,4 +205,13 @@ font-size: 0.6rem;
     color: #fff;
 }
 
-
+.notResultSearch_Se{
+    width: 90%;
+    margin: 18px 5%;
+    padding: 20px;
+    text-align: center;
+    color: #ff0000;
+    background-color: #eab0b0;
+    border: 1px solid #af5e5e;
+    border-radius: 4px;
+}

@@ -95,6 +95,7 @@ const AddConcreteSalesInvoice = () => {
     const [drivers, setDrivers] = useState([]);
     const [cementStores, setCementStores] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
+    const [concreteSalesInvoicesForSearch, setConcreteSalesInvoicesForSearch] = useState(null);
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
 
@@ -105,25 +106,25 @@ const AddConcreteSalesInvoice = () => {
      */
 
     const [customersSearch, setCustomersSearch] = useState([{
-        value: 0,
+        value: '',
         html: <div className="personnelAption_addPerS">
             <span className="name_addPers">همه خریداران</span>
         </div>
     }]);
     const [concretesSearch, setConcretesSearch] = useState([{
-        value: 0,
+        value: '',
         html: <div className="personnelAption_addPerS">
             <span className="name_addPers">همه بتن‌ها</span>
         </div>
     }]);
     const [mixersSearch, setMixersSearch] = useState([{
-        value: 0,
+        value: '',
         html: <div className="personnelAption_addPerS">
             <span className="name_addPers">همه میکسر‌ها</span>
         </div>
     }]);
     const [driversSearch, setDriversSearch] = useState([{
-        value: 0,
+        value: '',
         html: <div className="personnelAption_addPerS">
             <span className="name_addPers">همه رانندگان</span>
         </div>
@@ -444,6 +445,7 @@ const AddConcreteSalesInvoice = () => {
     async function getConcreteSalesInvoices() {
         await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
             setConcreteSalesInvoices(response.data.concreteSalesInvoices);
+            setConcreteSalesInvoicesForSearch(response.data.concreteSalesInvoices);
             setTicketNumber(response.data.concreteSalesInvoices.length + 1);
         });
     }
@@ -707,6 +709,11 @@ const AddConcreteSalesInvoice = () => {
      * @returns 
      */
     const returnCreatedCustomerRecords = () => {
+        let length = concreteSalesInvoices.length;
+        console.log(`length = ${length}`);
+        if (length == 0) {
+            return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
+        }
         const reversedCustomers = concreteSalesInvoices.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedCustomers.map((concreteSalesInvoice, i) => {
             let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
@@ -1376,19 +1383,70 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const handleSearch=()=>{
-        let start = fromDateSearch.replace(/-/g, ''); 
-        let end = untilDateSearch.replace(/-/g, ''); 
-        let date=['1400-01-11','1401-02-18','1402-03-15','1403-04-31','1404-05-06','1405-06-23','1405-07-19','1406-08-20','1407-09-21',];
+    const handleSearch = () => {
+        let start = fromDateSearch.replace(/-/g, '');
+        let end = untilDateSearch.replace(/-/g, '');
+        let date = ['1400-01-11', '1401-02-18', '1402-03-15', '1403-04-31', '1404-05-06', '1405-06-23', '1405-07-19', '1406-08-20', '1407-09-21',];
         // concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']
-        let  filteredArray= concreteSalesInvoices.filter(invoice => {
+        let filteredInvoice = concreteSalesInvoicesForSearch.filter(invoice => {
             let date2 = invoice.date.replace(/-/g, ''); // حذف خط فاصله از تاریخ و تبدیل آن به یک رشته عددی
             // return car.color === 'white' && car.weight < 1200 && date >= start && date <= end;
-            return date2 >= start && date2 <= end;
+            // return date2 >= start && date2 <= end;
+            return (start ? date2 >= start : true) && (end ? date2 <= end : true) && (customerSearchId ? invoice.customer_id == customerSearchId : true) && (concreteSearchId ? invoice.concrete_id == concreteSearchId : true) && (truckSearchId ? invoice.truck_id == truckSearchId : true) && (driverSearchId ? invoice.driver_id == driverSearchId : true);
+
         });
+        if (fromDateSearch || untilDateSearch || customerSearchId || concreteSearchId || truckSearchId || driverSearchId) {
+            /**
+             * استفاده از دستور ست تایم‌اوت و مقدار دهی نال
+             * فقط برای اینکه یک تاخیر ایجاد شود که یک جلوه بصری ایجاد کند
+             */
+            setConcreteSalesInvoices(null);
 
-        console.log(filteredArray);
+            setTimeout(() => {
+                setConcreteSalesInvoices(filteredInvoice);
+            }, 700);
 
+
+        } else {
+            setConcreteSalesInvoices(null);
+
+            setTimeout(() => {
+                setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
+            }, 400);
+
+        }
+        // customerSearchId
+        // concreteSearchId
+        // truckSearchId
+        // driverSearchId
+        console.log(filteredInvoice);
+
+    }
+
+    const handleClearSearch = () => {
+        setFromDateSearch('');
+        setUntilDateSearch('');
+        setCustomerSearchId('');
+        setConcreteSearchId('');
+        setTruckSearchId('');
+        setDriverSearchId('');
+        document.getElementById('dayFromSearch').value='';
+        document.getElementById('monthFromSearch').value='';
+        document.getElementById('yearFromSearch').value='';
+
+        document.getElementById('dayUntilSearch').value='';
+        document.getElementById('monthUntilSearch').value='';
+        document.getElementById('yearUntilSearch').value='';
+        
+        refCustomerSearch.current.updateData('انتخاب');
+        refConcreteSearch.current.updateData('انتخاب');
+        refTruckSearch.current.updateData('انتخاب');
+        refDriverSearch.current.updateData('انتخاب');
+
+        setConcreteSalesInvoices(null);
+        setTimeout(() => {
+            setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
+        }, 400);
     }
 
     const handleSubmit = async (e) => {
@@ -1855,7 +1913,7 @@ const AddConcreteSalesInvoice = () => {
         document.getElementById('customer_id').classList.remove('borderRedFB');
         document.getElementById('customer_idError').innerHTML = '';
     }
-   
+
     return (
         <div ref={container}>
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
@@ -2958,6 +3016,7 @@ const AddConcreteSalesInvoice = () => {
                                     <input
                                         type="text"
                                         className="inputDate_Se dayDate_Se"
+                                        id="dayFromSearch"
                                         placeholder="روز"
                                         onInput={e => changeDayFromSearch(e)}
                                     />
@@ -2966,12 +3025,14 @@ const AddConcreteSalesInvoice = () => {
                                         type="text"
                                         className="inputDate_Se monthDate_Se"
                                         placeholder="ماه"
+                                        id="monthFromSearch"
                                         onInput={e => changeMonthFromSearch(e)}
                                     />
                                     <span className="slashDate_Se">/</span>
                                     <input
                                         type="text"
                                         className="inputDate_Se yearDate_Se"
+                                        id="yearFromSearch"
                                         placeholder="سال"
                                         onInput={e => changeYearFromSearch(e)}
                                     />
@@ -2980,8 +3041,9 @@ const AddConcreteSalesInvoice = () => {
                                 <div className="endtDate_Se">
                                     <span className="stringUntilDate_Se"> تا تاریخ </span>
                                     <input
-                                        className="inputDate_Se dayDate_Se"
                                         type="text"
+                                        className="inputDate_Se dayDate_Se"
+                                        id="dayUntilSearch"
                                         placeholder="روز"
                                         onInput={e => changeDayUntilSearch(e)}
                                     />
@@ -2989,6 +3051,7 @@ const AddConcreteSalesInvoice = () => {
                                     <input
                                         type="text"
                                         className="inputDate_Se monthDate_Se"
+                                        id="monthUntilSearch"
                                         placeholder="ماه"
                                         onInput={e => changeMonthUntilSearch(e)}
                                     />
@@ -2996,6 +3059,7 @@ const AddConcreteSalesInvoice = () => {
                                     <input
                                         type="text"
                                         className="inputDate_Se yearDate_Se"
+                                        id="yearUntilSearch"
                                         placeholder="سال"
                                         onInput={e => changeYearUntilSearch(e)}
                                     />
@@ -3035,7 +3099,6 @@ const AddConcreteSalesInvoice = () => {
                                             options={mixersSearch}
                                             saveOption={setTruckSearchId}
                                             ref={refTruckSearch}
-
                                         />
                                     </div>
                                 </div>
@@ -3050,18 +3113,24 @@ const AddConcreteSalesInvoice = () => {
 
                                         />
                                     </div>
-
-                                    {/* <input type="text" className="inputMixADri_Se inputDriver_Se" /> */}
                                 </div>
                             </div>
 
                             <div className="divSearch_Se">
-                                <div className="firstElementSearch_Se"></div>
+                                <div className="divBtnDelSearch_Se">
+                                    <button
+                                        className="--styleLessBtn btnDelSearch"
+                                        onClick={handleClearSearch}
+                                    >
+                                        <span className="sritngDelSearch_Se"> حذف جستجو </span>
+                                        <i className="icofont-close-circled icofontDelSearch_Se"></i>
+                                    </button>
+                                </div>
                                 <div className="divBtnSearch_Se">
                                     <button
-                                     className="--styleLessBtn btnSearch"
-                                     onClick={handleSearch}
-                                     >
+                                        className="--styleLessBtn btnSearch"
+                                        onClick={handleSearch}
+                                    >
                                         <span className="sritngSearch_Se"> جستجو </span>
                                         <i className="icofont-search-2 icofontSearch_Se"></i>
                                     </button>
