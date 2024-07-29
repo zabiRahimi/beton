@@ -26,7 +26,7 @@
     align-items: center;
 }
 
-.stringUntilDate_Se {}
+/* .stringUntilDate_Se {} */
 
 .inputDate_Se {
     border: 1px solid #8f8f9d;
@@ -88,18 +88,18 @@
     align-items: center;
 }
 
-.stringCustomer_Se {}
+/* .stringCustomer_Se {} */
 
-.inputCustAConc_Se,
-.inputMixADri_Se {}
+/* .inputCustAConc_Se,
+.inputMixADri_Se {} */
 
-.inputCustomer_Se {}
+/* .inputCustomer_Se {} */
 
-.concrete_Se {}
+/* .concrete_Se {} */
 
-.stringConcrete_Se {}
+/* .stringConcrete_Se {} */
 
-.inputConcrete_Se {}
+/* .inputConcrete_Se {} */
 
 .divSearch_Se {
     margin-right: 10px;
@@ -112,7 +112,7 @@
     height: 30px;
 }
 
-.divBtnSearch_Se {}
+/* .divBtnSearch_Se {} */
 
 .btnSearch,
 .btnDelSearch {
@@ -128,26 +128,20 @@
     align-items: center;
 }
 
-.sritngSearch_Se {}
+/* .sritngSearch_Se {} */
 
-.icofontSearch_Se {}
+/* .icofontSearch_Se {} */
 
-.divBtnDelSearch_Se{
-    
-}
+/* .divBtnDelSearch_Se{} */
 
 .btnDelSearch{
     background-color: #d74939 !important;
     border: 1px solid #ff0000 !important;
 }
 
-.sritngDelSearch_Se{
-    
-}
+/* .sritngDelSearch_Se{} */
 
-.icofontDelSearch_Se{
-    
-}
+/* .icofontDelSearch_Se{} */
 
 
 .divSelectSearch_Se{
@@ -158,9 +152,7 @@
     width: inherit;
 }
 
-.containerOption_Se{
-   
-}
+/* .containerOption_Se{} */
 
 .containerOptionDriver_Se{
     padding: 3px 2px;

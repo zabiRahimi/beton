@@ -142,8 +142,6 @@ const AddConcreteSalesInvoice = () => {
     const [truckSearchId, setTruckSearchId] = useState('');
     const [driverSearchId, setDriverSearchId] = useState('');
 
-
-
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
      * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
@@ -436,7 +434,6 @@ const AddConcreteSalesInvoice = () => {
         let index = invoice.length - 1;
         if (isRef) {
             input.invoice[index].unitPrice && refInvoice[`unitPrice${index}`] && (refInvoice[`unitPrice${index}`].current.value = parseFloat(input.invoice[index].unitPrice).toLocaleString());
-
             input.invoice[index].fare && refInvoice[`fare${index}`] && (refInvoice[`fare${index}`].current.value = parseFloat(input.invoice[index].fare).toLocaleString());
         }
 
@@ -2022,7 +2019,6 @@ const AddConcreteSalesInvoice = () => {
                                                             onInput={(e) => changeSecond(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondInput${i}`]}
-
                                                         />
                                                         <span>:</span>
                                                         <input
@@ -2032,7 +2028,6 @@ const AddConcreteSalesInvoice = () => {
                                                             onInput={(e) => changeMinute(e, i)}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`minuteInput${i}`]}
-
                                                         />
                                                         <span>:</span>
                                                         <input
@@ -2052,7 +2047,6 @@ const AddConcreteSalesInvoice = () => {
                                                             onChange={(e) => changeSecond(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondSelect${i}`]}
-
                                                         >
                                                             <option value=""> ثانیه </option>
                                                             {optionSeconds}
@@ -2127,7 +2121,6 @@ const AddConcreteSalesInvoice = () => {
                                                             onChange={(e) => changeDay(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`daySelect${i}`]}
-
                                                         >
                                                             <option value="">روز</option>
                                                             {optionDays}
@@ -2138,7 +2131,6 @@ const AddConcreteSalesInvoice = () => {
                                                             onChange={(e) => changeMonth(e, i)}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`monthSelect${i}`]}
-
                                                         >
                                                             <option value="">ماه</option>
                                                             {optionMonth}
@@ -2370,7 +2362,6 @@ const AddConcreteSalesInvoice = () => {
                                             >
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <div className="sectionFB">
@@ -3110,7 +3101,6 @@ const AddConcreteSalesInvoice = () => {
                                             options={driversSearch}
                                             saveOption={setDriverSearchId}
                                             ref={refDriverSearch}
-
                                         />
                                     </div>
                                 </div>
@@ -3150,14 +3140,10 @@ const AddConcreteSalesInvoice = () => {
 
                             <span className="editHeadShowACSI_Ge"> ویرایش  </span>
                             <span className="delHeadShowACSI_Ge"> حذف </span>
-
                         </div>
-
                         {concreteSalesInvoices ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
-
                     </div>
                 </div>
-
             </div>
         </div>
     )
