@@ -557,7 +557,7 @@ const AddCustomer = () => {
         }
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
      * این متد نام کلید یک آرایه یا یک آبجکت را تغییر می دهد
@@ -832,7 +832,7 @@ const AddCustomer = () => {
             <div className="headPageGe">
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddForm}
+                    ref={btnAddGeRef} onClick={()=>showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف مشتری
@@ -841,7 +841,7 @@ const AddCustomer = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCreatedRecord}
+                    onClick={()=>showCreatedRecord(false)}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده مشتری‌ها
@@ -850,7 +850,7 @@ const AddCustomer = () => {
             <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe containerAddCustomer">
-                    <form action="" className="formBeton" ref={form}>
+                    <form action="" className={`formBeton ${hideShowForm ? 'hideGe' : ''}`} ref={form}>
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش مشتری</h5>
 
                         <div className="sectionFB">

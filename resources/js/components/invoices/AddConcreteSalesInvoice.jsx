@@ -707,7 +707,6 @@ const AddConcreteSalesInvoice = () => {
      */
     const returnCreatedCustomerRecords = () => {
         let length = concreteSalesInvoices.length;
-        console.log(`length = ${length}`);
         if (length == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
@@ -1384,11 +1383,8 @@ const AddConcreteSalesInvoice = () => {
         let start = fromDateSearch.replace(/-/g, '');
         let end = untilDateSearch.replace(/-/g, '');
         let date = ['1400-01-11', '1401-02-18', '1402-03-15', '1403-04-31', '1404-05-06', '1405-06-23', '1405-07-19', '1406-08-20', '1407-09-21',];
-        // concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']
         let filteredInvoice = concreteSalesInvoicesForSearch.filter(invoice => {
             let date2 = invoice.date.replace(/-/g, ''); // حذف خط فاصله از تاریخ و تبدیل آن به یک رشته عددی
-            // return car.color === 'white' && car.weight < 1200 && date >= start && date <= end;
-            // return date2 >= start && date2 <= end;
             return (start ? date2 >= start : true) && (end ? date2 <= end : true) && (customerSearchId ? invoice.customer_id == customerSearchId : true) && (concreteSearchId ? invoice.concrete_id == concreteSearchId : true) && (truckSearchId ? invoice.truck_id == truckSearchId : true) && (driverSearchId ? invoice.driver_id == driverSearchId : true);
 
         });
@@ -1402,22 +1398,12 @@ const AddConcreteSalesInvoice = () => {
             setTimeout(() => {
                 setConcreteSalesInvoices(filteredInvoice);
             }, 700);
-
-
         } else {
             setConcreteSalesInvoices(null);
-
             setTimeout(() => {
                 setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
             }, 400);
-
         }
-        // customerSearchId
-        // concreteSearchId
-        // truckSearchId
-        // driverSearchId
-        console.log(filteredInvoice);
-
     }
 
     const handleClearSearch = () => {

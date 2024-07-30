@@ -19,7 +19,7 @@ function useChangeForm(args) {
   /**
    * نمایش فرم اضافه کردن اطلاعات و ایجاد رکورد جدید
    */
-  const showAddForm = (chengeResetForm=false) => {
+  const showAddForm = (chengeResetForm) => {
     formCurrent && formCurrent.reset();
     setDisabledBtnShowRecords(false);
     setDisabledBtnShowForm(true);
@@ -29,8 +29,11 @@ function useChangeForm(args) {
 
     if (!chengeResetForm) {
       resetForm();
+      console.log('showAddForm');
     } else {
-      resetForm2();
+      if (typeof resetForm2 === 'function') {
+        resetForm2();
+      }
     }
     setHideShowForm(false);//آزمایشی
    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
@@ -39,12 +42,15 @@ function useChangeForm(args) {
   /**
    * نمایش لیست رکوردهای ثبت شده
    */
-  const showCreatedRecord = (chengeResetForm=false) => {
+  const showCreatedRecord = (chengeResetForm) => {
     formCurrent && formCurrent.reset();
     if (!chengeResetForm) {
       resetForm();
     } else {
-      resetForm2();
+      if (typeof resetForm2 === 'function') {
+        resetForm2();
+      }
+      
     }
     setDisabledBtnShowForm(false);
     setDisabledBtnShowRecords(true);
