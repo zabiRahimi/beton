@@ -16,9 +16,11 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $Customers = Customer::orderBy('id')->with(['customerType', 'bankInfo'])->get();
+        // $Customers = Customer::orderBy('id')->with(['customerType', 'bankInfo'])->get();
+        $Customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(50);
+        return $Customers;
 
-        return response()->json(['Customers' => $Customers]);
+        // return response()->json(['Customers' => $Customers]);
     }
 
     // /**

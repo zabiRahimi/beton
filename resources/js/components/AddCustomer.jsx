@@ -199,6 +199,7 @@ const AddCustomer = () => {
 
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
+                <span className="rowNumShowGe">{customer['id']}</span>
                 <span className="nameShowGE">{customer['name']}</span>
                 <span className="lastNameShowGE">{customer['lastName']}</span>
                 <div className="typeShowGe">
@@ -266,7 +267,9 @@ const AddCustomer = () => {
 
     async function getCustomers() {
         await axios.get("/api/v1/getCustomers").then((response) => {
-            setCustomers(response.data.Customers);
+            console.log(response.data);
+            // setCustomers(response.data.Customers.data);
+            setCustomers(response.data.data);
         });
     }
 
@@ -1492,6 +1495,7 @@ const AddCustomer = () => {
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
+                            <span className="rowNumShowGe ">شناسه</span>
                             <span className="nameShowGE ">نام مشتری</span>
                             <span className="lastNameShowGE">نام خانوادگی</span>
 
