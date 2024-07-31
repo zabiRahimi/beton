@@ -4,6 +4,7 @@ import axios from 'axios';
 import "../../css/general.css";
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
+import "../../css/paginate.css";
 import DataZabi from "./hooks/DateZabi";
 import useBank from "./hooks/useBank";
 import { createRef, useEffect, useRef, useState } from "react";
@@ -133,6 +134,13 @@ const AddCustomer = () => {
             }
         ]
     });
+
+    /**
+     * ##########
+     * ############### states for paginate
+     * ##########
+     */
+    const [totalPage, setTotalPage] = useState(0);
     
     /**
      * id to edit the model
@@ -194,7 +202,9 @@ const AddCustomer = () => {
      */
     const returnCreatedCustomerRecords = () => {
         let numberRow = customers.length;
-        const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
+        // const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
+        const reversedCustomers = customers.slice();
+
         let value = reversedCustomers.map((customer, i) => {
 
             return <div className="rowListShowGe" key={i}>
@@ -265,9 +275,10 @@ const AddCustomer = () => {
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-    async function getCustomers() {
-        await axios.get("/api/v1/getCustomers").then((response) => {
+    async function getCustomers(page=1) {
+        await axios.get(`/api/v1/getCustomers?page=${page}`).then((response) => {
             console.log(response.data);
+            setTotalPage(response.data.last_page);
             // setCustomers(response.data.Customers.data);
             setCustomers(response.data.data);
         });
@@ -817,6 +828,7 @@ const AddCustomer = () => {
 
     return (
         <div className="containerAddCustomer" ref={container}>
+        <button onClick={()=>getCustomers(5)}>hhh</button>
 
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
                 backgroundColor: '#6d6b6b',
@@ -1507,7 +1519,9 @@ const AddCustomer = () => {
                         </div>
 
                         {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
-
+                            <div className="containerPaginate">
+                                123456789
+                            </div>
                     </div>
                 </div>
 

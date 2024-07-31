@@ -18,6 +18,7 @@ class CustomerController extends Controller
     {
         // $Customers = Customer::orderBy('id')->with(['customerType', 'bankInfo'])->get();
         $Customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(50);
+        // $Customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->lazy(200);
         return $Customers;
 
         // return response()->json(['Customers' => $Customers]);
