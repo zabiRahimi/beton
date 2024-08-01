@@ -4,7 +4,6 @@ import axios from 'axios';
 import "../../css/general.css";
 import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
-import "../../css/paginate.css";
 import DataZabi from "./hooks/DateZabi";
 import useBank from "./hooks/useBank";
 import { createRef, useEffect, useRef, useState } from "react";
@@ -14,6 +13,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from './hooks/useChangeForm';
+import PaginateZabi from "./hooks/PaginateZabi";
 
 const AddCustomer = () => {
 
@@ -1519,9 +1519,12 @@ const AddCustomer = () => {
                         </div>
 
                         {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
-                            <div className="containerPaginate">
+                            {/* <div className="containerPaginate">
                                 123456789
-                            </div>
+                            </div> */}
+                            <PaginateZabi 
+                            totalPage={totalPage}
+                            />
                     </div>
                 </div>
 

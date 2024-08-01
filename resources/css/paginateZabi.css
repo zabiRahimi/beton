@@ -1,0 +1,49 @@
+.containerPaginate {
+    width: 96%;
+    height: 35px;
+    margin: 6px auto;
+    padding: 3px 6px;
+    border: 1px solid #889094;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+}
+
+.goRightPage_Pag,
+.goLeftPage_Pag {
+    width: 35px;
+    height: 100%;
+    border: 1px solid #1a291a;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.goRightPage_Pag {}
+
+.containerBtn_Pag {
+    width: fit-content;
+    max-width: calc(100% - 70px);
+    background-color: green;
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+    justify-content: center;
+    /* flex-grow: 1; */
+    flex-direction: row-reverse;
+    overflow: hidden;
+}
+
+.butPage_Pag {
+    width: auto;
+    min-width: 25px;
+    padding: 0 3px;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    border: 1px solid #7a7a7a;
+    border-radius: 50%;
+}
+
+.goLeftPage_Pag {}
