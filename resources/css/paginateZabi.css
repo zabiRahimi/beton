@@ -88,6 +88,8 @@
 
 }
 
+
+
 .goLeftPage_Pag {}
 
 .flex_Pag{
@@ -100,3 +102,16 @@ display: flex;
 /* width: 0; */
 background-color: aqua;
 }
+
+
+
+.btnVisited{
+    background-color: #a1bad2;
+    color: #fff;
+}
+.btnActive{
+    background-color: #1f4871;
+    color: #fff;
+}
+
+
