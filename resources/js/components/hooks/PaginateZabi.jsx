@@ -7,36 +7,31 @@ const PaginateZabi = forwardRef(({ totalPage, showCreatedRecord }, ref) => {
     const containerBtn = useRef(null);
     const midBtns = useRef(null);
     const [showEllipsis, setShowEllipsis] = useState(false);
+    const [zabi, setZabi] = useState(35)
     useEffect(() => {
         const handleResize = () => {
         if (containerBtn.current) {
+            // const widthMidBtns = midBtns.current.offsetWidth;
+            // console.log(`عرض المنت: ${width}px`);
+            // console.log(`width midBtns: ${widthMidBtns}px`);
             const width = containerBtn.current.offsetWidth;
-            const widthMidBtns = midBtns.current.offsetWidth;
-            console.log(`عرض المنت: ${width}px`);
-            console.log(`width midBtns: ${widthMidBtns}px`);
-            if (widthMidBtns > width) {
+            const widthBtns=zabi * 25;
+            console.log(`width = ${width}`);
+            console.log(`widthBtns = ${widthBtns}`);
+            if (widthBtns > width) {
                 setShowEllipsis(true);
+            console.log('man');
+
 
             } else {
                 setShowEllipsis(false);
+            console.log('to');
+
 
             }
-            console.log(showEllipsis);
         }}
-        if (containerBtn.current) {
-            const width = containerBtn.current.offsetWidth;
-            const widthMidBtns = midBtns.current.offsetWidth;
-            console.log(`عرض المنت: ${width}px`);
-            console.log(`width midBtns: ${widthMidBtns}px`);
-            if (widthMidBtns > width) {
-                setShowEllipsis(true);
-
-            } else {
-                setShowEllipsis(false);
-
-            }
-            console.log(showEllipsis);
-        }
+       
+        handleResize();
         window.addEventListener('resize', handleResize);
 
         // تمیز کردن رویداد در زمان دیسمانت شدن المنت
@@ -44,9 +39,11 @@ const PaginateZabi = forwardRef(({ totalPage, showCreatedRecord }, ref) => {
           window.removeEventListener('resize', handleResize);
         };
     },[showCreatedRecord])
+    console.log(showEllipsis);
+
 
     const handleShowButs = (side) => {
-        const zabi = 15;
+       
         let butsLeft = [];
         let butsMid = [];
         let butsRight = [];
@@ -83,14 +80,17 @@ const PaginateZabi = forwardRef(({ totalPage, showCreatedRecord }, ref) => {
                 <div className="divBtns_Pag leftBtns_Pag">
                     {handleShowButs('left')}
                 </div>
-                <div className={`divBtns_Pag midBtns_Pag ${!showEllipsis && 'overflowHidden_Pag'}`} ref={midBtns}>
+                <div className={`divBtns_Pag midBtns_Pag ${showEllipsis && 'overflowHidden_Pag'}`} ref={midBtns}>
                     {handleShowButs('mid')}
                 </div>
 
                 {
-                    !showEllipsis&&<div className={`divBtns_Pag ellipsis_Pag`}>
+                    showEllipsis &&<div className={`divBtns_Pag ellipsis_Pag`}>
                         ...
                     </div>
+                }
+                {
+                    showEllipsis ? console.log('llll') :console.log('nnnnn')
                 }
                 {/* <div className={`divBtns_Pag ellipsis_Pag ${!showEllipsis&&'displayNone_Pag'}`}>
                     ...
