@@ -1524,6 +1524,7 @@ const AddCustomer = () => {
                             </div> */}
                             <PaginateZabi 
                             totalPage={totalPage}
+                            showCreatedRecord={disabledBtnShowRecords}
                             />
                     </div>
                 </div>

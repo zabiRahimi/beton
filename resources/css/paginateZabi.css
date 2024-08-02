@@ -1,6 +1,6 @@
 .containerPaginate {
     width: 96%;
-    height: 35px;
+    height: 50px;
     margin: 6px auto;
     padding: 3px 6px;
     border: 1px solid #889094;
@@ -25,9 +25,10 @@
 .containerBtn_Pag {
     width: fit-content;
     max-width: calc(100% - 70px);
-    background-color: green;
+    padding: 1px 6px;
+    /* background-color: green; */
     display: flex;
-    column-gap: 5px;
+    column-gap: 6px;
     align-items: center;
     justify-content: center;
     /* flex-grow: 1; */
@@ -35,15 +36,67 @@
     overflow: hidden;
 }
 
-.butPage_Pag {
-    width: auto;
-    min-width: 25px;
-    padding: 0 3px;
+.divBtns_Pag {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 6px;
+}
+
+.leftBtns_Pag {
+    /* background-color: #1a291a; */
+
+}
+
+.midBtns_Pag {
+    /* background-color: red; */
     /* display: flex;
+    overflow-x: hidden;
+    white-space: nowrap; */
+}
+
+.overflowHidden_Pag{
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+.ellipsis_Pag{
     align-items: center;
-    justify-content: center; */
+    padding-bottom: 13px;
+    height: 100%;
+    /* background-color: bisque; */
+    font-size: 2rem;
+}
+
+/* .midBtns_Pag::after {
+    content: "...";
+    display: inline-block;
+  } */
+
+.ritghBtns_Pag {
+    /* background-color: aqua; */
+}
+
+
+.butPage_Pag {
+    width: fit-content;
+    min-width: 25px;
+    padding: 0 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid #7a7a7a;
     border-radius: 50%;
+
 }
 
 .goLeftPage_Pag {}
+
+.flex_Pag{
+display: flex;
+}
+
+.displayNone_Pag{
+/* display: none; */
+/* visibility: hidden; */
+/* width: 0; */
+background-color: aqua;
+}
