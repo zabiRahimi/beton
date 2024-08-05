@@ -1519,9 +1519,7 @@ const AddCustomer = () => {
                         </div>
 
                         {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
-                            {/* <div className="containerPaginate">
-                                123456789
-                            </div> */}
+                            
                             <PaginateZabi 
                             totalPage={totalPage}
                             showCreatedRecord={disabledBtnShowRecords}
