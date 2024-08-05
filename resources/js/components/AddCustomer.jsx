@@ -1524,6 +1524,7 @@ const AddCustomer = () => {
                             totalPage={totalPage}
                             showCreatedRecord={disabledBtnShowRecords}
                             />
+                            
                     </div>
                 </div>
 
