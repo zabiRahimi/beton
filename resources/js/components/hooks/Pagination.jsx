@@ -9,15 +9,24 @@ const Pagination = props => {
     siblingCount = 1,
     currentPage,
     pageSize,
-    className
+    className,
+    totalPage,
   } = props;
+  // console.log(pageSize);
+  // console.log(`totalCuont = ${totalCount}`);
+  // console.log(`siblingCount = ${siblingCount}`);
+  // console.log(`currentPage = ${currentPage}`);
+  // console.log(`pageSize = ${pageSize}`);
+  // console.log(`totalPage = ${totalPage}`);
 
   const paginationRange = usePagination({
     currentPage,
     totalCount,
     siblingCount,
-    pageSize
+    pageSize,
+    totalPage
   });
+  // console.log(`paginationRange.length = ${paginationRange.length}`);
 
   if (currentPage === 0 || paginationRange.length < 2) {
     return null;
@@ -33,6 +42,48 @@ const Pagination = props => {
 
   let lastPage = paginationRange[paginationRange.length - 1];
   return (
+    // <ul
+    //   className='pagination-container'
+    // >
+    //   <li
+    //     // className={classnames('pagination-item', {
+    //     //   disabled: currentPage === 1
+    //     // })}
+    //     className='pagination-item'
+    //     onClick={onPrevious}
+    //   >
+    //     <div className="arrow left" />
+    //   </li>
+    //   <li className='pagination-item'>1</li>
+    //   <li className='pagination-item'>2</li>
+    //   <li className='pagination-item'>3</li>
+    //   <li className='pagination-item'>4</li>
+    //   {/* {paginationRange.map(pageNumber => {
+    //     if (pageNumber === DOTS) {
+    //       return <li className="pagination-item dots">&#8230;</li>;
+    //     }
+
+    //     return (
+    //       <li
+    //         className={classnames('pagination-item', {
+    //           selected: pageNumber === currentPage
+    //         })}
+    //         onClick={() => onPageChange(pageNumber)}
+    //       >
+    //         {pageNumber}
+    //       </li>
+    //     );
+    //   })} */}
+    //   <li
+    //     // className={classnames('pagination-item', {
+    //     //   disabled: currentPage === lastPage
+    //     // })}
+    //     className='pagination-item'
+    //     onClick={onNext}
+    //   >
+    //     <div className="arrow right" />
+    //   </li>
+    // </ul>
     <ul
       className={classnames('pagination-container', { [className]: className })}
     >
@@ -44,9 +95,9 @@ const Pagination = props => {
       >
         <div className="arrow left" />
       </li>
-      {paginationRange.map(pageNumber => {
+      {paginationRange.map((pageNumber, i) => {
         if (pageNumber === DOTS) {
-          return <li className="pagination-item dots">&#8230;</li>;
+          return <li className="pagination-item dots" key={i}>&#8230;</li>;
         }
 
         return (
@@ -55,6 +106,7 @@ const Pagination = props => {
               selected: pageNumber === currentPage
             })}
             onClick={() => onPageChange(pageNumber)}
+            key={i}
           >
             {pageNumber}
           </li>

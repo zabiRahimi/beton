@@ -10,11 +10,14 @@ const range = (start, end) => {
 export const usePagination = ({
   totalCount,
   pageSize,
-  siblingCount = 1,
-  currentPage
+  siblingCount = 2,
+  currentPage,
+  totalPage
 }) => {
   const paginationRange = useMemo(() => {
-    const totalPageCount = Math.ceil(totalCount / pageSize);
+    // const totalPageCount = Math.ceil(totalCount / pageSize);
+    const totalPageCount = totalPage;
+
 
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
     const totalPageNumbers = siblingCount + 5;
@@ -31,7 +34,7 @@ export const usePagination = ({
     /*
     	Calculate left and right sibling index and make sure they are within range 1 and totalPageCount
     */
-    const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
+    const leftSiblingIndex = Math.max(currentPage - siblingCount, 2);
     const rightSiblingIndex = Math.min(
       currentPage + siblingCount,
       totalPageCount
@@ -40,11 +43,17 @@ export const usePagination = ({
     /*
       We do not show dots just when there is just one page number to be inserted between the extremes of sibling and the page limits i.e 1 and totalPageCount. Hence we are using leftSiblingIndex > 2 and rightSiblingIndex < totalPageCount - 2
     */
-    const shouldShowLeftDots = leftSiblingIndex > 2;
-    const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
+    // const shouldShowLeftDots = leftSiblingIndex > 2;
+    // const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
+    const shouldShowLeftDots = leftSiblingIndex > 3;
+    const shouldShowRightDots = rightSiblingIndex < totalPageCount - 3;
 
     const firstPageIndex = 1;
+    const PageIndex2 = 2;
+    const PageIndex3 = 3;
     const lastPageIndex = totalPageCount;
+    const  lastPageIndex2=totalPageCount - 1;
+    const lastPageIndex3= totalPageCount - 2;
 
     /*
     	Case 2: No left dots to show, but rights dots to be shown
@@ -52,8 +61,10 @@ export const usePagination = ({
     if (!shouldShowLeftDots && shouldShowRightDots) {
       let leftItemCount = 3 + 2 * siblingCount;
       let leftRange = range(1, leftItemCount);
+      // let leftRange = range(1, leftItemCount);
+      console.log(`setp = 2`);
 
-      return [...leftRange, DOTS, totalPageCount];
+      return [...leftRange, DOTS,lastPageIndex3, lastPageIndex2, totalPageCount];
     }
 
     /*
@@ -66,7 +77,9 @@ export const usePagination = ({
         totalPageCount - rightItemCount + 1,
         totalPageCount
       );
-      return [firstPageIndex, DOTS, ...rightRange];
+      console.log(`setp = 3`);
+
+      return [firstPageIndex,PageIndex2,PageIndex3, DOTS, ...rightRange];
     }
      
     /*
@@ -74,9 +87,11 @@ export const usePagination = ({
     */
     if (shouldShowLeftDots && shouldShowRightDots) {
       let middleRange = range(leftSiblingIndex, rightSiblingIndex);
-      return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
+      console.log(`setp = 3`);
+
+      return [firstPageIndex,PageIndex2,PageIndex3, DOTS, ...middleRange, DOTS,lastPageIndex3, lastPageIndex2,lastPageIndex];
     }
-  }, [totalCount, pageSize, siblingCount, currentPage]);
+  }, [totalCount, pageSize, siblingCount, currentPage, totalPage]);
 
   return paginationRange;
 };

@@ -15,8 +15,8 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from './hooks/useChangeForm';
 import PaginateZabi from "./hooks/PaginateZabi";
 import Pagination from "./hooks/Pagination";
-let PageSize = 10;
 const AddCustomer = () => {
+    let PageSize = 1;
 
     const [currentPage, setCurrentPage] = useState(1);
     const data = [{ "id": 1, "first_name": "Jessamyn", "last_name": "Espinazo", "email": "jespinazo0@chicagotribune.com", "phone": "162-166-0977" },
@@ -1533,25 +1533,26 @@ const AddCustomer = () => {
 
                         {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
 
-                        <PaginateZabi
+                        {/* <PaginateZabi
                             totalPage={totalPage}
                             showCreatedRecord={disabledBtnShowRecords}
+                        /> */}
+                        <Pagination
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={data.length}
+                            pageSize={PageSize}
+                            totalPage={totalPage}
+                            siblingCount={3}
+                            onPageChange={page => {setCurrentPage(page); getCustomers(page)}}
                         />
-
 
 
                     </div>
                 </div>
 
             </div>
-            <Pagination
-                className="pagination-bar"
-                currentPage={currentPage}
-                // totalCount={data.length}
-                totalCount={10}
-                pageSize={PageSize}
-                onPageChange={page => setCurrentPage(page)}
-            />
+
             mm
         </div>
     );
