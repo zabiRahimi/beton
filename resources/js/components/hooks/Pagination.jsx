@@ -42,48 +42,6 @@ const Pagination = props => {
 
   let lastPage = paginationRange[paginationRange.length - 1];
   return (
-    // <ul
-    //   className='pagination-container'
-    // >
-    //   <li
-    //     // className={classnames('pagination-item', {
-    //     //   disabled: currentPage === 1
-    //     // })}
-    //     className='pagination-item'
-    //     onClick={onPrevious}
-    //   >
-    //     <div className="arrow left" />
-    //   </li>
-    //   <li className='pagination-item'>1</li>
-    //   <li className='pagination-item'>2</li>
-    //   <li className='pagination-item'>3</li>
-    //   <li className='pagination-item'>4</li>
-    //   {/* {paginationRange.map(pageNumber => {
-    //     if (pageNumber === DOTS) {
-    //       return <li className="pagination-item dots">&#8230;</li>;
-    //     }
-
-    //     return (
-    //       <li
-    //         className={classnames('pagination-item', {
-    //           selected: pageNumber === currentPage
-    //         })}
-    //         onClick={() => onPageChange(pageNumber)}
-    //       >
-    //         {pageNumber}
-    //       </li>
-    //     );
-    //   })} */}
-    //   <li
-    //     // className={classnames('pagination-item', {
-    //     //   disabled: currentPage === lastPage
-    //     // })}
-    //     className='pagination-item'
-    //     onClick={onNext}
-    //   >
-    //     <div className="arrow right" />
-    //   </li>
-    // </ul>
     <ul
       className={classnames('pagination-container', { [className]: className })}
     >

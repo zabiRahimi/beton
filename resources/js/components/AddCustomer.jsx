@@ -289,12 +289,22 @@ const AddCustomer = () => {
     }
 
     async function getCustomers(page = 1) {
+        setLoading(true)
         await axios.get(`/api/v1/getCustomers?page=${page}`).then((response) => {
             console.log(response.data);
             setTotalPage(response.data.last_page);
-            // setCustomers(response.data.Customers.data);
             setCustomers(response.data.data);
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
+            
         });
+        setTimeout(() => {
+            
+            setLoading(false)
+        }, 300);
+        
     }
 
     /**
@@ -841,7 +851,6 @@ const AddCustomer = () => {
 
     return (
         <div className="containerAddCustomer" ref={container}>
-            <button onClick={() => getCustomers(5)}>hhh</button>
 
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
                 backgroundColor: '#6d6b6b',
@@ -1552,8 +1561,6 @@ const AddCustomer = () => {
                 </div>
 
             </div>
-
-            mm
         </div>
     );
 };
