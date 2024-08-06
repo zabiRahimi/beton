@@ -6,7 +6,7 @@ import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
 import DataZabi from "./hooks/DateZabi";
 import useBank from "./hooks/useBank";
-import { createRef, useEffect, useRef, useState } from "react";
+import { createRef, useEffect, useMemo, useRef, useState } from "react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
@@ -14,8 +14,21 @@ import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from './hooks/useChangeForm';
 import PaginateZabi from "./hooks/PaginateZabi";
-
+import Pagination from "./hooks/Pagination";
+let PageSize = 10;
 const AddCustomer = () => {
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const data = [{ "id": 1, "first_name": "Jessamyn", "last_name": "Espinazo", "email": "jespinazo0@chicagotribune.com", "phone": "162-166-0977" },
+    { "id": 2, "first_name": "Isac", "last_name": "Tooher", "email": "itooher1@psu.edu", "phone": "655-567-3619" },
+    { "id": 3, "first_name": "Tabbatha", "last_name": "Proschke", "email": "tproschke2@weibo.com", "phone": "327-612-4850" },
+    { "id": 4, "first_name": "Ninetta", "last_name": "Mabb", "email": "nmabb3@canalblog.com", "phone": "971-296-0911" }]
+
+    const currentTableData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return data.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage]);
 
     const MySwal = withReactContent(Swal);
     const {
@@ -141,7 +154,7 @@ const AddCustomer = () => {
      * ##########
      */
     const [totalPage, setTotalPage] = useState(0);
-    
+
     /**
      * id to edit the model
      */
@@ -275,7 +288,7 @@ const AddCustomer = () => {
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-    async function getCustomers(page=1) {
+    async function getCustomers(page = 1) {
         await axios.get(`/api/v1/getCustomers?page=${page}`).then((response) => {
             console.log(response.data);
             setTotalPage(response.data.last_page);
@@ -337,8 +350,8 @@ const AddCustomer = () => {
                 ...prevState,
                 types: [...prevState.types, { code, type, subtype }]
             }));
-            const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype||''}`).join(' , ');
-            lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype||'') : type + ' ' + (subtype||'');
+            const typesString = customerTypeSelected.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
+            lableCustomerType.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype || '') : type + ' ' + (subtype || '');
 
             errorRCTYitem.current.classList.add('--hidden');
         } else {
@@ -349,7 +362,7 @@ const AddCustomer = () => {
                 ...prevState,
                 types: prevState.types.filter(type => type.code !== code)
             }));
-            const typesString = updated.map((item) => `${item.type} ${item.subtype||''}`).join(' , ');
+            const typesString = updated.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
 
             lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
         }
@@ -505,7 +518,7 @@ const AddCustomer = () => {
         lableCustomerType.current.textContent = ''//حذف کلمه انتخاب از لیبل لیست
         updatedCustomerTypes.map((type, i) => {
 
-            lableCustomerType.current.textContent += i == 0 ? type.type + ' ' + (type.subtype ||''): '، ' + type.type + ' ' + (type.subtype ||'');
+            lableCustomerType.current.textContent += i == 0 ? type.type + ' ' + (type.subtype || '') : '، ' + type.type + ' ' + (type.subtype || '');
 
             let ref = refs[type.code];
             ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
@@ -828,7 +841,7 @@ const AddCustomer = () => {
 
     return (
         <div className="containerAddCustomer" ref={container}>
-        <button onClick={()=>getCustomers(5)}>hhh</button>
+            <button onClick={() => getCustomers(5)}>hhh</button>
 
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
                 backgroundColor: '#6d6b6b',
@@ -847,7 +860,7 @@ const AddCustomer = () => {
             <div className="headPageGe">
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={()=>showAddForm(false)}
+                    ref={btnAddGeRef} onClick={() => showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف مشتری
@@ -856,7 +869,7 @@ const AddCustomer = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={()=>showCreatedRecord(false)}
+                    onClick={() => showCreatedRecord(false)}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده مشتری‌ها
@@ -1519,16 +1532,27 @@ const AddCustomer = () => {
                         </div>
 
                         {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
-                            
-                            <PaginateZabi 
+
+                        <PaginateZabi
                             totalPage={totalPage}
                             showCreatedRecord={disabledBtnShowRecords}
-                            />
-                            
+                        />
+
+
+
                     </div>
                 </div>
 
             </div>
+            <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                // totalCount={data.length}
+                totalCount={10}
+                pageSize={PageSize}
+                onPageChange={page => setCurrentPage(page)}
+            />
+            mm
         </div>
     );
 };
