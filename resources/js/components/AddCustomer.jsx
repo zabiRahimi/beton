@@ -298,13 +298,13 @@ const AddCustomer = () => {
                 top: top,
                 behavior: 'smooth'
             });
-            
+
         });
         setTimeout(() => {
-            
+
             setLoading(false)
         }, 300);
-        
+
     }
 
     /**
@@ -848,6 +848,36 @@ const AddCustomer = () => {
             }
         }));
     };
+
+    const handleSearch = () => {
+
+    }
+
+    const handleClearSearch = () => {
+        // setFromDateSearch('');
+        // setUntilDateSearch('');
+        // setCustomerSearchId('');
+        // setConcreteSearchId('');
+        // setTruckSearchId('');
+        // setDriverSearchId('');
+        // document.getElementById('dayFromSearch').value='';
+        // document.getElementById('monthFromSearch').value='';
+        // document.getElementById('yearFromSearch').value='';
+
+        // document.getElementById('dayUntilSearch').value='';
+        // document.getElementById('monthUntilSearch').value='';
+        // document.getElementById('yearUntilSearch').value='';
+
+        // refCustomerSearch.current.updateData('انتخاب');
+        // refConcreteSearch.current.updateData('انتخاب');
+        // refTruckSearch.current.updateData('انتخاب');
+        // refDriverSearch.current.updateData('انتخاب');
+
+        // setConcreteSalesInvoices(null);
+        // setTimeout(() => {
+        //     setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
+        // }, 400);
+    }
 
     return (
         <div className="containerAddCustomer" ref={container}>
@@ -1526,6 +1556,110 @@ const AddCustomer = () => {
                 >
                     <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
                     <div className="divListShowGe">
+                        <div className="containerSearch_Se">
+                            <div className="containerDate_Se">
+                                <div className="startDate_Se">
+                                    <span className="stringFromDate_Se"> از تاریخ </span>
+                                    <input
+                                        type="text"
+                                        className="inputDate_Se dayDate_Se"
+                                        id="dayFromSearch"
+                                        placeholder="روز"
+                                        onInput={e => changeDayFromSearch(e)}
+                                    />
+                                    <span className="slashDate_Se">/</span>
+                                    <input
+                                        type="text"
+                                        className="inputDate_Se monthDate_Se"
+                                        placeholder="ماه"
+                                        id="monthFromSearch"
+                                        onInput={e => changeMonthFromSearch(e)}
+                                    />
+                                    <span className="slashDate_Se">/</span>
+                                    <input
+                                        type="text"
+                                        className="inputDate_Se yearDate_Se"
+                                        id="yearFromSearch"
+                                        placeholder="سال"
+                                        onInput={e => changeYearFromSearch(e)}
+                                    />
+
+                                </div>
+                                <div className="endtDate_Se">
+                                    <span className="stringUntilDate_Se"> تا تاریخ </span>
+                                    <input
+                                        type="text"
+                                        className="inputDate_Se dayDate_Se"
+                                        id="dayUntilSearch"
+                                        placeholder="روز"
+                                        onInput={e => changeDayUntilSearch(e)}
+                                    />
+                                    <span className="slashDate_Se">/</span>
+                                    <input
+                                        type="text"
+                                        className="inputDate_Se monthDate_Se"
+                                        id="monthUntilSearch"
+                                        placeholder="ماه"
+                                        onInput={e => changeMonthUntilSearch(e)}
+                                    />
+                                    <span className="slashDate_Se">/</span>
+                                    <input
+                                        type="text"
+                                        className="inputDate_Se yearDate_Se"
+                                        id="yearUntilSearch"
+                                        placeholder="سال"
+                                        onInput={e => changeYearUntilSearch(e)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="containerIdAType_Se">
+                                <div className="id_Se">
+                                    <sapn className="stringIdAType_Se"> شناسه </sapn>
+                                    <input type="text" className="inputId_Se"/>
+                                    {/* <div className="divSelectSearch_Se"></div> */}
+                                </div>
+                                <div className="type_Se">
+                                    <sapn className="stringIdAType_Se"> نوع مشتری </sapn>
+                                    <div className="titleType_Se">انتخاب </div>
+                                    <div className="showType_Se ">
+                                       {showCustomerTypes()}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="containerName_Se">
+                                <div className="name_Se">
+                                    <sapn className="stringName_Se"> نام </sapn>
+                                    <input type="text" className="inputName_Se"/>
+                                </div>
+                                <div className="lastName_Se">
+                                    <sapn className="stringName_Se"> نام‌خانوادگی </sapn>
+                                    <input type="text" className="inputName_Se"/>
+                                </div>
+                            </div>
+
+                            <div className="divSearch_Se">
+                                <div className="divBtnDelSearch_Se">
+                                    <button
+                                        className="--styleLessBtn btnDelSearch"
+                                        onClick={handleClearSearch}
+                                    >
+                                        <span className="sritngDelSearch_Se"> حذف جستجو </span>
+                                        <i className="icofont-close-circled icofontDelSearch_Se"></i>
+                                    </button>
+                                </div>
+                                <div className="divBtnSearch_Se">
+                                    <button
+                                        className="--styleLessBtn btnSearch"
+                                        onClick={handleSearch}
+                                    >
+                                        <span className="sritngSearch_Se"> جستجو </span>
+                                        <i className="icofont-search-2 icofontSearch_Se"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
@@ -1553,7 +1687,7 @@ const AddCustomer = () => {
                             pageSize={PageSize}
                             totalPage={totalPage}
                             siblingCount={3}
-                            onPageChange={page => {setCurrentPage(page); getCustomers(page)}}
+                            onPageChange={page => { setCurrentPage(page); getCustomers(page) }}
                         />
 
 

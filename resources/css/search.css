@@ -64,7 +64,9 @@
 }
 
 .containerCustAConc_Se,
-.containerMixADri_Se {
+.containerMixADri_Se,
+.containerIdAType_Se,
+.containerName_Se {
     width: fit-content;
     margin-right: 8px;
     display: flex;
@@ -74,18 +76,62 @@
 .customer_Se,
 .concrete_Se,
 .mixer_Se,
-.driver_Se {
+.driver_Se,
+.id_Se,
+.type_Se,
+.name_Se,
+.lastName_Se {
     display: flex;
     margin-top: 2px;
 }
 
 .stringCustAConc_Se,
-.stringMixADri_Se {
+.stringMixADri_Se,
+.stringIdAType_Se,
+.stringName_Se {
     width: 40px;
     padding-left: 5px;
     font-size: 0.75rem;
     display: flex;
     align-items: center;
+}
+
+.stringIdAType_Se,
+.stringName_Se {
+    width: 75px;
+}
+
+.inputId_Se {
+    width: 120px;
+    text-align: left;
+    padding: 0 4px;
+}
+
+.type_Se {
+    position: relative;
+
+}
+
+.titleType_Se {
+    width: 120px;
+    padding: 0 4px;
+    border: 1px solid #8f8f9d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.showType_Se {
+    width: max-content;
+    position: absolute;
+    background-color: #fdfdfd;
+    top: 27px;
+    right: 75px;
+    border: 1px solid;
+}
+
+.inputName_Se {
+    width: 150px;
 }
 
 /* .stringCustomer_Se {} */
@@ -134,7 +180,7 @@
 
 /* .divBtnDelSearch_Se{} */
 
-.btnDelSearch{
+.btnDelSearch {
     background-color: #d74939 !important;
     border: 1px solid #ff0000 !important;
 }
@@ -144,45 +190,47 @@
 /* .icofontDelSearch_Se{} */
 
 
-.divSelectSearch_Se{
+.divSelectSearch_Se {
     width: 170px;
 }
 
-.divSelectSearch_Se .mainSZ{
+.divSelectSearch_Se .mainSZ {
     width: inherit;
 }
 
 /* .containerOption_Se{} */
 
-.containerOptionDriver_Se{
+.containerOptionDriver_Se {
     padding: 3px 2px;
-display: flex;
-justify-content: space-between;
-align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.nameDriver_Se{
-font-size: 0.8rem;
+.nameDriver_Se {
+    font-size: 0.8rem;
 }
 
-.ftherDriver_Se{
-font-size: 0.6rem;
+.ftherDriver_Se {
+    font-size: 0.6rem;
 }
 
-.containerOptionMixer_Se{
- padding: 2px 3px 0;
+.containerOptionMixer_Se {
+    padding: 2px 3px 0;
 }
-.containerOptionMixer_Se .mixerNamberpalteSelectFB .numberplateDiv{
+
+.containerOptionMixer_Se .mixerNamberpalteSelectFB .numberplateDiv {
     width: 100%;
     height: 20px;
     /* display: inline-block; */
     font-size: 0.9rem;
 }
 
-.containerOptionMixer_Se:hover .mixerNamberpalteSelectFB .numberplateDiv{
+.containerOptionMixer_Se:hover .mixerNamberpalteSelectFB .numberplateDiv {
     color: #000;
 }
-.divOwnerMixer_Se{
+
+.divOwnerMixer_Se {
     width: 100%;
     display: inline-block;
     font-size: 0.7rem;
@@ -193,11 +241,11 @@ font-size: 0.6rem;
 
 }
 
-.containerOptionMixer_Se:hover .divOwnerMixer_Se{
+.containerOptionMixer_Se:hover .divOwnerMixer_Se {
     color: #fff;
 }
 
-.notResultSearch_Se{
+.notResultSearch_Se {
     width: 90%;
     margin: 18px 5%;
     padding: 20px;
