@@ -15,6 +15,7 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from './hooks/useChangeForm';
 import PaginateZabi from "./hooks/PaginateZabi";
 import Pagination from "./hooks/Pagination";
+import { useRouteError } from "react-router-dom";
 const AddCustomer = () => {
     let PageSize = 1;
 
@@ -103,12 +104,18 @@ const AddCustomer = () => {
     const lableCustomerType = useRef(null);
     const divItemCustomerType = useRef(null);
     const errorRCTYitem = useRef(null);
+
+    const showTyepCustomerSearchRef = useRef(null)
+    const [showTypeCustomerSearch, setShowTypeCustomerSearch] = useState(false);
+
     const [refs, setRefs] = useState({});
     const [refUpIcons, setRefUpIcons] = useState({});
     const [refDownIcons, setRefDownIcons] = useState({});
     const [refListTypes, setRefListTypes] = useState({});
     const [loading, setLoading] = useState(false);
     const [customers, setCustomers] = useState(null);
+
+
     const customerTypes = [
         { code: 1, type: 'خریدار', subtype: 'بتن' },
         { code: 2, type: 'فروشنده', subtype: 'شن و ماسه' },
@@ -208,6 +215,12 @@ const AddCustomer = () => {
         let widths = container.current.offsetWidth;
         setWidthComponent(widths)
     }, []);
+
+    // useEffect(() => {
+    //     if (showTypeCustomerSearch) {
+    //         showTyepCustomerSearchRef.current.focus();
+    //     }
+    // }, [showTypeCustomerSearch]);
 
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -877,6 +890,17 @@ const AddCustomer = () => {
         // setTimeout(() => {
         //     setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
         // }, 400);
+    }
+
+    const handleSetShowCustomerTypeSearch = (e , apply = true) => {
+        // e.stopPropagation();
+        if (apply) {
+            setShowTypeCustomerSearch(false);
+           
+        } else {
+            setShowTypeCustomerSearch(pre=>!pre);
+
+        }
     }
 
     return (
@@ -1616,26 +1640,42 @@ const AddCustomer = () => {
                             <div className="containerIdAType_Se">
                                 <div className="id_Se">
                                     <sapn className="stringIdAType_Se"> شناسه </sapn>
-                                    <input type="text" className="inputId_Se"/>
+                                    <input type="text" className="inputId_Se" />
                                     {/* <div className="divSelectSearch_Se"></div> */}
                                 </div>
-                                <div className="type_Se">
+                                <div className="type_Se"
+                                tabIndex="0"
+                                // onFocus={() => { }}
+                                onBlur={(e) => handleSetShowCustomerTypeSearch(e)}>
                                     <sapn className="stringIdAType_Se"> نوع مشتری </sapn>
-                                    <div className="titleType_Se">انتخاب </div>
-                                    <div className="showType_Se ">
-                                       {showCustomerTypes()}
+                                    <div
+                                        className="titleType_Se"
+                                        onClick={(e)=>handleSetShowCustomerTypeSearch(e,false)}
+                                    >
+                                        <span className="spanTitleType_Se">انتخاب</span>
+                                        {!showTypeCustomerSearch && <i className='icofont-rounded-down'></i>}
+                                        {showTypeCustomerSearch && <i className='icofont-rounded-up'></i>}
                                     </div>
+                                    {showTypeCustomerSearch && <div
+                                        // ref={showTyepCustomerSearchRef}
+                                        // tabIndex="0"
+                                        className="showType_Se"
+                                        // onFocus={() => { }}
+                                       
+                                    >
+                                        {showCustomerTypes()}
+                                    </div>}
                                 </div>
                             </div>
 
                             <div className="containerName_Se">
                                 <div className="name_Se">
                                     <sapn className="stringName_Se"> نام </sapn>
-                                    <input type="text" className="inputName_Se"/>
+                                    <input type="text" className="inputName_Se" />
                                 </div>
                                 <div className="lastName_Se">
                                     <sapn className="stringName_Se"> نام‌خانوادگی </sapn>
-                                    <input type="text" className="inputName_Se"/>
+                                    <input type="text" className="inputName_Se" />
                                 </div>
                             </div>
 
