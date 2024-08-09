@@ -16,6 +16,7 @@ import useChangeForm from './hooks/useChangeForm';
 import PaginateZabi from "./hooks/PaginateZabi";
 import Pagination from "./hooks/Pagination";
 import { useRouteError } from "react-router-dom";
+import AddCustomerSearch from "./search/AddCustomerSearch";
 const AddCustomer = () => {
     let PageSize = 1;
 
@@ -105,13 +106,6 @@ const AddCustomer = () => {
     const divItemCustomerType = useRef(null);
     const errorRCTYitem = useRef(null);
 
-    const showTyepCustomerSearchRef = useRef(null);
-    const titleCustomerTypeSearch = useRef(null);
-    const [refsSearch, setRefsSearch] = useState({});
-
-    const [showTypeCustomerSearch, setShowTypeCustomerSearch] = useState(false);
-    const [customerTypeSelectedSearch, setCustomerTypeSelectedSearch] = useState([]);
-
     const [refs, setRefs] = useState({});
     const [refUpIcons, setRefUpIcons] = useState({});
     const [refDownIcons, setRefDownIcons] = useState({});
@@ -182,12 +176,6 @@ const AddCustomer = () => {
                 return acc;
             }, {});
             setRefs(newRefs);
-
-            const newRefsSearch = customerTypes.reduce((acc, value) => {
-                acc[value.code] = createRef();
-                return acc;
-            }, {});
-            setRefsSearch(newRefsSearch);
         }
     }, []);
 
@@ -225,12 +213,6 @@ const AddCustomer = () => {
         let widths = container.current.offsetWidth;
         setWidthComponent(widths)
     }, []);
-
-    // useEffect(() => {
-    //     if (showTypeCustomerSearch) {
-    //         showTyepCustomerSearchRef.current.focus();
-    //     }
-    // }, [showTypeCustomerSearch]);
 
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -355,23 +337,7 @@ const AddCustomer = () => {
         return value;
     }
 
-    /**
-   * نمایش آیتم های نوع مشتری برای جستجو
-   * @returns 
-   */
-    const showCustomerTypesSearch = () => {
-        let value = customerTypes.map((customerType, i) => {
 
-            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, customerType['code'], customerType['type'], customerType['subtype'])}
-                key={i}>
-                <div className="checkedItemCustomerTypeFB" key={customerType['code']} ref={refsSearch[customerType.code]}>
-                    <i className="icofont-check-alt " />
-                </div>
-                <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']} </span>
-            </div>
-        })
-        return value;
-    }
 
     const showCustomerTypeSelected = () => {
         let value = customerTypeSelected.map((customerType, i) => {
@@ -419,30 +385,7 @@ const AddCustomer = () => {
         }
     }
 
-    /**
-   * فرآیند انتخاب نوع مشتری برای جستجو
-   * @param {*} e 
-   * @param {*} code 
-   * @param {*} type 
-   * @param {*} subtype 
-   */
-    const AddCustomerTypeSearch = (e, code, type, subtype) => {
-        e.preventDefault();
-        let ref = refsSearch[code]
-        let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-        if (val) {
-            setCustomerTypeSelectedSearch(old => [...old, { code, type, subtype }]);
-            
-            const typesString = customerTypeSelectedSearch.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
-            titleCustomerTypeSearch.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype || '') : type + ' ' + (subtype || '');
-
-            errorRCTYitem.current.classList.add('--hidden');
-        } else {
-            const updated = customerTypeSelectedSearch.filter(item => item.code !== code);
-            setCustomerTypeSelected(updated);
-            titleCustomerTypeSearch.current.textContent = typesString ? typesString : 'انتخاب';
-        }
-    }
+   
 
     const delCustomerTypeSelected = (code, type, subtype) => {
         const updated = customerTypeSelected.filter(item => item.code !== code);
@@ -915,46 +858,7 @@ const AddCustomer = () => {
         }));
     };
 
-    const handleSearch = () => {
-
-    }
-
-    const handleClearSearch = () => {
-        // setFromDateSearch('');
-        // setUntilDateSearch('');
-        // setCustomerSearchId('');
-        // setConcreteSearchId('');
-        // setTruckSearchId('');
-        // setDriverSearchId('');
-        // document.getElementById('dayFromSearch').value='';
-        // document.getElementById('monthFromSearch').value='';
-        // document.getElementById('yearFromSearch').value='';
-
-        // document.getElementById('dayUntilSearch').value='';
-        // document.getElementById('monthUntilSearch').value='';
-        // document.getElementById('yearUntilSearch').value='';
-
-        // refCustomerSearch.current.updateData('انتخاب');
-        // refConcreteSearch.current.updateData('انتخاب');
-        // refTruckSearch.current.updateData('انتخاب');
-        // refDriverSearch.current.updateData('انتخاب');
-
-        // setConcreteSalesInvoices(null);
-        // setTimeout(() => {
-        //     setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
-        // }, 400);
-    }
-
-    const handleSetShowCustomerTypeSearch = (e, apply = true) => {
-        // e.stopPropagation();
-        if (apply) {
-            setShowTypeCustomerSearch(false);
-
-        } else {
-            setShowTypeCustomerSearch(pre => !pre);
-
-        }
-    }
+ 
 
     return (
         <div className="containerAddCustomer" ref={container}>
@@ -1633,7 +1537,10 @@ const AddCustomer = () => {
                 >
                     <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
                     <div className="divListShowGe">
-                        <div className="containerSearch_Se">
+                        <AddCustomerSearch
+                        customerTypesSearch={customerTypes}
+                         />
+                        {/* <div className="containerSearch_Se">
                             <div className="containerDate_Se">
                                 <div className="startDate_Se">
                                     <span className="stringFromDate_Se"> از تاریخ </span>
@@ -1694,7 +1601,7 @@ const AddCustomer = () => {
                                 <div className="id_Se">
                                     <sapn className="stringIdAType_Se"> شناسه </sapn>
                                     <input type="text" className="inputId_Se" />
-                                    {/* <div className="divSelectSearch_Se"></div> */}
+                                   
                                 </div>
                                 <div className="type_Se"
                                     tabIndex="0"
@@ -1714,10 +1621,9 @@ const AddCustomer = () => {
                                         {showTypeCustomerSearch && <i className='icofont-rounded-up'></i>}
                                     </div>
                                     {showTypeCustomerSearch && <div
-                                        // ref={showTyepCustomerSearchRef}
-                                        // tabIndex="0"
+                                       
                                         className="showType_Se"
-                                    // onFocus={() => { }}
+                                    
 
                                     >
                                         {showCustomerTypesSearch()}
@@ -1756,7 +1662,7 @@ const AddCustomer = () => {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>

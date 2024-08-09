@@ -3044,7 +3044,7 @@ const AddConcreteSalesInvoice = () => {
                             </div>
                             <div className="containerCustAConc_Se">
                                 <div className="customer_Se">
-                                    <sapn className="stringCustAConc_Se stringCustomer_Se"> خریدار </sapn>
+                                    <span className="stringCustAConc_Se stringCustomer_Se"> خریدار </span>
                                     <div className="divSelectSearch_Se">
                                         <SelectZabi
                                             primaryLabel='انتخاب'
@@ -3055,7 +3055,7 @@ const AddConcreteSalesInvoice = () => {
                                     </div>
                                 </div>
                                 <div className="concrete_Se">
-                                    <sapn className="stringCustAConc_Se stringConcrete_Se"> بتن </sapn>
+                                    <span className="stringCustAConc_Se stringConcrete_Se"> بتن </span>
                                     <div className="divSelectSearch_Se">
                                         <SelectZabi
                                             primaryLabel='انتخاب'
@@ -3069,7 +3069,7 @@ const AddConcreteSalesInvoice = () => {
 
                             <div className="containerMixADri_Se">
                                 <div className="mixer_Se">
-                                    <sapn className="stringMixADri_Se stringMixer_Se"> میکسر </sapn>
+                                    <span className="stringMixADri_Se stringMixer_Se"> میکسر </span>
                                     <div className="divSelectSearch_Se">
                                         <SelectZabi
                                             primaryLabel='انتخاب'
@@ -3080,7 +3080,7 @@ const AddConcreteSalesInvoice = () => {
                                     </div>
                                 </div>
                                 <div className="driver_Se">
-                                    <sapn className="stringMixADri_Se stringDriver_Se"> راننده </sapn>
+                                    <span className="stringMixADri_Se stringDriver_Se"> راننده </span>
                                     <div className="divSelectSearch_Se">
                                         <SelectZabi
                                             primaryLabel='انتخاب'
