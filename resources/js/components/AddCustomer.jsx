@@ -105,8 +105,12 @@ const AddCustomer = () => {
     const divItemCustomerType = useRef(null);
     const errorRCTYitem = useRef(null);
 
-    const showTyepCustomerSearchRef = useRef(null)
+    const showTyepCustomerSearchRef = useRef(null);
+    const titleCustomerTypeSearch = useRef(null);
+    const [refsSearch, setRefsSearch] = useState({});
+
     const [showTypeCustomerSearch, setShowTypeCustomerSearch] = useState(false);
+    const [customerTypeSelectedSearch, setCustomerTypeSelectedSearch] = useState([]);
 
     const [refs, setRefs] = useState({});
     const [refUpIcons, setRefUpIcons] = useState({});
@@ -178,6 +182,12 @@ const AddCustomer = () => {
                 return acc;
             }, {});
             setRefs(newRefs);
+
+            const newRefsSearch = customerTypes.reduce((acc, value) => {
+                acc[value.code] = createRef();
+                return acc;
+            }, {});
+            setRefsSearch(newRefsSearch);
         }
     }, []);
 
@@ -345,6 +355,24 @@ const AddCustomer = () => {
         return value;
     }
 
+    /**
+   * نمایش آیتم های نوع مشتری برای جستجو
+   * @returns 
+   */
+    const showCustomerTypesSearch = () => {
+        let value = customerTypes.map((customerType, i) => {
+
+            return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, customerType['code'], customerType['type'], customerType['subtype'])}
+                key={i}>
+                <div className="checkedItemCustomerTypeFB" key={customerType['code']} ref={refsSearch[customerType.code]}>
+                    <i className="icofont-check-alt " />
+                </div>
+                <span className="nameItemcustomerTypeFB"> {customerType['type']} {customerType['subtype']} </span>
+            </div>
+        })
+        return value;
+    }
+
     const showCustomerTypeSelected = () => {
         let value = customerTypeSelected.map((customerType, i) => {
             return <div className="customerTypeSelectedFB" key={i}>
@@ -388,6 +416,31 @@ const AddCustomer = () => {
             const typesString = updated.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
 
             lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
+        }
+    }
+
+    /**
+   * فرآیند انتخاب نوع مشتری برای جستجو
+   * @param {*} e 
+   * @param {*} code 
+   * @param {*} type 
+   * @param {*} subtype 
+   */
+    const AddCustomerTypeSearch = (e, code, type, subtype) => {
+        e.preventDefault();
+        let ref = refsSearch[code]
+        let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+        if (val) {
+            setCustomerTypeSelectedSearch(old => [...old, { code, type, subtype }]);
+            
+            const typesString = customerTypeSelectedSearch.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
+            titleCustomerTypeSearch.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype || '') : type + ' ' + (subtype || '');
+
+            errorRCTYitem.current.classList.add('--hidden');
+        } else {
+            const updated = customerTypeSelectedSearch.filter(item => item.code !== code);
+            setCustomerTypeSelected(updated);
+            titleCustomerTypeSearch.current.textContent = typesString ? typesString : 'انتخاب';
         }
     }
 
@@ -892,13 +945,13 @@ const AddCustomer = () => {
         // }, 400);
     }
 
-    const handleSetShowCustomerTypeSearch = (e , apply = true) => {
+    const handleSetShowCustomerTypeSearch = (e, apply = true) => {
         // e.stopPropagation();
         if (apply) {
             setShowTypeCustomerSearch(false);
-           
+
         } else {
-            setShowTypeCustomerSearch(pre=>!pre);
+            setShowTypeCustomerSearch(pre => !pre);
 
         }
     }
@@ -1644,15 +1697,19 @@ const AddCustomer = () => {
                                     {/* <div className="divSelectSearch_Se"></div> */}
                                 </div>
                                 <div className="type_Se"
-                                tabIndex="0"
-                                // onFocus={() => { }}
-                                onBlur={(e) => handleSetShowCustomerTypeSearch(e)}>
+                                    tabIndex="0"
+                                    // onFocus={() => { }}
+                                    onBlur={(e) => handleSetShowCustomerTypeSearch(e)}>
                                     <sapn className="stringIdAType_Se"> نوع مشتری </sapn>
                                     <div
                                         className="titleType_Se"
-                                        onClick={(e)=>handleSetShowCustomerTypeSearch(e,false)}
+                                        onClick={(e) => handleSetShowCustomerTypeSearch(e, false)}
                                     >
-                                        <span className="spanTitleType_Se">انتخاب</span>
+                                        <span
+                                            className="spanTitleType_Se"
+                                            ref={titleCustomerTypeSearch}
+                                        >انتخاب
+                                        </span>
                                         {!showTypeCustomerSearch && <i className='icofont-rounded-down'></i>}
                                         {showTypeCustomerSearch && <i className='icofont-rounded-up'></i>}
                                     </div>
@@ -1660,10 +1717,10 @@ const AddCustomer = () => {
                                         // ref={showTyepCustomerSearchRef}
                                         // tabIndex="0"
                                         className="showType_Se"
-                                        // onFocus={() => { }}
-                                       
+                                    // onFocus={() => { }}
+
                                     >
-                                        {showCustomerTypes()}
+                                        {showCustomerTypesSearch()}
                                     </div>}
                                 </div>
                             </div>

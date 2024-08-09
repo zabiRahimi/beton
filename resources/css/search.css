@@ -116,10 +116,9 @@
     width: 120px;
     padding: 0 4px;
     border: 1px solid #8f8f9d;
-   
     display: flex;
     align-items: center;
-
+    cursor: pointer;
 }
 
 .spanTitleType_Se{
@@ -127,7 +126,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline;
-    /* flex-grow: 1; */
+    flex-grow: 1;
 }
 
 .showType_Se {
