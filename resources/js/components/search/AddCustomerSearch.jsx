@@ -1,15 +1,15 @@
 
 import React, { createRef, useEffect, useRef, useState } from 'react';
 
-const AddCustomerSearch = ({ customerTypesSearch}) => {
+const AddCustomerSearch = ({ customerTypesSearch }) => {
   const showTyepCustomerSearchRef = useRef(null);
-   
+
   const titleCustomerTypeSearch = useRef(null);
   const [refsSearch, setRefsSearch] = useState({});
 
   const [showTypeCustomerSearch, setShowTypeCustomerSearch] = useState(false);
   const [customerTypeSelectedSearch, setCustomerTypeSelectedSearch] = useState([]);
-  
+
   const sendDataToParent = () => {
     updateParent('Hello from Child');
   };
@@ -17,64 +17,75 @@ const AddCustomerSearch = ({ customerTypesSearch}) => {
   useEffect(() => {
     if (customerTypesSearch) {
 
-        const newRefsSearch = customerTypesSearch.reduce((acc, value) => {
-            acc[value.code] = createRef();
-            return acc;
-        }, {});
-        setRefsSearch(newRefsSearch);
+      const newRefsSearch = customerTypesSearch.reduce((acc, value) => {
+        acc[value.code] = createRef();
+        return acc;
+      }, {});
+      setRefsSearch(newRefsSearch);
     }
-}, []);
+  }, []);
 
-    /**
-   * نمایش آیتم های نوع مشتری برای جستجو
-   * @returns 
-   */
-    const showCustomerTypesSearch = () => {
-      let value = customerTypesSearch.map((customerType, i) => {
+  /**
+ * نمایش آیتم های نوع مشتری برای جستجو
+ * @returns 
+ */
+  const showCustomerTypesSearch = () => {
+    let value = customerTypesSearch.map((customerType, i) => {
 
-          return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, customerType['code'], customerType['type'], customerType['subtype'])}
-              key={i}>
-              <div className="checkedItemCustomerTypeFB" key={customerType['code']} ref={refsSearch[customerType.code]}>
-                  <i className="icofont-check-alt " />
-              </div>
-              <span className="nameItemcustomerTypeFB" > {customerType['type']} {customerType['subtype']} </span>
-          </div>
-      })
-      return value;
+      return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, customerType['code'], customerType['type'], customerType['subtype'])}
+        key={i}>
+        <div
+          className={`checkedItemCustomerTypeFB ${customerTypeSelectedSearch.some(obj => obj.code === customerType['code'])&& 'IcheckedItemCustomerTypeFB'}`}
+          key={customerType['code']}
+          ref={refsSearch[customerType.code]}
+        >
+          <i className="icofont-check-alt " />
+        </div>
+        <span className="nameItemcustomerTypeFB" > {customerType['type']} {customerType['subtype']} </span>
+      </div>
+    })
+    return value;
   }
 
- /**
-   * فرآیند انتخاب نوع مشتری برای جستجو
-   * @param {*} e 
-   * @param {*} code 
-   * @param {*} type 
-   * @param {*} subtype 
-   */
- const AddCustomerTypeSearch = (e, code, type, subtype) => {
-  e.preventDefault();
-  let ref = refsSearch[code]
-  let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-  if (val) {
+
+
+  /**
+    * فرآیند انتخاب نوع مشتری برای جستجو
+    * @param {*} e 
+    * @param {*} code 
+    * @param {*} type 
+    * @param {*} subtype 
+    */
+  const AddCustomerTypeSearch = (e, code, type, subtype) => {
+    e.preventDefault();
+    let ref = refsSearch[code]
+    let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+
+    if (val) {
       setCustomerTypeSelectedSearch(old => [...old, { code, type, subtype }]);
-      
+
       const typesString = customerTypeSelectedSearch.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
       titleCustomerTypeSearch.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype || '') : type + ' ' + (subtype || '');
 
-      
-  } else {
+
+    } else {
       const updated = customerTypeSelectedSearch.filter(item => item.code !== code);
       setCustomerTypeSelectedSearch(updated);
 
       const typesString = updated.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
       titleCustomerTypeSearch.current.textContent = typesString ? typesString : 'انتخاب';
+    }
   }
-}
 
-const handleSearch = () => {
+  const handleKeepItemsSelected = () => {
 
-}
+    console.log(customerTypeSelectedSearch);
+  }
+  const handleSearch = () => {
 
-const handleClearSearch = () => {
+  }
+
+  const handleClearSearch = () => {
     // setFromDateSearch('');
     // setUntilDateSearch('');
     // setCustomerSearchId('');
@@ -98,18 +109,18 @@ const handleClearSearch = () => {
     // setTimeout(() => {
     //     setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
     // }, 400);
-}
+  }
 
-const handleSetShowCustomerTypeSearch = (e, apply = true) => {
+  const handleSetShowCustomerTypeSearch = (e, apply = true) => {
     // e.stopPropagation();
     if (apply) {
-        setShowTypeCustomerSearch(false);
+      setShowTypeCustomerSearch(false);
 
     } else {
-        setShowTypeCustomerSearch(pre => !pre);
+      setShowTypeCustomerSearch(pre => !pre);
 
     }
-}
+  }
 
 
   return (
@@ -200,6 +211,7 @@ const handleSetShowCustomerTypeSearch = (e, apply = true) => {
           // onFocus={() => { }}
 
           >
+
             {showCustomerTypesSearch()}
           </div>}
         </div>
