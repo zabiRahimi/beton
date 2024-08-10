@@ -293,9 +293,18 @@ const AddCustomer = () => {
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-    async function getCustomers(page = 1) {
+    async function getCustomers(page = 1, startDate = null, endStart = null, id = null, typesCode = null, name = null, lastName = null) {
         setLoading(true)
-        await axios.get(`/api/v1/getCustomers?page=${page}`).then((response) => {
+        await axios.get(`/api/v1/getCustomers?page=${page}`, {
+            params: {
+                startDate,
+                endStart,
+                id,
+                typesCode,
+                name,
+                lastName
+            }
+        }).then((response) => {
             console.log(response.data);
             setTotalPage(response.data.last_page);
             setCustomers(response.data.data);
@@ -385,7 +394,7 @@ const AddCustomer = () => {
         }
     }
 
-   
+
 
     const delCustomerTypeSelected = (code, type, subtype) => {
         const updated = customerTypeSelected.filter(item => item.code !== code);
@@ -858,7 +867,7 @@ const AddCustomer = () => {
         }));
     };
 
- 
+
 
     return (
         <div className="containerAddCustomer" ref={container}>
@@ -1538,8 +1547,9 @@ const AddCustomer = () => {
                     <h4 className="titleShowGe"> مشتری‌های تعریف شده</h4>
                     <div className="divListShowGe">
                         <AddCustomerSearch
-                        customerTypesSearch={customerTypes}
-                         />
+                            customerTypesSearch={customerTypes}
+                            getCustomers={getCustomers}
+                        />
                         {/* <div className="containerSearch_Se">
                             <div className="containerDate_Se">
                                 <div className="startDate_Se">

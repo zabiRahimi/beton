@@ -1,7 +1,7 @@
 
 import React, { createRef, useEffect, useRef, useState } from 'react';
 
-const AddCustomerSearch = ({ customerTypesSearch }) => {
+const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
   const showTyepCustomerSearchRef = useRef(null);
 
   const titleCustomerTypeSearch = useRef(null);
@@ -9,6 +9,22 @@ const AddCustomerSearch = ({ customerTypesSearch }) => {
 
   const [showTypeCustomerSearch, setShowTypeCustomerSearch] = useState(false);
   const [customerTypeSelectedSearch, setCustomerTypeSelectedSearch] = useState([]);
+
+  const [startDate, setStartDate] = useState(null);
+  const [startDay, setStartDay] = useState(null);
+  const [startMonth, setStartMonth] = useState(null);
+  const [startYear, setStartYear] = useState(null);
+
+  const [endDate, setEndDate] = useState(null);
+  const [endDay, setEndDay] = useState(null);
+  const [endMonth, setEndMonth] = useState(null);
+  const [endYear, setEndYear] = useState(null);
+
+  const [id, setId] = useState(null);
+  const [type, setType] = useState([]);
+
+  const [name, setName] = useState(null);
+  const [lastName, setlastName] = useState(null);
 
   const sendDataToParent = () => {
     updateParent('Hello from Child');
@@ -82,7 +98,7 @@ const AddCustomerSearch = ({ customerTypesSearch }) => {
     console.log(customerTypeSelectedSearch);
   }
   const handleSearch = () => {
-
+    getCustomers(1, startDate, endDate, id, type, name, lastName);
   }
 
   const handleClearSearch = () => {
@@ -184,7 +200,7 @@ const AddCustomerSearch = ({ customerTypesSearch }) => {
       <div className="containerIdAType_Se">
         <div className="id_Se">
           <span className="stringIdAType_Se"> شناسه </span>
-          <input type="text" className="inputId_Se" />
+          <input type="text" className="inputIdACS_Se" />
           {/* <div className="divSelectSearch_Se"></div> */}
         </div>
         <div className="type_Se"
@@ -193,7 +209,7 @@ const AddCustomerSearch = ({ customerTypesSearch }) => {
           onBlur={(e) => handleSetShowCustomerTypeSearch(e)}>
           <span className="stringIdAType_Se"> نوع مشتری </span>
           <div
-            className="titleType_Se"
+            className="titleTypeACS_Se"
             onClick={(e) => handleSetShowCustomerTypeSearch(e, false)}
           >
             <span
@@ -205,13 +221,8 @@ const AddCustomerSearch = ({ customerTypesSearch }) => {
             {showTypeCustomerSearch && <i className='icofont-rounded-up'></i>}
           </div>
           {showTypeCustomerSearch && <div
-            // ref={showTyepCustomerSearchRef}
-            // tabIndex="0"
-            className="showType_Se"
-          // onFocus={() => { }}
-
+            className="showTypeACS_Se"
           >
-
             {showCustomerTypesSearch()}
           </div>}
         </div>
@@ -220,11 +231,11 @@ const AddCustomerSearch = ({ customerTypesSearch }) => {
       <div className="containerName_Se">
         <div className="name_Se">
           <span className="stringName_Se"> نام </span>
-          <input type="text" className="inputName_Se" />
+          <input type="text" className="inputNameACS_Se" />
         </div>
         <div className="lastName_Se">
           <span className="stringName_Se"> نام‌خانوادگی </span>
-          <input type="text" className="inputName_Se" />
+          <input type="text" className="inputNameACS_Se" />
         </div>
       </div>
 

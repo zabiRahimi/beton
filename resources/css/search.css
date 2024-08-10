@@ -101,7 +101,7 @@
     width: 75px;
 }
 
-.inputId_Se {
+.inputIdACS_Se {
     width: 120px;
     text-align: left;
     padding: 0 4px;
@@ -112,7 +112,7 @@
 
 }
 
-.titleType_Se {
+.titleTypeACS_Se {
     width: 120px;
     padding: 0 4px;
     border: 1px solid #8f8f9d;
@@ -121,7 +121,7 @@
     cursor: pointer;
 }
 
-.spanTitleType_Se{
+.spanTitleType_Se {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -129,7 +129,7 @@
     flex-grow: 1;
 }
 
-.showType_Se {
+.showTypeACS_Se {
     width: max-content;
     position: absolute;
     background-color: #fdfdfd;
@@ -138,7 +138,7 @@
     border: 1px solid;
 }
 
-.inputName_Se {
+.inputNameACS_Se {
     width: 150px;
 }
 
@@ -262,4 +262,23 @@
     background-color: #eab0b0;
     border: 1px solid #af5e5e;
     border-radius: 4px;
+}
+
+@media screen and (min-width:1200px) {
+
+    .containerCustAConc_Se,
+    .containerMixADri_Se,
+    .containerIdAType_Se,
+    .containerName_Se {
+        margin-right: 20px;
+    }
+
+    .inputIdACS_Se,
+    .titleTypeACS_Se,
+    .inputNameACS_Se,
+    .showTypeACS_Se {
+        width: 180px;
+    }
+
+
 }
