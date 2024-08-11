@@ -140,6 +140,7 @@
 
 .inputNameACS_Se {
     width: 150px;
+    padding: 0 3px;
 }
 
 /* .stringCustomer_Se {} */
@@ -273,6 +274,15 @@
         margin-right: 20px;
     }
 
+    .stringFromDate_Se,
+    .stringUntilDate_Se,
+    .stringCustAConc_Se,
+    .stringMixADri_Se,
+    .stringIdAType_Se,
+    .stringName_Se {
+        font-size: 0.9rem;
+    }
+
     .inputIdACS_Se,
     .titleTypeACS_Se,
     .inputNameACS_Se,
@@ -280,5 +290,7 @@
         width: 180px;
     }
 
-
+    .inputNameACS_Se {
+        padding: 0 8px;
+    }
 }
