@@ -158,19 +158,34 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
       (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
       if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+        value== 0 ? value='':'';
         day=value
-        setDate(prev => ({ ...prev, [date0]: (perv2)=>({...perv2, day:value})}));
+        setDate(prev => ({ ...prev, [date0]:{ ...prev[date0], [input]:value}}));
 
       }
-      // let valDate = year + '-' + month + '-' + value;
+      
     } else if (input == 'month') {
+      (value != 0 && value.length == 1) && (value = '0' + value);
+      (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
+      if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
+        value== 0 ? value='':'';
+        month=value;
+        setDate(prev => ({ ...prev, [date0]:{ ...prev[date0], [input]:value}}));
+      }
     } else {
+      if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+        value== 0 ? value='':'';
+        year=value;
+        setDate(prev => ({ ...prev, [date0]:{ ...prev[date0], [input]:value}}));
 
     }
-    if (date == 'start') {
-
+    }
+    let valDate = year + '-' + month + '-' + day;
+    if (date0 == 'start') {
+      setInput(prev => ({ ...prev, startDate: valDate }));
     } else {
+      setInput(prev => ({ ...prev, endDate: valDate }));
 
     }
   }
@@ -225,7 +240,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
             className="inputDate_Se dayDate_Se"
             id="dayFromSearch"
             placeholder="روز"
-            onInput={e => changeDayFromSearch(e)}
+            value={date.start.day || ''}
+            onInput={e => handleSetDate(e, 'start', 'day')}
           />
           <span className="slashDate_Se">/</span>
           <input
@@ -233,7 +249,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
             className="inputDate_Se monthDate_Se"
             placeholder="ماه"
             id="monthFromSearch"
-            onInput={e => changeMonthFromSearch(e)}
+            value={date.start.month || ''}
+            onInput={e => handleSetDate(e, 'start', 'month')}
           />
           <span className="slashDate_Se">/</span>
           <input
@@ -241,7 +258,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
             className="inputDate_Se yearDate_Se"
             id="yearFromSearch"
             placeholder="سال"
-            onInput={e => changeYearFromSearch(e)}
+            value={date.start.year || ''}
+            onInput={e => handleSetDate(e, 'start', 'year')}
           />
 
         </div>
@@ -252,7 +270,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
             className="inputDate_Se dayDate_Se"
             id="dayUntilSearch"
             placeholder="روز"
-            onInput={e => changeDayUntilSearch(e)}
+            value={date.end.day || ''}
+            onInput={e => handleSetDate(e, 'end', 'day')}
           />
           <span className="slashDate_Se">/</span>
           <input
@@ -260,7 +279,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
             className="inputDate_Se monthDate_Se"
             id="monthUntilSearch"
             placeholder="ماه"
-            onInput={e => changeMonthUntilSearch(e)}
+            value={date.end.month || ''}
+            onInput={e => handleSetDate(e, 'end', 'month')}
           />
           <span className="slashDate_Se">/</span>
           <input
@@ -268,7 +288,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
             className="inputDate_Se yearDate_Se"
             id="yearUntilSearch"
             placeholder="سال"
-            onInput={e => changeYearUntilSearch(e)}
+            value={date.end.year || ''}
+            onInput={e => handleSetDate(e, 'end', 'year')}
           />
         </div>
       </div>
