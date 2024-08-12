@@ -305,17 +305,48 @@ const AddCustomer = () => {
                 lastName
             }
         }).then((response) => {
-            console.log(response.customers);
-            setTotalPage(response.data.last_page);
-            setCustomers(response.data.data);
+            console.log(response.data.customers.data);
+            setTotalPage(response.data.customers.last_page);
+            setCustomers(response.data.customers.data);
             window.scrollTo({
                 top: top,
                 behavior: 'smooth'
             });
 
-        });
-        setTimeout(() => {
+        }).catch(
+            error => {
+                console.error(error.response);
 
+                // if (error.response && error.response.status == 422) {
+
+                //     let id = Object.keys(error.response.data.errors)[0];
+                //     id.includes('type') && (id = 'types');
+
+                //     const element = document.getElementById(id);
+                //     let scrollPosition = window.scrollY || window.pageYOffset;
+
+                //     const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                //     window.scrollTo({
+                //         top: top,
+                //         behavior: 'smooth'
+                //     });
+
+                //     Object.entries(error.response.data.errors).map(([key, val]) => {
+                //         key.includes('type') && (key = 'types');
+                //         document.getElementById(key).classList.add('borderRedFB');
+
+                //         document.getElementById(key + 'Error').innerHTML = val;
+                //         if (key == 'dateOfBirth') {
+                //             day || daySelect.current.classList.add('borderRedFB');
+                //             month || monthSelect.current.classList.add('borderRedFB');
+                //             year || yearSelect.current.classList.add('borderRedFB');
+                //         }
+                //     });
+
+                // }
+            }
+        )
+        setTimeout(() => {
             setLoading(false)
         }, 300);
 
