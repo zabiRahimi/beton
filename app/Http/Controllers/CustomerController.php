@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Http\Requests\GetCustmoerRequest;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\BankInfo;
@@ -14,14 +15,15 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(GetCustmoerRequest $request)
     {
         // $Customers = Customer::orderBy('id')->with(['customerType', 'bankInfo'])->get();
-        $Customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(30);
+        $customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(30);
         // $Customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->lazy(200);
-        return $Customers;
+        // return $Customers;
 
         // return response()->json(['Customers' => $Customers]);
+        return response()->json(['customers' =>  $customers], 200);
     }
 
     // /**

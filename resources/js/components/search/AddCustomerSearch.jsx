@@ -190,7 +190,7 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
     }
   }
 
-  console.log(input);
+  // console.log(input);
 
   const handleClearSearch = () => {
     // setFromDateSearch('');

@@ -305,6 +305,7 @@ const AddCustomer = () => {
                 lastName
             }
         }).then((response) => {
+            console.log(response.customers);
             setTotalPage(response.data.last_page);
             setCustomers(response.data.data);
             window.scrollTo({
