@@ -293,19 +293,18 @@ const AddCustomer = () => {
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-    async function getCustomers(page = 1, startDate = null, endStart = null, id = null, typesCode = null, name = null, lastName = null) {
+    async function getCustomers(page = 1, startDate = null, endDate = null, id = null, types = null, name = null, lastName = null) {
         setLoading(true)
         await axios.get(`/api/v1/getCustomers?page=${page}`, {
             params: {
                 startDate,
-                endStart,
+                endDate,
                 id,
-                typesCode,
+                types,
                 name,
                 lastName
             }
         }).then((response) => {
-            console.log(response.data.customers.data);
             setTotalPage(response.data.customers.last_page);
             setCustomers(response.data.customers.data);
             window.scrollTo({
@@ -315,7 +314,23 @@ const AddCustomer = () => {
 
         }).catch(
             error => {
-                console.error(error.response);
+                if (error.response && error.response.status == 422) {
+                    const objErrors=error.response.data.errors;
+                    // دریافت اولین کلید آبجکت و سپس مقدار آن
+                    const firstKey = Object.keys(objErrors)[0];
+                    const firstValue = objErrors[firstKey];
+                    MySwal.fire({
+                        icon: "warning",
+                        title: "هشدار",
+                        html: `<div style="color: red;">${firstValue[0]}</div>`,
+
+                        confirmButtonText: "متوجه شدم!",
+                        confirmButtonColor: "#d33",
+                        
+
+                    });
+
+                }
 
                 // if (error.response && error.response.status == 422) {
 

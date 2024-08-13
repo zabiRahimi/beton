@@ -17,6 +17,27 @@ class CustomerController extends Controller
      */
     public function index(GetCustmoerRequest $request)
     {
+        $query = Customer::query();
+
+        // فیلتر کردن بر اساس تاریخ
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+        } elseif ($request->filled('start_date')) {
+            $query->where('created_at', '>=', $request->start_date);
+        } elseif ($request->filled('end_date')) {
+            $query->where('created_at', '<=', $request->end_date);
+        }
+
+        // فیلتر کردن بر اساس فیلدهای اضافی
+        if ($request->filled('field1')) {
+            $query->where('field1', $request->field1);
+        }
+
+        if ($request->filled('field2')) {
+            $query->where('field2', $request->field2);
+        }
+
+        $records = $query->orderBy('created_at', 'desc')->paginate(15);
         // $Customers = Customer::orderBy('id')->with(['customerType', 'bankInfo'])->get();
         $customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(30);
         // $Customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->lazy(200);
@@ -110,7 +131,7 @@ class CustomerController extends Controller
             $typeDetail->customer_id = $customer->id;
             $typeDetail->save();
         }
-        
+
         if (isset($request->validated()['bankInfo']) && count($request->validated()['bankInfo']) > 0) {
             $customer->bankInfo()->delete();
             foreach ($request->validated()['bankInfo'] as $info) {

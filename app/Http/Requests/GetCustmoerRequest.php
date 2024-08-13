@@ -31,4 +31,16 @@ class GetCustmoerRequest extends FormRequest
             'lastName' => 'nullable|string',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'startDate.date' => 'تاریخ شروع جستجو را صحیح وارد کنید، چنانچه نمی‌خواهید تاریخ شروع را وارد کنید آن را کاملا پاک کنید',
+            'endDate.date' => 'تاریخ پایان جستجو را صحیح وارد کنید، چنانچه نمی‌خواهید تاریخ پایان را وارد کنید آن را کاملا پاک کنید',
+            'id.numeric' => 'شناسه را به عدد وارد کنید',
+            'types.*.numeric' => 'نوع مشتری را انتخاب کنید',
+            'name.string' => 'نام مشتری را صحیح وارد کنید',
+            'lastName.string' => 'نام خانوادگی مشتری را صحیح وارد کنید',
+        ];
+    }
 }

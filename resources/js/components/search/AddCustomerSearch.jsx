@@ -1,5 +1,6 @@
 
 import React, { createRef, useEffect, useRef, useState } from 'react';
+import moment from 'jalali-moment';
 
 const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
   const showTyepCustomerSearchRef = useRef(null);
@@ -125,7 +126,35 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
   }
 
   const handleSearch = () => {
-    getCustomers(1, input.startDate, input.endDate, input.id, input.types, input.name, input.lastName);
+    // try {
+    //   const convertedDate = dayjs(inputDate, { jalali: true }).calendar('gregory').format('YYYY-MM-DD');
+    //   setGregorianDate(convertedDate);
+    //   setError('');
+    // } catch (err) {
+    //   setError('تاریخ وارد شده نامعتبر است.');
+    //   setGregorianDate('');
+    // }
+
+    if (input.endDate != '') {
+            // console.error(input.endDate);
+      //       // const convertedDate = dayjs(input.endDate, { jalali: true }).calendar('gregory').format('YYYY-MM-DD');
+      //       // console.log(convertedDate);
+
+      //       // const convertedDate = dayjs(input.endDate, 'YYYY/MM/DD').locale('fa').format('YYYY-MM-DD');
+      const endDate = '1402/12/10';
+      // const isValidFormat = moment(input.endDate, 'jYYYY/jMM/jDD', true).isValid();
+      // console.log(isValidFormat);
+      //       const formattedDate = dayjs(endDate, { jalali: true }).format('YYYY-MM-DD'); // تاریخ را به صورت هجری شمسی قالب‌بندی می‌کند
+      // // const formattedDateInGregorian = dayjs(formattedDate).format('YYYY-MM-DD');
+      //       console.log(formattedDate);
+      
+      let t =moment('1396/7/31' ,'jYYYY/jM/jD').isValid()
+      console.log(t);
+      const convertedDate = moment('1402/12/30 16:40', 'jYYYY/jM/jD HH:mm').format('YYYY-MM-DD HH:mm:ss') 
+
+    }
+
+    // getCustomers(1, input.startDate, input.endDate, input.id, input.types, input.name, input.lastName);
   }
 
   const handleSaveValInput = (e, input) => {
@@ -137,7 +166,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
     let { value } = e.target,
       day,
       month,
-      year;
+      year,
+      valDate;
     value = value.toString();
 
 
@@ -158,30 +188,34 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
       (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
       if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-        value== 0 ? value='':'';
-        day=value
-        setDate(prev => ({ ...prev, [date0]:{ ...prev[date0], [input]:value}}));
+        value == 0 ? value = '' : '';
+        day = value
+        setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
 
       }
-      
+
     } else if (input == 'month') {
       (value != 0 && value.length == 1) && (value = '0' + value);
       (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
       if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-        value== 0 ? value='':'';
-        month=value;
-        setDate(prev => ({ ...prev, [date0]:{ ...prev[date0], [input]:value}}));
+        value == 0 ? value = '' : '';
+        month = value;
+        setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
       }
     } else {
       if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-        value== 0 ? value='':'';
-        year=value;
-        setDate(prev => ({ ...prev, [date0]:{ ...prev[date0], [input]:value}}));
+        value == 0 ? value = '' : '';
+        year = value;
+        setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
 
+      }
     }
+    if (year == '' && month == '' && day == '') {
+      valDate = '';
+    } else {
+      valDate = year + '/' + month + '/' + day;
     }
-    let valDate = year + '-' + month + '-' + day;
     if (date0 == 'start') {
       setInput(prev => ({ ...prev, startDate: valDate }));
     } else {
