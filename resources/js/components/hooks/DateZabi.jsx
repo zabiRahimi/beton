@@ -1,4 +1,9 @@
+import { forwardRef, useImperativeHandle } from "react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 const DateZabi = () => {
+    const MySwal = withReactContent(Swal);
     let years = [],
         shortYears = [];
 
@@ -30,11 +35,11 @@ const DateZabi = () => {
 
     const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
 
-    const hours = ['00','01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+    const hours = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
-    const minutes = ['00','01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
+    const minutes = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
 
-    const seconds = ['00','01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
+    const seconds = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
 
 
     const cabise = [
@@ -81,6 +86,66 @@ const DateZabi = () => {
         return <option key={i} value={second}>{second}</option>
     });
 
-    return { years, months, days, nameDays, hours, minutes, seconds, optionDays, optionMonth, optionYears, optionShortYears, optionHours, optionMinutes, optionSeconds };
+    // useImperativeHandle(ref, () => ({
+    //     checkDate(date) {
+    //       alert(date);
+    //     }
+    //   }));
+    const checkDate = (date, message) => {
+        let parts;
+        let dateLength = date.length
+        if (dateLength > 10 || dateLength < 10) {
+            // alert('فرمت تاریخ درست نمی باشد')
+            handelSentError(message, 'فرمت تاریخ درست نمی‌باشد');
+            return;
+        }
+        const separator1 = '/';
+        const separator2 = '-';
+        const index1 = date.indexOf(separator1);
+        const index2 = date.indexOf(separator2);
+        if (index1 !== -1) {
+            parts = date.split(separator1);
+        } else if (index2 !== -1) {
+            parts = date.split(separator2);
+        } else {
+            handelSentError(message, 'فرمت تاریخ درست نمی‌باشد');
+            return;
+        }
+        checkDay(parts[0], parts[1], parts[2]);
+    }
+
+    const checkDay = (year, month, day) => {
+        if (month=='01' || month=='02' || month=='03' || month=='04' || month=='05'|| month=='06') {
+            if (Number(day) <1 && Number(day) > 31) {
+                handelSentError(message, ` برج ${month} ، 31 روزه است نه بیشتر `);
+                return;
+            } 
+        } else if (month=='07' || month=='08' || month=='09' || month=='10' || month=='11') {
+            if (Number(day) <1 && Number(day) > 30) {
+                handelSentError(message, ` برج ${month} ، 30 روزه است نه بیشتر `);
+                return;
+            } 
+        }else if (month=='12') {
+            if (Number(value) <30) {
+                handelSentError(message, ` برج ${month} ، 30 روزه است نه بیشتر `);
+                return;
+            } 
+        }
+    }
+
+    const handelSentError = (message, error) => {
+        MySwal.fire({
+            icon: "warning",
+            title: "هشدار",
+            html: `<div><div style="color: red;">${message}</div><div style="color: red;"> زیرا ${error}</div></div>`,
+
+            confirmButtonText: "متوجه شدم!",
+            confirmButtonColor: "#d33",
+
+
+        });
+    }
+
+    return { years, months, days, nameDays, hours, minutes, seconds, optionDays, optionMonth, optionYears, optionShortYears, optionHours, optionMinutes, optionSeconds, checkDate };
 };
 export default DateZabi;

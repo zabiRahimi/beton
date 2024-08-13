@@ -1,8 +1,12 @@
 
 import React, { createRef, useEffect, useRef, useState } from 'react';
+import DataZabi from "../hooks/DateZabi";
 import moment from 'jalali-moment';
 
 const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
+  const {
+   checkDate
+} = DataZabi();
   const showTyepCustomerSearchRef = useRef(null);
 
   const titleCustomerTypeSearch = useRef(null);
@@ -10,25 +14,6 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
 
   const [showTypeCustomerSearch, setShowTypeCustomerSearch] = useState(false);
   const [customerTypeSelectedSearch, setCustomerTypeSelectedSearch] = useState([]);
-
-  // const [startDay, setStartDay] = useState(null);
-  // const [startMonth, setStartMonth] = useState(null);
-  // const [startYear, setStartYear] = useState(null);
-
-  // const [endDay, setEndDay] = useState(null);
-  // const [endMonth, setEndMonth] = useState(null);
-  // const [endYear, setEndYear] = useState(null);
-  // const [startDate, setStartDate] = useState({
-  //   day: '',
-  //   month: '',
-  //   year: ''
-  // });
-
-  // const [EndDate, setEndDate] = useState({
-  //   day: '',
-  //   month: '',
-  //   year: ''
-  // });
 
   const [date, setDate] = useState({
     start: {
@@ -126,6 +111,7 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
   }
 
   const handleSearch = () => {
+    
     // try {
     //   const convertedDate = dayjs(inputDate, { jalali: true }).calendar('gregory').format('YYYY-MM-DD');
     //   setGregorianDate(convertedDate);
@@ -136,6 +122,7 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
     // }
 
     if (input.endDate != '') {
+      checkDate(input.endDate, 'تاریخ پایان جستجو صحیح نیست')
             // console.error(input.endDate);
       //       // const convertedDate = dayjs(input.endDate, { jalali: true }).calendar('gregory').format('YYYY-MM-DD');
       //       // console.log(convertedDate);
