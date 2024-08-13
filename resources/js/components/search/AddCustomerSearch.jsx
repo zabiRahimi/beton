@@ -5,8 +5,8 @@ import moment from 'jalali-moment';
 
 const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
   const {
-   checkDate
-} = DataZabi();
+    checkDate
+  } = DataZabi();
   const showTyepCustomerSearchRef = useRef(null);
 
   const titleCustomerTypeSearch = useRef(null);
@@ -111,7 +111,9 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
   }
 
   const handleSearch = () => {
-    
+    let startDateMiladi,
+      endDateMiladi;
+
     // try {
     //   const convertedDate = dayjs(inputDate, { jalali: true }).calendar('gregory').format('YYYY-MM-DD');
     //   setGregorianDate(convertedDate);
@@ -122,26 +124,21 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
     // }
 
     if (input.endDate != '') {
-      checkDate(input.endDate, 'تاریخ پایان جستجو صحیح نیست')
-            // console.error(input.endDate);
-      //       // const convertedDate = dayjs(input.endDate, { jalali: true }).calendar('gregory').format('YYYY-MM-DD');
-      //       // console.log(convertedDate);
 
-      //       // const convertedDate = dayjs(input.endDate, 'YYYY/MM/DD').locale('fa').format('YYYY-MM-DD');
-      const endDate = '1402/12/10';
-      // const isValidFormat = moment(input.endDate, 'jYYYY/jMM/jDD', true).isValid();
-      // console.log(isValidFormat);
-      //       const formattedDate = dayjs(endDate, { jalali: true }).format('YYYY-MM-DD'); // تاریخ را به صورت هجری شمسی قالب‌بندی می‌کند
-      // // const formattedDateInGregorian = dayjs(formattedDate).format('YYYY-MM-DD');
-      //       console.log(formattedDate);
-      
-      let t =moment('1396/7/31' ,'jYYYY/jM/jD').isValid()
-      console.log(t);
-      const convertedDate = moment('1402/12/30 16:40', 'jYYYY/jM/jD HH:mm').format('YYYY-MM-DD HH:mm:ss') 
+      const endDate = '1400/12/30';
+      const validDate = checkDate(endDate, 'تاریخ پایان جستجو صحیح نیست');
+
+      if (validDate) {
+         endDateMiladi = moment(endDate, 'jYYYY/jM/jD').format('YYYY-MM-DD')
+      }else{
+        return;
+      }
+
 
     }
+    console.log(endDateMiladi);
 
-    // getCustomers(1, input.startDate, input.endDate, input.id, input.types, input.name, input.lastName);
+    // getCustomers(1, input.startDate, endDateMiladi, input.id, input.types, input.name, input.lastName);
   }
 
   const handleSaveValInput = (e, input) => {
