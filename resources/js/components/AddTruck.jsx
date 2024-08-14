@@ -169,6 +169,9 @@ const AddTruck = () => {
     */
     const returnCreatedDriverRecords = () => {
         let numberRow = trucks.length;
+        if (numberRow == 0) {
+            return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
+        }
         const reversedConcretes = trucks.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((truck, i) => {
             return <div className="rowListShowGe" key={i}>
@@ -243,16 +246,16 @@ const AddTruck = () => {
         setDigitsMiddle('');
         setDigitsRightSide('');
 
-        var elements = document.getElementsByClassName('element');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('borderRedFB');
-        }
+        // var elements = document.getElementsByClassName('element');
+        // for (var i = 0; i < elements.length; i++) {
+        //     elements[i].classList.remove('borderRedFB');
+        // }
 
-        var elements = document.getElementsByClassName('elementError');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = '';
-        }
-
+        // var elements = document.getElementsByClassName('elementError');
+        // for (var i = 0; i < elements.length; i++) {
+        //     elements[i].innerHTML = '';
+        // }
+        handleRemoveAllError();
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
         if (apply) {
             window.scrollTo({ top: 0 });
@@ -278,7 +281,7 @@ const AddTruck = () => {
         setSelectedOption(truck.customer_id);
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
        * ذخیره مقادیر ورودی‌های کاربر در استیت
@@ -341,9 +344,13 @@ const AddTruck = () => {
     * @param {*} e 
     * @param {رف مربوط به تگ نمایش خطا} refErr 
     */
-    const clearInputError = (e, refErr) => {
+    const clearInputError = (e, refErr, numberplate=false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
+        if (numberplate) {
+           const element = document.getElementById('numberplate'); 
+           element.classList.remove('borderRedFB');
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -481,6 +488,17 @@ const AddTruck = () => {
         }));
     };
 
+    const handleRemoveAllError = () => {
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
+
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+    }
 
     return (
         <div ref={container}>
@@ -504,7 +522,7 @@ const AddTruck = () => {
 
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddForm}
+                    ref={btnAddGeRef} onClick={() => showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف کامیون
@@ -513,7 +531,7 @@ const AddTruck = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCreatedRecord}
+                    onClick={()=>{showCreatedRecord(false); handleRemoveAllError()}}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده کامیون‌های تعریف شده
@@ -523,7 +541,7 @@ const AddTruck = () => {
 
             <div className={`containerMainAS_Ge ${flexDirection}`}>
                 <div className="continerAddGe ">
-                    <form action="" className="formBeton" ref={form}>
+                    <form action="" className={`formBeton ${hideShowForm ? 'hideGe' : ''}`} ref={form}>
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش کامیون</h5>
                         <div className="sectionFB">
                             <div className="containerInputFB">
@@ -581,7 +599,7 @@ const AddTruck = () => {
                             <div className="containerInputFB">
                                 <div className="divInputFB">
                                     <label> پلاک </label>
-                                    <div className="divNumberplate" id="numberplate">
+                                    <div className="divNumberplate element" id="numberplate">
                                         <div className="divExampleNumberplate">
                                             <div className="divIranNumberplate">
                                                 <div className="iranNumberplateDivImg">
@@ -606,7 +624,7 @@ const AddTruck = () => {
                                                     maxLength="2"
                                                     defaultValue={digitsLeftSide}
                                                     onInput={e => getDigitLeftSide(e)}
-                                                    onClick={(e) => clearInputError(e, numberplateErrorRef)}
+                                                    onClick={(e) => clearInputError(e, numberplateErrorRef, true)}
                                                 />
 
                                                 <select
@@ -615,7 +633,7 @@ const AddTruck = () => {
                                                     className="selectChNumberplate"
                                                     value={alphabet}
                                                     onChange={e => getAlphabet(e)}
-                                                    onClick={(e) => clearInputError(e, numberplateErrorRef)}
+                                                    onClick={(e) => clearInputError(e, numberplateErrorRef, true)}
                                                 >
                                                     <option value=""> حرف </option>
                                                     <option value="ا"> الف </option>
@@ -661,7 +679,7 @@ const AddTruck = () => {
                                                     maxLength="3"
                                                     defaultValue={digitsMiddle}
                                                     onInput={e => getDigitMiddle(e)}
-                                                    onClick={(e) => clearInputError(e, numberplateErrorRef)}
+                                                    onClick={(e) => clearInputError(e, numberplateErrorRef, true)}
                                                 />
 
                                             </div>
@@ -675,7 +693,7 @@ const AddTruck = () => {
                                                     maxLength="2"
                                                     defaultValue={digitsRightSide}
                                                     onInput={e => getDigitRightSide(e)}
-                                                    onClick={(e) => clearInputError(e, numberplateErrorRef)}
+                                                    onClick={(e) => clearInputError(e, numberplateErrorRef, true)}
                                                 />
 
                                             </div>

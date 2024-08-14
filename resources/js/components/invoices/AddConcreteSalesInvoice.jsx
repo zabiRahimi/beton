@@ -1154,16 +1154,15 @@ const AddConcreteSalesInvoice = () => {
         refInvoice[`truck_id0`].current.updateData('انتخاب');
         refInvoice[`driver_id0`].current.updateData('انتخاب');
 
-        var elements = document.getElementsByClassName('element');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('borderRedFB');
-        }
+        // var elements = document.getElementsByClassName('element');
+        // for (var i = 0; i < elements.length; i++) {
+        //     elements[i].classList.remove('borderRedFB');
+        // }
 
-        var elements = document.getElementsByClassName('elementError');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = '';
-        }
-
+        // var elements = document.getElementsByClassName('elementError');
+        // for (var i = 0; i < elements.length; i++) {
+        //     elements[i].innerHTML = '';
+        // }
         handleRemoveAllError();
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
@@ -1890,6 +1889,7 @@ const AddConcreteSalesInvoice = () => {
         for (var i = 0; i < elements.length; i++) {
             elements[i].innerHTML = '';
         }
+
     }
 
     const handleRemoveErrorCustomer = () => {

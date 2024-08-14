@@ -29,7 +29,6 @@ function useChangeForm(args) {
 
     if (!chengeResetForm) {
       resetForm();
-      console.log('showAddForm');
     } else {
       if (typeof resetForm2 === 'function') {
         resetForm2();
