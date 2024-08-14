@@ -224,7 +224,7 @@ const AddCustomer = () => {
         if (numberRow == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
-        // const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
+        
         const reversedCustomers = customers.slice();
 
         let value = reversedCustomers.map((customer, i) => {
@@ -1614,10 +1614,6 @@ const AddCustomer = () => {
 
                         {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
 
-                        {/* <PaginateZabi
-                            totalPage={totalPage}
-                            showCreatedRecord={disabledBtnShowRecords}
-                        /> */}
                         <Pagination
                             className="pagination-bar"
                             currentPage={currentPage}
@@ -1628,10 +1624,8 @@ const AddCustomer = () => {
                             onPageChange={page => { setCurrentPage(page); getCustomers(page) }}
                         />
 
-
                     </div>
                 </div>
-
             </div>
         </div>
     );
