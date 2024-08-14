@@ -26,12 +26,6 @@ const AddCustomer = () => {
     { "id": 3, "first_name": "Tabbatha", "last_name": "Proschke", "email": "tproschke2@weibo.com", "phone": "327-612-4850" },
     { "id": 4, "first_name": "Ninetta", "last_name": "Mabb", "email": "nmabb3@canalblog.com", "phone": "971-296-0911" }]
 
-    // const currentTableData = useMemo(() => {
-    //     const firstPageIndex = (currentPage - 1) * PageSize;
-    //     const lastPageIndex = firstPageIndex + PageSize;
-    //     return data.slice(firstPageIndex, lastPageIndex);
-    // }, [currentPage]);
-
     const MySwal = withReactContent(Swal);
     const {
         optionDays,
@@ -40,7 +34,6 @@ const AddCustomer = () => {
     } = DataZabi();
 
     const { optionBank } = useBank();
-
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     const container = useRef(null);
@@ -112,7 +105,6 @@ const AddCustomer = () => {
     const [refListTypes, setRefListTypes] = useState({});
     const [loading, setLoading] = useState(false);
     const [customers, setCustomers] = useState(null);
-
 
     const customerTypes = [
         { code: 1, type: 'خریدار', subtype: 'بتن' },
@@ -239,7 +231,7 @@ const AddCustomer = () => {
 
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="rowNumShowGe">{customer['id']}</span>
+                <span className="rowIdShowGe">3544{customer['id']}</span>
                 <span className="nameShowGE">{customer['name']}</span>
                 <span className="lastNameShowGE">{customer['lastName']}</span>
                 <div className="typeShowGe">
@@ -413,8 +405,6 @@ const AddCustomer = () => {
         return value;
     }
 
-
-
     const showCustomerTypeSelected = () => {
         let value = customerTypeSelected.map((customerType, i) => {
             return <div className="customerTypeSelectedFB" key={i}>
@@ -422,7 +412,6 @@ const AddCustomer = () => {
                 <i className="icofont-trash delItemCustomerTypeFB" onClick={() => delCustomerTypeSelected(customerType['code'], customerType['type'], customerType['subtype'])} />
             </div>
         })
-
         return value;
     }
 
@@ -460,8 +449,6 @@ const AddCustomer = () => {
             lableCustomerType.current.textContent = typesString ? typesString : 'انتخاب';
         }
     }
-
-
 
     const delCustomerTypeSelected = (code, type, subtype) => {
         const updated = customerTypeSelected.filter(item => item.code !== code);
@@ -740,7 +727,6 @@ const AddCustomer = () => {
      */
     const handleSaveValBankInput = (e, index, input) => {
         let { value } = e.target;
-
         setInput(prevInput => {
             let newBankInfo;
             if (Array.isArray(prevInput.bankInfo)) {
@@ -750,7 +736,6 @@ const AddCustomer = () => {
                 newBankInfo[index] = { bank: '', account: '', card: '', shaba: '' }
                 newBankInfo[index] = { ...newBankInfo[index], [input]: value };
             }
-
             return { ...prevInput, bankInfo: newBankInfo };
         });
     }
@@ -933,8 +918,6 @@ const AddCustomer = () => {
             }
         }));
     };
-
-
 
     return (
         <div className="containerAddCustomer" ref={container}>
@@ -1618,141 +1601,15 @@ const AddCustomer = () => {
                             getCustomers={getCustomers}
                             handelSetDataSearch={handelSetDataSearch}
                         />
-                        {/* <div className="containerSearch_Se">
-                            <div className="containerDate_Se">
-                                <div className="startDate_Se">
-                                    <span className="stringFromDate_Se"> از تاریخ </span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se dayDate_Se"
-                                        id="dayFromSearch"
-                                        placeholder="روز"
-                                        onInput={e => changeDayFromSearch(e)}
-                                    />
-                                    <span className="slashDate_Se">/</span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se monthDate_Se"
-                                        placeholder="ماه"
-                                        id="monthFromSearch"
-                                        onInput={e => changeMonthFromSearch(e)}
-                                    />
-                                    <span className="slashDate_Se">/</span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se yearDate_Se"
-                                        id="yearFromSearch"
-                                        placeholder="سال"
-                                        onInput={e => changeYearFromSearch(e)}
-                                    />
-
-                                </div>
-                                <div className="endtDate_Se">
-                                    <span className="stringUntilDate_Se"> تا تاریخ </span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se dayDate_Se"
-                                        id="dayUntilSearch"
-                                        placeholder="روز"
-                                        onInput={e => changeDayUntilSearch(e)}
-                                    />
-                                    <span className="slashDate_Se">/</span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se monthDate_Se"
-                                        id="monthUntilSearch"
-                                        placeholder="ماه"
-                                        onInput={e => changeMonthUntilSearch(e)}
-                                    />
-                                    <span className="slashDate_Se">/</span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se yearDate_Se"
-                                        id="yearUntilSearch"
-                                        placeholder="سال"
-                                        onInput={e => changeYearUntilSearch(e)}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="containerIdAType_Se">
-                                <div className="id_Se">
-                                    <sapn className="stringIdAType_Se"> شناسه </sapn>
-                                    <input type="text" className="inputId_Se" />
-                                   
-                                </div>
-                                <div className="type_Se"
-                                    tabIndex="0"
-                                    // onFocus={() => { }}
-                                    onBlur={(e) => handleSetShowCustomerTypeSearch(e)}>
-                                    <sapn className="stringIdAType_Se"> نوع مشتری </sapn>
-                                    <div
-                                        className="titleType_Se"
-                                        onClick={(e) => handleSetShowCustomerTypeSearch(e, false)}
-                                    >
-                                        <span
-                                            className="spanTitleType_Se"
-                                            ref={titleCustomerTypeSearch}
-                                        >انتخاب
-                                        </span>
-                                        {!showTypeCustomerSearch && <i className='icofont-rounded-down'></i>}
-                                        {showTypeCustomerSearch && <i className='icofont-rounded-up'></i>}
-                                    </div>
-                                    {showTypeCustomerSearch && <div
-                                       
-                                        className="showType_Se"
-                                    
-
-                                    >
-                                        {showCustomerTypesSearch()}
-                                    </div>}
-                                </div>
-                            </div>
-
-                            <div className="containerName_Se">
-                                <div className="name_Se">
-                                    <sapn className="stringName_Se"> نام </sapn>
-                                    <input type="text" className="inputName_Se" />
-                                </div>
-                                <div className="lastName_Se">
-                                    <sapn className="stringName_Se"> نام‌خانوادگی </sapn>
-                                    <input type="text" className="inputName_Se" />
-                                </div>
-                            </div>
-
-                            <div className="divSearch_Se">
-                                <div className="divBtnDelSearch_Se">
-                                    <button
-                                        className="--styleLessBtn btnDelSearch"
-                                        onClick={handleClearSearch}
-                                    >
-                                        <span className="sritngDelSearch_Se"> حذف جستجو </span>
-                                        <i className="icofont-close-circled icofontDelSearch_Se"></i>
-                                    </button>
-                                </div>
-                                <div className="divBtnSearch_Se">
-                                    <button
-                                        className="--styleLessBtn btnSearch"
-                                        onClick={handleSearch}
-                                    >
-                                        <span className="sritngSearch_Se"> جستجو </span>
-                                        <i className="icofont-search-2 icofontSearch_Se"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div> */}
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
-                            <span className="rowNumShowGe ">شناسه</span>
+                            <span className="rowIdShowGe ">شناسه</span>
                             <span className="nameShowGE ">نام مشتری</span>
                             <span className="lastNameShowGE">نام خانوادگی</span>
-
                             <span className="typeShowGe headTypeShowGe">نوع مشتری</span>
-
                             <span className="headEditShowGe"> ویرایش  </span>
                             <span className="headDelShowGe"> حذف </span>
-
                         </div>
 
                         {customers ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}

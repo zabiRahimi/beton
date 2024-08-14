@@ -36,7 +36,6 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
     name: '',
     lastName: ''
   });
-  console.error(input);
 
   const sendDataToParent = () => {
     updateParent('Hello from Child');
@@ -75,8 +74,6 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
     return value;
   }
 
-
-
   /**
     * فرآیند انتخاب نوع مشتری برای جستجو
     * @param {*} e 
@@ -86,6 +83,7 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
     */
   const AddCustomerTypeSearch = (e, code, type, subtype) => {
     e.preventDefault();
+    if(code !=''){
     let ref = refsSearch[code]
     let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
 
@@ -98,7 +96,6 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
       const typesString = customerTypeSelectedSearch.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
       titleCustomerTypeSearch.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype || '') : type + ' ' + (subtype || '');
 
-
     } else {
       const updated = customerTypeSelectedSearch.filter(item => item.code !== code);
       setCustomerTypeSelectedSearch(updated);
@@ -109,6 +106,14 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
       const typesString = updated.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
       titleCustomerTypeSearch.current.textContent = typesString ? typesString : 'انتخاب';
     }
+  }else{
+    titleCustomerTypeSearch.current.textContent ='همه';
+    setCustomerTypeSelectedSearch([]);
+      setInput(prevState => ({
+        ...prevState,
+        types: []
+      }));
+  }
   }
 
   const handleSearch = () => {
@@ -134,9 +139,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
         return;
       }
     }
-    console.log(endDateMiladi);
-    handelSetDataSearch({startDate:startDateMiladi, endDate:endDateMiladi, id:input.id, types:input.types, name:input.name, lastName:input.lastName});
-     getCustomers(1, startDateMiladi, endDateMiladi, input.id, input.types, input.name, input.lastName);
+    handelSetDataSearch({ startDate: startDateMiladi, endDate: endDateMiladi, id: input.id, types: input.types, name: input.name, lastName: input.lastName });
+    getCustomers(1, startDateMiladi, endDateMiladi, input.id, input.types, input.name, input.lastName);
   }
 
   const handleSaveValInput = (e, input) => {
@@ -151,7 +155,6 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
       year,
       valDate;
     value = value.toString();
-
 
     if (date0 == 'start') {
       day = date.start.day;
@@ -173,13 +176,11 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
         value == 0 ? value = '' : '';
         day = value
         setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
-
       }
 
     } else if (input == 'month') {
       (value != 0 && value.length == 1) && (value = '0' + value);
       (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
       if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
         value == 0 ? value = '' : '';
         month = value;
@@ -202,13 +203,38 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
       setInput(prev => ({ ...prev, startDate: valDate }));
     } else {
       setInput(prev => ({ ...prev, endDate: valDate }));
-
     }
   }
 
-  // console.log(input);
+  const handleClearSearch = async () => {
+    setDate({
+      start: {
+        day: '',
+        month: '',
+        year: ''
+      },
+      end: {
+        day: '',
+        month: '',
+        year: ''
+      }
+    });
 
-  const handleClearSearch = () => {
+    setInput({
+      startDate: '',
+      endDate: '',
+      id: '',
+      types: [],
+      name: '',
+      lastName: ''
+    });
+
+    titleCustomerTypeSearch.current.textContent = 'انتخاب';
+
+    await handelSetDataSearch({ startDate: '', endDate: '', id: '', types: [], name: '', lastName: '' });
+
+    await getCustomers(1, '', '', '', [], '', '');
+
     // setFromDateSearch('');
     // setUntilDateSearch('');
     // setCustomerSearchId('');
@@ -244,7 +270,6 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
 
     }
   }
-
 
   return (
     <div className="containerSearch_Se">
@@ -313,12 +338,15 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
       <div className="containerIdAType_Se">
         <div className="id_Se">
           <span className="stringIdAType_Se"> شناسه </span>
-          <input type="text" className="inputIdACS_Se" onInput={e => handleSaveValInput(e, 'id')} />
-          {/* <div className="divSelectSearch_Se"></div> */}
+          <input
+            type="text"
+            className="inputIdACS_Se"
+            value={input.id || ''}
+            onInput={e => handleSaveValInput(e, 'id')}
+          />
         </div>
         <div className="type_Se"
           tabIndex="0"
-          // onFocus={() => { }}
           onBlur={(e) => handleSetShowCustomerTypeSearch(e)}>
           <span className="stringIdAType_Se"> نوع مشتری </span>
           <div
@@ -336,6 +364,16 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
           {showTypeCustomerSearch && <div
             className="showTypeACS_Se"
           >
+            <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, '','', '')}
+              >
+              <div
+                className={`checkedItemCustomerTypeFB ${customerTypeSelectedSearch.some(obj => obj.code === 0) && 'IcheckedItemCustomerTypeFB'}`}
+              >
+                <i className="icofont-check-alt " />
+              </div>
+              <span className="nameItemcustomerTypeFB" > همه </span>
+            </div>
+
             {showCustomerTypesSearch()}
           </div>}
         </div>
@@ -344,11 +382,21 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
       <div className="containerName_Se">
         <div className="name_Se">
           <span className="stringName_Se"> نام </span>
-          <input type="text" className="inputNameACS_Se" onInput={e => handleSaveValInput(e, 'name')} />
+          <input
+            type="text"
+            className="inputNameACS_Se"
+            value={input.name || ''}
+            onInput={e => handleSaveValInput(e, 'name')}
+          />
         </div>
         <div className="lastName_Se">
           <span className="stringName_Se"> نام‌خانوادگی </span>
-          <input type="text" className="inputNameACS_Se" onInput={e => handleSaveValInput(e, 'lastName')} />
+          <input
+            type="text"
+            className="inputNameACS_Se"
+            value={input.lastName || ''}
+            onInput={e => handleSaveValInput(e, 'lastName')}
+          />
         </div>
       </div>
 
