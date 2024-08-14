@@ -153,6 +153,15 @@ const AddCustomer = () => {
         ]
     });
 
+    const [search, setSearch] = useState({
+        startDate:'',
+        endDate:'',
+        id:'',
+        types:[],
+        name:'',
+        lastName:''
+    })
+
     /**
      * ##########
      * ############### states for paginate
@@ -293,7 +302,7 @@ const AddCustomer = () => {
         refListTypes['list' + id].current.classList.toggle('--displayNone');
     }
 
-    async function getCustomers(page = 1, startDate = null, endDate = null, id = null, types = null, name = null, lastName = null) {
+    async function getCustomers(page = 1, startDate=search.startDate, endDate=search.endDate, id=search.id, types=search.types, name=search.name, lastName=search.lastName) {
         setLoading(true)
         await axios.get(`/api/v1/getCustomers?page=${page}`, {
             params: {
@@ -365,6 +374,15 @@ const AddCustomer = () => {
             setLoading(false)
         }, 300);
 
+    }
+
+    /**
+     * از طریق کامپوننت فرزند این متد فراخوانی و مقدار دهی می‌شود
+     * from AddCustomerSearch.jsx
+     * @param {} data 
+     */
+    const handelSetDataSearch=(data)=>{
+       setSearch(data);
     }
 
     /**
@@ -1595,6 +1613,7 @@ const AddCustomer = () => {
                         <AddCustomerSearch
                             customerTypesSearch={customerTypes}
                             getCustomers={getCustomers}
+                            handelSetDataSearch={handelSetDataSearch}
                         />
                         {/* <div className="containerSearch_Se">
                             <div className="containerDate_Se">

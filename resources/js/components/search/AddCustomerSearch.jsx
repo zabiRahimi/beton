@@ -3,7 +3,7 @@ import React, { createRef, useEffect, useRef, useState } from 'react';
 import DataZabi from "../hooks/DateZabi";
 import moment from 'jalali-moment';
 
-const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
+const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSearch }) => {
   const {
     checkDate
   } = DataZabi();
@@ -35,7 +35,8 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
     types: [],
     name: '',
     lastName: ''
-  })
+  });
+  console.error(input);
 
   const sendDataToParent = () => {
     updateParent('Hello from Child');
@@ -114,31 +115,28 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers }) => {
     let startDateMiladi,
       endDateMiladi;
 
-    // try {
-    //   const convertedDate = dayjs(inputDate, { jalali: true }).calendar('gregory').format('YYYY-MM-DD');
-    //   setGregorianDate(convertedDate);
-    //   setError('');
-    // } catch (err) {
-    //   setError('تاریخ وارد شده نامعتبر است.');
-    //   setGregorianDate('');
-    // }
-
-    if (input.endDate != '') {
-
-      const endDate = '1400/12/30';
-      const validDate = checkDate(endDate, 'تاریخ پایان جستجو صحیح نیست');
+    if (input.startDate != '') {
+      const validDate = checkDate(input.startDate, 'تاریخ ابتدای جستجو صحیح نیست');
 
       if (validDate) {
-         endDateMiladi = moment(endDate, 'jYYYY/jM/jD').format('YYYY-MM-DD')
-      }else{
+        startDateMiladi = moment(input.startDate, 'jYYYY/jM/jD').format('YYYY-MM-DD')
+      } else {
         return;
       }
+    }
 
+    if (input.endDate != '') {
+      const validDate = checkDate(input.endDate, 'تاریخ پایان جستجو صحیح نیست');
 
+      if (validDate) {
+        endDateMiladi = moment(input.endDate, 'jYYYY/jM/jD').format('YYYY-MM-DD')
+      } else {
+        return;
+      }
     }
     console.log(endDateMiladi);
-
-    // getCustomers(1, input.startDate, endDateMiladi, input.id, input.types, input.name, input.lastName);
+    handelSetDataSearch({startDate:startDateMiladi, endDate:endDateMiladi, id:input.id, types:input.types, name:input.name, lastName:input.lastName});
+     getCustomers(1, startDateMiladi, endDateMiladi, input.id, input.types, input.name, input.lastName);
   }
 
   const handleSaveValInput = (e, input) => {

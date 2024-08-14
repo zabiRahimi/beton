@@ -96,7 +96,7 @@ const DateZabi = () => {
         let dateLength = date.length
         if (dateLength > 10 || dateLength < 10) {
             // alert('فرمت تاریخ درست نمی باشد')
-            handelSentError(message, 'فرمت تاریخ درست نمی‌باشد');
+            handelSentError(message, 'فرمت تاریخ درست نمی باشد و تاریخ بطور کامل وارد نشده است');
             return false;
         }
         const separator1 = '/';

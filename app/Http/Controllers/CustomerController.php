@@ -19,27 +19,43 @@ class CustomerController extends Controller
     {
         $query = Customer::query();
 
-        // فیلتر کردن بر اساس تاریخ
-        if ($request->filled('start_date') && $request->filled('end_date')) {
-            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
-        } elseif ($request->filled('start_date')) {
-            $query->where('created_at', '>=', $request->start_date);
-        } elseif ($request->filled('end_date')) {
-            $query->where('created_at', '<=', $request->end_date);
+        if ($request->filled('id')) {
+            $query->where('id', $request->id);
+            
+        } else {
+            
+        if ($request->filled('startDate') && $request->filled('endDate')) {
+            $query->whereBetween('created_at', [$request->startDate, $request->endDate])->with(['customerType', 'bankInfo']);
+        } elseif ($request->filled('startDate')) {
+            $query->where('created_at', '>=', $request->startDate)->with(['customerType', 'bankInfo']);
+        } elseif ($request->filled('endDate')) {
+            $query->where('created_at', '<=', $request->endDate)->with(['customerType', 'bankInfo']);
         }
 
-        // فیلتر کردن بر اساس فیلدهای اضافی
-        if ($request->filled('field1')) {
-            $query->where('field1', $request->field1);
+      
+        if ($request->filled('types')) {
+            $types=$request->types;
+            $query->with('customerType')
+            ->whereHas('customerType', function ($query) use ($types) {
+                $query->whereIn('code', $types);
+            })
+            ->get();
         }
 
-        if ($request->filled('field2')) {
-            $query->where('field2', $request->field2);
+        if ($request->filled('name')) {
+            $query->where('name', 'like', "%$request->name%");
         }
 
-        $records = $query->orderBy('created_at', 'desc')->paginate(15);
+        if ($request->filled('lastName')) {
+            $query->where('lastName', 'like', "%$request->lastName%");
+        }
+        }
+
+       
+
+        $customers = $query->orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(50);
         // $Customers = Customer::orderBy('id')->with(['customerType', 'bankInfo'])->get();
-        $customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(30);
+        // $customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(30);
         // $Customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->lazy(200);
         // return $Customers;
 
