@@ -229,6 +229,9 @@ const AddCustomer = () => {
      */
     const returnCreatedCustomerRecords = () => {
         let numberRow = customers.length;
+        if (numberRow == 0) {
+            return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
+        }
         // const reversedCustomers = customers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         const reversedCustomers = customers.slice();
 
