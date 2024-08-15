@@ -244,6 +244,9 @@ const AddPersonnelSlip = () => {
     */
     const returnCreatedPersonnelSlipRecords = () => {
         let numberRow = personnelSlips.length;
+        if (numberRow == 0) {
+            return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
+        }
         const reversedConcretes = personnelSlips.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((personnelSlip, i) => {
             return <div className="rowListShowGe" key={i}>
@@ -291,23 +294,13 @@ const AddPersonnelSlip = () => {
         setDay('');
         setMonth('');
         setYear('');
-
-        var elements = document.getElementsByClassName('element');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('borderRedFB');
-        }
-
-        var elements = document.getElementsByClassName('elementError');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = '';
-        }
+        handleRemoveAllError();
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
         if (apply) {
             window.scrollTo({ top: 0 });
         }
     }
-    console.log(input);
 
     /**
  * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
@@ -345,7 +338,7 @@ const AddPersonnelSlip = () => {
         }
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
         * ذخیره مقادیر ورودی‌های کاربر در استیت
@@ -569,6 +562,19 @@ const AddPersonnelSlip = () => {
         }
     }
 
+    const handleRemoveAllError = () => {
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
+
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+
+    }
+
     return (
         <div className='' ref={container}>
 
@@ -590,7 +596,8 @@ const AddPersonnelSlip = () => {
 
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddForm}
+                    ref={btnAddGeRef} 
+                    onClick={() => showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف فیش حقوقی
@@ -599,7 +606,7 @@ const AddPersonnelSlip = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCreatedRecord}
+                    onClick={() => { showCreatedRecord(false); handleRemoveAllError() }}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده فیش‌های تعریف شده
@@ -610,7 +617,7 @@ const AddPersonnelSlip = () => {
             <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe ">
-                    <form action="" className="formBeton" ref={form}>
+                    <form action="" className={`formBeton ${hideShowForm ? 'hideGe' : ''}`}  ref={form}>
 
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش فیش </h5>
 
@@ -620,6 +627,7 @@ const AddPersonnelSlip = () => {
                                     <label htmlFor="customer_id"> پرسنل </label>
                                     <div
                                         id="customer_id"
+                                        className="element"
                                         onClick={e => clearInputError(e, customer_idErrorRef)}
                                     >
                                         <SelectZabi
@@ -773,6 +781,7 @@ const AddPersonnelSlip = () => {
                                     <label htmlFor="wageCalculation">نوع دستمزد</label>
                                     <div
                                         id="wageCalculation"
+                                        className="element"
                                         onClick={e => clearInputError(e, wageCalculationErrorRef)}
                                     >
                                         <SelectZabi
@@ -995,7 +1004,7 @@ const AddPersonnelSlip = () => {
                             <span className="headDelShowGe"> حذف </span>
                         </div>
 
-                        {personnelSlips.length > 0 ? returnCreatedPersonnelSlipRecords() : <Skeleton height={40} count={8} />}
+                        {personnelSlips ? returnCreatedPersonnelSlipRecords() : <Skeleton height={40} count={8} />}
 
                     </div>
 

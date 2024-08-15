@@ -117,6 +117,9 @@ const AddDriver = () => {
     */
     const returnCreatedDriverRecords = () => {
         let numberRow = drivers.length;
+        if (numberRow == 0) {
+            return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
+        }
         const reversedConcretes = drivers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((driver, i) => {
             return <div className="rowListShowGe" key={i}>
@@ -152,15 +155,11 @@ const AddDriver = () => {
             address: '',
         });
 
-        var elements = document.getElementsByClassName('element');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('borderRedFB');
-        }
+        setDay('');
+        setMonth('');
+        setYear('');
 
-        var elements = document.getElementsByClassName('elementError');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = '';
-        }
+        handleRemoveAllError();
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
         if (apply) {
@@ -181,9 +180,15 @@ const AddDriver = () => {
         const { id, created_at, updated_at, ...rest } = driver;//نادیده گرفتن کلید های مشخص شده
 
         setInput(rest);
+        if (rest.dateOfBirth) {
+            let parts = rest.dateOfBirth.split("-");
+            setYear(parts[0]);
+            setMonth(parts[1]);
+            setDay(parts[2]);
+        }
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm  } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
      * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
@@ -372,6 +377,19 @@ const AddDriver = () => {
         setLoading(false)
     }
 
+    const handleRemoveAllError = () => {
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
+
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+
+    }
+
     return (
         <div className='' ref={container}>
 
@@ -393,7 +411,7 @@ const AddDriver = () => {
 
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddForm}
+                    ref={btnAddGeRef} onClick={() => showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف راننده
@@ -402,7 +420,7 @@ const AddDriver = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCreatedRecord}
+                    onClick={() => { showCreatedRecord(false); handleRemoveAllError() }}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده راننده‌های تعریف شده
@@ -413,7 +431,7 @@ const AddDriver = () => {
             <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe ">
-                    <form action="" className="formBeton" ref={form}>
+                    <form action="" className={`formBeton ${hideShowForm ? 'hideGe' : ''}`}  ref={form}>
 
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش راننده </h5>
 

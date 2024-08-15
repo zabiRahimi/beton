@@ -113,15 +113,7 @@ const AddWaterStore = () => {
             amoutn: ''
         });
 
-        var elements = document.getElementsByClassName('element');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('borderRedFB');
-        }
-
-        var elements = document.getElementsByClassName('elementError');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = '';
-        }
+        handleRemoveAllError();
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
         if (apply) {
@@ -129,7 +121,7 @@ const AddWaterStore = () => {
         }
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm  } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
         * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
@@ -329,6 +321,19 @@ const AddWaterStore = () => {
         setLoading(false)
     }
 
+    const handleRemoveAllError = () => {
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
+
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+
+    }
+
     return (
         <div className='' ref={container}>
 
@@ -349,7 +354,8 @@ const AddWaterStore = () => {
             <div className="headPageGe">
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddForm}
+                    ref={btnAddGeRef}
+                     onClick={() => showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف مخزن
@@ -358,7 +364,7 @@ const AddWaterStore = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCreatedRecord}
+                    onClick={() => { showCreatedRecord(false); handleRemoveAllError() }}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده مخزنها
@@ -368,7 +374,7 @@ const AddWaterStore = () => {
             <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe ">
-                    <form action="" className="formBeton" ref={form}>
+                    <form action=""   className={`formBeton ${hideShowForm ? 'hideGe' : ''}`} ref={form}>
 
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش مخزن </h5>
 

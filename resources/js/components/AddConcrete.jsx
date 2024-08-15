@@ -66,6 +66,9 @@ const AddConcrete = () => {
     */
     const returnCreatedConcreteRecords = () => {
         let numberRow = concretes.length;
+        if (numberRow == 0) {
+            return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
+        }
         const reversedConcretes = concretes.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((concrete, i) => {
             return <div className="rowListShowGe" key={i}>

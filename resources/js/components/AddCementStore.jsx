@@ -64,6 +64,9 @@ const AddCementStore = () => {
     */
     const returnCreatedCementStoreRecords = () => {
         let numberRow = cementStores.length;
+        if (numberRow == 0) {
+            return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
+        }
         const reversedConcretes = cementStores.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
         let value = reversedConcretes.map((cementStore, i) => {
             return <div className="rowListShowGe" key={i}>
@@ -108,15 +111,7 @@ const AddCementStore = () => {
             amoutn: ''
         });
 
-        var elements = document.getElementsByClassName('element');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('borderRedFB');
-        }
-
-        var elements = document.getElementsByClassName('elementError');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = '';
-        }
+        handleRemoveAllError();
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
         if (apply) {
@@ -124,7 +119,7 @@ const AddCementStore = () => {
         }
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
      * فرمت‌دهی به اعداد هنگامی که کاربر اقدام به ویرایش یک رکورد می‌کند
@@ -333,6 +328,19 @@ const AddCementStore = () => {
         setLoading(false)
     }
 
+    const handleRemoveAllError = () => {
+        var elements = document.getElementsByClassName('element');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('borderRedFB');
+        }
+
+        var elements = document.getElementsByClassName('elementError');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].innerHTML = '';
+        }
+
+    }
+
     return (
         <div ref={container}>
 
@@ -353,7 +361,7 @@ const AddCementStore = () => {
             <div className="headPageGe">
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddForm}
+                    ref={btnAddGeRef} onClick={() => showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف انبار
@@ -362,7 +370,7 @@ const AddCementStore = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={showCreatedRecord}
+                    onClick={() => { showCreatedRecord(false); handleRemoveAllError() }}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده انبارها
@@ -372,7 +380,7 @@ const AddCementStore = () => {
             <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe ">
-                    <form action="" className="formBeton" ref={form}>
+                    <form action=""  className={`formBeton ${hideShowForm ? 'hideGe' : ''}`} ref={form}>
 
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش سیلو </h5>
 
