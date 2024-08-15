@@ -402,7 +402,7 @@ const AddConcrete = () => {
 
                 <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    ref={btnAddGeRef} onClick={showAddForm}
+                    ref={btnAddGeRef} onClick={() => showAddForm(false)}
                     disabled={disabledBtnShowForm}
                 >
                     تعریف نوع بتن

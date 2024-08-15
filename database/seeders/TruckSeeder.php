@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Truck;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,7 @@ class TruckSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Truck::factory(200)
+        ->create();
     }
 }
