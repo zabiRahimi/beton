@@ -13,7 +13,7 @@ class TruckSeeder extends Seeder
      */
     public function run(): void
     {
-        Truck::factory(200)
+        Truck::factory(1)
         ->create();
     }
 }

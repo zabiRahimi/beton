@@ -28,7 +28,8 @@ class StoreTruckRequest extends FormRequest
         return [
             'truckName' => ['required', 'bail','string'],
             'truckType' => ['required','bail','string'],
-            'numberplate' => ['required','bail','numberplate','unique:trucks'],
+            // 'numberplate' => ['required','bail','numberplate','unique:trucks'],
+            'numberplate' => ['required','bail','unique:trucks'],
             'customer_id' => ['required','bail','numeric'],
         ];
     }
