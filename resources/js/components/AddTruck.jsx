@@ -10,6 +10,8 @@ import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import AddTruckSearch from "./search/AddTruckSearch";
+
 
 const AddTruck = () => {
 
@@ -42,6 +44,10 @@ const AddTruck = () => {
         customer_id: '',
     });
 
+    const truckTypes = ['میکسر', 'کمپرسی', 'پمپ دکل', 'پمپ زمینی'];
+
+    const truckName = ['بنز', 'ولو', 'داف', 'اویکو', 'ماک', 'اف', 'اسکانیا', 'آمیکو', 'دانگ‌‌‌‌‌‌‌ فانگ', 'کاویان', 'سایر'];
+
     /**
      * چهار استیت زیر مربوط به پلاک خودرو می‌باشند
      */
@@ -69,8 +75,14 @@ const AddTruck = () => {
     const [selectedOption, setSelectedOption] = useState('');
 
     useEffect(() => {
-        getTrucks();
-        getTruckOwners();
+
+        async function fetchData() {
+            setLoading(true)
+            await getTrucks();
+            await getTruckOwners();
+            setLoading(false)
+        }
+        fetchData();
     }, []);
 
     async function getTrucks() {
@@ -226,13 +238,13 @@ const AddTruck = () => {
             // return `${arr[2]} - ${arr[1]} ${arr[3]}  ${arr[0]}`;
             return <div className="numberplateDiv">
                 <span className="numberplateDivS1">{arr[0]}</span>
-                <span className="numberplateDivS2">{arr[3]=='ا'?'الف':arr[3]}</span>
+                <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
                 <span className="numberplateDivS3">{arr[1]}</span>
                 <span className="numberplateDivS4">{arr[2]}</span>
             </div>
         }
     }
-   
+
     const resetForm = (apply = true) => {
         setInput({
             truckName: '',
@@ -294,7 +306,7 @@ const AddTruck = () => {
         setInput(prev => ({ ...prev, [input]: value }));
         if (input == 'customer_id') {
             setSelectedOption(value);
-        } 
+        }
         if (input == 'truckType') {
             setSelectedOption('');
         }
@@ -344,12 +356,12 @@ const AddTruck = () => {
     * @param {*} e 
     * @param {رف مربوط به تگ نمایش خطا} refErr 
     */
-    const clearInputError = (e, refErr, numberplate=false) => {
+    const clearInputError = (e, refErr, numberplate = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
         if (numberplate) {
-           const element = document.getElementById('numberplate'); 
-           element.classList.remove('borderRedFB');
+            const element = document.getElementById('numberplate');
+            element.classList.remove('borderRedFB');
         }
     }
 
@@ -531,7 +543,7 @@ const AddTruck = () => {
                 <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
-                    onClick={()=>{showCreatedRecord(false); handleRemoveAllError()}}
+                    onClick={() => { showCreatedRecord(false); handleRemoveAllError() }}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده کامیون‌های تعریف شده
@@ -582,12 +594,9 @@ const AddTruck = () => {
                                         onClick={(e) => clearInputError(e, truckTypeErrorRef)}
                                     >
                                         <option value="">انتخاب</option>
-                                        <option value="میکسر">میکسر</option>
-                                        <option value="پمپ دکل">
-                                            پمپ دکل
-                                        </option>
-                                        <option value="پمپ زمینی">پمپ زمینی</option>
-                                        <option value="کمپرسی">کمپرسی</option>
+                                        {truckTypes.map((truckType, i) => (
+                                            <option value={truckType} key={i}>{truckType}</option>
+                                        ))}
                                     </select>
                                     <i className="icofont-ui-rating starFB" />
                                 </div>
@@ -770,6 +779,12 @@ const AddTruck = () => {
                     <h4 className="titleShowGe"> کامیون‌های تعریف شده</h4>
 
                     <div className="divListShowGe">
+
+                        <AddTruckSearch
+                        // truckTypesSearch={customerTypes}
+                        // getCustomers={getCustomers}
+                        // handelSetDataSearch={handelSetDataSearch}
+                        />
 
                         <div className="rowListShowGe headRowListShowGe">
 
