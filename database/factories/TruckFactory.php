@@ -16,82 +16,20 @@ class TruckFactory extends Factory
     protected const TRUCK_NAMES = ['بنز', 'ولو', 'داف', 'اویکو', 'ماک', 'اف', 'اسکانیا', 'آمیکو', 'دانگ‌‌‌‌‌‌‌ فانگ', 'کاویان'];
     protected const TRUCK_TYPES = ['میکسر', 'کمپرسی'];
 
-    // public $ownerMixerIds;
-    // public $ownerCompersyIds;
-    // public $zabi;
-
-    // public function configure()
-    // {
-        
-
-    //     // $this->afterCreating(function ( ) {
-    //         $this->ownerMixerIds = $this->getOwnerMixer();
-    //     $this->ownerCompersyIds = $this->getOwnerCompersy();
-    //     $this->zabi='nabi';
-    //     // });
-        
-    //     dump(1);
-    //     return $this;
-    // }
-    // private function getOwnerMixer() :array {
-    //     $ownerMixerIds = CustomerType::where('code', 5)
-    //     ->limit(300)
-    //     ->pluck('customer_id')
-    //     ->toArray();
-        
-    //     return $ownerMixerIds;
-    // }
-
-    // private function getOwnerCompersy() :array {
-    //     $ownerCompersyIds = CustomerType::where('code', 8)
-    //     ->limit(300)
-    //     ->pluck('customer_id')
-    //     ->toArray();
-       
-    //     return $ownerCompersyIds;
-    // }
-
-    // public function getOwnerIdsByType(string $type): array
-    // {
-       
-    //     dump($this->zabi);
-    //     return match ($type) {
-    //         'میکسر' => $this->ownerMixerIds,
-    //         'کمپرسی' => $this->ownerCompersyIds,
-    //     };
-    // }
-
     public function definition(): array
     {
-        // dd($this->ownerMixerIds);
-       $truckType = $this->faker->randomElement(self::TRUCK_TYPES);
-        // $validCustomerTypes = $this->getOwnerIdsByType($truckType);
-        // $customerId = $this->faker->randomElement($validCustomerTypes);
-        $customerId = $this->faker->randomElement(function(){
-            // $truckType='میکسر';
-            // $truckTypee=$this->truckType;
-            if ($this->truckType=='') {
-                $ownerMixerIds = CustomerType::where('code', 5)
-                ->limit(300)
-                ->pluck('customer_id')
-                ->toArray();
-                
-                return $ownerMixerIds;
-            }else {
-                $ownerCompersyIds = CustomerType::where('code', 8)
-                ->limit(300)
-                ->pluck('customer_id')
-                ->toArray();
-               
-                return $ownerCompersyIds;
-            }
-        });
-dump($customerId);
+       
+        $truckType = $this->faker->randomElement(self::TRUCK_TYPES);
+        $customerIds = ($truckType == 'میکسر') ?
+            CustomerType::where('code', 5)->limit(300)->pluck('customer_id')->toArray() :
+            CustomerType::where('code', 8)->limit(300)->pluck('customer_id')->toArray();
+
+        $customerId = $this->faker->randomElement($customerIds);
         return [
-            'customer_id' => 23,
+            'customer_id' => $customerId,
             'truckName' => $this->faker->randomElement(self::TRUCK_NAMES),
-            'truckType' => 'میکسر',
-            'numberplate' => mt_rand(10, 99) . '-' .mt_rand(100, 999) . '-'.mt_rand(10, 99) . '-'. $this->faker->randomElement(['الف', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ه', 'ی']),
+            'truckType' => $truckType,
+            'numberplate' => mt_rand(10, 99) . '-' . mt_rand(100, 999) . '-' . mt_rand(10, 99) . '-' . $this->faker->randomElement(['الف', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ه', 'ی']),
 
         ];
     }

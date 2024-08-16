@@ -176,7 +176,7 @@ const AddTruck = () => {
         let value = reversedConcretes.map((truck, i) => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="TrackTypeShowGe"> {truck['truckName']}   </span>
+                <span className="TrackTypeShowGe"> {truck['truckType']}   </span>
                 <span className="licensePlateShowGe"> {returnNumberplate(truck['numberplate'])} </span>
                 <span className="truckOwnerShowGe"> {returnNameOwners(truck['customer_id'])}   </span>
                 <div className="divEditGe">
