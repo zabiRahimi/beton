@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Truck;
+use Database\Factories\TruckFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +14,24 @@ class TruckSeeder extends Seeder
      */
     public function run(): void
     {
-        Truck::factory(1)
-        ->create();
+        
+
+        Truck::factory()
+            ->state(function (array $attributes) {
+                $factory = new TruckFactory();
+                $factory->configure();
+                return [];
+            })
+            ->create();
     }
 }
+
+// Truck::factory(1)
+        // ->create();
+
+        // Truck::factory()
+        //     ->afterMaking(function (Truck $truck) {
+        //         $truckFactory = new TruckFactory();
+        //         $truckFactory->configure();
+        //     })
+        //     ->create();
