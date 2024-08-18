@@ -16,7 +16,7 @@ class TruckSeeder extends Seeder
     {
         
 
-        Truck::factory(250)
+        Truck::factory(300)
             ->state(function (array $attributes) {
                 $factory = new TruckFactory();
                 $factory->configure();

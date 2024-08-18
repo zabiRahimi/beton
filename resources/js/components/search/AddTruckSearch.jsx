@@ -117,28 +117,6 @@ const AddCustomerSearch = ({ truckTypesSearch, getCustomers, handelSetDataSearch
   }
 
   const handleSearch = () => {
-    let startDateMiladi,
-      endDateMiladi;
-
-    if (input.startDate != '') {
-      const validDate = checkDate(input.startDate, 'تاریخ ابتدای جستجو صحیح نیست');
-
-      if (validDate) {
-        startDateMiladi = moment(input.startDate, 'jYYYY/jM/jD').format('YYYY-MM-DD')
-      } else {
-        return;
-      }
-    }
-
-    if (input.endDate != '') {
-      const validDate = checkDate(input.endDate, 'تاریخ پایان جستجو صحیح نیست');
-
-      if (validDate) {
-        endDateMiladi = moment(input.endDate, 'jYYYY/jM/jD').format('YYYY-MM-DD')
-      } else {
-        return;
-      }
-    }
     handelSetDataSearch({ startDate: startDateMiladi, endDate: endDateMiladi, id: input.id, types: input.types, name: input.name, lastName: input.lastName });
     getCustomers(1, startDateMiladi, endDateMiladi, input.id, input.types, input.name, input.lastName);
   }

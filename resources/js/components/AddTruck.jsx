@@ -319,26 +319,34 @@ const AddTruck = () => {
      * @param {string} truck 
      */
     const returnTruckOwners = (truck) => {
-        let getOwners = truckOwners.filter(owner => owner.customer_type.some(type => type.subtype === truck));
-        if (getOwners.length > 0) {
-            setOwners(getOwners);
-        } else {
-            MySwal.fire({
-                icon: "warning",
-                title: "هشدار",
-                text: `هنوز هیچ مشتری که صاحب ${truck} باشد، ثبت نشده است، ابتدا مشتری را ثبت  کنید.`,
-                confirmButtonText: "  ثبت مشتری   ",
-                showCancelButton: true,
-                cancelButtonText: "کنسل",
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                preConfirm: () => {
+        console.log(truck);
+        if (truck!='') {
+            let getOwners = truckOwners.filter(owner => owner.customer_type.some(type => type.subtype === truck));
+            if (getOwners.length > 0) {
+                setOwners(getOwners);
+            } else {
+                setOwners('');
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    text: `هنوز هیچ مشتری که صاحب ${truck} باشد، ثبت نشده است، ابتدا مشتری را ثبت  کنید.`,
+                    confirmButtonText: "  ثبت مشتری   ",
+                    showCancelButton: true,
+                    cancelButtonText: "کنسل",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    preConfirm: () => {
+    
+                        navigate("/addCustomer");
+                    }
+    
+                });
+            }  
+        }else{
+            setOwners('');
 
-                    navigate("/addCustomer");
-                }
-
-            });
         }
+    
 
     }
 

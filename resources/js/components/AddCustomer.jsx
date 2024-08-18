@@ -231,7 +231,7 @@ const AddCustomer = () => {
 
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
-                <span className="rowIdShowGe">3544{customer['id']}</span>
+                <span className="rowIdShowGe">{customer['id']}</span>
                 <span className="nameShowGE">{customer['name']}</span>
                 <span className="lastNameShowGE">{customer['lastName']}</span>
                 <div className="typeShowGe">
