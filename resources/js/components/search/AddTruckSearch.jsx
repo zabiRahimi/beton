@@ -190,12 +190,21 @@ const [truckType, setTruckType] = useState('');
       <div className="containerName_Se">
         <div className="name_Se">
           <span className="stringName_Se"> پلاک </span>
-          <input
-            type="text"
-            className="inputNameACS_Se"
-            value={input.name || ''}
-            onInput={e => handleSaveValInput(e, 'name')}
-          />
+          <div className="mainNamberplate_Se">
+            <div className="containerInputNamberplate_Se">
+              <div className="iconNamberplate_Se">
+                <i className="icofont-caret-down "></i>
+                <i className="icofont-caret-up"></i>
+              </div>
+              <input type="text" className="leftInputNamberplpate_Se" />
+              <select name="" id=""></select>
+              <input type="text" className="midInputNamberplpate_Se" />
+              <input type="text" className="rightInputNamberplpate_Se" />
+            </div>
+            <div className="containerRowNamberplate_Se">
+
+            </div>
+          </div>
         </div>
         <div className="lastName_Se">
           <span className="stringName_Se"> نام‌مالک </span>
