@@ -320,7 +320,7 @@ const AddTruck = () => {
      */
     const returnTruckOwners = (truck) => {
         console.log(truck);
-        if (truck!='') {
+        if (truck != '') {
             let getOwners = truckOwners.filter(owner => owner.customer_type.some(type => type.subtype === truck));
             if (getOwners.length > 0) {
                 setOwners(getOwners);
@@ -336,17 +336,17 @@ const AddTruck = () => {
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
                     preConfirm: () => {
-    
+
                         navigate("/addCustomer");
                     }
-    
+
                 });
-            }  
-        }else{
+            }
+        } else {
             setOwners('');
 
         }
-    
+
 
     }
 
@@ -789,7 +789,7 @@ const AddTruck = () => {
                     <div className="divListShowGe">
 
                         <AddTruckSearch
-                        // truckTypesSearch={customerTypes}
+                            truckTypes={truckTypes}
                         // getCustomers={getCustomers}
                         // handelSetDataSearch={handelSetDataSearch}
                         />

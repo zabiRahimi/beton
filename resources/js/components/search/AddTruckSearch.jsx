@@ -1,50 +1,43 @@
 
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { createRef, useEffect, useMemo, useRef, useState } from 'react';
 import DataZabi from "../hooks/DateZabi";
 import moment from 'jalali-moment';
+import SelectZabi from '../hooks/SelectZabi';
 
-const AddCustomerSearch = ({ truckTypesSearch, getCustomers, handelSetDataSearch }) => {
+const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) => {
   const {
     checkDate
   } = DataZabi();
   const showTyepCustomerSearchRef = useRef(null);
-
   const titleCustomerTypeSearch = useRef(null);
+  const refTruckTypes = useRef(null);
+
+
   const [refsSearch, setRefsSearch] = useState({});
 
-  const [showTypeCustomerSearch, setShowTypeCustomerSearch] = useState(false);
+  const [showTypeCustomerSearch, setShowTruckTypeSearch] = useState(false);
   const [customerTypeSelectedSearch, setCustomerTypeSelectedSearch] = useState([]);
+const [itemTruckTypes, setItemTruckTypes] = useState([ {
+  value: '',
+  html: <div className="divItemTruckType_Se" >
+      <span className="itemTruckType_Se"> همه </span>
+  </div>
+}]);
+const [truckType, setTruckType] = useState('');
 
-  const [date, setDate] = useState({
-    start: {
-      day: '',
-      month: '',
-      year: ''
-    },
-    end: {
-      day: '',
-      month: '',
-      year: ''
-    }
-  });
 
   const [input, setInput] = useState({
-    startDate: '',
-    endDate: '',
     id: '',
-    types: [],
-    name: '',
-    lastName: ''
+    truckType ,
+    namberplate: '',
+    owner: ''
   });
 
-  const sendDataToParent = () => {
-    updateParent('Hello from Child');
-  };
 
   useEffect(() => {
-    if (truckTypesSearch) {
+    if (truckTypes) {
 
-      const newRefsSearch = truckTypesSearch.reduce((acc, value) => {
+      const newRefsSearch = truckTypes.reduce((acc, value) => {
         acc[value.code] = createRef();
         return acc;
       }, {});
@@ -52,12 +45,23 @@ const AddCustomerSearch = ({ truckTypesSearch, getCustomers, handelSetDataSearch
     }
   }, []);
 
+  useMemo(() => {
+   truckTypes && truckTypes.map((item, i) => {
+      setItemTruckTypes(perv => ([...perv, {
+          value: item,
+          html: <div className="divItemTruckType_Se" key={i}>
+              <span className="itemTruckType_Se">{item}</span>
+          </div>
+      }]));
+  })
+  }, []);
+  
   /**
  * نمایش آیتم های نوع مشتری برای جستجو
  * @returns 
  */
-  const showCustomerTypesSearch = () => {
-    let value = truckTypesSearch.map((customerType, i) => {
+  const showTruckTypeSearch = () => {
+    let value = truckTypes.map((customerType, i) => {
 
       return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, customerType['code'], customerType['type'], customerType['subtype'])}
         key={i}>
@@ -83,37 +87,37 @@ const AddCustomerSearch = ({ truckTypesSearch, getCustomers, handelSetDataSearch
     */
   const AddCustomerTypeSearch = (e, code, type, subtype) => {
     e.preventDefault();
-    if(code !=''){
-    let ref = refsSearch[code]
-    let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
+    if (code != '') {
+      let ref = refsSearch[code]
+      let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
 
-    if (val) {
-      setCustomerTypeSelectedSearch(old => [...old, { code, type, subtype }]);
-      setInput(prevState => ({
-        ...prevState,
-        types: [...prevState.types, code]
-      }));
-      const typesString = customerTypeSelectedSearch.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
-      titleCustomerTypeSearch.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype || '') : type + ' ' + (subtype || '');
+      if (val) {
+        setCustomerTypeSelectedSearch(old => [...old, { code, type, subtype }]);
+        setInput(prevState => ({
+          ...prevState,
+          types: [...prevState.types, code]
+        }));
+        const typesString = customerTypeSelectedSearch.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
+        titleCustomerTypeSearch.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype || '') : type + ' ' + (subtype || '');
 
+      } else {
+        const updated = customerTypeSelectedSearch.filter(item => item.code !== code);
+        setCustomerTypeSelectedSearch(updated);
+        setInput(prevState => ({
+          ...prevState,
+          types: prevState.types.filter(type => type !== code)
+        }));
+        const typesString = updated.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
+        titleCustomerTypeSearch.current.textContent = typesString ? typesString : 'انتخاب';
+      }
     } else {
-      const updated = customerTypeSelectedSearch.filter(item => item.code !== code);
-      setCustomerTypeSelectedSearch(updated);
-      setInput(prevState => ({
-        ...prevState,
-        types: prevState.types.filter(type => type !== code)
-      }));
-      const typesString = updated.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
-      titleCustomerTypeSearch.current.textContent = typesString ? typesString : 'انتخاب';
-    }
-  }else{
-    titleCustomerTypeSearch.current.textContent ='همه';
-    setCustomerTypeSelectedSearch([]);
+      titleCustomerTypeSearch.current.textContent = 'همه';
+      setCustomerTypeSelectedSearch([]);
       setInput(prevState => ({
         ...prevState,
         types: []
       }));
-  }
+    }
   }
 
   const handleSearch = () => {
@@ -126,240 +130,66 @@ const AddCustomerSearch = ({ truckTypesSearch, getCustomers, handelSetDataSearch
     setInput(prev => ({ ...prev, [input]: value }));
   }
 
-  const handleSetDate = (e, date0, input) => {
-    let { value } = e.target,
-      day,
-      month,
-      year,
-      valDate;
-    value = value.toString();
 
-    if (date0 == 'start') {
-      day = date.start.day;
-      month = date.start.month;
-      year = date.start.year;
-    } else {
-      day = date.end.day;
-      month = date.end.month;
-      year = date.end.year;
-    }
-
-    if (input == 'day') {
-      let { value } = e.target;
-      value = value.toString();
-      (value != 0 && value.length == 1) && (value = '0' + value);
-      (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-      if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-        value == 0 ? value = '' : '';
-        day = value
-        setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
-      }
-
-    } else if (input == 'month') {
-      (value != 0 && value.length == 1) && (value = '0' + value);
-      (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-      if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-        value == 0 ? value = '' : '';
-        month = value;
-        setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
-      }
-    } else {
-      if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-        value == 0 ? value = '' : '';
-        year = value;
-        setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
-
-      }
-    }
-    if (year == '' && month == '' && day == '') {
-      valDate = '';
-    } else {
-      valDate = year + '/' + month + '/' + day;
-    }
-    if (date0 == 'start') {
-      setInput(prev => ({ ...prev, startDate: valDate }));
-    } else {
-      setInput(prev => ({ ...prev, endDate: valDate }));
-    }
-  }
 
   const handleClearSearch = async () => {
-    setDate({
-      start: {
-        day: '',
-        month: '',
-        year: ''
-      },
-      end: {
-        day: '',
-        month: '',
-        year: ''
-      }
-    });
+
 
     setInput({
-      startDate: '',
-      endDate: '',
       id: '',
       types: [],
-      name: '',
-      lastName: ''
+      namberplate: '',
+      owner: ''
     });
 
     titleCustomerTypeSearch.current.textContent = 'انتخاب';
 
-    await handelSetDataSearch({ startDate: '', endDate: '', id: '', types: [], name: '', lastName: '' });
+    await handelSetDataSearch({ id: '', types: [], namberplate: '', owner: '' });
 
     await getCustomers(1, '', '', '', [], '', '');
 
-    // setFromDateSearch('');
-    // setUntilDateSearch('');
-    // setCustomerSearchId('');
-    // setConcreteSearchId('');
-    // setTruckSearchId('');
-    // setDriverSearchId('');
-    // document.getElementById('dayFromSearch').value='';
-    // document.getElementById('monthFromSearch').value='';
-    // document.getElementById('yearFromSearch').value='';
-
-    // document.getElementById('dayUntilSearch').value='';
-    // document.getElementById('monthUntilSearch').value='';
-    // document.getElementById('yearUntilSearch').value='';
-
-    // refCustomerSearch.current.updateData('انتخاب');
-    // refConcreteSearch.current.updateData('انتخاب');
-    // refTruckSearch.current.updateData('انتخاب');
-    // refDriverSearch.current.updateData('انتخاب');
-
-    // setConcreteSalesInvoices(null);
-    // setTimeout(() => {
-    //     setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
-    // }, 400);
   }
 
-  const handleSetShowCustomerTypeSearch = (e, apply = true) => {
+  const handleSetShowTruckTypeSearch = (e, apply = true) => {
     // e.stopPropagation();
     if (apply) {
-      setShowTypeCustomerSearch(false);
+      setShowTruckTypeSearch(false);
 
     } else {
-      setShowTypeCustomerSearch(pre => !pre);
+      setShowTruckTypeSearch(pre => !pre);
 
     }
   }
 
   return (
     <div className="containerSearch_Se">
-      <div className="containerDate_Se">
-        <div className="startDate_Se">
-          <span className="stringFromDate_Se"> از تاریخ </span>
-          <input
-            type="text"
-            className="inputDate_Se dayDate_Se"
-            id="dayFromSearch"
-            placeholder="روز"
-            value={date.start.day || ''}
-            onInput={e => handleSetDate(e, 'start', 'day')}
-          />
-          <span className="slashDate_Se">/</span>
-          <input
-            type="text"
-            className="inputDate_Se monthDate_Se"
-            placeholder="ماه"
-            id="monthFromSearch"
-            value={date.start.month || ''}
-            onInput={e => handleSetDate(e, 'start', 'month')}
-          />
-          <span className="slashDate_Se">/</span>
-          <input
-            type="text"
-            className="inputDate_Se yearDate_Se"
-            id="yearFromSearch"
-            placeholder="سال"
-            value={date.start.year || ''}
-            onInput={e => handleSetDate(e, 'start', 'year')}
-          />
 
-        </div>
-        <div className="endtDate_Se">
-          <span className="stringUntilDate_Se"> تا تاریخ </span>
-          <input
-            type="text"
-            className="inputDate_Se dayDate_Se"
-            id="dayUntilSearch"
-            placeholder="روز"
-            value={date.end.day || ''}
-            onInput={e => handleSetDate(e, 'end', 'day')}
-          />
-          <span className="slashDate_Se">/</span>
-          <input
-            type="text"
-            className="inputDate_Se monthDate_Se"
-            id="monthUntilSearch"
-            placeholder="ماه"
-            value={date.end.month || ''}
-            onInput={e => handleSetDate(e, 'end', 'month')}
-          />
-          <span className="slashDate_Se">/</span>
-          <input
-            type="text"
-            className="inputDate_Se yearDate_Se"
-            id="yearUntilSearch"
-            placeholder="سال"
-            value={date.end.year || ''}
-            onInput={e => handleSetDate(e, 'end', 'year')}
-          />
-        </div>
-      </div>
 
       <div className="containerIdAType_Se">
         <div className="id_Se">
           <span className="stringIdAType_Se"> شناسه </span>
           <input
             type="text"
-            className="inputIdACS_Se"
+            className="inputIdACS_Se inputIdTruckATS_Se"
             value={input.id || ''}
             onInput={e => handleSaveValInput(e, 'id')}
           />
         </div>
-        <div className="type_Se"
-          tabIndex="0"
-          onBlur={(e) => handleSetShowCustomerTypeSearch(e)}>
-          <span className="stringIdAType_Se"> نوع مشتری </span>
-          <div
-            className="titleTypeACS_Se"
-            onClick={(e) => handleSetShowCustomerTypeSearch(e, false)}
-          >
-            <span
-              className="spanTitleType_Se"
-              ref={titleCustomerTypeSearch}
-            >انتخاب
-            </span>
-            {!showTypeCustomerSearch && <i className='icofont-rounded-down'></i>}
-            {showTypeCustomerSearch && <i className='icofont-rounded-up'></i>}
-          </div>
-          {showTypeCustomerSearch && <div
-            className="showTypeACS_Se"
-          >
-            <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, '','', '')}
-              >
-              <div
-                className={`checkedItemCustomerTypeFB ${customerTypeSelectedSearch.some(obj => obj.code === 0) && 'IcheckedItemCustomerTypeFB'}`}
-              >
-                <i className="icofont-check-alt " />
-              </div>
-              <span className="nameItemcustomerTypeFB" > همه </span>
-            </div>
+        <div className="type_Se truckType_Se">
+          <span className="stringIdAType_Se"> نوع کامیون </span>
+          <SelectZabi
+            primaryLabel='انتخاب'
+            options={itemTruckTypes}
+            saveOption={setTruckType}
+            ref={refTruckTypes}
+          />
 
-            {showCustomerTypesSearch()}
-          </div>}
         </div>
       </div>
 
       <div className="containerName_Se">
         <div className="name_Se">
-          <span className="stringName_Se"> نام </span>
+          <span className="stringName_Se"> پلاک </span>
           <input
             type="text"
             className="inputNameACS_Se"
@@ -368,7 +198,7 @@ const AddCustomerSearch = ({ truckTypesSearch, getCustomers, handelSetDataSearch
           />
         </div>
         <div className="lastName_Se">
-          <span className="stringName_Se"> نام‌خانوادگی </span>
+          <span className="stringName_Se"> نام‌مالک </span>
           <input
             type="text"
             className="inputNameACS_Se"

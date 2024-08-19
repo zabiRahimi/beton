@@ -112,6 +112,19 @@
 
 }
 
+.truckType_Se {
+    width: 255px;
+}
+
+.truckType_Se .mainSZ,
+.inputIdTruckATS_Se {
+    width: 150px ;
+}
+
+.divItemTruckType_Se {
+    padding: 4px 6px;
+}
+
 .titleTypeACS_Se {
     width: 120px;
     padding: 0 4px;
@@ -286,7 +299,9 @@
     .inputIdACS_Se,
     .titleTypeACS_Se,
     .inputNameACS_Se,
-    .showTypeACS_Se {
+    .showTypeACS_Se,
+    .truckType_Se .mainSZ,
+    .inputIdTruckATS_Se {
         width: 180px;
     }
 
