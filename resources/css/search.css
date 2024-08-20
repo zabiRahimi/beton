@@ -66,7 +66,8 @@
 .containerCustAConc_Se,
 .containerMixADri_Se,
 .containerIdAType_Se,
-.containerName_Se {
+.containerName_Se,
+.containerMainNamberplate_Se {
     width: fit-content;
     margin-right: 8px;
     display: flex;
@@ -118,7 +119,7 @@
 
 .truckType_Se .mainSZ,
 .inputIdTruckATS_Se {
-    width: 150px ;
+    width: 150px;
 }
 
 .divItemTruckType_Se {
@@ -229,6 +230,84 @@
     align-items: center;
 }
 
+.mainNamberplate_Se {
+    width: 150px;
+    position: relative;
+}
+
+.containerInputNamberplate_Se {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.iconNamberplate_Se {
+    width: min-content;
+    display: flex;
+    align-items: center;
+    background-color: #e8e8eb;
+    border: 1px solid #8f8f9d;
+    border-right: none;
+    border-radius: 2px 0 0 2px;
+}
+
+.leftInputNamberplate_Se,
+.rightInputNamberplate_Se,
+.midInputNamberplate_Se {
+    text-align: center;
+}
+
+.leftInputNamberplate_Se,
+.rightInputNamberplate_Se {
+    width: 26px;
+}
+
+.selectNamberplate_Se {
+    width: 55px;
+    text-align: center;
+}
+
+
+
+.midInputNamberplate_Se {
+    width: 44px;
+}
+
+.divIranNamberplate {
+    width: fit-content;
+    height: 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+.iranNamberplate {
+    height: 10px;
+    padding: 0;
+    font-size: 0.5rem;
+    text-align: center;
+    border: 1px solid #8f8f9d;
+    border-bottom: none;
+    border-radius: 2px 2px 0 0;
+    z-index: 2;
+}
+
+.rightInputNamberplate_Se {
+    height: 22px;
+    border: 1px solid #8f8f9d;
+    border-top: none;
+    z-index: 1;
+}
+
+/* .containerRowNamberplate_Se{
+    width: 100%;
+    max-height: 250px;
+    padding: 1px 3px;
+    border: 1px solid #757584;
+    background-color: #fff;
+    position: absolute;
+    top: 35px;
+    overflow: auto;
+} */
+
 .nameDriver_Se {
     font-size: 0.8rem;
 }
@@ -283,7 +362,8 @@
     .containerCustAConc_Se,
     .containerMixADri_Se,
     .containerIdAType_Se,
-    .containerName_Se {
+    .containerName_Se,
+    .containerMainNamberplate_Se {
         margin-right: 20px;
     }
 
@@ -301,11 +381,26 @@
     .inputNameACS_Se,
     .showTypeACS_Se,
     .truckType_Se .mainSZ,
-    .inputIdTruckATS_Se {
+    .inputIdTruckATS_Se,
+    .mainNamberplate_Se {
         width: 180px;
     }
 
     .inputNameACS_Se {
         padding: 0 8px;
+    }
+
+    .leftInputNamberplate_Se,
+    .rightInputNamberplate_Se {
+        width: 35px;
+    }
+
+    .selectNamberplate_Se {
+        width: 56px;
+    }
+
+
+    .midInputNamberplate_Se {
+        width: 53px;
     }
 }

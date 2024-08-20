@@ -17,18 +17,19 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
 
   const [showTypeCustomerSearch, setShowTruckTypeSearch] = useState(false);
   const [customerTypeSelectedSearch, setCustomerTypeSelectedSearch] = useState([]);
-const [itemTruckTypes, setItemTruckTypes] = useState([ {
-  value: '',
-  html: <div className="divItemTruckType_Se" >
+  const [itemTruckTypes, setItemTruckTypes] = useState([{
+    value: '',
+    html: <div className="divItemTruckType_Se" >
       <span className="itemTruckType_Se"> همه </span>
-  </div>
-}]);
-const [truckType, setTruckType] = useState('');
+    </div>
+  }]);
+  const [truckType, setTruckType] = useState('');
+  // const [allowShowListNamberplate, setAllowShowListNamberplate] = useState(false)
 
 
   const [input, setInput] = useState({
     id: '',
-    truckType ,
+    truckType,
     namberplate: '',
     owner: ''
   });
@@ -46,16 +47,16 @@ const [truckType, setTruckType] = useState('');
   }, []);
 
   useMemo(() => {
-   truckTypes && truckTypes.map((item, i) => {
+    truckTypes && truckTypes.map((item, i) => {
       setItemTruckTypes(perv => ([...perv, {
-          value: item,
-          html: <div className="divItemTruckType_Se" key={i}>
-              <span className="itemTruckType_Se">{item}</span>
-          </div>
+        value: item,
+        html: <div className="divItemTruckType_Se" key={i}>
+          <span className="itemTruckType_Se">{item}</span>
+        </div>
       }]));
-  })
+    })
   }, []);
-  
+
   /**
  * نمایش آیتم های نوع مشتری برای جستجو
  * @returns 
@@ -130,8 +131,6 @@ const [truckType, setTruckType] = useState('');
     setInput(prev => ({ ...prev, [input]: value }));
   }
 
-
-
   const handleClearSearch = async () => {
 
 
@@ -161,6 +160,10 @@ const [truckType, setTruckType] = useState('');
     }
   }
 
+  // const handleSetAllowNamberplate = ()=>{
+  //   setAllowShowListNamberplate(!allowShowListNamberplate);
+  // }
+
   return (
     <div className="containerSearch_Se">
 
@@ -187,23 +190,66 @@ const [truckType, setTruckType] = useState('');
         </div>
       </div>
 
-      <div className="containerName_Se">
+      <div className="containerMainNamberplate_Se">
         <div className="name_Se">
           <span className="stringName_Se"> پلاک </span>
           <div className="mainNamberplate_Se">
             <div className="containerInputNamberplate_Se">
-              <div className="iconNamberplate_Se">
-                <i className="icofont-caret-down "></i>
-                <i className="icofont-caret-up"></i>
+              {/* <div className="iconNamberplate_Se">
+               {!allowShowListNamberplate ? <i className="icofont-caret-down " onClick={handleSetAllowNamberplate}></i> :
+               <i className="icofont-caret-up" onClick={handleSetAllowNamberplate}></i>
+               }
+                
+              </div> */}
+              <input type="text" className="leftInputNamberplate_Se" placeholder='00' />
+              <select name="" id="" className='selectNamberplate_Se'>
+                <option value=""> حرف </option>
+                <option value="ا"> الف </option>
+                <option value="ب"> ب </option>
+                <option value="پ"> پ </option>
+                <option value="ت"> ت </option>
+                <option value="ث"> ث </option>
+                <option value="ج"> ج </option>
+                <option value="چ"> چ </option>
+                <option value="ح"> ح </option>
+                <option value="خ"> خ </option>
+                <option value="د"> د </option>
+                <option value="ذ"> ذ </option>
+                <option value="ر"> ر </option>
+                <option value="ز"> ز </option>
+                <option value="ژ"> ژ </option>
+                <option value="س"> س </option>
+                <option value="ش"> ش </option>
+                <option value="ص"> ص </option>
+                <option value="ض"> ض </option>
+                <option value="ط"> ط </option>
+                <option value="ظ"> ظ </option>
+                <option value="ع"> ع </option>
+                <option value="غ"> غ </option>
+                <option value="ف"> ف </option>
+                <option value="ق"> ق </option>
+                <option value="ک"> ک </option>
+                <option value="گ"> گ </option>
+                <option value="ل"> ل </option>
+                <option value="م"> م </option>
+                <option value="ن"> ن </option>
+                <option value="و"> و </option>
+                <option value="ه"> ه </option>
+                <option value="ی"> ی </option>
+              </select>
+              <input type="text" className="midInputNamberplate_Se" placeholder='000' />
+              <div className="divIranNamberplate">
+                <span className='iranNamberplate'> ایران </span>
+                <input type="text" className="rightInputNamberplate_Se" placeholder='00' />
               </div>
-              <input type="text" className="leftInputNamberplpate_Se" />
-              <select name="" id=""></select>
-              <input type="text" className="midInputNamberplpate_Se" />
-              <input type="text" className="rightInputNamberplpate_Se" />
             </div>
-            <div className="containerRowNamberplate_Se">
+            {/* {
+              allowShowListNamberplate &&
+              <div className="containerRowNamberplate_Se">
+                namberplate
+              </div>
+            } */}
 
-            </div>
           </div>
         </div>
         <div className="lastName_Se">
