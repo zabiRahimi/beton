@@ -168,9 +168,9 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
     <div className="containerSearch_Se">
 
 
-      <div className="containerIdAType_Se">
+      <div className="containerIdAType_Se containerIdATypeTruck_Se">
         <div className="id_Se">
-          <span className="stringIdAType_Se"> شناسه </span>
+          <span className="stringIdAType_Se stringIdATypeTruck_Se"> شناسه </span>
           <input
             type="text"
             className="inputIdACS_Se inputIdTruckATS_Se"
@@ -179,7 +179,7 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
           />
         </div>
         <div className="type_Se truckType_Se">
-          <span className="stringIdAType_Se"> نوع کامیون </span>
+          <span className="stringIdAType_Se stringIdATypeTruck_Se"> نوع کامیون </span>
           <SelectZabi
             primaryLabel='انتخاب'
             options={itemTruckTypes}
@@ -190,9 +190,32 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
         </div>
       </div>
 
+      <div className='containerName_Se containerOwner_Se'>
+
+      <div className="name_Se">
+          <span className="stringOwner_Se"> نام‌مالک </span>
+          <input
+            type="text"
+            className="inputNameACS_Se"
+            value={input.name || ''}
+            onInput={e => handleSaveValInput(e, 'name')}
+          />
+        </div>
+
+        <div className="lastName_Se">
+          <span className="stringOwner_Se"> نام‌خانوادگی </span>
+          <input
+            type="text"
+            className="inputNameACS_Se"
+            value={input.lastName || ''}
+            onInput={e => handleSaveValInput(e, 'lastName')}
+          />
+        </div>
+      </div>
+
       <div className="containerMainNamberplate_Se">
         <div className="name_Se">
-          <span className="stringName_Se"> پلاک </span>
+          <span className="stringNamberplate_Se"> پلاک </span>
           <div className="mainNamberplate_Se">
             <div className="containerInputNamberplate_Se">
               {/* <div className="iconNamberplate_Se">
@@ -253,13 +276,7 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
           </div>
         </div>
         <div className="lastName_Se">
-          <span className="stringName_Se"> نام‌مالک </span>
-          <input
-            type="text"
-            className="inputNameACS_Se"
-            value={input.lastName || ''}
-            onInput={e => handleSaveValInput(e, 'lastName')}
-          />
+
         </div>
       </div>
 

@@ -89,8 +89,10 @@
 .stringCustAConc_Se,
 .stringMixADri_Se,
 .stringIdAType_Se,
-.stringName_Se {
-    width: 40px;
+.stringName_Se,
+.stringOwner_Se,
+.stringNamberplate_Se {
+    width: 50px;
     padding-left: 5px;
     font-size: 0.75rem;
     display: flex;
@@ -100,6 +102,18 @@
 .stringIdAType_Se,
 .stringName_Se {
     width: 75px;
+}
+
+.stringIdATypeTruck_Se {
+    width: 50px;
+}
+
+.stringOwner_Se {
+    width: 58px;
+}
+
+.stringNamberplate_Se {
+    width: 35px;
 }
 
 .inputIdACS_Se {
@@ -114,12 +128,12 @@
 }
 
 .truckType_Se {
-    width: 255px;
+    width: 195px;
 }
 
 .truckType_Se .mainSZ,
 .inputIdTruckATS_Se {
-    width: 150px;
+    width: 140px;
 }
 
 .divItemTruckType_Se {
@@ -185,8 +199,8 @@
 
 .btnSearch,
 .btnDelSearch {
-    width: 125px;
-    padding: 3px 6px;
+    width: 100px;
+    padding: 5px 6px;
     margin: 1px;
     background-color: #3b3baa !important;
     color: #fff;
@@ -195,6 +209,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 0.8rem;
 }
 
 /* .sritngSearch_Se {} */
@@ -367,23 +382,44 @@
         margin-right: 20px;
     }
 
+    .containerOwner_Se {
+        margin-right: 10px;
+    }
+
+    
+
+    .stringIdATypeTruck_Se,
+    .stringOwner_Se {
+        width: 28.7%;
+    }
+
+    .truckType_Se {
+        width: 250px;
+    }
+
     .stringFromDate_Se,
     .stringUntilDate_Se,
     .stringCustAConc_Se,
     .stringMixADri_Se,
     .stringIdAType_Se,
-    .stringName_Se {
+    .stringName_Se,
+    .stringNamberplate_Se,
+    .stringOwner_Se {
         font-size: 0.9rem;
     }
 
+  
     .inputIdACS_Se,
     .titleTypeACS_Se,
     .inputNameACS_Se,
-    .showTypeACS_Se,
-    .truckType_Se .mainSZ,
-    .inputIdTruckATS_Se,
-    .mainNamberplate_Se {
+    .showTypeACS_Se {
         width: 180px;
+    }
+
+    .inputIdTruckATS_Se,
+    .truckType_Se .mainSZ,
+    .mainNamberplate_Se {
+        width: 170px;
     }
 
     .inputNameACS_Se {
@@ -402,5 +438,12 @@
 
     .midInputNamberplate_Se {
         width: 53px;
+    }
+
+    .btnSearch,
+    .btnDelSearch {
+        width: 125px;
+        padding: 2px 6px;
+        font-size: 1rem;
     }
 }
