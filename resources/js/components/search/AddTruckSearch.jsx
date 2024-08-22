@@ -12,9 +12,6 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
 
 
   const [refsSearch, setRefsSearch] = useState({});
-
-  const [showTypeCustomerSearch, setShowTruckTypeSearch] = useState(false);
-  const [customerTypeSelectedSearch, setCustomerTypeSelectedSearch] = useState([]);
   const [itemTruckTypes, setItemTruckTypes] = useState([{
     value: '',
     html: <div className="divItemTruckType_Se" >
@@ -23,7 +20,10 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
   }]);
   const [truckType, setTruckType] = useState('');
 
-
+const [namberplate0, setNamberplate0] = useState({
+  left:'',
+  alhpa
+})
   const [input, setInput] = useState({
     id: '',
     truckType,
@@ -31,18 +31,6 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
     lastName:'',
     namberplate: ''
   });
-
-
-  useEffect(() => {
-    if (truckTypes) {
-
-      const newRefsSearch = truckTypes.reduce((acc, value) => {
-        acc[value.code] = createRef();
-        return acc;
-      }, {});
-      setRefsSearch(newRefsSearch);
-    }
-  }, []);
 
   useMemo(() => {
     truckTypes && truckTypes.map((item, i) => {
@@ -55,71 +43,8 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
     })
   }, []);
 
-  /**
- * نمایش آیتم های نوع مشتری برای جستجو
- * @returns 
- */
-  const showTruckTypeSearch = () => {
-    let value = truckTypes.map((customerType, i) => {
-
-      return <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, customerType['code'], customerType['type'], customerType['subtype'])}
-        key={i}>
-        <div
-          className={`checkedItemCustomerTypeFB ${customerTypeSelectedSearch.some(obj => obj.code === customerType['code']) && 'IcheckedItemCustomerTypeFB'}`}
-          key={customerType['code']}
-          ref={refsSearch[customerType.code]}
-        >
-          <i className="icofont-check-alt " />
-        </div>
-        <span className="nameItemcustomerTypeFB" > {customerType['type']} {customerType['subtype']} </span>
-      </div>
-    })
-    return value;
-  }
-
-  /**
-    * فرآیند انتخاب نوع مشتری برای جستجو
-    * @param {*} e 
-    * @param {*} code 
-    * @param {*} type 
-    * @param {*} subtype 
-    */
-  const AddCustomerTypeSearch = (e, code, type, subtype) => {
-    e.preventDefault();
-    if (code != '') {
-      let ref = refsSearch[code]
-      let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
-
-      if (val) {
-        setInput(prevState => ({
-          ...prevState,
-          types: [...prevState.types, code]
-        }));
-        const typesString = customerTypeSelectedSearch.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
-        titleCustomerTypeSearch.current.textContent = typesString ? typesString + ',' + type + ' ' + (subtype || '') : type + ' ' + (subtype || '');
-
-      } else {
-        const updated = customerTypeSelectedSearch.filter(item => item.code !== code);
-        setCustomerTypeSelectedSearch(updated);
-        setInput(prevState => ({
-          ...prevState,
-          types: prevState.types.filter(type => type !== code)
-        }));
-        const typesString = updated.map((item) => `${item.type} ${item.subtype || ''}`).join(' , ');
-        titleCustomerTypeSearch.current.textContent = typesString ? typesString : 'انتخاب';
-      }
-    } else {
-      titleCustomerTypeSearch.current.textContent = 'همه';
-      setCustomerTypeSelectedSearch([]);
-      setInput(prevState => ({
-        ...prevState,
-        types: []
-      }));
-    }
-  }
-
   const handleSearch = () => {
-    handelSetDataSearch({ startDate: startDateMiladi, endDate: endDateMiladi, id: input.id, types: input.types, name: input.name, lastName: input.lastName });
+    handelSetDataSearch({  id: input.id, truckType: input.truckType, name: input.name, lastName: input.lastName, namberplate: input.namberplate });
     getTrucks(1,  input.id, input.truckType, input.name, input.lastName, input.namberplate);
   }
 
