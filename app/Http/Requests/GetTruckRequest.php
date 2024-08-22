@@ -11,7 +11,7 @@ class GetTruckRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,23 @@ class GetTruckRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            
+            'id'=> 'nullable|numeric',
+            'truckType' => 'nullable | string',
+            'name' => 'nullable|string',
+            'lastName' => 'nullable|string',
+            'namberplate' => 'nullable|string',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'id.numeric' => 'شناسه را به عدد وارد کنید',
+            'truckType.*.string' => 'نوع مشتری را انتخاب کنید',
+            'name.string' => 'نام مالک را صحیح وارد کنید',
+            'lastName.string' => 'نام خانوادگی مالک را صحیح وارد کنید',
+            'namberplate.string'=>'شماره پلاک را صحیح وارد کنید'
         ];
     }
 }

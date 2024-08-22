@@ -8,8 +8,8 @@ const range = (start, end) => {
 };
 
 export const usePagination = ({
-  totalCount,
-  pageSize,
+  // totalCount,
+  // pageSize,
   siblingCount = 2,
   currentPage,
   totalPage
@@ -81,7 +81,7 @@ export const usePagination = ({
       let middleRange = range(leftSiblingIndex, rightSiblingIndex);
       return [firstPageIndex,PageIndex2,PageIndex3, DOTS, ...middleRange, DOTS,lastPageIndex3, lastPageIndex2,lastPageIndex];
     }
-  }, [totalCount, pageSize, siblingCount, currentPage, totalPage]);
+  }, [  siblingCount, currentPage, totalPage]);
 
   return paginationRange;
 };

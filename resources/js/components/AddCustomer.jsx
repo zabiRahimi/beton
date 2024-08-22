@@ -6,26 +6,16 @@ import "../../css/formBeton.css";
 import "../../css/addCustomer.css";
 import DataZabi from "./hooks/DateZabi";
 import useBank from "./hooks/useBank";
-import { createRef, useEffect, useMemo, useRef, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from './hooks/useChangeForm';
-import PaginateZabi from "./hooks/PaginateZabi";
 import Pagination from "./hooks/Pagination";
-import { useRouteError } from "react-router-dom";
 import AddCustomerSearch from "./search/AddCustomerSearch";
 const AddCustomer = () => {
-    let PageSize = 1;
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const data = [{ "id": 1, "first_name": "Jessamyn", "last_name": "Espinazo", "email": "jespinazo0@chicagotribune.com", "phone": "162-166-0977" },
-    { "id": 2, "first_name": "Isac", "last_name": "Tooher", "email": "itooher1@psu.edu", "phone": "655-567-3619" },
-    { "id": 3, "first_name": "Tabbatha", "last_name": "Proschke", "email": "tproschke2@weibo.com", "phone": "327-612-4850" },
-    { "id": 4, "first_name": "Ninetta", "last_name": "Mabb", "email": "nmabb3@canalblog.com", "phone": "971-296-0911" }]
-
     const MySwal = withReactContent(Swal);
     const {
         optionDays,
@@ -152,14 +142,14 @@ const AddCustomer = () => {
         types:[],
         name:'',
         lastName:''
-    })
+    });
 
     /**
-     * ##########
      * ############### states for paginate
-     * ##########
      */
     const [totalPage, setTotalPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+
 
     /**
      * id to edit the model
@@ -1617,8 +1607,6 @@ const AddCustomer = () => {
                         <Pagination
                             className="pagination-bar"
                             currentPage={currentPage}
-                            totalCount={data.length}
-                            pageSize={PageSize}
                             totalPage={totalPage}
                             siblingCount={3}
                             onPageChange={page => { setCurrentPage(page); getCustomers(page) }}

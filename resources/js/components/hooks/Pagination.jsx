@@ -12,18 +12,10 @@ const Pagination = props => {
     className,
     totalPage,
   } = props;
-  // console.log(pageSize);
-  // console.log(`totalCuont = ${totalCount}`);
-  // console.log(`siblingCount = ${siblingCount}`);
-  // console.log(`currentPage = ${currentPage}`);
-  // console.log(`pageSize = ${pageSize}`);
-  // console.log(`totalPage = ${totalPage}`);
 
   const paginationRange = usePagination({
     currentPage,
-    totalCount,
     siblingCount,
-    pageSize,
     totalPage
   });
   // console.log(`paginationRange.length = ${paginationRange.length}`);

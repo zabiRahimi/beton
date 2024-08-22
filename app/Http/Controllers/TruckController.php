@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetTruckRequest;
 use App\Models\Truck;
 use App\Http\Requests\StoreTruckRequest;
 use App\Http\Requests\UpdateTruckRequest;
@@ -12,11 +13,34 @@ class TruckController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(GetTruckRequest $request)
     {
-        $trucks = Truck::orderBy('id')->get();
+        $query = Truck::query();
 
-        return response()->json(['trucks' => $trucks]);
+        if ($request->filled('id')) {
+            $query->where('id', $request->id);
+            
+        } else {
+            
+        
+
+      
+        if ($request->filled('truckType')) {
+            $query->where('truckType', $request->truckType);
+        }
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', "%$request->name%");
+        }
+
+        if ($request->filled('lastName')) {
+            $query->where('lastName', 'like', "%$request->lastName%");
+        }
+        }
+
+        $trucks = Truck::orderBy('id')->paginate(50);
+
+        return response()->json(['trucks' => $trucks],200);
     }
 
     /**

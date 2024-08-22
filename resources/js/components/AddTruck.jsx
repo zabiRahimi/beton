@@ -10,6 +10,7 @@ import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import Pagination from "./hooks/Pagination";
 import AddTruckSearch from "./search/AddTruckSearch";
 
 
@@ -43,6 +44,20 @@ const AddTruck = () => {
         numberplate: '',
         customer_id: '',
     });
+
+    const [search, setSearch] = useState({
+        id: '',
+        truckType: '',
+        name: '',
+        lastName: '',
+        namberplate: ''
+    });
+
+    /**
+    * ############### states for paginate
+    */
+    const [totalPage, setTotalPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const truckTypes = ['میکسر', 'کمپرسی', 'پمپ دکل', 'پمپ زمینی'];
 
@@ -85,10 +100,54 @@ const AddTruck = () => {
         fetchData();
     }, []);
 
-    async function getTrucks() {
-        await axios.get("/api/v1/getTrucks").then((response) => {
-            setTrucks(response.data.trucks);
-        });
+    async function getTrucks(page = 1, id = search.id, truckType = search.truckType, name = search.name, lastName = search.lastName, namberplate = search.namberplate) {
+        await axios.get(`/api/v1/getTrucks?page=${page}`, {
+            params: {
+                id,
+                truckType,
+                name,
+                lastName,
+                namberplate
+            }
+        }).then((response) => {
+
+            setTotalPage(response.data.trucks.last_page);
+            setTrucks(response.data.trucks.data);
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
+        }).catch(
+            error => {
+                if (error.response && error.response.status == 422) {
+                    const objErrors = error.response.data.errors;
+                    // دریافت اولین کلید آبجکت و سپس مقدار آن
+                    const firstKey = Object.keys(objErrors)[0];
+                    const firstValue = objErrors[firstKey];
+                    MySwal.fire({
+                        icon: "warning",
+                        title: "هشدار",
+                        html: `<div style="color: red;">${firstValue[0]}</div>`,
+
+                        confirmButtonText: "متوجه شدم!",
+                        confirmButtonColor: "#d33",
+                    });
+
+                }
+            }
+        )
+        setTimeout(() => {
+            setLoading(false)
+        }, 300);
+    }
+
+    /**
+     * از طریق کامپوننت فرزند این متد فراخوانی و مقدار دهی می‌شود
+     * from AddCustomerSearch.jsx
+     * @param {} data 
+     */
+    const handelSetDataSearch = (data) => {
+        setSearch(data);
     }
 
     /**
@@ -790,8 +849,8 @@ const AddTruck = () => {
 
                         <AddTruckSearch
                             truckTypes={truckTypes}
-                        // getCustomers={getCustomers}
-                        // handelSetDataSearch={handelSetDataSearch}
+                            getTrucks={getTrucks}
+                            handelSetDataSearch={handelSetDataSearch}
                         />
 
                         <div className="rowListShowGe headRowListShowGe">
@@ -809,6 +868,13 @@ const AddTruck = () => {
 
                         {trucks ? returnCreatedDriverRecords() : <Skeleton height={40} count={12} />}
 
+                        <Pagination
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalPage={totalPage}
+                            siblingCount={3}
+                            onPageChange={page => { setCurrentPage(page); getTrucks(page) }}
+                        />
                     </div>
 
                 </div>

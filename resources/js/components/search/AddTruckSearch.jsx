@@ -4,12 +4,10 @@ import DataZabi from "../hooks/DateZabi";
 import moment from 'jalali-moment';
 import SelectZabi from '../hooks/SelectZabi';
 
-const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) => {
-  const {
-    checkDate
-  } = DataZabi();
-  const showTyepCustomerSearchRef = useRef(null);
-  const titleCustomerTypeSearch = useRef(null);
+const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
+  
+ 
+  
   const refTruckTypes = useRef(null);
 
 
@@ -24,14 +22,14 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
     </div>
   }]);
   const [truckType, setTruckType] = useState('');
-  // const [allowShowListNamberplate, setAllowShowListNamberplate] = useState(false)
 
 
   const [input, setInput] = useState({
     id: '',
     truckType,
-    namberplate: '',
-    owner: ''
+    name:'',
+    lastName:'',
+    namberplate: ''
   });
 
 
@@ -93,7 +91,6 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
       let val = ref.current.classList.toggle('IcheckedItemCustomerTypeFB');
 
       if (val) {
-        setCustomerTypeSelectedSearch(old => [...old, { code, type, subtype }]);
         setInput(prevState => ({
           ...prevState,
           types: [...prevState.types, code]
@@ -123,7 +120,7 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
 
   const handleSearch = () => {
     handelSetDataSearch({ startDate: startDateMiladi, endDate: endDateMiladi, id: input.id, types: input.types, name: input.name, lastName: input.lastName });
-    getCustomers(1, startDateMiladi, endDateMiladi, input.id, input.types, input.name, input.lastName);
+    getTrucks(1,  input.id, input.truckType, input.name, input.lastName, input.namberplate);
   }
 
   const handleSaveValInput = (e, input) => {
@@ -132,37 +129,17 @@ const AddCustomerSearch = ({ truckTypes, getCustomers, handelSetDataSearch }) =>
   }
 
   const handleClearSearch = async () => {
-
-
     setInput({
       id: '',
-      types: [],
+      truckType: '',
+      name: '',
+      lastName:'',
       namberplate: '',
-      owner: ''
+      
     });
-
-    titleCustomerTypeSearch.current.textContent = 'انتخاب';
-
-    await handelSetDataSearch({ id: '', types: [], namberplate: '', owner: '' });
-
-    await getCustomers(1, '', '', '', [], '', '');
-
+    await handelSetDataSearch({ id: '', truckType:'', name:'', lastName:'', namberplate: '' });
+    await getTrucks(1, '', '', '', '', '');
   }
-
-  const handleSetShowTruckTypeSearch = (e, apply = true) => {
-    // e.stopPropagation();
-    if (apply) {
-      setShowTruckTypeSearch(false);
-
-    } else {
-      setShowTruckTypeSearch(pre => !pre);
-
-    }
-  }
-
-  // const handleSetAllowNamberplate = ()=>{
-  //   setAllowShowListNamberplate(!allowShowListNamberplate);
-  // }
 
   return (
     <div className="containerSearch_Se">
