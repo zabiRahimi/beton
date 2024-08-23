@@ -51,6 +51,7 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
          setInput(prev => ({ ...prev, truckType }));
     
 }, [truckType]);
+console.log(input);
 
   const handleSetNumberplate=(e, input)=>{
     const {value}=e.target;
@@ -61,8 +62,8 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
        setInput(prev => ({ ...prev, numberplate }));
 
     }else if(input== 'alphabet' && (value || numberplateVal.left || numberplateVal.mid || numberplateVal.right)){
-      // numberplate= numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
-      numberplate=value
+      numberplate= numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
+      // numberplate=value
       setInput(prev => ({ ...prev, numberplate }));
 
    }else if(input== 'mid' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.right)){
@@ -87,7 +88,7 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
     handelSetDataSearch({ id: input.id, truckType: input.truckType, name: input.name, lastName: input.lastName, numberplate: input.numberplate });
     getTrucks(1, input.id, input.truckType, input.name, input.lastName, input.numberplate);
   }
-console.log(input);
+
   const handleClearSearch = async () => {
     setNumberplateVal({
       left:'',

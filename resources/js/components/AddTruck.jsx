@@ -110,7 +110,7 @@ const AddTruck = () => {
                 numberplate
             }
         }).then((response) => {
-
+            console.log(response.data.trucks.data);
             setTotalPage(response.data.trucks.last_page);
             setTrucks(response.data.trucks.data);
             window.scrollTo({
@@ -378,7 +378,6 @@ const AddTruck = () => {
      * @param {string} truck 
      */
     const returnTruckOwners = (truck) => {
-        console.log(truck);
         if (truck != '') {
             let getOwners = truckOwners.filter(owner => owner.customer_type.some(type => type.subtype === truck));
             if (getOwners.length > 0) {
