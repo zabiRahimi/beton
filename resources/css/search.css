@@ -67,7 +67,7 @@
 .containerMixADri_Se,
 .containerIdAType_Se,
 .containerName_Se,
-.containerMainNamberplate_Se {
+.containerMainNumberplate_Se {
     width: fit-content;
     margin-right: 8px;
     display: flex;
@@ -91,7 +91,7 @@
 .stringIdAType_Se,
 .stringName_Se,
 .stringOwner_Se,
-.stringNamberplate_Se {
+.stringNumberplate_Se {
     width: 50px;
     padding-left: 5px;
     font-size: 0.75rem;
@@ -112,7 +112,7 @@
     width: 58px;
 }
 
-.stringNamberplate_Se {
+.stringNumberplate_Se {
     width: 35px;
 }
 
@@ -245,17 +245,17 @@
     align-items: center;
 }
 
-.mainNamberplate_Se {
+.mainNumberplate_Se {
     width: 150px;
     position: relative;
 }
 
-.containerInputNamberplate_Se {
+.containerInputNumberplate_Se {
     display: flex;
     flex-direction: row-reverse;
 }
 
-.iconNamberplate_Se {
+.iconNumberplate_Se {
     width: min-content;
     display: flex;
     align-items: center;
@@ -265,36 +265,36 @@
     border-radius: 2px 0 0 2px;
 }
 
-.leftInputNamberplate_Se,
-.rightInputNamberplate_Se,
-.midInputNamberplate_Se {
+.leftInputNumberplate_Se,
+.rightInputNumberplate_Se,
+.midInputNumberplate_Se {
     text-align: center;
 }
 
-.leftInputNamberplate_Se,
-.rightInputNamberplate_Se {
+.leftInputNumberplate_Se,
+.rightInputNumberplate_Se {
     width: 26px;
 }
 
-.selectNamberplate_Se {
+.selectNumberplate_Se {
     width: 55px;
     text-align: center;
 }
 
 
 
-.midInputNamberplate_Se {
+.midInputNumberplate_Se {
     width: 44px;
 }
 
-.divIranNamberplate {
+.divIranNumberplate_Se {
     width: fit-content;
     height: 32px;
     display: flex;
     flex-direction: column;
 }
 
-.iranNamberplate {
+.iranNumberplate_Se {
     height: 10px;
     padding: 0;
     font-size: 0.5rem;
@@ -305,14 +305,14 @@
     z-index: 2;
 }
 
-.rightInputNamberplate_Se {
+.rightInputNumberplate_Se {
     height: 22px;
     border: 1px solid #8f8f9d;
     border-top: none;
     z-index: 1;
 }
 
-/* .containerRowNamberplate_Se{
+/* .containerRowNumberplate_Se{
     width: 100%;
     max-height: 250px;
     padding: 1px 3px;
@@ -378,7 +378,7 @@
     .containerMixADri_Se,
     .containerIdAType_Se,
     .containerName_Se,
-    .containerMainNamberplate_Se {
+    .containerMainNumberplate_Se {
         margin-right: 20px;
     }
 
@@ -403,7 +403,7 @@
     .stringMixADri_Se,
     .stringIdAType_Se,
     .stringName_Se,
-    .stringNamberplate_Se,
+    .stringNumberplate_Se,
     .stringOwner_Se {
         font-size: 0.9rem;
     }
@@ -418,7 +418,7 @@
 
     .inputIdTruckATS_Se,
     .truckType_Se .mainSZ,
-    .mainNamberplate_Se {
+    .mainNumberplate_Se {
         width: 170px;
     }
 
@@ -426,17 +426,17 @@
         padding: 0 8px;
     }
 
-    .leftInputNamberplate_Se,
-    .rightInputNamberplate_Se {
+    .leftInputNumberplate_Se,
+    .rightInputNumberplate_Se {
         width: 35px;
     }
 
-    .selectNamberplate_Se {
+    .selectNumberplate_Se {
         width: 56px;
     }
 
 
-    .midInputNamberplate_Se {
+    .midInputNumberplate_Se {
         width: 53px;
     }
 

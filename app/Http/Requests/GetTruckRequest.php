@@ -27,7 +27,7 @@ class GetTruckRequest extends FormRequest
             'truckType' => 'nullable | string',
             'name' => 'nullable|string',
             'lastName' => 'nullable|string',
-            'namberplate' => 'nullable|string',
+            'numberplate' => 'nullable|string',
         ];
     }
 
@@ -38,7 +38,7 @@ class GetTruckRequest extends FormRequest
             'truckType.*.string' => 'نوع مشتری را انتخاب کنید',
             'name.string' => 'نام مالک را صحیح وارد کنید',
             'lastName.string' => 'نام خانوادگی مالک را صحیح وارد کنید',
-            'namberplate.string'=>'شماره پلاک را صحیح وارد کنید'
+            'numberplate.string'=>'شماره پلاک را صحیح وارد کنید'
         ];
     }
 }

@@ -5,31 +5,34 @@ import moment from 'jalali-moment';
 import SelectZabi from '../hooks/SelectZabi';
 
 const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
-  
- 
-  
+
+
+
   const refTruckTypes = useRef(null);
 
 
   const [refsSearch, setRefsSearch] = useState({});
   const [itemTruckTypes, setItemTruckTypes] = useState([{
     value: '',
-    html: <div className="divItemTruckType_Se" >
+    html: <div className="divItemTruckType_Se"  onClick={(e)=>{e.stopPropagation();setTruckType('')}}>
       <span className="itemTruckType_Se"> همه </span>
     </div>
   }]);
   const [truckType, setTruckType] = useState('');
 
-const [namberplate0, setNamberplate0] = useState({
-  left:'',
-  alhpa
-})
+  const [numberplateVal, setNumberplateVal] = useState({
+    left: '',
+    alphabet: '',
+    mid: '',
+    right: ''
+  });
+
   const [input, setInput] = useState({
     id: '',
-    truckType,
-    name:'',
-    lastName:'',
-    namberplate: ''
+    truckType:'',
+    name: '',
+    lastName: '',
+    numberplate: ''
   });
 
   useMemo(() => {
@@ -43,9 +46,36 @@ const [namberplate0, setNamberplate0] = useState({
     })
   }, []);
 
-  const handleSearch = () => {
-    handelSetDataSearch({  id: input.id, truckType: input.truckType, name: input.name, lastName: input.lastName, namberplate: input.namberplate });
-    getTrucks(1,  input.id, input.truckType, input.name, input.lastName, input.namberplate);
+  useEffect(() => {
+    
+         setInput(prev => ({ ...prev, truckType }));
+    
+}, [truckType]);
+
+  const handleSetNumberplate=(e, input)=>{
+    const {value}=e.target;
+    let numberplate;
+     setNumberplateVal(prev => ({ ...prev, [input]: value }));
+    if(input== 'left' && (value || numberplateVal.alphabet || numberplateVal.mid || numberplateVal.right)){
+       numberplate= value + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+       setInput(prev => ({ ...prev, numberplate }));
+
+    }else if(input== 'alphabet' && (value || numberplateVal.left || numberplateVal.mid || numberplateVal.right)){
+      // numberplate= numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
+      numberplate=value
+      setInput(prev => ({ ...prev, numberplate }));
+
+   }else if(input== 'mid' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.right)){
+    numberplate= numberplateVal.left + '-' + value + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+    setInput(prev => ({ ...prev, numberplate }));
+
+ }else if(input== 'right' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.mid) ){
+  numberplate= numberplateVal.left + '-' + numberplateVal.mid + '-' + value + '-' + numberplateVal.alphabet;
+  setInput(prev => ({ ...prev, numberplate }));
+
+} else {
+      setInput(prev => ({ ...prev, numberplate: '' }));
+    }
   }
 
   const handleSaveValInput = (e, input) => {
@@ -53,16 +83,30 @@ const [namberplate0, setNamberplate0] = useState({
     setInput(prev => ({ ...prev, [input]: value }));
   }
 
+  const handleSearch = () => {
+    handelSetDataSearch({ id: input.id, truckType: input.truckType, name: input.name, lastName: input.lastName, numberplate: input.numberplate });
+    getTrucks(1, input.id, input.truckType, input.name, input.lastName, input.numberplate);
+  }
+console.log(input);
   const handleClearSearch = async () => {
+    setNumberplateVal({
+      left:'',
+      alphabet:'',
+      mid:'',
+      right:''
+    });
+
     setInput({
       id: '',
       truckType: '',
       name: '',
-      lastName:'',
-      namberplate: '',
-      
+      lastName: '',
+      numberplate: '',
+
     });
-    await handelSetDataSearch({ id: '', truckType:'', name:'', lastName:'', namberplate: '' });
+    setTruckType('');
+    refTruckTypes.current.updateData('انتخاب');
+    await handelSetDataSearch({ id: '', truckType: '', name: '', lastName: '', numberplate: '' });
     await getTrucks(1, '', '', '', '', '');
   }
 
@@ -94,7 +138,7 @@ const [namberplate0, setNamberplate0] = useState({
 
       <div className='containerName_Se containerOwner_Se'>
 
-      <div className="name_Se">
+        <div className="name_Se">
           <span className="stringOwner_Se"> نام‌مالک </span>
           <input
             type="text"
@@ -115,19 +159,26 @@ const [namberplate0, setNamberplate0] = useState({
         </div>
       </div>
 
-      <div className="containerMainNamberplate_Se">
+      <div className="containerMainNumberplate_Se">
         <div className="name_Se">
-          <span className="stringNamberplate_Se"> پلاک </span>
-          <div className="mainNamberplate_Se">
-            <div className="containerInputNamberplate_Se">
-              {/* <div className="iconNamberplate_Se">
-               {!allowShowListNamberplate ? <i className="icofont-caret-down " onClick={handleSetAllowNamberplate}></i> :
-               <i className="icofont-caret-up" onClick={handleSetAllowNamberplate}></i>
+          <span className="stringNumberplate_Se"> پلاک </span>
+          <div className="mainNumberplate_Se">
+            <div className="containerInputNumberplate_Se">
+              {/* <div className="iconNumberplate_Se">
+               {!allowShowListNumberplate ? <i className="icofont-caret-down " onClick={handleSetAllowNumberplate}></i> :
+               <i className="icofont-caret-up" onClick={handleSetAllowNumberplate}></i>
                }
                 
               </div> */}
-              <input type="text" className="leftInputNamberplate_Se" placeholder='00' />
-              <select name="" id="" className='selectNamberplate_Se'>
+              <input type="text" className="leftInputNumberplate_Se" placeholder='00'
+              maxLength="2"
+              value={numberplateVal.left || ''}
+              onInput={e=>handleSetNumberplate(e, 'left')} 
+              />
+              <select name="" id="" className='selectNumberplate_Se'
+              value={numberplateVal.alphabet}
+              onChange={e=>handleSetNumberplate(e, 'alphabet')} 
+              >
                 <option value=""> حرف </option>
                 <option value="ا"> الف </option>
                 <option value="ب"> ب </option>
@@ -162,16 +213,24 @@ const [namberplate0, setNamberplate0] = useState({
                 <option value="ه"> ه </option>
                 <option value="ی"> ی </option>
               </select>
-              <input type="text" className="midInputNamberplate_Se" placeholder='000' />
-              <div className="divIranNamberplate">
-                <span className='iranNamberplate'> ایران </span>
-                <input type="text" className="rightInputNamberplate_Se" placeholder='00' />
+              <input type="text" className="midInputNumberplate_Se" placeholder='000'
+              maxLength="3"
+              value={numberplateVal.mid || ''}
+              onInput={e=>handleSetNumberplate(e, 'mid')} 
+               />
+              <div className="divIranNumberplate_Se">
+                <span className='iranNumberplate_Se'> ایران </span>
+                <input type="text" className="rightInputNumberplate_Se" placeholder='00'
+                maxLength="2"
+              value={numberplateVal.right || ''}
+                onInput={e=>handleSetNumberplate(e, 'right')} 
+                 />
               </div>
             </div>
             {/* {
-              allowShowListNamberplate &&
-              <div className="containerRowNamberplate_Se">
-                namberplate
+              allowShowListNumberplate &&
+              <div className="containerRowNumberplate_Se">
+                numberplate
               </div>
             } */}
 

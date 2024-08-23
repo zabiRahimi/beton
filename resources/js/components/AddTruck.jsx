@@ -50,7 +50,7 @@ const AddTruck = () => {
         truckType: '',
         name: '',
         lastName: '',
-        namberplate: ''
+        numberplate: ''
     });
 
     /**
@@ -100,14 +100,14 @@ const AddTruck = () => {
         fetchData();
     }, []);
 
-    async function getTrucks(page = 1, id = search.id, truckType = search.truckType, name = search.name, lastName = search.lastName, namberplate = search.namberplate) {
+    async function getTrucks(page = 1, id = search.id, truckType = search.truckType, name = search.name, lastName = search.lastName, numberplate = search.numberplate) {
         await axios.get(`/api/v1/getTrucks?page=${page}`, {
             params: {
                 id,
                 truckType,
                 name,
                 lastName,
-                namberplate
+                numberplate
             }
         }).then((response) => {
 
