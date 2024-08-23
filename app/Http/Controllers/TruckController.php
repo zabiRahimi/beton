@@ -33,12 +33,17 @@ class TruckController extends Controller
             $query->where('name', 'like', "%$request->name%");
         }
 
+        if ($request->filled('numberplate')) {
+           
+            $query->where('numberplate', 'like', "%$request->numberplate%");
+        }
+
         if ($request->filled('lastName')) {
             $query->where('lastName', 'like', "%$request->lastName%");
         }
         }
 
-        $trucks = Truck::orderBy('id')->paginate(50);
+        $trucks = $query->orderBy('id')->paginate(50);
 
         return response()->json(['trucks' => $trucks],200);
     }
