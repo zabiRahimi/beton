@@ -22,9 +22,6 @@ class TruckController extends Controller
             $query->where('id', $request->id);
         } else {
 
-
-
-
             if ($request->filled('truckType')) {
                 $query->where('truckType', $request->truckType);
             }
@@ -37,27 +34,15 @@ class TruckController extends Controller
                 }
 
                 if ($request->filled('lastName')) {
-                    dump($request->lastName);
                     $query2->where('lastName', 'LIKE',  "%{$request->lastName}%"); 
-
                 }
-                // $customerIds = DB::table('customers')
-                // ->where('name', 'LIKE', "%{$request->name}%")
-                // // ->orWhere('lastName', 'LIKE', "%{$request->lastName}%")
-                // ->pluck('id'); 
                 $customerIds = $query2->pluck('id'); 
                 $query->whereIn('customer_id', $customerIds);
             }
 
-            // if ($request->filled('lastName')) {
-            //     $query->where('lastName', 'like', "%$request->lastName%");
-            // }
-
             if ($request->filled('numberplate')) {
                 $parts = explode('-', $request->numberplate); // جدا کردن رشته بر اساس '-'
                 if (!empty($parts[0])) {
-                   
-                    
                     $query->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 1), "-", -1) LIKE ?', ["%{$parts[0]}%"]);
                 }
                 
@@ -71,13 +56,10 @@ class TruckController extends Controller
                 if (!empty($parts[3])) {
                     $query->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 4), "-", -1)  LIKE ?', ["%{$parts[3]}%"]);
                    }
-               
-             
             }
         }
 
-        $trucks = $query->orderBy('id')->paginate(50);
-        // dump($trucks);
+        $trucks = $query->orderByDesc('id')->paginate(50);
         return response()->json(['trucks' => $trucks], 200);
     }
 

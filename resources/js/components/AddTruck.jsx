@@ -101,6 +101,7 @@ const AddTruck = () => {
     }, []);
 
     async function getTrucks(page = 1, id = search.id, truckType = search.truckType, name = search.name, lastName = search.lastName, numberplate = search.numberplate) {
+        setLoading(true)
         await axios.get(`/api/v1/getTrucks?page=${page}`, {
             params: {
                 id,
@@ -243,10 +244,11 @@ const AddTruck = () => {
         if (numberRow == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
-        const reversedConcretes = trucks.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
-        let value = reversedConcretes.map((truck, i) => {
+        // const reversedConcretes = trucks.slice();
+        let value = trucks.map((truck, i) => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
+                <span className="rowIdTruckGe">{truck['id']}</span>
                 <span className="TrackTypeShowGe"> {truck['truckType']}   </span>
                 <span className="licensePlateShowGe"> {returnNumberplate(truck['numberplate'])} </span>
                 <span className="truckOwnerShowGe"> {returnNameOwners(truck['customer_id'])}   </span>
@@ -855,6 +857,7 @@ const AddTruck = () => {
                         <div className="rowListShowGe headRowListShowGe">
 
                             <span className="rowNumShowGe ">ردیف</span>
+                            <span className="rowIdTruckGe ">شناسه</span>
                             <span className="TrackTypeShowGe ">نوع خودرو</span>
                             <span className="licensePlateShowGe headLicensePlateShowGe "> پلاک خودرو </span>
 

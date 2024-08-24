@@ -5,10 +5,8 @@ import '../../../css/pagination.css';
 const Pagination = props => {
   const {
     onPageChange,
-    totalCount,
     siblingCount = 1,
     currentPage,
-    pageSize,
     className,
     totalPage,
   } = props;

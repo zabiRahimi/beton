@@ -121,12 +121,14 @@
 }
 
 .rowNumShowGe,
-.rowIdShowGe {
+.rowIdShowGe,
+.rowIdTruckGe {
     width: 40px;
     text-align: center;
 }
 
-.rowIdShowGe{
+.rowIdShowGe,
+.rowIdTruckGe{
     width: 100px;
    margin-right: 18px;
 }
