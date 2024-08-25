@@ -14,7 +14,7 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
   const [refsSearch, setRefsSearch] = useState({});
   const [itemTruckTypes, setItemTruckTypes] = useState([{
     value: '',
-    html: <div className="divItemTruckType_Se"  onClick={(e)=>{e.stopPropagation();setTruckType('')}}>
+    html: <div className="divItemTruckType_Se"  onClick={(e)=>{setTruckType('')}}>
       <span className="itemTruckType_Se"> همه </span>
     </div>
   }]);
@@ -51,7 +51,6 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
          setInput(prev => ({ ...prev, truckType }));
     
 }, [truckType]);
-console.log(input);
 
   const handleSetNumberplate=(e, input)=>{
     const {value}=e.target;

@@ -111,7 +111,6 @@ const AddTruck = () => {
                 numberplate
             }
         }).then((response) => {
-            console.log(response.data.trucks.data);
             setTotalPage(response.data.trucks.last_page);
             setTrucks(response.data.trucks.data);
             window.scrollTo({
