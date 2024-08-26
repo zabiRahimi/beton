@@ -27,8 +27,8 @@ class CustomerFactory extends Factory
             'father' => fake()->randomElement($fathers),
             'nationalCode' => mt_rand(1000000000, 9999999999),
             'dateOfBirth' =>$this->faker->dateTimeBetween(
-                Carbon::createFromDate(1401, 1, 1),
-                Carbon::createFromDate(1403, 5, 9)
+                Carbon::createFromDate(1335, 1, 1),
+                Carbon::createFromDate(1376, 5, 9)
             )->format('Y-m-d'),
             'mobile' => '09' . mt_rand(100000000, 999999999),
             'telephone' => '0' . mt_rand(1000000000, 9999999999),
