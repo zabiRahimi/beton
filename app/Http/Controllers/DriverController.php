@@ -13,7 +13,9 @@ class DriverController extends Controller
      */
     public function index()
     {
-        $drivers = Driver::orderBy('id')->get();
+        $query = Driver::query();
+        // $drivers = Driver::orderBy('id')->get();
+        $drivers = $query->orderByDesc('id')->paginate(50);
 
         return response()->json(['drivers' => $drivers]);
     }
