@@ -4,14 +4,9 @@ import DataZabi from "../hooks/DateZabi";
 import moment from 'jalali-moment';
 import SelectZabi from '../hooks/SelectZabi';
 
-const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
-
-
-
+const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
   const refTruckTypes = useRef(null);
-
-
-  const [refsSearch, setRefsSearch] = useState({});
+  
   const [itemTruckTypes, setItemTruckTypes] = useState([{
     value: '',
     html: <div className="divItemTruckType_Se"  onClick={(e)=>{setTruckType('')}}>
@@ -265,4 +260,4 @@ const AddCustomerSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
   );
 };
 
-export default AddCustomerSearch;
+export default AddTruckSearch;
