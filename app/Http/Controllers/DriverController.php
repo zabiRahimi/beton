@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetDriverRequest;
 use App\Models\Driver;
 use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
@@ -11,10 +12,22 @@ class DriverController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(GetDriverRequest $request)
     {
         $query = Driver::query();
-        // $drivers = Driver::orderBy('id')->get();
+
+        if ($request->filled('id')) {
+            $query->where('id', $request->id);
+        } else {
+
+            if ($request->filled('name')) {
+                $query->where('name', 'LIKE', "%{$request->name}%");
+            }
+
+            if ($request->filled('lastName')) {
+                $query->where('lastName', 'LIKE',  "%{$request->lastName}%");
+            }
+        }
         $drivers = $query->orderByDesc('id')->paginate(50);
 
         return response()->json(['drivers' => $drivers]);
@@ -37,7 +50,7 @@ class DriverController extends Controller
         $driver->fill($request->validated());
         $driver->save();
 
-        return response()->json(['driver'=>  $driver],200);
+        return response()->json(['driver' =>  $driver], 200);
     }
 
     /**
@@ -63,7 +76,7 @@ class DriverController extends Controller
     {
         $driver->update($request->all());
 
-        return response()->json(['driver'=>  $driver],200);
+        return response()->json(['driver' =>  $driver], 200);
     }
 
     /**

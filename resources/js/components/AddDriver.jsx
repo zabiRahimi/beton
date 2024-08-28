@@ -10,6 +10,8 @@ import "../../css/formBeton.css";
 import useChangeForm from './hooks/useChangeForm';
 import DataZabi from "./hooks/DateZabi";
 import Pagination from "./hooks/Pagination";
+import AddDriverSearch from "./search/AddDriverSearch";
+
 
 const AddDriver = () => {
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -56,6 +58,12 @@ const AddDriver = () => {
         address: '',
     });
     const [id, setId] = useState(null);
+
+    const [search, setSearch] = useState({
+        id: '',
+        name: '',
+        lastName: '',
+    });
      /**
     * ############### states for paginate
     */
@@ -111,18 +119,52 @@ const AddDriver = () => {
         getDrivers();
     }, []);
 
-    async function getDrivers(page=1) {
-        await axios.get(`/api/v1/getDrivers?page=${page}`).then((response) => {
+    async function getDrivers(page=1, id=search.id, name=search.name, lastName=search.lastName) {
+        setLoading(true);
+        await axios.get(`/api/v1/getDrivers?page=${page}`,{
+            params: {
+                id,
+                name,
+                lastName,
+            }
+        }).then((response) => {
             setTotalPage(response.data.drivers.last_page);
             setDrivers(response.data.drivers.data);
             window.scrollTo({
                 top: top,
                 behavior: 'smooth'
             });
-        });
+        }).catch(
+            error => {
+                if (error.response && error.response.status == 422) {
+                    const objErrors = error.response.data.errors;
+                    // دریافت اولین کلید آبجکت و سپس مقدار آن
+                    const firstKey = Object.keys(objErrors)[0];
+                    const firstValue = objErrors[firstKey];
+                    MySwal.fire({
+                        icon: "warning",
+                        title: "هشدار",
+                        html: `<div style="color: red;">${firstValue[0]}</div>`,
+
+                        confirmButtonText: "متوجه شدم!",
+                        confirmButtonColor: "#d33",
+                    });
+
+                }
+            }
+        );
         setTimeout(() => {
-            setLoading(false)
+            setLoading(false);
         }, 300);
+    }
+
+    /**
+     * از طریق کامپوننت فرزند این متد فراخوانی و مقدار دهی می‌شود
+     * from AddCustomerSearch.jsx
+     * @param {} data 
+     */
+    const handelSetDataSearch = (data) => {
+        setSearch(data);
     }
 
     /**
@@ -694,6 +736,11 @@ const AddDriver = () => {
                     <h4 className="titleShowGe"> راننده‌های تعریف شده</h4>
 
                     <div className="divListShowGe">
+
+                    <AddDriverSearch
+                            getDrivers={getDrivers}
+                            handelSetDataSearch={handelSetDataSearch}
+                        />
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>

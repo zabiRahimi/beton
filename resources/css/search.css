@@ -104,7 +104,8 @@
     width: 75px;
 }
 
-.stringIdATypeTruck_Se {
+.stringIdATypeTruck_Se,
+.stringIdDriver_Se {
     width: 50px;
 }
 
@@ -389,7 +390,8 @@
     
 
     .stringIdATypeTruck_Se,
-    .stringOwner_Se {
+    .stringOwner_Se,
+    .stringIdDriver_Se {
         width: 28.7%;
     }
 
