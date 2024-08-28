@@ -135,7 +135,7 @@ const AddTruck = () => {
 
                 }
             }
-        )
+        );
         setTimeout(() => {
             setLoading(false)
         }, 300);

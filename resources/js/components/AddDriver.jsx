@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import "../../css/formBeton.css";
 import useChangeForm from './hooks/useChangeForm';
 import DataZabi from "./hooks/DateZabi";
+import Pagination from "./hooks/Pagination";
 
 const AddDriver = () => {
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -55,6 +56,11 @@ const AddDriver = () => {
         address: '',
     });
     const [id, setId] = useState(null);
+     /**
+    * ############### states for paginate
+    */
+     const [totalPage, setTotalPage] = useState(0);
+     const [currentPage, setCurrentPage] = useState(1);
 
     const changeDay = (e) => {
         let { value } = e.target;
@@ -105,10 +111,18 @@ const AddDriver = () => {
         getDrivers();
     }, []);
 
-    async function getDrivers() {
-        await axios.get("/api/v1/getDrivers").then((response) => {
-            setDrivers(response.data.drivers);
+    async function getDrivers(page=1) {
+        await axios.get(`/api/v1/getDrivers?page=${page}`).then((response) => {
+            setTotalPage(response.data.drivers.last_page);
+            setDrivers(response.data.drivers.data);
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
         });
+        setTimeout(() => {
+            setLoading(false)
+        }, 300);
     }
 
     /**
@@ -121,9 +135,10 @@ const AddDriver = () => {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
         const reversedConcretes = drivers.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
-        let value = reversedConcretes.map((driver, i) => {
+        let value = drivers.map((driver, i) => {
             return <div className="rowListShowGe" key={i}>
                 <span className="rowNumShowGe">{numberRow - i}</span>
+                <span className="rowIdDriverGe">{driver['id']}</span>
                 <span className="GASNameShowGe"> {driver['name']} {driver['lastName']}  </span>
                 <span className="GASNameShowGe"> {driver['father']}   </span>
                 <div className="divEditGe">
@@ -682,6 +697,7 @@ const AddDriver = () => {
 
                         <div className="rowListShowGe headRowListShowGe">
                             <span className="rowNumShowGe ">ردیف</span>
+                            <span className="rowIdDriverGe ">شناسه</span>
                             <span className="GASNameShowGe"> راننده </span>
                             <span className="GASNameShowGe"> نام پدر </span>
                             <span className="headEditShowGe"> ویرایش  </span>
@@ -689,6 +705,14 @@ const AddDriver = () => {
                         </div>
 
                         {drivers ? returnCreatedDriverRecords() : <Skeleton height={40} count={12} />}
+
+                        <Pagination
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalPage={totalPage}
+                            siblingCount={3}
+                            onPageChange={page => { setCurrentPage(page); getDrivers(page) }}
+                        />
 
                     </div>
 

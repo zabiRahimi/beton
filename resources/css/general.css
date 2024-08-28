@@ -122,13 +122,15 @@
 
 .rowNumShowGe,
 .rowIdShowGe,
-.rowIdTruckGe {
+.rowIdTruckGe,
+.rowIdDriverGe {
     width: 40px;
     text-align: center;
 }
 
 .rowIdShowGe,
-.rowIdTruckGe{
+.rowIdTruckGe,
+.rowIdDriverGe{
     width: 100px;
    margin-right: 18px;
 }
