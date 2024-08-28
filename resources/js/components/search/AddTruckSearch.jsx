@@ -1,15 +1,13 @@
 
-import React, { createRef, useEffect, useMemo, useRef, useState } from 'react';
-import DataZabi from "../hooks/DateZabi";
-import moment from 'jalali-moment';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import SelectZabi from '../hooks/SelectZabi';
 
 const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
   const refTruckTypes = useRef(null);
-  
+
   const [itemTruckTypes, setItemTruckTypes] = useState([{
     value: '',
-    html: <div className="divItemTruckType_Se"  onClick={(e)=>{setTruckType('')}}>
+    html: <div className="divItemTruckType_Se"  onClick={()=>{setTruckType('')}}>
       <span className="itemTruckType_Se"> همه </span>
     </div>
   }]);
@@ -57,7 +55,6 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
 
     }else if(input== 'alphabet' && (value || numberplateVal.left || numberplateVal.mid || numberplateVal.right)){
       numberplate= numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
-      // numberplate=value
       setInput(prev => ({ ...prev, numberplate }));
 
    }else if(input== 'mid' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.right)){
@@ -67,7 +64,6 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
  }else if(input== 'right' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.mid) ){
   numberplate= numberplateVal.left + '-' + numberplateVal.mid + '-' + value + '-' + numberplateVal.alphabet;
   setInput(prev => ({ ...prev, numberplate }));
-
 } else {
       setInput(prev => ({ ...prev, numberplate: '' }));
     }
@@ -97,7 +93,6 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
       name: '',
       lastName: '',
       numberplate: '',
-
     });
     setTruckType('');
     refTruckTypes.current.updateData('انتخاب');
@@ -107,8 +102,6 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
 
   return (
     <div className="containerSearch_Se">
-
-
       <div className="containerIdAType_Se containerIdATypeTruck_Se">
         <div className="id_Se">
           <span className="stringIdAType_Se stringIdATypeTruck_Se"> شناسه </span>
@@ -127,7 +120,6 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
             saveOption={setTruckType}
             ref={refTruckTypes}
           />
-
         </div>
       </div>
 
@@ -159,12 +151,6 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
           <span className="stringNumberplate_Se"> پلاک </span>
           <div className="mainNumberplate_Se">
             <div className="containerInputNumberplate_Se">
-              {/* <div className="iconNumberplate_Se">
-               {!allowShowListNumberplate ? <i className="icofont-caret-down " onClick={handleSetAllowNumberplate}></i> :
-               <i className="icofont-caret-up" onClick={handleSetAllowNumberplate}></i>
-               }
-                
-              </div> */}
               <input type="text" className="leftInputNumberplate_Se" placeholder='00'
               maxLength="2"
               value={numberplateVal.left || ''}
@@ -222,18 +208,9 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
                  />
               </div>
             </div>
-            {/* {
-              allowShowListNumberplate &&
-              <div className="containerRowNumberplate_Se">
-                numberplate
-              </div>
-            } */}
-
           </div>
         </div>
-        <div className="lastName_Se">
-
-        </div>
+        <div ></div>
       </div>
 
       <div className="divSearch_Se">
