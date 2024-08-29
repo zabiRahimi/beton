@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ConcreteSalesInvoice;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class ConcreteSalesInvoiceSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        ConcreteSalesInvoice:: factory(2)->create();
     }
 }
