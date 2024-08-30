@@ -18,6 +18,11 @@ class ConcreteSalesInvoiceFactory extends Factory
     protected $repeatDate = 3;
     protected const CONCRETE_ID = [1, 2, 3, 4, 5, 6, 7, 8];
     protected const CEMENT_STORE_ID = [1, 2];
+    protected const MASKAN_MLIE = ['مسکن ملی شهرک امام خمینی','مسکن ملی شهرک شهید رییسی',''];
+    protected const ADDRESS = ['ارسنجان خیابان طالقانی','ارسنجان بلوار دانشگاه','ارسنجان فلکه انار','ارسنجان تل سرخ خیابان قائم','ارسنجان حسین آباد','ارسنجان روستای قلات جیرو','علی آباد ملک','ارسنجان دهستان خبریز','جمال آباد','سعادت شهر میدان دادگستری','سعادت شهر مسکن ملی'];
+    protected const POSITION = ['چوب برق','کف ریزی','فنداسیون','ستون','سقف','شالوده','کف سازی'];
+
+    // protected const WEIGHT =[11200]
 
     public function definition(): array
     {
@@ -33,7 +38,50 @@ class ConcreteSalesInvoiceFactory extends Factory
         $concreteId = $this->faker->randomElement(self::CONCRETE_ID);
 
         $cementStoreId = $this->faker->randomElement(self::CEMENT_STORE_ID);
+        $wieght = mt_rand(11200, 17000);
+        $cubicMeters = $wieght / 2300;
+        $unitPrice='';
+        switch ($concreteId) {
+            case 1:
+                $unitPrice = mt_rand(900000,1250000);
+                break;
+            case 2:
+                $unitPrice = mt_rand(1250000,1380000);
+                break;
+            case 3:
+                $unitPrice = mt_rand(1380000,1450000);
+                break;
+            case 4:
+                $unitPrice = mt_rand(1450000,1560000);
+                break;
+            case 5:
+                $unitPrice = mt_rand(1560000,1620000);
+                break;
+            case 6:
+                $unitPrice = mt_rand(1620000,1740000);
+                break;
+            case 7:
+                $unitPrice = mt_rand(1740000,1850000);
+                break;
+            case 8:
+                $unitPrice = mt_rand(1850000,2000000);
+                break;
+        }
 
+        $totalPrice=$cubicMeters*$unitPrice;
+        $fare=mt_rand(900000,2100000);
+
+        $address=$this->faker->randomElement(self::ADDRESS);
+
+        $maskanMeli=$this->faker->randomElement(self::MASKAN_MLIE);
+        $vahed='';
+        if ($maskanMeli !='') {
+            $vahed=mt_rand(1,3000);
+            $address='ارسنجان';
+        }
+
+        $position= $this->faker->randomElement(self::POSITION);
+        
         return [
             'customer_id' => $customerId,
             'truck_id' => $truckId,
@@ -42,15 +90,15 @@ class ConcreteSalesInvoiceFactory extends Factory
             'cementStore_id' => $cementStoreId,
             'date' => $this->date(),
             'time' => $this->time(),
-            'weight' => 16100,
-            'cubicMeters' => 7,
-            'unitPrice' => 1000000,
-            'totalPrice' => 7000000,
-            'fare' => 1200000,
-            'maskanMeli' => '',
-            'vahed' => '',
-            'address' => 'ارسنجان خیابان طالفانی',
-            'concretingPosition' => 'سقف',
+            'weight' => $wieght,
+            'cubicMeters' => $cubicMeters,
+            'unitPrice' => $unitPrice,
+            'totalPrice' => $totalPrice,
+            'fare' => $fare,
+            'maskanMeli' => $maskanMeli,
+            'vahed' =>$vahed,
+            'address' => $address,
+            'concretingPosition' =>  $position,
         ];
     }
 
@@ -74,12 +122,11 @@ class ConcreteSalesInvoiceFactory extends Factory
                 $this->date['month']++;
                 $this->date['day'] = 1;
             }
-            $this->repeatDate = mt_rand(3,8);
-            
-            if ($this->time['hour']>=18) {
-                $this->time['hour'] =7;
-            }
+            $this->repeatDate = mt_rand(3, 8);
 
+            if ($this->time['hour'] >= 18) {
+                $this->time['hour'] = 7;
+            }
         }
         $resalt = $resalt->format('Y-m-d');
         return $resalt;
