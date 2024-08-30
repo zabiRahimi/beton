@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\ConcreteSalesInvoice;
 use App\Models\CustomerType;
 use App\Models\Driver;
+use App\Models\Financial;
 use App\Models\Truck;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,6 +21,27 @@ class ConcreteSalesInvoiceFactory extends Factory
     protected const CEMENT_STORE_ID = [1, 2];
 
     protected const TIME=['06-08-00', '06-15-00', '06-20-00', '06-30-00', '06-50-00', '07-01-00', '07-10-00', '07-16-00', '07-58-00', '08-12-00', '08-17-00', '08-34-00', '08-49-00', '09-01-00', '09-11-00', '09-21-00', '10-30-00', '10-51-00', '11-14-00', '11-26-00', '11-34-00', '11-42-00', '12-25-00', '12-38-00', '12-49-00', '13-21-00', '13-35-00', '13-42-00', '14-23-00', '14-36-00', '15-02-00', '15-47-00', '16-12-00', '16-29-00', '17-32-00', '17-46-00', '17-59-00', '18-21-00', '18-37-00', '19-12-00', '19-28-00', '19-41-00', '20-25-00', '20-37-00', '20-50-00'];
+   
+    protected $model = ConcreteSalesInvoice::class;
+
+    public function configure()
+    {
+        return $this->afterCreating(function (ConcreteSalesInvoice $invoice) {
+            $truck=Truck::find($invoice->truck_id);
+            $buyer_financial = Financial::firstOrNew(['customer_id' => $invoice->customer_id]);
+
+            $ownderMixer_financial = Financial::firstOrNew(['customer_id' => $truck->customer_id]);
+            $ownderMixer_financial->creditor+= $invoice->fare; 
+
+            if ($invoice->customer->type == 'نوع_خاص_مشتری') {
+                $financial->amount += $invoice->amount; // اضافه کردن مقدار
+            } else {
+                $financial->amount -= $invoice->amount; // کم کردن مقدار
+            }
+
+            $financial->save();
+        });
+    }
     
     public function definition(): array
     {
