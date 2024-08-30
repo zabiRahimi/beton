@@ -19,11 +19,8 @@ class ConcreteSalesInvoiceFactory extends Factory
     protected const CONCRETE_ID = [1, 2, 3, 4, 5, 6, 7, 8];
     protected const CEMENT_STORE_ID = [1, 2];
 
-    protected const TIME = ['06-08-00', '06-15-00', '06-20-00', '06-30-00', '06-50-00', '07-01-00', '07-10-00', '07-16-00', '07-58-00', '08-12-00', '08-17-00', '08-34-00', '08-49-00', '09-01-00', '09-11-00', '09-21-00', '10-30-00', '10-51-00', '11-14-00', '11-26-00', '11-34-00', '11-42-00', '12-25-00', '12-38-00', '12-49-00', '13-21-00', '13-35-00', '13-42-00', '14-23-00', '14-36-00', '15-02-00', '15-47-00', '16-12-00', '16-29-00', '17-32-00', '17-46-00', '17-59-00', '18-21-00', '18-37-00', '19-12-00', '19-28-00', '19-41-00', '20-25-00', '20-37-00', '20-50-00'];
-
     public function definition(): array
     {
-
         $customerIds =  CustomerType::where('code', 1)->limit(1200)->pluck('customer_id')->toArray();
         $customerId = $this->faker->randomElement($customerIds);
 
@@ -36,7 +33,6 @@ class ConcreteSalesInvoiceFactory extends Factory
         $concreteId = $this->faker->randomElement(self::CONCRETE_ID);
 
         $cementStoreId = $this->faker->randomElement(self::CEMENT_STORE_ID);
-        // $time = $this->faker->randomElement(self::TIME);
 
         return [
             'customer_id' => $customerId,
@@ -65,16 +61,11 @@ class ConcreteSalesInvoiceFactory extends Factory
         $this->time['minutes'] = $this->time['minutes'] + 10;
         if ($this->time['minutes'] > 58) {
             $this->time['hour']++;
-            // $this->time['minutes'] = $this->date['day'];
             $this->time['minutes'] = $this->date['day'];
         }
 
-        
-
         if ($this->repeatDate == 1) {
             $this->date['day']++;
-            
-            // $this->time['minutes'] = $this->date['day'];
             if ($this->date['day'] == 30 && $this->date['month'] == 12) {
                 $this->date['year']++;
                 $this->date['month'] = 1;
@@ -96,8 +87,6 @@ class ConcreteSalesInvoiceFactory extends Factory
 
     public function time()
     {
-
-
         $resalt = sprintf('%02d-%02d-%02d', $this->time['hour'], $this->time['minutes'], $this->time['seconds']);
         return $resalt;
     }
