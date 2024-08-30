@@ -13,6 +13,6 @@ class ConcreteSalesInvoiceSeeder extends Seeder
      */
     public function run(): void
     {
-        ConcreteSalesInvoice:: factory(20)->create();
+        ConcreteSalesInvoice:: factory(200)->create();
     }
 }
