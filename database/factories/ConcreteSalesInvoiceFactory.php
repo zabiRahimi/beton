@@ -40,6 +40,9 @@ class ConcreteSalesInvoiceFactory extends Factory
         $cementStoreId = $this->faker->randomElement(self::CEMENT_STORE_ID);
         $wieght = mt_rand(11200, 17000);
         $cubicMeters = $wieght / 2300;
+        if (is_float($cubicMeters)) {
+            $cubicMeters = round($cubicMeters, 2);
+        }
         $unitPrice='';
         switch ($concreteId) {
             case 1:
@@ -69,6 +72,9 @@ class ConcreteSalesInvoiceFactory extends Factory
         }
 
         $totalPrice=$cubicMeters*$unitPrice;
+        if (is_float($totalPrice)) {
+            $totalPrice = round($totalPrice);
+        }
         $fare=mt_rand(900000,2100000);
 
         $address=$this->faker->randomElement(self::ADDRESS);
