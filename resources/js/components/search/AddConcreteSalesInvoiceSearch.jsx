@@ -316,7 +316,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     </div>
                     <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
                         <div className="typeConcreteSIS_Se">
-                            <span className="stringFromDate_Se"> بتن </span>
+                            <span className="stringFromDate_Se stringTypeConcreteSIS_Se"> بتن </span>
                             <SelectZabi
                                 primaryLabel='انتخاب'
                                 options={concretes}

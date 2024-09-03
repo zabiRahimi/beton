@@ -450,6 +450,11 @@
     background-color: #a5a5e0;
 }
 
+.column2ConcreteSIS_Se{
+  
+    background-color: #daa5e0;
+}
+
 .column4ConcreteSIS_Se{
     width: 12%;
     margin-left: 0;
@@ -467,8 +472,18 @@
     width: 40px;
 }
 
+.typeConcreteSIS_Se{
+    width: 100%;
+    display: flex;
+}
+
+.stringTypeConcreteSIS_Se{
+    width: 50px;
+    background-color: #af5e5e;
+}
 
 .buerConcreteSIS_Se{
+    width: 100%;
     display: flex;
 }
 
