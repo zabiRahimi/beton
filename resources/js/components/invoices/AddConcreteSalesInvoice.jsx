@@ -15,6 +15,8 @@ import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from '../hooks/useChangeForm';
 import SelectZabi from "../hooks/SelectZabi";
+import Pagination from "../hooks/Pagination";
+
 
 const AddConcreteSalesInvoice = () => {
     let navigate = useNavigate();
@@ -141,6 +143,12 @@ const AddConcreteSalesInvoice = () => {
     const [concreteSearchId, setConcreteSearchId] = useState('');
     const [truckSearchId, setTruckSearchId] = useState('');
     const [driverSearchId, setDriverSearchId] = useState('');
+
+     /**
+     * ############### states for paginate
+     */
+     const [totalPage, setTotalPage] = useState(0);
+     const [currentPage, setCurrentPage] = useState(1);
 
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
@@ -439,8 +447,8 @@ const AddConcreteSalesInvoice = () => {
 
     }, [isNewInvoice]);
 
-    async function getConcreteSalesInvoices() {
-        await axios.get("/api/v1/getConcreteSalesInvoices").then((response) => {
+    async function getConcreteSalesInvoices(page = 1) {
+        await axios.get(`/api/v1/getConcreteSalesInvoices?page=${page}`).then((response) => {
             setConcreteSalesInvoices(response.data.concreteSalesInvoices);
             setConcreteSalesInvoicesForSearch(response.data.concreteSalesInvoices);
             setTicketNumber(response.data.concreteSalesInvoices.length + 1);
@@ -3128,6 +3136,13 @@ const AddConcreteSalesInvoice = () => {
                             <span className="delHeadShowACSI_Ge"> حذف </span>
                         </div>
                         {concreteSalesInvoices ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
+                        <Pagination
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalPage={totalPage}
+                            siblingCount={3}
+                            onPageChange={page => { setCurrentPage(page); getConcreteSalesInvoices(page) }}
+                        />
                     </div>
                 </div>
             </div>
