@@ -144,11 +144,11 @@ const AddConcreteSalesInvoice = () => {
     const [truckSearchId, setTruckSearchId] = useState('');
     const [driverSearchId, setDriverSearchId] = useState('');
 
-     /**
-     * ############### states for paginate
-     */
-     const [totalPage, setTotalPage] = useState(0);
-     const [currentPage, setCurrentPage] = useState(1);
+    /**
+    * ############### states for paginate
+    */
+    const [totalPage, setTotalPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
 
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
@@ -449,10 +449,35 @@ const AddConcreteSalesInvoice = () => {
 
     async function getConcreteSalesInvoices(page = 1) {
         await axios.get(`/api/v1/getConcreteSalesInvoices?page=${page}`).then((response) => {
-            setConcreteSalesInvoices(response.data.concreteSalesInvoices);
-            setConcreteSalesInvoicesForSearch(response.data.concreteSalesInvoices);
-            setTicketNumber(response.data.concreteSalesInvoices.length + 1);
-        });
+            // setConcreteSalesInvoices(response.data.concreteSalesInvoices);
+            setConcreteSalesInvoices(response.data.concreteSalesInvoices.data);
+            setTotalPage(response.data.concreteSalesInvoices.last_page);
+            // setConcreteSalesInvoicesForSearch(response.data.concreteSalesInvoices);
+            setTicketNumber(response.data.concreteSalesInvoices.total + 1);
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
+        }).catch(
+            error => {
+                if (error.response && error.response.status == 422) {
+                    const objErrors = error.response.data.errors;
+                    // دریافت اولین کلید آبجکت و سپس مقدار آن
+                    const firstKey = Object.keys(objErrors)[0];
+                    const firstValue = objErrors[firstKey];
+                    MySwal.fire({
+                        icon: "warning",
+                        title: "هشدار",
+                        html: `<div style="color: red;">${firstValue[0]}</div>`,
+                        confirmButtonText: "متوجه شدم!",
+                        confirmButtonColor: "#d33",
+                    });
+                }
+            }
+        )
+        setTimeout(() => {
+            setLoading(false)
+        }, 300);
     }
 
     async function getCSIConcreteBuyers() {
@@ -1420,14 +1445,14 @@ const AddConcreteSalesInvoice = () => {
         setConcreteSearchId('');
         setTruckSearchId('');
         setDriverSearchId('');
-        document.getElementById('dayFromSearch').value='';
-        document.getElementById('monthFromSearch').value='';
-        document.getElementById('yearFromSearch').value='';
+        document.getElementById('dayFromSearch').value = '';
+        document.getElementById('monthFromSearch').value = '';
+        document.getElementById('yearFromSearch').value = '';
 
-        document.getElementById('dayUntilSearch').value='';
-        document.getElementById('monthUntilSearch').value='';
-        document.getElementById('yearUntilSearch').value='';
-        
+        document.getElementById('dayUntilSearch').value = '';
+        document.getElementById('monthUntilSearch').value = '';
+        document.getElementById('yearUntilSearch').value = '';
+
         refCustomerSearch.current.updateData('انتخاب');
         refConcreteSearch.current.updateData('انتخاب');
         refTruckSearch.current.updateData('انتخاب');
