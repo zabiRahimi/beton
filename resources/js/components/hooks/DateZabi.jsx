@@ -129,7 +129,6 @@ const DateZabi = () => {
             } 
         }else if (month=='12') {
            let checkCabise= cabises.some(cabise => cabise === Number(year));
-           console.log(`cabise => ${checkCabise}`);
             if(!checkCabise){
                 if (Number(day) >29) {
                     handelSentError(message, ` در سال ${year} برج 12 نمی تواند 30 روزه باشد، چون این سال کبیسه نیست.`);
@@ -159,11 +158,8 @@ const DateZabi = () => {
             icon: "warning",
             title: "هشدار",
             html: `<div><div style="color: red;">${message}</div><div style="color: red;"> زیرا ${error}</div></div>`,
-
             confirmButtonText: "متوجه شدم!",
             confirmButtonColor: "#d33",
-
-
         });
     }
 
