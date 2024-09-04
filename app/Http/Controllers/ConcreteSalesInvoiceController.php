@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ConcreteSalesInvoice;
+use App\Http\Requests\GetConcreteSalesInvoiceRequest;
 use App\Http\Requests\StoreConcreteSalesInvoiceRequest;
 use App\Http\Requests\UpdateConcreteSalesInvoiceRequest;
 use Illuminate\Support\Facades\DB;
@@ -21,9 +22,10 @@ class ConcreteSalesInvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(GetConcreteSalesInvoiceRequest $request)
     {
-        $concreteSalesInvoices = ConcreteSalesInvoice::orderBy('id')->with(['customer', 'concrete', 'cementStore', 'truck.customer', 'driver'])->get();
+        $query = ConcreteSalesInvoice::query();
+        $concreteSalesInvoices = ConcreteSalesInvoice::orderBy('id')->with(['customer', 'concrete', 'cementStore', 'truck.customer', 'driver'])->paginate(50);
         return response()->json(['concreteSalesInvoices' => $concreteSalesInvoices], 200);
     }
 
