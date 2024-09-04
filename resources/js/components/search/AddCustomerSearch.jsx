@@ -7,8 +7,6 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
   const {
     checkDate
   } = DataZabi();
-  const showTyepCustomerSearchRef = useRef(null);
-
   const titleCustomerTypeSearch = useRef(null);
   const [refsSearch, setRefsSearch] = useState({});
 
@@ -36,10 +34,6 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
     name: '',
     lastName: ''
   });
-
-  const sendDataToParent = () => {
-    updateParent('Hello from Child');
-  };
 
   useEffect(() => {
     if (customerTypesSearch) {
@@ -234,34 +228,9 @@ const AddCustomerSearch = ({ customerTypesSearch, getCustomers, handelSetDataSea
     await handelSetDataSearch({ startDate: '', endDate: '', id: '', types: [], name: '', lastName: '' });
 
     await getCustomers(1, '', '', '', [], '', '');
-
-    // setFromDateSearch('');
-    // setUntilDateSearch('');
-    // setCustomerSearchId('');
-    // setConcreteSearchId('');
-    // setTruckSearchId('');
-    // setDriverSearchId('');
-    // document.getElementById('dayFromSearch').value='';
-    // document.getElementById('monthFromSearch').value='';
-    // document.getElementById('yearFromSearch').value='';
-
-    // document.getElementById('dayUntilSearch').value='';
-    // document.getElementById('monthUntilSearch').value='';
-    // document.getElementById('yearUntilSearch').value='';
-
-    // refCustomerSearch.current.updateData('انتخاب');
-    // refConcreteSearch.current.updateData('انتخاب');
-    // refTruckSearch.current.updateData('انتخاب');
-    // refDriverSearch.current.updateData('انتخاب');
-
-    // setConcreteSalesInvoices(null);
-    // setTimeout(() => {
-    //     setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
-    // }, 400);
   }
 
   const handleSetShowCustomerTypeSearch = (e, apply = true) => {
-    // e.stopPropagation();
     if (apply) {
       setShowTypeCustomerSearch(false);
 
