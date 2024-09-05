@@ -373,6 +373,55 @@
     border-radius: 4px;
 }
 
+/** 
+    ########## AddConcreteSalesInvoiceSearch ##########
+*/
+
+.mainConcreteSIS_Se{
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #546b8e;
+    border-radius: 3px;
+    position: relative;
+   
+}
+
+.searchBtnsCoSIS_Se{
+    position: absolute;
+    margin: -17px 10px 0 0;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    background-color: #dce4ee;
+    border: 1px solid #5382bd;
+    border-radius: 3px;
+}
+
+.showSearchBtnCoSIS_Se{
+    
+    color: #407d3d;
+}
+
+.closeSearchBtnCoSIS_Se{
+    color: #c71b1b;
+}
+
+.eyeCoSIS_Se,
+.eyeBlockedCoSIS_Se{
+    font-size: 1.3rem;
+    margin-right: 4px;
+}
+
+.eyeCoSIS_Se{
+
+}
+
+.eyeBlockedCoSIS_Se{
+
+}
+
+
+
 @media screen and (min-width:1200px) {
 
     .containerCustAConc_Se,

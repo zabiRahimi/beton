@@ -16,6 +16,7 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from '../hooks/useChangeForm';
 import SelectZabi from "../hooks/SelectZabi";
 import Pagination from "../hooks/Pagination";
+import AddCocreteSalesInvoiceSearch from "../search/AddConcreteSalesInvoiceSearch";
 
 
 const AddConcreteSalesInvoice = () => {
@@ -223,6 +224,22 @@ const AddConcreteSalesInvoice = () => {
         vahed: '',
         address: '',
         concretingPosition: ''
+    });
+
+    const [search, setSearch] = useState({
+        startDate: '',
+        endDate: '',
+        concrete_id: '',
+        cusotmer_id: '',
+        customerName: '',
+        custoemrLastName: '',
+        truck_id: '',
+        numberplate: '',
+        owner_id: '',
+        ownerName: '',
+        ownerLastName: '',
+        driver_id: '',
+        driverName: '',
     });
 
     /**
@@ -478,6 +495,15 @@ const AddConcreteSalesInvoice = () => {
         setTimeout(() => {
             setLoading(false)
         }, 300);
+    }
+
+    /**
+    * از طریق کامپوننت فرزند این متد فراخوانی و مقدار دهی می‌شود
+    * from AddCustomerSearch.jsx
+    * @param {} data 
+    */
+    const handelSetDataSearch = (data) => {
+        setSearch(data);
     }
 
     async function getCSIConcreteBuyers() {
@@ -3019,7 +3045,11 @@ const AddConcreteSalesInvoice = () => {
                 >
                     <h4 className="titleShowGe"> فاکتورهای ایجاد شده</h4>
                     <div className="divListShowGe">
-                        <div className="containerSearch_Se">
+                        <AddCocreteSalesInvoiceSearch
+                            getConcreteSalesInvoices={getConcreteSalesInvoices}
+                            handelSetDataSearch={handelSetDataSearch}
+                        />
+                        {/* <div className="containerSearch_Se">
                             <div className="containerDate_Se">
                                 <div className="startDate_Se">
                                     <span className="stringFromDate_Se"> از تاریخ </span>
@@ -3145,7 +3175,7 @@ const AddConcreteSalesInvoice = () => {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                             <span className="rowNumShowACSI_Ge ">ردیف</span>
                             <span className="ticketNumberACSI_Ge ">قبض</span>
