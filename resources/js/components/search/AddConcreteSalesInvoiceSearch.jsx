@@ -31,6 +31,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
     const [input, setInput] = useState({
         startDate: '',
         endDate: '',
+        id:'',
         concrete_id: '',
         customer_id: '',
         customerName: '',
@@ -89,6 +90,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         handelSetDataSearch({
             startDate: input.startDate,
             endDate: input.endDate,
+            id: input.id,
             concrete_id: input.concrete_id,
             customer_id: input.customer_id,
             customerName: input.customerName,
@@ -106,6 +108,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
             1,
             input.startDate,
             input.endDate,
+            input.id,
             input.concrete_id,
             input.customer_id,
             input.customerName,
@@ -232,6 +235,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         setInput({
             startDate: '',
             endDate: '',
+            id:'',
             concrete_id: '',
             customer_id: '',
             customerName: '',
@@ -254,6 +258,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         await handelSetDataSearch({
             startDate: '',
             endDate: '',
+            id:'',
             concrete_id: '',
             customer_id: '',
             customerName: '',
@@ -268,31 +273,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
             driverLastName: ''
         });
 
-        await getConcreteSalesInvoices(1, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-
-        // setFromDateSearch('');
-        // setUntilDateSearch('');
-        // setCustomerSearchId('');
-        // setConcreteSearchId('');
-        // setTruckSearchId('');
-        // setDriverSearchId('');
-        // document.getElementById('dayFromSearch').value='';
-        // document.getElementById('monthFromSearch').value='';
-        // document.getElementById('yearFromSearch').value='';
-
-        // document.getElementById('dayUntilSearch').value='';
-        // document.getElementById('monthUntilSearch').value='';
-        // document.getElementById('yearUntilSearch').value='';
-
-        // refCustomerSearch.current.updateData('انتخاب');
-        // refConcreteSearch.current.updateData('انتخاب');
-        // refTruckSearch.current.updateData('انتخاب');
-        // refDriverSearch.current.updateData('انتخاب');
-
-        // setConcreteSalesInvoices(null);
-        // setTimeout(() => {
-        //     setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
-        // }, 400);
+        await getConcreteSalesInvoices(1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
     }
 
     return (
@@ -375,6 +356,15 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                         </div>
                     </div>
                     <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
+                    <div className="idInvoiceConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> شماره قبض </span>
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='شماره قبض'
+                                onInput={e => handleSaveValInput(e, 'id')}
+                            />
+                        </div>
                         <div className="typeConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se stringTypeConcreteSIS_Se"> بتن </span>
                             <div className='divSelectTypeConcreteSIS_Se'>
@@ -539,7 +529,6 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
 
                             </div>
 
-                            {/* </div> */}
                         </div>
                     </div>
 
@@ -596,156 +585,6 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                 </div>
             </div>}
         </div>
-
-        // <div className="containerSearch_Se">
-        //     <div className="containerDate_Se">
-        //         <div className="startDate_Se">
-        //             <span className="stringFromDate_Se"> از تاریخ </span>
-        //             <input
-        //                 type="text"
-        //                 className="inputDate_Se dayDate_Se"
-        //                 id="dayFromSearch"
-        //                 placeholder="روز"
-        //                 value={date.start.day || ''}
-        //                 onInput={e => handleSetDate(e, 'start', 'day')}
-        //             />
-        //             <span className="slashDate_Se">/</span>
-        //             <input
-        //                 type="text"
-        //                 className="inputDate_Se monthDate_Se"
-        //                 placeholder="ماه"
-        //                 id="monthFromSearch"
-        //                 value={date.start.month || ''}
-        //                 onInput={e => handleSetDate(e, 'start', 'month')}
-        //             />
-        //             <span className="slashDate_Se">/</span>
-        //             <input
-        //                 type="text"
-        //                 className="inputDate_Se yearDate_Se"
-        //                 id="yearFromSearch"
-        //                 placeholder="سال"
-        //                 value={date.start.year || ''}
-        //                 onInput={e => handleSetDate(e, 'start', 'year')}
-        //             />
-
-        //         </div>
-        //         <div className="endtDate_Se">
-        //             <span className="stringUntilDate_Se"> تا تاریخ </span>
-        //             <input
-        //                 type="text"
-        //                 className="inputDate_Se dayDate_Se"
-        //                 id="dayUntilSearch"
-        //                 placeholder="روز"
-        //                 value={date.end.day || ''}
-        //                 onInput={e => handleSetDate(e, 'end', 'day')}
-        //             />
-        //             <span className="slashDate_Se">/</span>
-        //             <input
-        //                 type="text"
-        //                 className="inputDate_Se monthDate_Se"
-        //                 id="monthUntilSearch"
-        //                 placeholder="ماه"
-        //                 value={date.end.month || ''}
-        //                 onInput={e => handleSetDate(e, 'end', 'month')}
-        //             />
-        //             <span className="slashDate_Se">/</span>
-        //             <input
-        //                 type="text"
-        //                 className="inputDate_Se yearDate_Se"
-        //                 id="yearUntilSearch"
-        //                 placeholder="سال"
-        //                 value={date.end.year || ''}
-        //                 onInput={e => handleSetDate(e, 'end', 'year')}
-        //             />
-        //         </div>
-        //     </div>
-
-        //     <div className="containerIdAType_Se">
-        //         <div className="id_Se">
-        //             <span className="stringIdAType_Se"> شناسه </span>
-        //             <input
-        //                 type="text"
-        //                 className="inputIdACS_Se"
-        //                 value={input.id || ''}
-        //                 onInput={e => handleSaveValInput(e, 'id')}
-        //             />
-        //         </div>
-        //         <div className="type_Se"
-        //             tabIndex="0"
-        //             onBlur={(e) => handleSetShowCustomerTypeSearch(e)}>
-        //             <span className="stringIdAType_Se"> نوع مشتری </span>
-        //             <div
-        //                 className="titleTypeACS_Se"
-        //                 onClick={(e) => handleSetShowCustomerTypeSearch(e, false)}
-        //             >
-        //                 <span
-        //                     className="spanTitleType_Se"
-        //                     ref={concreteRef}
-        //                 >انتخاب
-        //                 </span>
-        //                 {!showTypeCustomerSearch && <i className='icofont-rounded-down'></i>}
-        //                 {showTypeCustomerSearch && <i className='icofont-rounded-up'></i>}
-        //             </div>
-        //             {showTypeCustomerSearch && <div
-        //                 className="showTypeACS_Se"
-        //             >
-        //                 <div className="itemCustomerTypeFB" onClick={(e) => AddCustomerTypeSearch(e, '', '', '')}
-        //                 >
-        //                     <div
-        //                         className={`checkedItemCustomerTypeFB ${customerTypeSelectedSearch.some(obj => obj.code === 0) && 'IcheckedItemCustomerTypeFB'}`}
-        //                     >
-        //                         <i className="icofont-check-alt " />
-        //                     </div>
-        //                     <span className="nameItemcustomerTypeFB" > همه </span>
-        //                 </div>
-
-        //                 {showCustomerTypesSearch()}
-        //             </div>}
-        //         </div>
-        //     </div>
-
-        //     <div className="containerName_Se">
-        //         <div className="name_Se">
-        //             <span className="stringName_Se"> نام </span>
-        //             <input
-        //                 type="text"
-        //                 className="inputNameACS_Se"
-        //                 value={input.name || ''}
-        //                 onInput={e => handleSaveValInput(e, 'name')}
-        //             />
-        //         </div>
-        //         <div className="lastName_Se">
-        //             <span className="stringName_Se"> نام‌خانوادگی </span>
-        //             <input
-        //                 type="text"
-        //                 className="inputNameACS_Se"
-        //                 value={input.lastName || ''}
-        //                 onInput={e => handleSaveValInput(e, 'lastName')}
-        //             />
-        //         </div>
-        //     </div>
-
-        //     <div className="divSearch_Se">
-        //         <div className="divBtnDelSearch_Se">
-        //             <button
-        //                 className="--styleLessBtn btnDelSearch"
-        //                 onClick={handleClearSearch}
-        //             >
-        //                 <span className="sritngDelSearch_Se"> حذف جستجو </span>
-        //                 <i className="icofont-close-circled icofontDelSearch_Se"></i>
-        //             </button>
-        //         </div>
-        //         <div className="divBtnSearch_Se">
-        //             <button
-        //                 className="--styleLessBtn btnSearch"
-        //                 onClick={handleSearch}
-        //             >
-        //                 <span className="sritngSearch_Se"> جستجو </span>
-        //                 <i className="icofont-search-2 icofontSearch_Se"></i>
-        //             </button>
-        //         </div>
-        //     </div>
-        // </div>
     );
 };
 

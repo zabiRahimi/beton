@@ -480,6 +480,7 @@
     background-color: #af5e5e;
 } */
 
+.idInvoiceConcreteSIS_Se,
 .buerConcreteSIS_Se {
     width: 100%;
     display: flex;
@@ -496,6 +497,7 @@
 
 }
 
+.idInvoiceConcreteSIS_Se input,
 .divInputsDateConcreteSIS_Se,
 .divSelectTypeConcreteSIS_Se,
 .buerConcreteSIS_Se input,
@@ -505,10 +507,12 @@
 
 }
 
+.idInvoiceConcreteSIS_Se input,
 .buerConcreteSIS_Se input {
     padding-right: 6px;
 }
 
+.idInvoiceConcreteSIS_Se input::placeholder,
 .buerConcreteSIS_Se input::placeholder {
     font-size: 0.8rem;
 }
@@ -565,8 +569,6 @@
         margin-right: 10px;
     }
 
-
-
     .stringIdATypeTruck_Se,
     .stringOwner_Se,
     .stringIdDriver_Se {
@@ -587,7 +589,6 @@
     .stringOwner_Se {
         font-size: 0.9rem;
     }
-
 
     .inputIdACS_Se,
     .titleTypeACS_Se,
@@ -615,7 +616,6 @@
         width: 56px;
     }
 
-
     .midInputNumberplate_Se {
         width: 53px;
     }
@@ -632,6 +632,7 @@
     }
 
     .divSelectTypeConcreteSIS_Se,
+    .idInvoiceConcreteSIS_Se input,
     .buerConcreteSIS_Se input,
     .divNumberplateConcreteSIS_Se  {
         width: calc(100% - 90px);

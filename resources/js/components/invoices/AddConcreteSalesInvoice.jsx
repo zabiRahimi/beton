@@ -229,6 +229,7 @@ const AddConcreteSalesInvoice = () => {
     const [search, setSearch] = useState({
         startDate: '',
         endDate: '',
+        id:'',
         concrete_id: '',
         cusotmer_id: '',
         customerName: '',
@@ -420,11 +421,6 @@ const AddConcreteSalesInvoice = () => {
             }
 
         }
-        // driverId && setInput(prevInput => {
-        //     let invoices = [...prevInput.invoice];
-        //     invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
-        //     return { ...prevInput, invoice: invoices };
-        // });
     }, [driverId, invoiceIndexForDriver]);
 
     useEffect(() => {
@@ -468,6 +464,7 @@ const AddConcreteSalesInvoice = () => {
         page = 1,
         startDate = search.startDate,
         endDate = search.endDate,
+        id = search.id,
         concrete_id = search.concrete_id,
         cusotmer_id = search.cusotmer_id,
         customerName = search.customerName,
@@ -484,6 +481,7 @@ const AddConcreteSalesInvoice = () => {
             params: {
                 startDate,
                 endDate,
+                id,
                 concrete_id,
                 cusotmer_id,
                 customerName,

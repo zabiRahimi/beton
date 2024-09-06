@@ -31,7 +31,6 @@ class CustomerController extends Controller
         } elseif ($request->filled('endDate')) {
             $query->where('created_at', '<=', $request->endDate)->with(['customerType', 'bankInfo']);
         }
-
       
         if ($request->filled('types')) {
             $types=$request->types;
@@ -51,25 +50,10 @@ class CustomerController extends Controller
         }
         }
 
-       
-
         $customers = $query->orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(50);
-        // $Customers = Customer::orderBy('id')->with(['customerType', 'bankInfo'])->get();
-        // $customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(30);
-        // $Customers = Customer::orderByDesc('id')->with(['customerType', 'bankInfo'])->lazy(200);
-        // return $Customers;
-
-        // return response()->json(['Customers' => $Customers]);
+        
         return response()->json(['customers' =>  $customers], 200);
     }
-
-    // /**
-    //  * Show the form for creating a new resource.
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
 
     /**
      * Store a newly created resource in storage.
