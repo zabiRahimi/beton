@@ -3048,6 +3048,7 @@ const AddConcreteSalesInvoice = () => {
                         <AddCocreteSalesInvoiceSearch
                             getConcreteSalesInvoices={getConcreteSalesInvoices}
                             handelSetDataSearch={handelSetDataSearch}
+                            concretes={concretes}
                         />
                         {/* <div className="containerSearch_Se">
                             <div className="containerDate_Se">

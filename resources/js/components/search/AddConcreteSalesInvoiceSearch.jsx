@@ -2,13 +2,15 @@
 import React, { createRef, useEffect, useRef, useState } from 'react';
 import DataZabi from "../hooks/DateZabi";
 import moment from 'jalali-moment';
+import SelectZabi from '../hooks/SelectZabi';
 
-const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataSearch }) => {
+const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataSearch, concretes }) => {
     const {
         checkDate
     } = DataZabi();
 
-    const [showBtns, setShowBtns] = useState(false);
+    const concreteRef = useRef(null);
+    const [showSearchFilds, setShowSearchFilds] = useState(true);
 
     const [date, setDate] = useState({
         start: {
@@ -39,6 +41,12 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         driverName: '',
         driverLastName: '',
     });
+
+    const [concreteId, setConcreteId] = useState('');
+
+    const handleShowSearchFilds = () => {
+        setShowSearchFilds(perv => !perv);
+    }
 
     const handleSearch = () => {
 
@@ -232,18 +240,137 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
 
     return (
         <div className="mainConcreteSIS_Se">
-            {showBtns ?
-                <button className='searchBtnsCoSIS_Se showSearchBtnCoSIS_Se '>
+            {showSearchFilds ?
+                <button className='searchBtnsCoSIS_Se showSearchBtnCoSIS_Se ' onClick={handleShowSearchFilds}>
                     <span>نمایش فیلدهای جستجو</span>
                     <i className="icofont-eye eyeCoSIS_Se"></i>
                 </button>
                 :
-                <button className='searchBtnsCoSIS_Se closeSearchBtnCoSIS_Se'>
+                <button className='searchBtnsCoSIS_Se closeSearchBtnCoSIS_Se' onClick={handleShowSearchFilds}>
                     <span>بستن فیلدهای جستجو</span>
                     <i className="icofont-eye-blocked eyeBlockedCoSIS_Se"></i>
                 </button>
             }
+            <div className="containerConcreteSIS_Se">
+                <div className="firstRowConcreteSIS_Se">
+                    <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">
+                        <div className="startDate_Se">
+                            <span className="stringFromDate_Se"> از تاریخ </span>
+                            <input
+                                type="text"
+                                className="inputDate_Se dayDate_Se dayDateConcreteSIS_Se"
+                                id="dayFromSearch"
+                                placeholder="روز"
+                                value={date.start.day || ''}
+                                onInput={e => handleSetDate(e, 'start', 'day')}
+                            />
+                            <span className="slashDate_Se">/</span>
+                            <input
+                                type="text"
+                                className="inputDate_Se monthDate_Se monthDateConcreteSIS_Se"
+                                placeholder="ماه"
+                                id="monthFromSearch"
+                                value={date.start.month || ''}
+                                onInput={e => handleSetDate(e, 'start', 'month')}
+                            />
+                            <span className="slashDate_Se">/</span>
+                            <input
+                                type="text"
+                                className="inputDate_Se yearDate_Se yearDateConcreteSIS_Se"
+                                id="yearFromSearch"
+                                placeholder="سال"
+                                value={date.start.year || ''}
+                                onInput={e => handleSetDate(e, 'start', 'year')}
+                            />
+
+                        </div>
+                        <div className="endtDate_Se">
+                            <span className="stringUntilDate_Se"> تا تاریخ </span>
+                            <input
+                                type="text"
+                                className="inputDate_Se dayDate_Se dayDateConcreteSIS_Se"
+                                id="dayUntilSearch"
+                                placeholder="روز"
+                                value={date.end.day || ''}
+                                onInput={e => handleSetDate(e, 'end', 'day')}
+                            />
+                            <span className="slashDate_Se">/</span>
+                            <input
+                                type="text"
+                                className="inputDate_Se monthDate_Se monthDateConcreteSIS_Se"
+                                id="monthUntilSearch"
+                                placeholder="ماه"
+                                value={date.end.month || ''}
+                                onInput={e => handleSetDate(e, 'end', 'month')}
+                            />
+                            <span className="slashDate_Se">/</span>
+                            <input
+                                type="text"
+                                className="inputDate_Se yearDate_Se yearDateConcreteSIS_Se"
+                                id="yearUntilSearch"
+                                placeholder="سال"
+                                value={date.end.year || ''}
+                                onInput={e => handleSetDate(e, 'end', 'year')}
+                            />
+                        </div>
+                    </div>
+                    <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
+                        <div className="typeConcreteSIS_Se">
+                            <span className="stringFromDate_Se"> بتن </span>
+                            <SelectZabi
+                                primaryLabel='انتخاب'
+                                options={concretes}
+                                saveOption={setConcreteId}
+                                ref={concreteRef}
+                            />
+                        </div>
+
+                    </div>
+                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se"> شناسه خریدار </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se"> نام خریدار </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se"> نام‌خانوادگی خریدار </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+
+                    </div>
+                    <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">first 4</div>
+                </div>
+                <div className="secondRowCocreteSIS_Se">
+                    <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">second 1</div>
+                    <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">second 2</div>
+                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">second 3</div>
+                    <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">
+                        <div className="divBtnDelSearch_Se">
+                            <button
+                                className="--styleLessBtn btnDelSearch"
+                                onClick={handleClearSearch}
+                            >
+                                <span className="sritngDelSearch_Se"> حذف جستجو </span>
+                                <i className="icofont-close-circled icofontDelSearch_Se"></i>
+                            </button>
+                        </div>
+                        <div className="divBtnSearch_Se">
+                            <button
+                                className="--styleLessBtn btnSearch"
+                                onClick={handleSearch}
+                            >
+                                <span className="sritngSearch_Se"> جستجو </span>
+                                <i className="icofont-search-2 icofontSearch_Se"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         // <div className="containerSearch_Se">
         //     <div className="containerDate_Se">
         //         <div className="startDate_Se">
