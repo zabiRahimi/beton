@@ -255,88 +255,96 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                 <div className="firstRowConcreteSIS_Se">
                     <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">
                         <div className="startDate_Se">
-                            <span className="stringFromDate_Se"> از تاریخ </span>
-                            <input
-                                type="text"
-                                className="inputDate_Se dayDate_Se dayDateConcreteSIS_Se"
-                                id="dayFromSearch"
-                                placeholder="روز"
-                                value={date.start.day || ''}
-                                onInput={e => handleSetDate(e, 'start', 'day')}
-                            />
-                            <span className="slashDate_Se">/</span>
-                            <input
-                                type="text"
-                                className="inputDate_Se monthDate_Se monthDateConcreteSIS_Se"
-                                placeholder="ماه"
-                                id="monthFromSearch"
-                                value={date.start.month || ''}
-                                onInput={e => handleSetDate(e, 'start', 'month')}
-                            />
-                            <span className="slashDate_Se">/</span>
-                            <input
-                                type="text"
-                                className="inputDate_Se yearDate_Se yearDateConcreteSIS_Se"
-                                id="yearFromSearch"
-                                placeholder="سال"
-                                value={date.start.year || ''}
-                                onInput={e => handleSetDate(e, 'start', 'year')}
-                            />
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> از تاریخ </span>
+                            <div className="divInputsDateConcreteSIS_Se">
+                                <input
+                                    type="text"
+                                    className="inputDate_Se dayDate_Se dayDateConcreteSIS_Se"
+                                    id="dayFromSearch"
+                                    placeholder="روز"
+                                    value={date.start.day || ''}
+                                    onInput={e => handleSetDate(e, 'start', 'day')}
+                                />
+                                <span className="slashDate_Se slashDateConcreteSIS_Se">/</span>
+                                <input
+                                    type="text"
+                                    className="inputDate_Se monthDate_Se monthDateConcreteSIS_Se"
+                                    placeholder="ماه"
+                                    id="monthFromSearch"
+                                    value={date.start.month || ''}
+                                    onInput={e => handleSetDate(e, 'start', 'month')}
+                                />
+                                <span className="slashDate_Se slashDateConcreteSIS_Se">/</span>
+                                <input
+                                    type="text"
+                                    className="inputDate_Se yearDate_Se yearDateConcreteSIS_Se"
+                                    id="yearFromSearch"
+                                    placeholder="سال"
+                                    value={date.start.year || ''}
+                                    onInput={e => handleSetDate(e, 'start', 'year')}
+                                />
+                            </div>
+
 
                         </div>
                         <div className="endtDate_Se">
-                            <span className="stringUntilDate_Se"> تا تاریخ </span>
-                            <input
-                                type="text"
-                                className="inputDate_Se dayDate_Se dayDateConcreteSIS_Se"
-                                id="dayUntilSearch"
-                                placeholder="روز"
-                                value={date.end.day || ''}
-                                onInput={e => handleSetDate(e, 'end', 'day')}
-                            />
-                            <span className="slashDate_Se">/</span>
-                            <input
-                                type="text"
-                                className="inputDate_Se monthDate_Se monthDateConcreteSIS_Se"
-                                id="monthUntilSearch"
-                                placeholder="ماه"
-                                value={date.end.month || ''}
-                                onInput={e => handleSetDate(e, 'end', 'month')}
-                            />
-                            <span className="slashDate_Se">/</span>
-                            <input
-                                type="text"
-                                className="inputDate_Se yearDate_Se yearDateConcreteSIS_Se"
-                                id="yearUntilSearch"
-                                placeholder="سال"
-                                value={date.end.year || ''}
-                                onInput={e => handleSetDate(e, 'end', 'year')}
-                            />
+                            <span className="stringUntilDate_Se stringConcreteSIS_Se"> تا تاریخ </span>
+                            <div className="divInputsDateConcreteSIS_Se">
+                                <input
+                                    type="text"
+                                    className="inputDate_Se dayDate_Se dayDateConcreteSIS_Se"
+                                    id="dayUntilSearch"
+                                    placeholder="روز"
+                                    value={date.end.day || ''}
+                                    onInput={e => handleSetDate(e, 'end', 'day')}
+                                />
+                                <span className="slashDate_Se slashDateConcreteSIS_Se">/</span>
+                                <input
+                                    type="text"
+                                    className="inputDate_Se monthDate_Se monthDateConcreteSIS_Se"
+                                    id="monthUntilSearch"
+                                    placeholder="ماه"
+                                    value={date.end.month || ''}
+                                    onInput={e => handleSetDate(e, 'end', 'month')}
+                                />
+                                <span className="slashDate_Se slashDateConcreteSIS_Se">/</span>
+                                <input
+                                    type="text"
+                                    className="inputDate_Se yearDate_Se yearDateConcreteSIS_Se"
+                                    id="yearUntilSearch"
+                                    placeholder="سال"
+                                    value={date.end.year || ''}
+                                    onInput={e => handleSetDate(e, 'end', 'year')}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
                         <div className="typeConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringTypeConcreteSIS_Se"> بتن </span>
-                            <SelectZabi
-                                primaryLabel='انتخاب'
-                                options={concretes}
-                                saveOption={setConcreteId}
-                                ref={concreteRef}
-                            />
+                            <span className="stringFromDate_Se stringConcreteSIS_Se stringTypeConcreteSIS_Se"> بتن </span>
+                            <div className='divSelectTypeConcreteSIS_Se'>
+                                <SelectZabi
+                                    primaryLabel='انتخاب'
+                                    options={concretes}
+                                    saveOption={setConcreteId}
+                                    ref={concreteRef}
+                                />
+                            </div>
+
                         </div>
 
                     </div>
                     <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se"> شناسه خریدار </span>
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه خریدار </span>
                             <input type="text" className="idBuerInputConcreteSIS_Se" />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se"> نام خریدار </span>
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> نام خریدار </span>
                             <input type="text" className="idBuerInputConcreteSIS_Se" />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se"> نام‌خانوادگی خریدار </span>
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام‌خانوادگی خریدار'> نام‌خانوادگی خریدار </span>
                             <input type="text" className="idBuerInputConcreteSIS_Se" />
                         </div>
 
@@ -344,9 +352,20 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">first 4</div>
                 </div>
                 <div className="secondRowCocreteSIS_Se">
-                    <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">second 1</div>
-                    <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">second 2</div>
-                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">second 3</div>
+                    <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی خریدار </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+                    </div>
+                    <div className="columnConcreteSIS_Se column2ConcreteSIS_Se"> <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                        <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی خریدار </span>
+                        <input type="text" className="idBuerInputConcreteSIS_Se" />
+                    </div></div>
+                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se"> <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                        <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی خریدار </span>
+                        <input type="text" className="idBuerInputConcreteSIS_Se" />
+                    </div></div>
                     <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">
                         <div className="divBtnDelSearch_Se">
                             <button

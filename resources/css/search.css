@@ -377,17 +377,17 @@
     ########## AddConcreteSalesInvoiceSearch ##########
 */
 
-.mainConcreteSIS_Se{
+.mainConcreteSIS_Se {
     width: 100%;
     margin-bottom: 20px;
     padding: 20px 2px 10px;
     border: 1px solid #546b8e;
     border-radius: 3px;
     position: relative;
-   
+
 }
 
-.searchBtnsCoSIS_Se{
+.searchBtnsCoSIS_Se {
     position: absolute;
     margin: -37px 10px 0 0;
     padding: 0 6px;
@@ -398,92 +398,116 @@
     border-radius: 3px;
 }
 
-.showSearchBtnCoSIS_Se{
-    
+.showSearchBtnCoSIS_Se {
+
     color: #407d3d;
 }
 
-.closeSearchBtnCoSIS_Se{
+.closeSearchBtnCoSIS_Se {
     color: #c71b1b;
 }
 
 .eyeCoSIS_Se,
-.eyeBlockedCoSIS_Se{
+.eyeBlockedCoSIS_Se {
     font-size: 1.3rem;
     margin-right: 4px;
 }
 
-.eyeCoSIS_Se{
+.eyeCoSIS_Se {}
 
-}
+.eyeBlockedCoSIS_Se {}
 
-.eyeBlockedCoSIS_Se{
-
-}
-
-.containerConcreteSIS_Se{
+.containerConcreteSIS_Se {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .secondRowCocreteSIS_Se,
-.firstRowConcreteSIS_Se{
+.firstRowConcreteSIS_Se {
     width: 100%;
     display: flex;
 }
-.firstRowConcreteSIS_Se{
 
-}
-.secondRowCocreteSIS_Se{
+.firstRowConcreteSIS_Se {}
 
+.secondRowCocreteSIS_Se {
+    margin-top: 30px;
 }
-.columnConcreteSIS_Se{
+
+.columnConcreteSIS_Se {
     width: 28%;
     margin-left: 0.7%;
     display: flex;
     flex-direction: column;
+    row-gap: 5px;
 }
 
-.column1ConcreteSIS_Se{
-  
-    background-color: #a5a5e0;
+.column1ConcreteSIS_Se {
+
+    
 }
 
-.column2ConcreteSIS_Se{
-  
-    background-color: #daa5e0;
+.column2ConcreteSIS_Se {
+
+    
 }
 
-.column4ConcreteSIS_Se{
+.column4ConcreteSIS_Se {
     width: 12%;
     margin-left: 0;
 }
 
-.dayDateConcreteSIS_Se{
-    width: 35px;
+.divInputsDateConcreteSIS_Se{
+   
+
 }
 
-.monthDateConcreteSIS_Se{
-    width: 35px;
+.slashDateConcreteSIS_Se{
+    width: 5%;
 }
 
-.yearDateConcreteSIS_Se{
-    width: 40px;
+.dayDateConcreteSIS_Se {
+    width: 29%;
 }
 
-.typeConcreteSIS_Se{
+.monthDateConcreteSIS_Se {
+    width: 29%;
+}
+
+.yearDateConcreteSIS_Se {
+    width: 32%;
+}
+
+.typeConcreteSIS_Se {
     width: 100%;
     display: flex;
 }
 
-.stringTypeConcreteSIS_Se{
+/* .stringTypeConcreteSIS_Se{
     width: 50px;
     background-color: #af5e5e;
+} */
+
+.buerConcreteSIS_Se {
+    width: 100%;
+    display: flex;
+    
 }
 
-.buerConcreteSIS_Se{
-    width: 100%;
+.stringConcreteSIS_Se {
+    width: 70px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
+
+.divInputsDateConcreteSIS_Se,
+.divSelectTypeConcreteSIS_Se,
+.buerConcreteSIS_Se input {
+    width: calc(100% - 70px);
     display: flex;
 }
 
@@ -503,7 +527,7 @@
         margin-right: 10px;
     }
 
-    
+
 
     .stringIdATypeTruck_Se,
     .stringOwner_Se,
@@ -526,7 +550,7 @@
         font-size: 0.9rem;
     }
 
-  
+
     .inputIdACS_Se,
     .titleTypeACS_Se,
     .inputNameACS_Se,
@@ -563,5 +587,14 @@
         width: 125px;
         padding: 2px 6px;
         font-size: 1rem;
+    }
+
+    .stringConcreteSIS_Se {
+        width: 90px;
+    }
+    
+    .divSelectTypeConcreteSIS_Se,
+    .buerConcreteSIS_Se input {
+        width: calc(100% - 90px);
     }
 }
