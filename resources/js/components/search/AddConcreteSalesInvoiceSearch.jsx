@@ -349,23 +349,50 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                         </div>
 
                     </div>
-                    <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">first 4</div>
+                    <div className="columnConcreteSIS_Se column4ConcreteSIS_Se"></div>
                 </div>
                 <div className="secondRowCocreteSIS_Se">
                     <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی خریدار </span>
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه‌مالک میکسر </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌‌مالک میکسر </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام مالک میکسر' />
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی مالک </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام خانوادگی مالک میکسر' />
+                        </div>
+                    </div>
+
+                    <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه میکسر </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> پلاک </span>
                             <input type="text" className="idBuerInputConcreteSIS_Se" />
                         </div>
                     </div>
-                    <div className="columnConcreteSIS_Se column2ConcreteSIS_Se"> <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                        <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی خریدار </span>
-                        <input type="text" className="idBuerInputConcreteSIS_Se" />
-                    </div></div>
-                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se"> <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                        <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی خریدار </span>
-                        <input type="text" className="idBuerInputConcreteSIS_Se" />
-                    </div></div>
+
+                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه راننده </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" placeholder='نام راننده'> نام‌ راننده </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی راننده </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                        </div>
+                    </div>
+
                     <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">
                         <div className="divBtnDelSearch_Se">
                             <button
