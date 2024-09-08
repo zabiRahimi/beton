@@ -443,27 +443,18 @@
     row-gap: 5px;
 }
 
-.column1ConcreteSIS_Se {
+.column1ConcreteSIS_Se {}
 
-    
-}
-
-.column2ConcreteSIS_Se {
-
-    
-}
+.column2ConcreteSIS_Se {}
 
 .column4ConcreteSIS_Se {
     width: 12%;
     margin-left: 0;
 }
 
-.divInputsDateConcreteSIS_Se{
-   
+.divInputsDateConcreteSIS_Se {}
 
-}
-
-.slashDateConcreteSIS_Se{
+.slashDateConcreteSIS_Se {
     width: 5%;
 }
 
@@ -492,7 +483,7 @@
 .buerConcreteSIS_Se {
     width: 100%;
     display: flex;
-    
+
 }
 
 .stringConcreteSIS_Se {
@@ -502,16 +493,68 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
-    
+
 }
 
 .divInputsDateConcreteSIS_Se,
 .divSelectTypeConcreteSIS_Se,
-.buerConcreteSIS_Se input {
+.buerConcreteSIS_Se input,
+.divNumberplateConcreteSIS_Se  {
     width: calc(100% - 70px);
+    /* width: 100%; */
     display: flex;
+
 }
 
+.buerConcreteSIS_Se input {
+    padding-right: 6px;
+}
+
+.buerConcreteSIS_Se input::placeholder {
+    font-size: 0.8rem;
+
+}
+
+.divNumberplateConcreteSIS_Se {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.text2NumberplateConcreteSIS_Se,
+.selectChNumberplateConcreteSIS_Se,
+.text3NumberplateConcreteSIS_Se,
+.textSerialNumberplateConcreteSIS_Se {
+    text-align: center;
+    padding: 0 !important;
+    border: 1px solid #8f8f9d;
+}
+
+.text2NumberplateConcreteSIS_Se {
+    width: 10% !important;
+    border-right: none;
+    border-radius: 3px 0 0 3px;
+    position: relative;
+}
+
+.selectChNumberplateConcreteSIS_Se {
+    /* width: 50px !important; */
+    width: 20% !important;
+    border-left: none;
+    border-right: none;
+}
+
+.text3NumberplateConcreteSIS_Se {
+    /* width: 35px !important; */
+    width: 35% !important;
+    border-left: none;
+    border-right: none;
+}
+
+.textSerialNumberplateConcreteSIS_Se {
+    /* width: 25px !important; */
+    width: 15% !important;
+    border-radius: 0 3px 3px 0;
+}
 
 
 @media screen and (min-width:1200px) {
@@ -593,7 +636,7 @@
     .stringConcreteSIS_Se {
         width: 90px;
     }
-    
+
     .divSelectTypeConcreteSIS_Se,
     .buerConcreteSIS_Se input {
         width: calc(100% - 90px);

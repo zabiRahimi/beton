@@ -3,6 +3,8 @@ import React, { createRef, useEffect, useRef, useState } from 'react';
 import DataZabi from "../hooks/DateZabi";
 import moment from 'jalali-moment';
 import SelectZabi from '../hooks/SelectZabi';
+// import iran from "../../../assets/images/iran.png";
+
 
 const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataSearch, concretes }) => {
     const {
@@ -337,15 +339,15 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه خریدار </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='شناسه خریدار' />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> نام خریدار </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام خریدار' />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام‌خانوادگی خریدار'> نام‌خانوادگی خریدار </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام خانوادگی خریدار' />
                         </div>
 
                     </div>
@@ -355,7 +357,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه‌مالک میکسر </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='شناسه مالک میکسر' />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌‌مالک میکسر </span>
@@ -370,26 +372,102 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه میکسر </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='شناسه میکسر' />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> پلاک </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <div className="divNumberplate element" id="numberplate">
+                                <div className="divNumberplateConcreteSIS_Se">
+                                    {/* <div className="divNumberplateConcreteSIS_Se"> */}
+                                        <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            className="text2NumberplateConcreteSIS_Se"
+                                            placeholder="00"
+                                            maxLength="2"
+
+                                        />
+
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="selectChNumberplateConcreteSIS_Se"
+
+                                        >
+                                            <option value=""> حرف </option>
+                                            <option value="ا"> الف </option>
+                                            <option value="ب"> ب </option>
+                                            <option value="پ"> پ </option>
+                                            <option value="ت"> ت </option>
+                                            <option value="ث"> ث </option>
+                                            <option value="ج"> ج </option>
+                                            <option value="چ"> چ </option>
+                                            <option value="ح"> ح </option>
+                                            <option value="خ"> خ </option>
+                                            <option value="د"> د </option>
+                                            <option value="ذ"> ذ </option>
+                                            <option value="ر"> ر </option>
+                                            <option value="ز"> ز </option>
+                                            <option value="ژ"> ژ </option>
+                                            <option value="س"> س </option>
+                                            <option value="ش"> ش </option>
+                                            <option value="ص"> ص </option>
+                                            <option value="ض"> ض </option>
+                                            <option value="ط"> ط </option>
+                                            <option value="ظ"> ظ </option>
+                                            <option value="ع"> ع </option>
+                                            <option value="غ"> غ </option>
+                                            <option value="ف"> ف </option>
+                                            <option value="ق"> ق </option>
+                                            <option value="ک"> ک </option>
+                                            <option value="گ"> گ </option>
+                                            <option value="ل"> ل </option>
+                                            <option value="م"> م </option>
+                                            <option value="ن"> ن </option>
+                                            <option value="و"> و </option>
+                                            <option value="ه"> ه </option>
+                                            <option value="ی"> ی </option>
+                                        </select>
+
+                                        <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            className="text3NumberplateConcreteSIS_Se"
+                                            placeholder="000"
+                                            maxLength="3"
+
+                                        />
+
+                                    {/* </div> */}
+
+                                    
+                                        <input
+                                            type="text"
+                                            className="textSerialNumberplateConcreteSIS_Se"
+                                            placeholder="00"
+                                            maxLength="2"
+                                        />
+
+                                </div>
+
+                            </div>
                         </div>
                     </div>
 
                     <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه راننده </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='شناسه راننده' />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se" placeholder='نام راننده'> نام‌ راننده </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" > نام‌ راننده </span>
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام راننده' />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی راننده </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" />
+                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام خانوادگی راننده' />
                         </div>
                     </div>
 
