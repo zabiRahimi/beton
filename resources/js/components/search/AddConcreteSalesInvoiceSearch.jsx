@@ -280,10 +280,12 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         <div className="mainConcreteSIS_Se">
             <div className="headConcreteSIS_Se">
                 {showSearchFilds ?
+                
+                
+                
                     <button className='searchBtnsCoSIS_Se showSearchBtnCoSIS_Se ' onClick={handleShowSearchFilds}>
-                        {/* <span>نمایش فیلدهای جستجو</span> */}
                         <i className='icofont-search-2 iSearchCoSIS_Se'/>
-                        {/* <i className="icofont-eye eyeCoSIS_Se"></i> */}
+                        <i className='icofont-check-alt '/>
                     </button>
                     :
                     <button className='searchBtnsCoSIS_Se closeSearchBtnCoSIS_Se' onClick={() => { handleShowSearchFilds(); handleClearSearch() }}>
