@@ -31,9 +31,9 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         startDate: '',
         endDate: '',
         concrete_id: '',
-        cusotmer_id: '',
+        customer_id: '',
         customerName: '',
-        custoemrLastName: '',
+        customerLastName: '',
         truck_id: '',
         numberplate: '',
         owner_id: '',
@@ -43,8 +43,21 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         driverName: '',
         driverLastName: '',
     });
-
+    console.log(input);
     const [concreteId, setConcreteId] = useState('');
+    const [numberplateVal, setNumberplateVal] = useState({
+        left: '',
+        alphabet: '',
+        mid: '',
+        right: ''
+    });
+
+    useEffect(() => {
+        if (concreteId) {
+            setInput(prev => ({ ...prev, concrete_id: concreteId }));
+
+        }
+    }, [concreteId]);
 
     const handleShowSearchFilds = () => {
         setShowSearchFilds(perv => !perv);
@@ -160,6 +173,30 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
             setInput(prev => ({ ...prev, startDate: valDate }));
         } else {
             setInput(prev => ({ ...prev, endDate: valDate }));
+        }
+    }
+
+    const handleSetNumberplate = (e, input) => {
+        const { value } = e.target;
+        let numberplate;
+        setNumberplateVal(prev => ({ ...prev, [input]: value }));
+        if (input == 'left' && (value || numberplateVal.alphabet || numberplateVal.mid || numberplateVal.right)) {
+            numberplate = value + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+            setInput(prev => ({ ...prev, numberplate }));
+
+        } else if (input == 'alphabet' && (value || numberplateVal.left || numberplateVal.mid || numberplateVal.right)) {
+            numberplate = numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
+            setInput(prev => ({ ...prev, numberplate }));
+
+        } else if (input == 'mid' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.right)) {
+            numberplate = numberplateVal.left + '-' + value + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+            setInput(prev => ({ ...prev, numberplate }));
+
+        } else if (input == 'right' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.mid)) {
+            numberplate = numberplateVal.left + '-' + numberplateVal.mid + '-' + value + '-' + numberplateVal.alphabet;
+            setInput(prev => ({ ...prev, numberplate }));
+        } else {
+            setInput(prev => ({ ...prev, numberplate: '' }));
         }
     }
 
@@ -419,14 +456,14 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                     className="text2NumberplateConcreteSIS_Se"
                                     placeholder="00"
                                     maxLength="2"
-
+                                    value={numberplateVal.left || ''}
+                                    onInput={e => handleSetNumberplate(e, 'left')}
                                 />
 
                                 <select
-                                    name=""
-                                    id=""
                                     className="selectChNumberplateConcreteSIS_Se"
-
+                                    value={numberplateVal.alphabet}
+                                    onChange={e => handleSetNumberplate(e, 'alphabet')}
                                 >
                                     <option value=""> حرف </option>
                                     <option value="ا"> الف </option>
@@ -470,13 +507,16 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                     className="text3NumberplateConcreteSIS_Se"
                                     placeholder="000"
                                     maxLength="3"
-
+                                    value={numberplateVal.mid || ''}
+                                    onInput={e => handleSetNumberplate(e, 'mid')}
                                 />
                                 <input
                                     type="text"
                                     className="textSerialNumberplateConcreteSIS_Se"
                                     placeholder="00"
                                     maxLength="2"
+                                    value={numberplateVal.right || ''}
+                                    onInput={e => handleSetNumberplate(e, 'right')}
                                 />
 
                             </div>
@@ -492,7 +532,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شناسه راننده'
-                                onInput={e => handleSaveValInput(e, 'driver')}
+                                onInput={e => handleSaveValInput(e, 'driver_id')}
                             />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
