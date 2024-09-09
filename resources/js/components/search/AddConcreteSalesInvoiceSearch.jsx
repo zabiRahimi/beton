@@ -253,7 +253,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <i className="icofont-eye-blocked eyeBlockedCoSIS_Se"></i>
                 </button>
             }
-            <div className="containerConcreteSIS_Se">
+            {!showSearchFilds && <div className="containerConcreteSIS_Se">
                 <div className="firstRowConcreteSIS_Se">
                     <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">
                         <div className="startDate_Se">
@@ -286,8 +286,6 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                     onInput={e => handleSetDate(e, 'start', 'year')}
                                 />
                             </div>
-
-
                         </div>
                         <div className="endtDate_Se">
                             <span className="stringUntilDate_Se stringConcreteSIS_Se"> تا تاریخ </span>
@@ -339,15 +337,32 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه خریدار </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='شناسه خریدار' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='شناسه خریدار'
+                                onInput={e => handleSaveValInput(e, 'customer_id')}
+                            />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> نام خریدار </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام خریدار' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام خریدار'
+                                onInput={e => handleSaveValInput(e, 'customerName')}
+
+                            />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام‌خانوادگی خریدار'> نام‌خانوادگی خریدار </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام خانوادگی خریدار' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام خانوادگی خریدار'
+                                onInput={e => handleSaveValInput(e, 'customerLastName')}
+
+                            />
                         </div>
 
                     </div>
@@ -357,94 +372,114 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه‌مالک میکسر </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='شناسه مالک میکسر' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='شناسه مالک میکسر'
+                                onInput={e => handleSaveValInput(e, 'owner_id')}
+                            />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌‌مالک میکسر </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام مالک میکسر' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام مالک میکسر'
+                                onInput={e => handleSaveValInput(e, 'ownerName')}
+                            />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی مالک </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام خانوادگی مالک میکسر' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام خانوادگی مالک میکسر'
+                                onInput={e => handleSaveValInput(e, 'ownerLastName')}
+                            />
                         </div>
                     </div>
 
                     <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه میکسر </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='شناسه میکسر' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='شناسه میکسر'
+                                onInput={e => handleSaveValInput(e, 'truck_id')}
+                            />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> پلاک </span>
-                                <div className="divNumberplateConcreteSIS_Se">
-                                        <input
-                                            type="text"
-                                            name=""
-                                            id=""
-                                            className="text2NumberplateConcreteSIS_Se"
-                                            placeholder="00"
-                                            maxLength="2"
+                            <div className="divNumberplateConcreteSIS_Se">
+                                <input
+                                    type="text"
+                                    name=""
+                                    id=""
+                                    className="text2NumberplateConcreteSIS_Se"
+                                    placeholder="00"
+                                    maxLength="2"
 
-                                        />
+                                />
 
-                                        <select
-                                            name=""
-                                            id=""
-                                            className="selectChNumberplateConcreteSIS_Se"
+                                <select
+                                    name=""
+                                    id=""
+                                    className="selectChNumberplateConcreteSIS_Se"
 
-                                        >
-                                            <option value=""> حرف </option>
-                                            <option value="ا"> الف </option>
-                                            <option value="ب"> ب </option>
-                                            <option value="پ"> پ </option>
-                                            <option value="ت"> ت </option>
-                                            <option value="ث"> ث </option>
-                                            <option value="ج"> ج </option>
-                                            <option value="چ"> چ </option>
-                                            <option value="ح"> ح </option>
-                                            <option value="خ"> خ </option>
-                                            <option value="د"> د </option>
-                                            <option value="ذ"> ذ </option>
-                                            <option value="ر"> ر </option>
-                                            <option value="ز"> ز </option>
-                                            <option value="ژ"> ژ </option>
-                                            <option value="س"> س </option>
-                                            <option value="ش"> ش </option>
-                                            <option value="ص"> ص </option>
-                                            <option value="ض"> ض </option>
-                                            <option value="ط"> ط </option>
-                                            <option value="ظ"> ظ </option>
-                                            <option value="ع"> ع </option>
-                                            <option value="غ"> غ </option>
-                                            <option value="ف"> ف </option>
-                                            <option value="ق"> ق </option>
-                                            <option value="ک"> ک </option>
-                                            <option value="گ"> گ </option>
-                                            <option value="ل"> ل </option>
-                                            <option value="م"> م </option>
-                                            <option value="ن"> ن </option>
-                                            <option value="و"> و </option>
-                                            <option value="ه"> ه </option>
-                                            <option value="ی"> ی </option>
-                                        </select>
+                                >
+                                    <option value=""> حرف </option>
+                                    <option value="ا"> الف </option>
+                                    <option value="ب"> ب </option>
+                                    <option value="پ"> پ </option>
+                                    <option value="ت"> ت </option>
+                                    <option value="ث"> ث </option>
+                                    <option value="ج"> ج </option>
+                                    <option value="چ"> چ </option>
+                                    <option value="ح"> ح </option>
+                                    <option value="خ"> خ </option>
+                                    <option value="د"> د </option>
+                                    <option value="ذ"> ذ </option>
+                                    <option value="ر"> ر </option>
+                                    <option value="ز"> ز </option>
+                                    <option value="ژ"> ژ </option>
+                                    <option value="س"> س </option>
+                                    <option value="ش"> ش </option>
+                                    <option value="ص"> ص </option>
+                                    <option value="ض"> ض </option>
+                                    <option value="ط"> ط </option>
+                                    <option value="ظ"> ظ </option>
+                                    <option value="ع"> ع </option>
+                                    <option value="غ"> غ </option>
+                                    <option value="ف"> ف </option>
+                                    <option value="ق"> ق </option>
+                                    <option value="ک"> ک </option>
+                                    <option value="گ"> گ </option>
+                                    <option value="ل"> ل </option>
+                                    <option value="م"> م </option>
+                                    <option value="ن"> ن </option>
+                                    <option value="و"> و </option>
+                                    <option value="ه"> ه </option>
+                                    <option value="ی"> ی </option>
+                                </select>
 
-                                        <input
-                                            type="text"
-                                            name=""
-                                            id=""
-                                            className="text3NumberplateConcreteSIS_Se"
-                                            placeholder="000"
-                                            maxLength="3"
+                                <input
+                                    type="text"
+                                    name=""
+                                    id=""
+                                    className="text3NumberplateConcreteSIS_Se"
+                                    placeholder="000"
+                                    maxLength="3"
 
-                                        />
-                                        <input
-                                            type="text"
-                                            className="textSerialNumberplateConcreteSIS_Se"
-                                            placeholder="00"
-                                            maxLength="2"
-                                        />
+                                />
+                                <input
+                                    type="text"
+                                    className="textSerialNumberplateConcreteSIS_Se"
+                                    placeholder="00"
+                                    maxLength="2"
+                                />
 
-                                </div>
+                            </div>
 
                             {/* </div> */}
                         </div>
@@ -453,15 +488,30 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه راننده </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='شناسه راننده' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='شناسه راننده'
+                                onInput={e => handleSaveValInput(e, 'driver')}
+                            />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se" > نام‌ راننده </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام راننده' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام راننده'
+                                onInput={e => handleSaveValInput(e, 'driverName')}
+                            />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> نام‌خانوادگی راننده </span>
-                            <input type="text" className="idBuerInputConcreteSIS_Se" placeholder='نام خانوادگی راننده' />
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام خانوادگی راننده'
+                                onInput={e => handleSaveValInput(e, 'driverLastName')}
+                            />
                         </div>
                     </div>
 
@@ -486,7 +536,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
 
         // <div className="containerSearch_Se">
