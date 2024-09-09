@@ -16,7 +16,13 @@ const SelectZabi2 = forwardRef(({ options, optionsSearch, primaryLabel, saveOpti
     const returnOptions = () => {
         let vals;
         vals = options.map((val, i) => {
-            return <div className='containerOptionSZ' key={i} onClick={() => { setCurrentElement(val.html); changeHandle(val.value, val.value2 ? val.value2 : null, val.value3 ? val.value3 : null) }}>
+            return <div
+                className='containerOptionSZ'
+                key={i}
+                onClick={() => {
+                    setCurrentElement(val.html);
+                    changeHandle(val.value, val.value2 ? val.value2 : null, val.value3 ? val.value3 : null)
+                }}>
                 {val.html}
             </div>
         })
