@@ -376,9 +376,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> پلاک </span>
-                            {/* <div className="divNumberplate element" id="numberplate"> */}
                                 <div className="divNumberplateConcreteSIS_Se">
-                                    {/* <div className="divNumberplateConcreteSIS_Se"> */}
                                         <input
                                             type="text"
                                             name=""
@@ -439,10 +437,6 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                             maxLength="3"
 
                                         />
-
-                                    {/* </div> */}
-
-                                    
                                         <input
                                             type="text"
                                             className="textSerialNumberplateConcreteSIS_Se"
