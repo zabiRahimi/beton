@@ -7,7 +7,7 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
 
   const [itemTruckTypes, setItemTruckTypes] = useState([{
     value: '',
-    html: <div className="divItemTruckType_Se"  onClick={()=>{setTruckType('')}}>
+    html: <div className="divItemTruckType_Se" onClick={() => { setTruckType('') }}>
       <span className="itemTruckType_Se"> همه </span>
     </div>
   }]);
@@ -22,7 +22,7 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
 
   const [input, setInput] = useState({
     id: '',
-    truckType:'',
+    truckType: '',
     name: '',
     lastName: '',
     numberplate: ''
@@ -40,31 +40,31 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
   }, []);
 
   useEffect(() => {
-    
-         setInput(prev => ({ ...prev, truckType }));
-    
-}, [truckType]);
 
-  const handleSetNumberplate=(e, input)=>{
-    const {value}=e.target;
+    setInput(prev => ({ ...prev, truckType }));
+
+  }, [truckType]);
+
+  const handleSetNumberplate = (e, input) => {
+    const { value } = e.target;
     let numberplate;
-     setNumberplateVal(prev => ({ ...prev, [input]: value }));
-    if(input== 'left' && (value || numberplateVal.alphabet || numberplateVal.mid || numberplateVal.right)){
-       numberplate= value + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
-       setInput(prev => ({ ...prev, numberplate }));
-
-    }else if(input== 'alphabet' && (value || numberplateVal.left || numberplateVal.mid || numberplateVal.right)){
-      numberplate= numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
+    setNumberplateVal(prev => ({ ...prev, [input]: value }));
+    if (input == 'left' && (value || numberplateVal.alphabet || numberplateVal.mid || numberplateVal.right)) {
+      numberplate = value + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
       setInput(prev => ({ ...prev, numberplate }));
 
-   }else if(input== 'mid' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.right)){
-    numberplate= numberplateVal.left + '-' + value + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
-    setInput(prev => ({ ...prev, numberplate }));
+    } else if (input == 'alphabet' && (value || numberplateVal.left || numberplateVal.mid || numberplateVal.right)) {
+      numberplate = numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
+      setInput(prev => ({ ...prev, numberplate }));
 
- }else if(input== 'right' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.mid) ){
-  numberplate= numberplateVal.left + '-' + numberplateVal.mid + '-' + value + '-' + numberplateVal.alphabet;
-  setInput(prev => ({ ...prev, numberplate }));
-} else {
+    } else if (input == 'mid' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.right)) {
+      numberplate = numberplateVal.left + '-' + value + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+      setInput(prev => ({ ...prev, numberplate }));
+
+    } else if (input == 'right' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.mid)) {
+      numberplate = numberplateVal.left + '-' + numberplateVal.mid + '-' + value + '-' + numberplateVal.alphabet;
+      setInput(prev => ({ ...prev, numberplate }));
+    } else {
       setInput(prev => ({ ...prev, numberplate: '' }));
     }
   }
@@ -81,10 +81,10 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
 
   const handleClearSearch = async () => {
     setNumberplateVal({
-      left:'',
-      alphabet:'',
-      mid:'',
-      right:''
+      left: '',
+      alphabet: '',
+      mid: '',
+      right: ''
     });
 
     setInput({
@@ -151,14 +151,18 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
           <span className="stringNumberplate_Se"> پلاک </span>
           <div className="mainNumberplate_Se">
             <div className="containerInputNumberplate_Se">
-              <input type="text" className="leftInputNumberplate_Se" placeholder='00'
-              maxLength="2"
-              value={numberplateVal.left || ''}
-              onInput={e=>handleSetNumberplate(e, 'left')} 
+              <input
+                type="text"
+                className="leftInputNumberplate_Se"
+                placeholder='00'
+                maxLength="2"
+                value={numberplateVal.left || ''}
+                onInput={e => handleSetNumberplate(e, 'left')}
               />
-              <select name="" id="" className='selectNumberplate_Se'
-              value={numberplateVal.alphabet}
-              onChange={e=>handleSetNumberplate(e, 'alphabet')} 
+              <select
+                className='selectNumberplate_Se'
+                value={numberplateVal.alphabet}
+                onChange={e => handleSetNumberplate(e, 'alphabet')}
               >
                 <option value=""> حرف </option>
                 <option value="ا"> الف </option>
@@ -194,18 +198,24 @@ const AddTruckSearch = ({ truckTypes, getTrucks, handelSetDataSearch }) => {
                 <option value="ه"> ه </option>
                 <option value="ی"> ی </option>
               </select>
-              <input type="text" className="midInputNumberplate_Se" placeholder='000'
-              maxLength="3"
-              value={numberplateVal.mid || ''}
-              onInput={e=>handleSetNumberplate(e, 'mid')} 
-               />
+              <input
+                type="text"
+                className="midInputNumberplate_Se"
+                placeholder='000'
+                maxLength="3"
+                value={numberplateVal.mid || ''}
+                onInput={e => handleSetNumberplate(e, 'mid')}
+              />
               <div className="divIranNumberplate_Se">
                 <span className='iranNumberplate_Se'> ایران </span>
-                <input type="text" className="rightInputNumberplate_Se" placeholder='00'
-                maxLength="2"
-              value={numberplateVal.right || ''}
-                onInput={e=>handleSetNumberplate(e, 'right')} 
-                 />
+                <input
+                  type="text"
+                  className="rightInputNumberplate_Se"
+                  placeholder='00'
+                  maxLength="2"
+                  value={numberplateVal.right || ''}
+                  onInput={e => handleSetNumberplate(e, 'right')}
+                />
               </div>
             </div>
           </div>
