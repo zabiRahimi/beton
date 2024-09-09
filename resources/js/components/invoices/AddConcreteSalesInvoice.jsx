@@ -464,12 +464,41 @@ const AddConcreteSalesInvoice = () => {
 
     }, [isNewInvoice]);
 
-    async function getConcreteSalesInvoices(page = 1) {
-        await axios.get(`/api/v1/getConcreteSalesInvoices?page=${page}`).then((response) => {
-            // setConcreteSalesInvoices(response.data.concreteSalesInvoices);
+    async function getConcreteSalesInvoices(
+        page = 1,
+        startDate = search.startDate,
+        endDate = search.endDate,
+        concrete_id = search.concrete_id,
+        cusotmer_id = search.cusotmer_id,
+        customerName = search.customerName,
+        custoemrLastName = search.custoemrLastName,
+        truck_id = search.truck_id,
+        numberplate = search.numberplate,
+        owner_id = search.owner_id,
+        ownerName = search.ownerName,
+        ownerLastName = search.ownerLastName,
+        driver_id = search.driver_id,
+        driverName = search.driverName) {
+        setLoading(true)
+        await axios.get(`/api/v1/getConcreteSalesInvoices?page=${page}`, {
+            params: {
+                startDate,
+                endDate,
+                concrete_id,
+                cusotmer_id,
+                customerName,
+                custoemrLastName,
+                truck_id,
+                numberplate,
+                owner_id,
+                ownerName,
+                ownerLastName,
+                driver_id,
+                driverName
+            }
+        }).then((response) => {
             setConcreteSalesInvoices(response.data.concreteSalesInvoices.data);
             setTotalPage(response.data.concreteSalesInvoices.last_page);
-            // setConcreteSalesInvoicesForSearch(response.data.concreteSalesInvoices);
             setTicketNumber(response.data.concreteSalesInvoices.total + 1);
             window.scrollTo({
                 top: top,
