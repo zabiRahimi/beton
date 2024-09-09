@@ -11,7 +11,8 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         checkDate
     } = DataZabi();
 
-    const concreteRef = useRef(null);
+    const isConcreteRef = useRef(false);
+    const [concreteRef, setConcreteRef] = useState();
     const [showSearchFilds, setShowSearchFilds] = useState(true);
 
     const [date, setDate] = useState({
@@ -43,7 +44,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         driverName: '',
         driverLastName: '',
     });
-    console.log(input);
+    
     const [concreteId, setConcreteId] = useState('');
     const [numberplateVal, setNumberplateVal] = useState({
         left: '',
@@ -51,6 +52,13 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         mid: '',
         right: ''
     });
+    useEffect(() => {
+        if (!showSearchFilds) {
+            let concreteRef = createRef();
+            setConcreteRef(concreteRef);
+            isConcreteRef.current = true;
+        }
+    }, [showSearchFilds]);
 
     useEffect(() => {
         if (concreteId) {
@@ -82,9 +90,9 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
             startDate: input.startDate,
             endDate: input.endDate,
             concrete_id: input.concrete_id,
-            cusotmer_id: input.cusotmer_id,
+            customer_id: input.customer_id,
             customerName: input.customerName,
-            custoemrLastName: input.custoemrLastName,
+            customerLastName: input.customerLastName,
             truck_id: input.truck_id,
             numberplate: input.numberplate,
             owner_id: input.owner_id,
@@ -99,9 +107,9 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
             input.startDate,
             input.endDate,
             input.concrete_id,
-            input.cusotmer_id,
+            input.customer_id,
             input.customerName,
-            input.custoemrLastName,
+            input.customerLastName,
             input.truck_id,
             input.numberplate,
             input.owner_id,
@@ -201,6 +209,13 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
     }
 
     const handleClearSearch = async () => {
+        setNumberplateVal({
+            left: '',
+            alphabet: '',
+            mid: '',
+            right: ''
+          });
+
         setDate({
             start: {
                 day: '',
@@ -218,9 +233,9 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
             startDate: '',
             endDate: '',
             concrete_id: '',
-            cusotmer_id: '',
+            customer_id: '',
             customerName: '',
-            custoemrLastName: '',
+            customerLastName: '',
             truck_id: '',
             numberplate: '',
             owner_id: '',
@@ -231,15 +246,18 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
             driverLastName: ''
         });
 
-        titleCustomerTypeSearch.current.textContent = 'انتخاب';
+        if (isConcreteRef &&  concreteRef.current) {
+            concreteRef.current.updateData('انتخاب');
+        }
+
 
         await handelSetDataSearch({
             startDate: '',
             endDate: '',
             concrete_id: '',
-            cusotmer_id: '',
+            customer_id: '',
             customerName: '',
-            custoemrLastName: '',
+            customerLastName: '',
             truck_id: '',
             numberplate: '',
             owner_id: '',
@@ -285,7 +303,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                     <i className="icofont-eye eyeCoSIS_Se"></i>
                 </button>
                 :
-                <button className='searchBtnsCoSIS_Se closeSearchBtnCoSIS_Se' onClick={handleShowSearchFilds}>
+                <button className='searchBtnsCoSIS_Se closeSearchBtnCoSIS_Se' onClick={() => {handleShowSearchFilds(); handleClearSearch()}}>
                     <span>بستن فیلدهای جستجو</span>
                     <i className="icofont-eye-blocked eyeBlockedCoSIS_Se"></i>
                 </button>
@@ -364,7 +382,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                     primaryLabel='انتخاب'
                                     options={concretes}
                                     saveOption={setConcreteId}
-                                    ref={concreteRef}
+                                    ref={isConcreteRef && concreteRef}
                                 />
                             </div>
 
@@ -662,7 +680,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         //             >
         //                 <span
         //                     className="spanTitleType_Se"
-        //                     ref={titleCustomerTypeSearch}
+        //                     ref={concreteRef}
         //                 >انتخاب
         //                 </span>
         //                 {!showTypeCustomerSearch && <i className='icofont-rounded-down'></i>}
