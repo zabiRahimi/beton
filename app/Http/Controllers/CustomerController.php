@@ -21,37 +21,36 @@ class CustomerController extends Controller
 
         if ($request->filled('id')) {
             $query->where('id', $request->id);
-            
         } else {
-            
-        if ($request->filled('startDate') && $request->filled('endDate')) {
-            $query->whereBetween('created_at', [$request->startDate, $request->endDate])->with(['customerType', 'bankInfo']);
-        } elseif ($request->filled('startDate')) {
-            $query->where('created_at', '>=', $request->startDate)->with(['customerType', 'bankInfo']);
-        } elseif ($request->filled('endDate')) {
-            $query->where('created_at', '<=', $request->endDate)->with(['customerType', 'bankInfo']);
-        }
-      
-        if ($request->filled('types')) {
-            $types=$request->types;
-            $query->with('customerType')
-            ->whereHas('customerType', function ($query) use ($types) {
-                $query->whereIn('code', $types);
-            })
-            ->get();
-        }
 
-        if ($request->filled('name')) {
-            $query->where('name', 'like', "%$request->name%");
-        }
+            if ($request->filled('startDate') && $request->filled('endDate')) {
+                $query->whereBetween('created_at', [$request->startDate, $request->endDate]);
+            } elseif ($request->filled('startDate')) {
+                $query->where('created_at', '>=', $request->startDate);
+            } elseif ($request->filled('endDate')) {
+                $query->where('created_at', '<=', $request->endDate);
+            }
 
-        if ($request->filled('lastName')) {
-            $query->where('lastName', 'like', "%$request->lastName%");
-        }
+            if ($request->filled('types')) {
+                $types = $request->types;
+                $query->with('customerType')
+                    ->whereHas('customerType', function ($query) use ($types) {
+                        $query->whereIn('code', $types);
+                    })
+                    ->get();
+            }
+
+            if ($request->filled('name')) {
+                $query->where('name', 'like', "%$request->name%");
+            }
+
+            if ($request->filled('lastName')) {
+                $query->where('lastName', 'like', "%$request->lastName%");
+            }
         }
 
         $customers = $query->orderByDesc('id')->with(['customerType', 'bankInfo'])->paginate(50);
-        
+
         return response()->json(['customers' =>  $customers], 200);
     }
 
