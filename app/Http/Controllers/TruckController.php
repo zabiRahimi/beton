@@ -30,13 +30,13 @@ class TruckController extends Controller
 
                 $query2 = Customer::query();
                 if ($request->filled('name')) {
-                    $query2->where('name', 'LIKE', "%{$request->name}%"); 
+                    $query2->where('name', 'LIKE', "%{$request->name}%");
                 }
 
                 if ($request->filled('lastName')) {
-                    $query2->where('lastName', 'LIKE',  "%{$request->lastName}%"); 
+                    $query2->where('lastName', 'LIKE',  "%{$request->lastName}%");
                 }
-                $customerIds = $query2->pluck('id'); 
+                $customerIds = $query2->pluck('id');
                 $query->whereIn('customer_id', $customerIds);
             }
 
@@ -45,17 +45,17 @@ class TruckController extends Controller
                 if (!empty($parts[0])) {
                     $query->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 1), "-", -1) LIKE ?', ["%{$parts[0]}%"]);
                 }
-                
+
                 if (!empty($parts[1])) {
                     $query->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 2), "-", -1) LIKE ?', ["%{$parts[1]}%"]);
                 }
                 if (!empty($parts[2])) {
                     $query->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 3), "-", -1)  LIKE ?', ["%{$parts[2]}%"]);
                 }
-                
+
                 if (!empty($parts[3])) {
                     $query->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 4), "-", -1)  LIKE ?', ["%{$parts[3]}%"]);
-                   }
+                }
             }
         }
 
