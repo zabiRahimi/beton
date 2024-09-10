@@ -362,6 +362,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شماره قبض'
+                                value={input.id || ''}
                                 onInput={e => handleSaveValInput(e, 'id')}
                             />
                         </div>
@@ -386,6 +387,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شناسه خریدار'
+                                value={input.customer_id || ''}
                                 onInput={e => handleSaveValInput(e, 'customer_id')}
                             />
                         </div>
@@ -395,8 +397,8 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام خریدار'
+                                value={input.customerName|| ''}
                                 onInput={e => handleSaveValInput(e, 'customerName')}
-
                             />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
@@ -405,6 +407,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام خانوادگی خریدار'
+                                value={input.customerLastName|| ''}
                                 onInput={e => handleSaveValInput(e, 'customerLastName')}
 
                             />
@@ -421,6 +424,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شناسه مالک میکسر'
+                                value={input.owner_id|| ''}
                                 onInput={e => handleSaveValInput(e, 'owner_id')}
                             />
                         </div>
@@ -430,6 +434,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام مالک میکسر'
+                                value={input.ownerName|| ''}
                                 onInput={e => handleSaveValInput(e, 'ownerName')}
                             />
                         </div>
@@ -439,6 +444,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام خانوادگی مالک میکسر'
+                                value={input.ownerLastName|| ''}
                                 onInput={e => handleSaveValInput(e, 'ownerLastName')}
                             />
                         </div>
@@ -451,6 +457,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شناسه میکسر'
+                                value={input.truck_id|| ''}
                                 onInput={e => handleSaveValInput(e, 'truck_id')}
                             />
                         </div>
@@ -539,6 +546,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شناسه راننده'
+                                value={input.driver_id|| ''}
                                 onInput={e => handleSaveValInput(e, 'driver_id')}
                             />
                         </div>
@@ -548,6 +556,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام راننده'
+                                value={input.driverName|| ''}
                                 onInput={e => handleSaveValInput(e, 'driverName')}
                             />
                         </div>
@@ -557,6 +566,7 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام خانوادگی راننده'
+                                value={input.driverLastName|| ''}
                                 onInput={e => handleSaveValInput(e, 'driverLastName')}
                             />
                         </div>
