@@ -25,7 +25,119 @@ class ConcreteSalesInvoiceController extends Controller
     public function index(GetConcreteSalesInvoiceRequest $request)
     {
         $query = ConcreteSalesInvoice::query();
-        $concreteSalesInvoices = ConcreteSalesInvoice::orderBy('id')->with(['customer', 'concrete', 'cementStore', 'truck.customer', 'driver'])->paginate(50);
+        if ($request->filled('id')) {
+            $query->where('id', $request->id);
+        } else {
+            if ($request->filled('startDate') && $request->filled('endDate')) {
+                $query->whereBetween('date', [$request->startDate, $request->endDate]);
+            } elseif ($request->filled('startDate')) {
+                $query->where('date', '>=', $request->startDate);
+            } elseif ($request->filled('endDate')) {
+                $query->where('date', '<=', $request->endDate);
+            }
+
+            if ($request->filled('concrete_id')) {
+                $query->where('concrete_id',  $request->concrete_id);
+            }
+
+            if ($request->filled('customer_id')) {
+                $query->where('customer_id',  $request->customer_id);
+            }
+
+            if ($request->filled('customerName') || $request->filled('customerLastName')) {
+
+                $query2 = Customer::query();
+                if ($request->filled('customerName')) {
+                    $query2->where('name', 'LIKE', "%{$request->customerName}%");
+                }
+
+                if ($request->filled('customerLastName')) {
+                    $query2->where('lastName', 'LIKE',  "%{$request->customerLastName}%");
+                }
+                $customerIds = $query2->pluck('id');
+                $query->whereIn('customer_id', $customerIds);
+            }
+
+            if ($request->filled('owner_id')) {
+                $queryTruck = Truck::query();
+                $queryTruck->where('truckType',  'میکسر')
+                    ->where('customer_id',  $request->owner_id);
+
+                $truckIds = $queryTruck->pluck('id');
+                $query->whereIn('truck_id', $truckIds);
+            }
+
+            if ($request->filled('ownerName') || $request->filled('ownerLastName')) {
+               
+                $queryCustomer = Customer::query();
+                if ($request->filled('ownerName')) {
+                    $queryCustomer->where('name', 'LIKE', "%{$request->ownerName}%");
+                }
+                
+                if ($request->filled('ownerLastName')) {
+                    $queryCustomer->where('lastName', 'LIKE',  "%{$request->ownerLastName}%");
+                }
+               
+                $ownerIds = $queryCustomer->with('customerType')
+                ->whereHas('customerType', function ($queryCustomer) {
+                    $queryCustomer->where('code', 5);
+                })
+                ->pluck('id');
+                $queryTruckIds = Truck::whereIn('customer_id',$ownerIds)->pluck('id');
+                
+                $query->whereIn('truck_id', $queryTruckIds);
+            }
+
+            if ($request->filled('truck_id')) {
+                
+                $query->where('truck_id', $request->truck_id);
+            }
+
+            if ($request->filled('numberplate')) {
+                $queryTruck = Truck::query();
+                $queryTruck->where('truckType',  'میکسر');
+                $parts = explode('-', $request->numberplate); // جدا کردن رشته بر اساس '-'
+                if (!empty($parts[0])) {
+                    $queryTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 1), "-", -1) LIKE ?', ["%{$parts[0]}%"]);
+                }
+
+                if (!empty($parts[1])) {
+                    $queryTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 2), "-", -1) LIKE ?', ["%{$parts[1]}%"]);
+                }
+                if (!empty($parts[2])) {
+                    $queryTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 3), "-", -1)  LIKE ?', ["%{$parts[2]}%"]);
+                }
+
+                if (!empty($parts[3])) {
+                    $queryTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 4), "-", -1)  LIKE ?', ["%{$parts[3]}%"]);
+                }
+                $truckIds = $queryTruck->pluck('id');
+                $query->whereIn('truck_id', $truckIds);
+            }
+
+            if ($request->filled('driver_id')) {
+                
+                $query->where('driver_id', $request->driver_id);
+            }
+
+            if ($request->filled('driverName') || $request->filled('driverLastName')) {
+               
+                $queryDriver = Driver::query();
+                if ($request->filled('driverName')) {
+                    $queryDriver->where('name', 'LIKE', "%{$request->driverName}%");
+                }
+                
+                if ($request->filled('driverLastName')) {
+                    $queryDriver->where('lastName', 'LIKE',  "%{$request->driverLastName}%");
+                }
+               
+                $driverIds = $queryDriver->pluck('id');
+                
+                $query->whereIn('driver_id', $driverIds);
+            }
+        }
+
+        $concreteSalesInvoices = $query->orderByDesc('id')->with(['customer', 'concrete', 'cementStore', 'truck.customer', 'driver'])->paginate(50);
         return response()->json(['concreteSalesInvoices' => $concreteSalesInvoices], 200);
     }
 
@@ -88,16 +200,14 @@ class ConcreteSalesInvoiceController extends Controller
 
             $concreteSalesInvoice->load('customer', 'concrete', 'cementStore', 'truck.customer', 'driver');
             DB::commit();
-            
         } catch (\Throwable $th) {
             DB::rollback();
 
             throw $th;
             dd('not');
         }
-        
-        return response()->json(['concreteSalesInvoice' =>  $concreteSalesInvoice], 200);
 
+        return response()->json(['concreteSalesInvoice' =>  $concreteSalesInvoice], 200);
     }
 
     /**
@@ -261,19 +371,19 @@ class ConcreteSalesInvoiceController extends Controller
      * #########
      */
 
-     private function updateCement(int $cementStoreId, int $concreteId, int|float $cubicMeters, int $preCementStoreId, int $preConcreteId, int|float $preCubicMeters)
-     {
-         if ($cementStoreId == $preCementStoreId && $concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
-             /**
-              * چون هیچ تغییری در سیلو، نوع سیمان و مقدار بتن ایجاد 
-              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
-              */
-         } else if ($cementStoreId == $preCementStoreId) {
-             $this->updateSameCementStore($cementStoreId, $concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
-         } else {
-             $this->updateDifferentCementStore($cementStoreId, $concreteId, $cubicMeters, $preCementStoreId, $preConcreteId, $preCubicMeters);
-         }
-     }
+    private function updateCement(int $cementStoreId, int $concreteId, int|float $cubicMeters, int $preCementStoreId, int $preConcreteId, int|float $preCubicMeters)
+    {
+        if ($cementStoreId == $preCementStoreId && $concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
+            /**
+             * چون هیچ تغییری در سیلو، نوع سیمان و مقدار بتن ایجاد 
+             * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
+             */
+        } else if ($cementStoreId == $preCementStoreId) {
+            $this->updateSameCementStore($cementStoreId, $concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+        } else {
+            $this->updateDifferentCementStore($cementStoreId, $concreteId, $cubicMeters, $preCementStoreId, $preConcreteId, $preCubicMeters);
+        }
+    }
 
     /**
      * هنگامی که سیلو تغییر نکرده است، ولی نوع بتن و یا مقدار بتن و یا هردو 
@@ -318,23 +428,23 @@ class ConcreteSalesInvoiceController extends Controller
         $store->save();
     }
 
-     /**
+    /**
      * #########
      * ###################### update sand store
      * #########
      */
 
-     private function updateSand(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
-     {
-         if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
-             /**
-              * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
-              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
-              */
-         } else {
-             $this->updateSandStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
-         }
-     }
+    private function updateSand(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+    {
+        if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
+            /**
+             * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
+             * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
+             */
+        } else {
+            $this->updateSandStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+        }
+    }
 
     /**
      *  ابتدا مقدار شن‌و‌ماسه که قبلا از سیلو کسر شده، به سیلو
@@ -351,23 +461,23 @@ class ConcreteSalesInvoiceController extends Controller
         $sandStore->save();
     }
 
-     /**
+    /**
      * #########
      * ###################### update water store
      * #########
      */
 
-     private function updateWater(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
-     {
-         if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
-             /**
-              * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
-              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
-              */
-         } else {
-             $this->updateWaterStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
-         }
-     }
+    private function updateWater(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+    {
+        if ($concreteId == $preConcreteId && $cubicMeters == $preCubicMeters) {
+            /**
+             * چون هیچ تغییری در نوع سیمان و مقدار بتن ایجاد 
+             * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
+             */
+        } else {
+            $this->updateWaterStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+        }
+    }
 
     /**
      *  ابتدا مقدار آب که قبلا از مخزن کسر شده، به مخزن
@@ -384,23 +494,23 @@ class ConcreteSalesInvoiceController extends Controller
         $waterStore->save();
     }
 
-     /**
+    /**
      * #########
      * ###################### update mixer owner account
      * #########
      */
 
-     private function updateMixerOwnerAccount(int $ownerId, int $fare, int $preOwnerId, int $preFare)
-     {
-         if ($ownerId == $preOwnerId && $fare == $preFare) {
-             # هیچ تغییری در تعویض کامیون و کرایه بار ایجاد نشده
-             # بر همین اساس هیچ عملیاتی صورت نمی‌گیرد
-         } elseif ($ownerId == $preOwnerId) {
-             $this->updateSameMixerOwnerSalary($ownerId, $fare, $preFare);
-         } else {
-             $this->updateDifferentMixerOwnerSalary($ownerId, $fare, $preOwnerId, $preFare);
-         }
-     }
+    private function updateMixerOwnerAccount(int $ownerId, int $fare, int $preOwnerId, int $preFare)
+    {
+        if ($ownerId == $preOwnerId && $fare == $preFare) {
+            # هیچ تغییری در تعویض کامیون و کرایه بار ایجاد نشده
+            # بر همین اساس هیچ عملیاتی صورت نمی‌گیرد
+        } elseif ($ownerId == $preOwnerId) {
+            $this->updateSameMixerOwnerSalary($ownerId, $fare, $preFare);
+        } else {
+            $this->updateDifferentMixerOwnerSalary($ownerId, $fare, $preOwnerId, $preFare);
+        }
+    }
 
     private function updateSameMixerOwnerSalary(int $ownerId, int $fare, int $preFare)
     {
