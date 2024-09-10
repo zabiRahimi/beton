@@ -231,9 +231,9 @@ const AddConcreteSalesInvoice = () => {
         endDate: '',
         id:'',
         concrete_id: '',
-        cusotmer_id: '',
+        customer_id: '',
         customerName: '',
-        custoemrLastName: '',
+        customerLastName: '',
         truck_id: '',
         numberplate: '',
         owner_id: '',
@@ -241,6 +241,7 @@ const AddConcreteSalesInvoice = () => {
         ownerLastName: '',
         driver_id: '',
         driverName: '',
+        driverLastName: '',
     });
 
     /**
@@ -466,16 +467,17 @@ const AddConcreteSalesInvoice = () => {
         endDate = search.endDate,
         id = search.id,
         concrete_id = search.concrete_id,
-        cusotmer_id = search.cusotmer_id,
+        customer_id = search.customer_id,
         customerName = search.customerName,
-        custoemrLastName = search.custoemrLastName,
+        customerLastName = search.customerLastName,
         truck_id = search.truck_id,
         numberplate = search.numberplate,
         owner_id = search.owner_id,
         ownerName = search.ownerName,
         ownerLastName = search.ownerLastName,
         driver_id = search.driver_id,
-        driverName = search.driverName) {
+        driverName = search.driverName,
+        driverLastName=search.driverLastName) {
         setLoading(true)
         await axios.get(`/api/v1/getConcreteSalesInvoices?page=${page}`, {
             params: {
@@ -483,16 +485,17 @@ const AddConcreteSalesInvoice = () => {
                 endDate,
                 id,
                 concrete_id,
-                cusotmer_id,
+                customer_id,
                 customerName,
-                custoemrLastName,
+                customerLastName,
                 truck_id,
                 numberplate,
                 owner_id,
                 ownerName,
                 ownerLastName,
                 driver_id,
-                driverName
+                driverName,
+                driverLastName
             }
         }).then((response) => {
             setConcreteSalesInvoices(response.data.concreteSalesInvoices.data);

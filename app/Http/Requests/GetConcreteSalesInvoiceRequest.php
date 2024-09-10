@@ -26,9 +26,9 @@ class GetConcreteSalesInvoiceRequest extends FormRequest
             'endDate' => 'nullable|date',
             'id' => 'nullable|numeric',
             'concrete_id' => 'nullable|numeric',
-            'cusotmer_id' => 'nullable|numeric',
+            'customer_id' => 'nullable|numeric',
             'customerName' => 'nullable|string',
-            'custoemrLastName' => 'nullable|string',
+            'customerLastName' => 'nullable|string',
             'truck_id' => 'nullable|numeric',
             'numberplate' => 'nullable|string',
             'owner_id' => 'nullable|numeric',
@@ -36,7 +36,7 @@ class GetConcreteSalesInvoiceRequest extends FormRequest
             'ownerLastName' => 'nullable|string',
             'driver_id' => 'nullable|numeric',
             'driverName' => 'nullable|string',
-            'driverLateName' => 'nullable|string',
+            'driverLastName' => 'nullable|string',
         ];
     }
 
@@ -47,9 +47,9 @@ class GetConcreteSalesInvoiceRequest extends FormRequest
             'endDate.date' => 'تاریخ پایان جستجو را صحیح وارد کنید، چنانچه نمی‌خواهید تاریخ پایان را وارد کنید آن را کاملا پاک کنید',
             'id.numeric' => 'شماره قبض را به عدد وارد کنید',
             'concrete_id.numeric' => 'شناسه بتن را به عدد وارد کنید',
-            'concrete_id.numeric' => 'شناسه مشتری را به عدد وارد کنید',
+            'customer_id.numeric' => 'شناسه مشتری را به عدد وارد کنید',
             'customerName.string' => 'نام خریدار را صحیح وارد کنید',
-            'custoemrLastName.string' => ' نام خانوادگی خریدار را صحیح وارد کنید',
+            'customerLastName.string' => ' نام خانوادگی خریدار را صحیح وارد کنید',
             'truck_id.numeric' => 'شناسه میکسر را به عدد وارد کنید',
             'numberplate.string' => 'شماره پلاک را صحیح وارد کنید',
             'owner_id.numeric' => 'شناسه مالک میکسر را به عدد وارد کنید',
