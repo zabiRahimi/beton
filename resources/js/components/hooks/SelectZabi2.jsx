@@ -2,16 +2,22 @@ import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 're
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-const SelectZabi2 = forwardRef(({ options, optionsSearch, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
+const SelectZabi2 = forwardRef(({ options, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
+    const mainSZ = useRef(null);
     const labelRef = useRef(null);
     const mainOptionRef = useRef(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredOptions, setFilteredOptions] = useState(options);
     const [currentElement, setCurrentElement] = useState(primaryLabel);
+    const [hasFocused, setHasFocused] = useState(false);
     useImperativeHandle(ref, () => ({
         updateData(value) {
             setCurrentElement(value);
         }
     }));
-
+    const handleFocus = () => {
+        setHasFocused(true);
+    };
 
     const returnOptions = () => {
         let vals;
@@ -30,6 +36,7 @@ const SelectZabi2 = forwardRef(({ options, optionsSearch, primaryLabel, saveOpti
     }
 
     const optionDisplayHandle = (apply = true) => {
+        console.log('on');
         if (apply) {
             mainOptionRef.current.classList.add('--hidden');
         } else {
@@ -50,11 +57,37 @@ const SelectZabi2 = forwardRef(({ options, optionsSearch, primaryLabel, saveOpti
         optionDisplayHandle();
     }
 
+    const handleSearch = (e) => {
+        const searchValue = e.target.value.toLowerCase();
+        setSearchTerm(searchValue);
+        setFilteredOptions(options.filter(option => option.html.toLowerCase().includes(searchValue)));
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (mainSZ.current && !mainSZ.current.contains(event.target)) {
+                if (hasFocused) {
+                    optionDisplayHandle();
+                    setHasFocused(false);
+                }
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('touchstart', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('touchstart', handleClickOutside);
+        };
+    }, [optionDisplayHandle]);
+
+
     return (
         <div
             className='mainSZ'
-            onBlur={optionDisplayHandle}
-            tabIndex="0"
+            ref={mainSZ}
+            onClick={handleFocus}
         >
             <div
                 className='titleSZ'
@@ -64,8 +97,16 @@ const SelectZabi2 = forwardRef(({ options, optionsSearch, primaryLabel, saveOpti
                 <span className="labelSZ" ref={labelRef}> {currentElement}</span>
                 <i className="icofont-caret-down iSZ" />
             </div>
-            <div className='mainOptionSZ --hidden' ref={mainOptionRef} >
+            <div className='mainOptionSZ --hidden ' ref={mainOptionRef} >
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    placeholder="جستجو..."
+                    className="searchInputSZ"
+                />
                 {options.length > 0 ? returnOptions() : <Skeleton height={32} count={6} />}
+                {/* {options.length > 0 ? returnOptions() : <Skeleton height={32} count={6} />} */}
             </div>
         </div>
     );
