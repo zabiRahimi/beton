@@ -799,8 +799,8 @@ const AddConcreteSalesInvoice = () => {
         if (length == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
-        const reversedCustomers = concreteSalesInvoices.slice().reverse(); // کپی آرایه اولیه و معکوس کردن آن
-        let value = reversedCustomers.map((concreteSalesInvoice, i) => {
+        
+       let value = concreteSalesInvoices.map((concreteSalesInvoice, i) => {
             let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
             let date = concreteSalesInvoice['date'].split('-');
             return <div className="rowListShowACSI_Ge" key={i}>
