@@ -229,7 +229,7 @@ const AddConcreteSalesInvoice = () => {
     const [search, setSearch] = useState({
         startDate: '',
         endDate: '',
-        id:'',
+        id: '',
         concrete_id: '',
         customer_id: '',
         customerName: '',
@@ -477,7 +477,7 @@ const AddConcreteSalesInvoice = () => {
         ownerLastName = search.ownerLastName,
         driver_id = search.driver_id,
         driverName = search.driverName,
-        driverLastName=search.driverLastName) {
+        driverLastName = search.driverLastName) {
         setLoading(true)
         await axios.get(`/api/v1/getConcreteSalesInvoices?page=${page}`, {
             params: {
@@ -498,9 +498,12 @@ const AddConcreteSalesInvoice = () => {
                 driverLastName
             }
         }).then((response) => {
+            console.log(response.data.concreteSalesInvoices.total);
             setConcreteSalesInvoices(response.data.concreteSalesInvoices.data);
             setTotalPage(response.data.concreteSalesInvoices.last_page);
-            setTicketNumber(response.data.concreteSalesInvoices.total + 1);
+            if (response.data.concreteSalesInvoices.current_page == 1) {
+                setTicketNumber(response.data.concreteSalesInvoices.data[0]['id'] + 1);
+            }
             window.scrollTo({
                 top: top,
                 behavior: 'smooth'
@@ -799,8 +802,8 @@ const AddConcreteSalesInvoice = () => {
         if (length == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
-        
-       let value = concreteSalesInvoices.map((concreteSalesInvoice, i) => {
+
+        let value = concreteSalesInvoices.map((concreteSalesInvoice, i) => {
             let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
             let date = concreteSalesInvoice['date'].split('-');
             return <div className="rowListShowACSI_Ge" key={i}>
