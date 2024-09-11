@@ -108,42 +108,13 @@ const AddConcreteSalesInvoice = () => {
      * ###
      */
 
-    const [customersSearch, setCustomersSearch] = useState([{
-        value: '',
-        html: <div className="personnelAption_addPerS">
-            <span className="name_addPers">همه خریداران</span>
-        </div>
-    }]);
-    const [concretesSearch, setConcretesSearch] = useState([{
-        value: '',
-        html: <div className="personnelAption_addPerS">
-            <span className="name_addPers">همه بتن‌ها</span>
-        </div>
-    }]);
-    const [mixersSearch, setMixersSearch] = useState([{
-        value: '',
-        html: <div className="personnelAption_addPerS">
-            <span className="name_addPers">همه میکسر‌ها</span>
-        </div>
-    }]);
-    const [driversSearch, setDriversSearch] = useState([{
-        value: '',
-        html: <div className="personnelAption_addPerS">
-            <span className="name_addPers">همه رانندگان</span>
-        </div>
-    }]);
-    const [fromDateSearch, setFromDateSearch] = useState('');
+    
     const [dayFromSearch, setDayFromSearch] = useState('');
     const [monthFromSearch, setMonthFromSearch] = useState('');
     const [yearFromSearch, setYearFromSearch] = useState('');
-    const [untilDateSearch, setUntilDateSearch] = useState('');
     const [dayUntilSearch, setDayUntilSearch] = useState('');
     const [monthUntilSearch, setMonthUntilSearch] = useState('');
     const [yearUntilSearch, setYearUntilSearch] = useState('');
-    const [customerSearchId, setCustomerSearchId] = useState('');
-    const [concreteSearchId, setConcreteSearchId] = useState('');
-    const [truckSearchId, setTruckSearchId] = useState('');
-    const [driverSearchId, setDriverSearchId] = useState('');
 
     /**
     * ############### states for paginate
@@ -927,77 +898,6 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-    const changeDayFromSearch = (e) => {
-        let { value } = e.target;
-        value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-            setDayFromSearch(value);
-        }
-        let date = yearFromSearch + '-' + monthFromSearch + '-' + value;
-        setFromDateSearch(date);
-    }
-
-    const changeMonthFromSearch = (e) => {
-        let { value } = e.target;
-        value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-            setMonthFromSearch(value);
-        }
-        let date = yearFromSearch + '-' + value + '-' + dayFromSearch;
-        setFromDateSearch(date);
-    }
-
-    const changeYearFromSearch = (e) => {
-        let { value } = e.target;
-        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-            setYearFromSearch(value);
-        }
-        let date = value + '-' + monthFromSearch + '-' + dayFromSearch;
-        setFromDateSearch(date);
-    }
-
-    const changeDayUntilSearch = (e) => {
-        let { value } = e.target;
-        value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-            setDayUntilSearch(value);
-        }
-        let date = yearUntilSearch + '-' + monthUntilSearch + '-' + value;
-        setUntilDateSearch(date);
-    }
-
-    const changeMonthUntilSearch = (e) => {
-        let { value } = e.target;
-        value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-            setMonthUntilSearch(value);
-        }
-        let date = yearUntilSearch + '-' + value + '-' + dayUntilSearch;
-        setUntilDateSearch(date);
-    }
-
-    const changeYearUntilSearch = (e) => {
-        let { value } = e.target;
-        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-            setYearUntilSearch(value);
-        }
-
-        let date = value + '-' + monthUntilSearch + '-' + dayUntilSearch;
-        setUntilDateSearch(date);
-    }
-
     const changeHour = (e, i) => {
         let { value } = e.target;
         value = value.toString();
@@ -1245,16 +1145,6 @@ const AddConcreteSalesInvoice = () => {
         refInvoice[`cementStore_id0`].current.updateData('انتخاب');
         refInvoice[`truck_id0`].current.updateData('انتخاب');
         refInvoice[`driver_id0`].current.updateData('انتخاب');
-
-        // var elements = document.getElementsByClassName('element');
-        // for (var i = 0; i < elements.length; i++) {
-        //     elements[i].classList.remove('borderRedFB');
-        // }
-
-        // var elements = document.getElementsByClassName('elementError');
-        // for (var i = 0; i < elements.length; i++) {
-        //     elements[i].innerHTML = '';
-        // }
         handleRemoveAllError();
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
@@ -1468,59 +1358,6 @@ const AddConcreteSalesInvoice = () => {
             }
             refErr.current && (refErr.current.innerHTML = '')
         }
-    }
-
-    const handleSearch = () => {
-        let start = fromDateSearch.replace(/-/g, '');
-        let end = untilDateSearch.replace(/-/g, '');
-        let date = ['1400-01-11', '1401-02-18', '1402-03-15', '1403-04-31', '1404-05-06', '1405-06-23', '1405-07-19', '1406-08-20', '1407-09-21',];
-        let filteredInvoice = concreteSalesInvoicesForSearch.filter(invoice => {
-            let date2 = invoice.date.replace(/-/g, ''); // حذف خط فاصله از تاریخ و تبدیل آن به یک رشته عددی
-            return (start ? date2 >= start : true) && (end ? date2 <= end : true) && (customerSearchId ? invoice.customer_id == customerSearchId : true) && (concreteSearchId ? invoice.concrete_id == concreteSearchId : true) && (truckSearchId ? invoice.truck_id == truckSearchId : true) && (driverSearchId ? invoice.driver_id == driverSearchId : true);
-
-        });
-        if (fromDateSearch || untilDateSearch || customerSearchId || concreteSearchId || truckSearchId || driverSearchId) {
-            /**
-             * استفاده از دستور ست تایم‌اوت و مقدار دهی نال
-             * فقط برای اینکه یک تاخیر ایجاد شود که یک جلوه بصری ایجاد کند
-             */
-            setConcreteSalesInvoices(null);
-
-            setTimeout(() => {
-                setConcreteSalesInvoices(filteredInvoice);
-            }, 700);
-        } else {
-            setConcreteSalesInvoices(null);
-            setTimeout(() => {
-                setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
-            }, 400);
-        }
-    }
-
-    const handleClearSearch = () => {
-        setFromDateSearch('');
-        setUntilDateSearch('');
-        setCustomerSearchId('');
-        setConcreteSearchId('');
-        setTruckSearchId('');
-        setDriverSearchId('');
-        document.getElementById('dayFromSearch').value = '';
-        document.getElementById('monthFromSearch').value = '';
-        document.getElementById('yearFromSearch').value = '';
-
-        document.getElementById('dayUntilSearch').value = '';
-        document.getElementById('monthUntilSearch').value = '';
-        document.getElementById('yearUntilSearch').value = '';
-
-        refCustomerSearch.current.updateData('انتخاب');
-        refConcreteSearch.current.updateData('انتخاب');
-        refTruckSearch.current.updateData('انتخاب');
-        refDriverSearch.current.updateData('انتخاب');
-
-        setConcreteSalesInvoices(null);
-        setTimeout(() => {
-            setConcreteSalesInvoices(concreteSalesInvoicesForSearch);
-        }, 400);
     }
 
     const handleSubmit = async (e) => {
@@ -3083,133 +2920,7 @@ const AddConcreteSalesInvoice = () => {
                             handelSetDataSearch={handelSetDataSearch}
                             concretes={concretes}
                         />
-                        {/* <div className="containerSearch_Se">
-                            <div className="containerDate_Se">
-                                <div className="startDate_Se">
-                                    <span className="stringFromDate_Se"> از تاریخ </span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se dayDate_Se"
-                                        id="dayFromSearch"
-                                        placeholder="روز"
-                                        onInput={e => changeDayFromSearch(e)}
-                                    />
-                                    <span className="slashDate_Se">/</span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se monthDate_Se"
-                                        placeholder="ماه"
-                                        id="monthFromSearch"
-                                        onInput={e => changeMonthFromSearch(e)}
-                                    />
-                                    <span className="slashDate_Se">/</span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se yearDate_Se"
-                                        id="yearFromSearch"
-                                        placeholder="سال"
-                                        onInput={e => changeYearFromSearch(e)}
-                                    />
-
-                                </div>
-                                <div className="endtDate_Se">
-                                    <span className="stringUntilDate_Se"> تا تاریخ </span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se dayDate_Se"
-                                        id="dayUntilSearch"
-                                        placeholder="روز"
-                                        onInput={e => changeDayUntilSearch(e)}
-                                    />
-                                    <span className="slashDate_Se">/</span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se monthDate_Se"
-                                        id="monthUntilSearch"
-                                        placeholder="ماه"
-                                        onInput={e => changeMonthUntilSearch(e)}
-                                    />
-                                    <span className="slashDate_Se">/</span>
-                                    <input
-                                        type="text"
-                                        className="inputDate_Se yearDate_Se"
-                                        id="yearUntilSearch"
-                                        placeholder="سال"
-                                        onInput={e => changeYearUntilSearch(e)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="containerCustAConc_Se">
-                                <div className="customer_Se">
-                                    <span className="stringCustAConc_Se stringCustomer_Se"> خریدار </span>
-                                    <div className="divSelectSearch_Se">
-                                        <SelectZabi
-                                            primaryLabel='انتخاب'
-                                            options={customersSearch}
-                                            saveOption={setCustomerSearchId}
-                                            ref={refCustomerSearch}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="concrete_Se">
-                                    <span className="stringCustAConc_Se stringConcrete_Se"> بتن </span>
-                                    <div className="divSelectSearch_Se">
-                                        <SelectZabi
-                                            primaryLabel='انتخاب'
-                                            options={concretesSearch}
-                                            saveOption={setConcreteSearchId}
-                                            ref={refConcreteSearch}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="containerMixADri_Se">
-                                <div className="mixer_Se">
-                                    <span className="stringMixADri_Se stringMixer_Se"> میکسر </span>
-                                    <div className="divSelectSearch_Se">
-                                        <SelectZabi
-                                            primaryLabel='انتخاب'
-                                            options={mixersSearch}
-                                            saveOption={setTruckSearchId}
-                                            ref={refTruckSearch}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="driver_Se">
-                                    <span className="stringMixADri_Se stringDriver_Se"> راننده </span>
-                                    <div className="divSelectSearch_Se">
-                                        <SelectZabi
-                                            primaryLabel='انتخاب'
-                                            options={driversSearch}
-                                            saveOption={setDriverSearchId}
-                                            ref={refDriverSearch}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="divSearch_Se">
-                                <div className="divBtnDelSearch_Se">
-                                    <button
-                                        className="--styleLessBtn btnDelSearch"
-                                        onClick={handleClearSearch}
-                                    >
-                                        <span className="sritngDelSearch_Se"> حذف جستجو </span>
-                                        <i className="icofont-close-circled icofontDelSearch_Se"></i>
-                                    </button>
-                                </div>
-                                <div className="divBtnSearch_Se">
-                                    <button
-                                        className="--styleLessBtn btnSearch"
-                                        onClick={handleSearch}
-                                    >
-                                        <span className="sritngSearch_Se"> جستجو </span>
-                                        <i className="icofont-search-2 icofontSearch_Se"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div> */}
+                      
                         <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                             <span className="rowNumShowACSI_Ge ">ردیف</span>
                             <span className="ticketNumberACSI_Ge ">قبض</span>
