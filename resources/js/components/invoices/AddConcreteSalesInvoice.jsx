@@ -15,6 +15,7 @@ import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from '../hooks/useChangeForm';
 import SelectZabi from "../hooks/SelectZabi";
+import SelectZabi2 from "../hooks/SelectZabi2";
 import Pagination from "../hooks/Pagination";
 import AddCocreteSalesInvoiceSearch from "../search/AddConcreteSalesInvoiceSearch";
 
@@ -1793,7 +1794,7 @@ const AddConcreteSalesInvoice = () => {
                                         className="element"
                                         onClick={e => clearInputError(e, refCustomer_idError)}
                                     >
-                                        <SelectZabi
+                                        <SelectZabi2
                                             primaryLabel='انتخاب'
                                             options={customers}
                                             saveOption={setCustomerId}

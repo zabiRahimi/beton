@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 're
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-const SelectZabi = forwardRef(({ options, optionsSearch, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
+const SelectZabi2 = forwardRef(({ options, optionsSearch, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
     const labelRef = useRef(null);
     const mainOptionRef = useRef(null);
     const [currentElement, setCurrentElement] = useState(primaryLabel);
@@ -65,17 +65,8 @@ const SelectZabi = forwardRef(({ options, optionsSearch, primaryLabel, saveOptio
     );
 })
 
-export default SelectZabi;
+export default SelectZabi2;
 
-// import Title from '../hooks/Title'
-// const AddPersonnelSlip=()=>{
-// return(
-// <div className=''>
-//  <SelectZabi />
-// </div>
-// )
-// }
-// export default AddPersonnelSlip
 
 
 
