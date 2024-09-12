@@ -40,13 +40,11 @@ const AddConcreteSalesInvoice = () => {
     const form = useRef(null);
     const formCurrent = form.current;
 
-    const refCustomerSearch = useRef(null);
     const refCustomer_id = useRef(null);
     const refCustomer_idError = useRef(null);
 
     const refTimeEditError = useRef(null);
     const refDateEditError = useRef(null);
-    const refConcreteSearch = createRef();
     const refConcrete_idEdit = createRef();
     const refConcrete_idEditError = useRef(null);
     const refUnitPriceEdit = useRef(null);
@@ -57,10 +55,8 @@ const AddConcreteSalesInvoice = () => {
     const refCementStore_idEdit = useRef(null);
     const refCementStore_idEditError = useRef(null);
     const refTotalPriceEdit = useRef(null);
-    const refTruckSearch = useRef(null);
     const refTruck_idEdit = useRef(null);
     const refTruck_idEditError = useRef(null);
-    const refDriverSearch = useRef(null);
     const refDriver_idEdit = useRef(null);
     const refDriver_idEditError = useRef(null);
     const refFareEdit = useRef(null);
@@ -98,29 +94,15 @@ const AddConcreteSalesInvoice = () => {
     const [drivers, setDrivers] = useState([]);
     const [cementStores, setCementStores] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
-    const [concreteSalesInvoicesForSearch, setConcreteSalesInvoicesForSearch] = useState(null);
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
-
-    /**
-     * ###
-     * #### استیت‌های مربوط به سرچ و جستجوی فاکتورهای ایجاد شده
-     * ###
-     */
-
-    
-    const [dayFromSearch, setDayFromSearch] = useState('');
-    const [monthFromSearch, setMonthFromSearch] = useState('');
-    const [yearFromSearch, setYearFromSearch] = useState('');
-    const [dayUntilSearch, setDayUntilSearch] = useState('');
-    const [monthUntilSearch, setMonthUntilSearch] = useState('');
-    const [yearUntilSearch, setYearUntilSearch] = useState('');
 
     /**
     * ############### states for paginate
     */
     const [totalPage, setTotalPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalRecords, setTotalRecords] = useState(0);
 
     /**
      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
@@ -469,11 +451,12 @@ const AddConcreteSalesInvoice = () => {
                 driverLastName
             }
         }).then((response) => {
-            console.log(response.data.concreteSalesInvoices.total);
-            setConcreteSalesInvoices(response.data.concreteSalesInvoices.data);
-            setTotalPage(response.data.concreteSalesInvoices.last_page);
-            if (response.data.concreteSalesInvoices.current_page == 1) {
-                setTicketNumber(response.data.concreteSalesInvoices.data[0]['id'] + 1);
+            const salesInvoices =response.data.concreteSalesInvoices;
+            setConcreteSalesInvoices(salesInvoices.data);
+            setTotalPage(salesInvoices.last_page);
+            setTotalRecords(salesInvoices.total);
+            if (salesInvoices.current_page == 1) {
+                setTicketNumber(salesInvoices.data[0]['id'] + 1);
             }
             window.scrollTo({
                 top: top,
@@ -543,20 +526,6 @@ const AddConcreteSalesInvoice = () => {
 
                         </div>
                     }]));
-
-                    setCustomersSearch(perv => ([...perv, {
-                        value: data.id,
-                        html: <div className="personnelAption_addPerS">
-                            <span className="name_addPers">{data.name}
-                                {' '}
-                                {data.lastName}</span>
-
-                            <span className="fther_addPers">
-                                {data.father || ''}
-                            </span>
-
-                        </div>
-                    }]));
                 })
             }
         });
@@ -582,20 +551,6 @@ const AddConcreteSalesInvoice = () => {
             } else {
                 datas.map((data, i) => {
                     setConcretes(perv => ([...perv, {
-                        value: data.id,
-                        concreteName: data.concreteName,
-                        html: <div className="concreteAptionSelectFB">
-                            <span className="concreteLabelSelectFB">بتن
-                            </span>
-
-                            <span className="concreteSelectFB">
-                                {data.concreteName}
-                            </span>
-
-                        </div>
-                    }]));
-
-                    setConcretesSearch(perv => ([...perv, {
                         value: data.id,
                         concreteName: data.concreteName,
                         html: <div className="concreteAptionSelectFB">
@@ -678,19 +633,6 @@ const AddConcreteSalesInvoice = () => {
 
                         </div>
                     }]));
-                    setDriversSearch(perv => ([...perv, {
-                        value: data.id,
-                        html: <div className="containerOption_Se containerOptionDriver_Se">
-                            <span className="nameDriver_Se">{data.name}
-                                {' '}
-                                {data.lastName}</span>
-
-                            <span className="ftherDriver_Se">
-                                {data.father || ''}
-                            </span>
-
-                        </div>
-                    }]));
                 })
             }
         });
@@ -730,28 +672,6 @@ const AddConcreteSalesInvoice = () => {
                             </span>
 
                             <span className="mixerOwnerSelectFB">
-                                {data.customer.name}
-                                {' '}
-                                {data.customer.lastName}
-                            </span>
-
-                        </div>
-                    }]));
-
-                    setMixersSearch(perv => ([...perv, {
-                        value: data.id,
-                        value2: data.customer.id,
-                        html: <div className="containerOption_Se containerOptionMixer_Se">
-                            <span className="mixerNamberpalteSelectFB">
-                                <div className="numberplateDiv">
-                                    <span className="numberplateDivS1">{arr[0]}</span>
-                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-                                    <span className="numberplateDivS3">{arr[1]}</span>
-                                    <span className="numberplateDivS4">{arr[2]}</span>
-                                </div>
-                            </span>
-
-                            <span className="divOwnerMixer_Se">
                                 {data.customer.name}
                                 {' '}
                                 {data.customer.lastName}
@@ -2919,6 +2839,7 @@ const AddConcreteSalesInvoice = () => {
                             getConcreteSalesInvoices={getConcreteSalesInvoices}
                             handelSetDataSearch={handelSetDataSearch}
                             concretes={concretes}
+                            totalRecords={totalRecords}
                         />
                       
                         <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">

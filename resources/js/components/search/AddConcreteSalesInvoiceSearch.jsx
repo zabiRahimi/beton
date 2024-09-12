@@ -6,7 +6,7 @@ import SelectZabi from '../hooks/SelectZabi';
 // import iran from "../../../assets/images/iran.png";
 
 
-const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataSearch, concretes }) => {
+const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataSearch, concretes, totalRecords }) => {
     const {
         checkDate
     } = DataZabi();
@@ -280,21 +280,21 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
         <div className="mainConcreteSIS_Se">
             <div className="headConcreteSIS_Se">
                 {showSearchFilds ?
-                
-                
-                
                     <button className='searchBtnsCoSIS_Se showSearchBtnCoSIS_Se ' onClick={handleShowSearchFilds}>
                         <i className='icofont-search-2 iSearchCoSIS_Se'/>
                         <i className='icofont-check-alt '/>
                     </button>
                     :
                     <button className='searchBtnsCoSIS_Se closeSearchBtnCoSIS_Se' onClick={() => { handleShowSearchFilds(); handleClearSearch() }}>
-                        {/* <span>بستن فیلدهای جستجو</span> */}
                         <i className='icofont-search-2 iSearchCoSIS_Se'/>
                         <i className='icofont-close-line iCloseLineSIS_Se'/>
-                        {/* <i className="icofont-eye-blocked eyeBlockedCoSIS_Se"></i> */}
                     </button>
                 }
+
+                <div className="divShowTotalConcreteSIS_Se">
+                    <span>تعداد قبض‌ها</span>
+                    <div>{totalRecords}</div>
+                </div>
             </div>
 
             {!showSearchFilds && <div className="containerConcreteSIS_Se">
