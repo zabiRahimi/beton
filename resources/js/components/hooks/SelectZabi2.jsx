@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 're
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-const SelectZabi2 = forwardRef(({ options, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
+const SelectZabi2 = forwardRef(({ options, searchOptions, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
     const mainSZ = useRef(null);
     const labelRef = useRef(null);
     const mainOptionRef = useRef(null);
@@ -18,6 +18,25 @@ const SelectZabi2 = forwardRef(({ options, primaryLabel, saveOption, saveOption2
     const handleFocus = () => {
         setHasFocused(true);
     };
+
+    const returnSearchOptions = () => {
+        let vals;
+        vals= searchOptions.map((val, i)=>{
+            if (i==0) {
+                return;
+            } else {
+                return <div
+                className='containerOptionSZ'
+                key={i}
+                onClick={() => {
+                    setCurrentElement(val.html);
+                    changeHandle(val.value, val.value2 ? val.value2 : null, val.value3 ? val.value3 : null)
+                }}>
+                {val.html}
+            </div>
+            }
+        })
+    }
 
     const returnOptions = () => {
         let vals;
@@ -98,13 +117,14 @@ const SelectZabi2 = forwardRef(({ options, primaryLabel, saveOption, saveOption2
                 <i className="icofont-caret-down iSZ" />
             </div>
             <div className='mainOptionSZ --hidden ' ref={mainOptionRef} >
-                <input
+                {searchOptions.length > 0 && returnSearchOptions()}
+                {/* <input
                     type="text"
                     value={searchTerm}
                     onChange={handleSearch}
                     placeholder="جستجو..."
                     className="searchInputSZ"
-                />
+                /> */}
                 {options.length > 0 ? returnOptions() : <Skeleton height={32} count={6} />}
                 {/* {options.length > 0 ? returnOptions() : <Skeleton height={32} count={6} />} */}
             </div>
