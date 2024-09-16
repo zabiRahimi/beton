@@ -21,21 +21,23 @@ const SelectZabi2 = forwardRef(({ options, searchOptions, primaryLabel, saveOpti
 
     const returnSearchOptions = () => {
         let vals;
-        vals= searchOptions.map((val, i)=>{
-            if (i==0) {
-                return;
+        vals = searchOptions.map((val, i) => {
+            if (i == 0) {
+                return <div key={i}>{val.html}</div>
             } else {
                 return <div
-                className='containerOptionSZ'
-                key={i}
-                onClick={() => {
-                    setCurrentElement(val.html);
-                    changeHandle(val.value, val.value2 ? val.value2 : null, val.value3 ? val.value3 : null)
-                }}>
-                {val.html}
-            </div>
+                    className='containerOptionSZ'
+                    key={i}
+                    onClick={() => {
+                        setCurrentElement(val.html);
+                        changeHandle(val.value, val.value2 ? val.value2 : null, val.value3 ? val.value3 : null)
+                    }}>
+                    {val.html}
+                </div>
             }
-        })
+
+        });
+        return vals;
     }
 
     const returnOptions = () => {
@@ -55,7 +57,6 @@ const SelectZabi2 = forwardRef(({ options, searchOptions, primaryLabel, saveOpti
     }
 
     const optionDisplayHandle = (apply = true) => {
-        console.log('on');
         if (apply) {
             mainOptionRef.current.classList.add('--hidden');
         } else {
@@ -117,16 +118,11 @@ const SelectZabi2 = forwardRef(({ options, searchOptions, primaryLabel, saveOpti
                 <i className="icofont-caret-down iSZ" />
             </div>
             <div className='mainOptionSZ --hidden ' ref={mainOptionRef} >
-                {searchOptions.length > 0 && returnSearchOptions()}
-                {/* <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={handleSearch}
-                    placeholder="جستجو..."
-                    className="searchInputSZ"
-                /> */}
+                {searchOptions && searchOptions.length > 0 
+                    && returnSearchOptions()}
+                
                 {options.length > 0 ? returnOptions() : <Skeleton height={32} count={6} />}
-                {/* {options.length > 0 ? returnOptions() : <Skeleton height={32} count={6} />} */}
+            
             </div>
         </div>
     );

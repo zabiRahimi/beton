@@ -89,6 +89,7 @@ const AddConcreteSalesInvoice = () => {
     const [refInvoice, setRefInvoice] = useState({});
 
     const [loading, setLoading] = useState(false);
+    const [dataCustomers, setDataCustomers] = useState();
     const [customers, setCustomers] = useState([]);
     const [concretes, setConcretes] = useState([]);
     const [mixers, setMixers] = useState([]);
@@ -97,7 +98,6 @@ const AddConcreteSalesInvoice = () => {
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
-
     /**
     * ############### states for paginate
     */
@@ -207,6 +207,65 @@ const AddConcreteSalesInvoice = () => {
 
     const [maskan, setMaskan] = useState([...invoice.map(item => ''), '']);
 
+    /**
+     * ########## جستجو برای تگ‌های سلکت ##########
+     */
+    const [searchOptionsCustoemrs, setSearchOptionsCustoemrs] = useState(
+        [
+
+        ]
+    );
+    // const [searchOptionsCustoemrs, setSearchOptionsCustoemrs] = useState(
+    //     [
+    //         {html:<div><input type="text" onInput={(e)=>searchOptionsCustomers(e)} /></div>},
+    //     ]
+    // );
+
+    const searchOptionsCustomers = (e) => {
+        const { value } = e.target;
+        // const newDataCustoemrs = dataCustomers.map(item => ({
+        //     id: item.id,
+        //     name: `${item.name} ${item.lastName}`
+        // }));
+
+        // const ids = searchByName(newDataCustoemrs, value);
+        // let filteredArr = dataCustomers.filter(item => ids.includes(item.id));
+
+
+        // const newSearchOptions = filteredArr.map((data, i) => ({
+        //     value: data.id,
+        //     html: <div className="personnelAption_addPerS">
+        //         <span className="name_addPers">{data.name} {data.lastName}</span>
+        //         <span className="fther_addPers">{data.father || ''}</span>
+        //     </div>
+        // }));
+
+        // setSearchOptionsCustoemrs(newSearchOptions);
+        // filteredArr.map((data, i) => {
+        //     setSearchOptionsCustoemrs(perv => ([...perv, {
+        //         value: data.id,
+        //         html: <div className="personnelAption_addPerS">
+        //             <span className="name_addPers">{data.name}
+        //                 {' '}
+        //                 {data.lastName}</span>
+
+        //             <span className="fther_addPers">
+        //                 {data.father || ''}
+        //             </span>
+
+        //         </div>
+        //     }]));
+        // })
+
+
+    }
+
+    const searchByName = (newArr, searchTerm) => {
+        return newArr
+            .filter(item => item.name.includes(searchTerm))
+            .map(item => item.id);
+    };
+
     useEffect(() => {
         if (isRef) {
             setMaskan((prev) => [...prev, '']);
@@ -228,6 +287,15 @@ const AddConcreteSalesInvoice = () => {
             hasCalledGetConcreteBuyers.current = true;
         }
     }, []);
+
+    // useEffect(() => {
+    //     if (dataCustomers && dataCustomers.length > 0) {
+
+    //         setSearchOptionsCustoemrs([
+    //             { html: <div><input type="text" onInput={(e) => searchOptionsCustomers(e)} /></div> },
+    //         ]);
+    //     }
+    // }, [dataCustomers]);
 
     useEffect(() => {
         if (!hasCalledGetConcretes.current) {
@@ -452,7 +520,7 @@ const AddConcreteSalesInvoice = () => {
                 driverLastName
             }
         }).then((response) => {
-            const salesInvoices =response.data.concreteSalesInvoices;
+            const salesInvoices = response.data.concreteSalesInvoices;
             setConcreteSalesInvoices(salesInvoices.data);
             setTotalPage(salesInvoices.last_page);
             setTotalRecords(salesInvoices.total);
@@ -497,6 +565,7 @@ const AddConcreteSalesInvoice = () => {
     async function getCSIConcreteBuyers() {
         await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
             let datas = response.data.concreteBuyers;
+            setDataCustomers(datas);
             if (datas.length == 0) {
                 MySwal.fire({
                     icon: "warning",
@@ -1671,6 +1740,8 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
+
+
     const handleAddNewInvoice = (e) => {
         e.preventDefault();
         setIndexNewInvoice(invoice.length);
@@ -1797,6 +1868,7 @@ const AddConcreteSalesInvoice = () => {
                                         <SelectZabi2
                                             primaryLabel='انتخاب'
                                             options={customers}
+                                            searchOptions={searchOptionsCustoemrs}
                                             saveOption={setCustomerId}
                                             ref={refCustomer_id}
                                         />
@@ -2842,7 +2914,7 @@ const AddConcreteSalesInvoice = () => {
                             concretes={concretes}
                             totalRecords={totalRecords}
                         />
-                      
+
                         <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                             <span className="rowNumShowACSI_Ge ">ردیف</span>
                             <span className="ticketNumberACSI_Ge ">قبض</span>
