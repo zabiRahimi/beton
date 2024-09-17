@@ -223,24 +223,25 @@ const AddConcreteSalesInvoice = () => {
 
     const searchOptionsCustomers = (e) => {
         const { value } = e.target;
-        // const newDataCustoemrs = dataCustomers.map(item => ({
-        //     id: item.id,
-        //     name: `${item.name} ${item.lastName}`
-        // }));
+        const newDataCustoemrs = dataCustomers.map(item => ({
+            id: item.id,
+            name: `${item.name} ${item.lastName}`
+        }));
+        const ids = searchByName(newDataCustoemrs, value);
+        let filteredArr = dataCustomers.filter(item => ids.includes(item.id));
 
-        // const ids = searchByName(newDataCustoemrs, value);
-        // let filteredArr = dataCustomers.filter(item => ids.includes(item.id));
 
+        const newSearchOptions = filteredArr.map((data, i) => ({
+            value: data.id,
+            html: <div key={i} className="personnelAption_addPerS">
+                <span className="name_addPers">{data.name} {data.lastName}</span>
+                <span className="fther_addPers">{data.father || ''}</span>
+            </div>
+        }));
+        // console.log(newSearchOptions);
 
-        // const newSearchOptions = filteredArr.map((data, i) => ({
-        //     value: data.id,
-        //     html: <div className="personnelAption_addPerS">
-        //         <span className="name_addPers">{data.name} {data.lastName}</span>
-        //         <span className="fther_addPers">{data.father || ''}</span>
-        //     </div>
-        // }));
-
-        // setSearchOptionsCustoemrs(newSearchOptions);
+        setSearchOptionsCustoemrs(
+            { html: <div><input type="text" onInput={(e) => searchOptionsCustomers(e)} /></div> },newSearchOptions);
         // filteredArr.map((data, i) => {
         //     setSearchOptionsCustoemrs(perv => ([...perv, {
         //         value: data.id,
@@ -288,14 +289,14 @@ const AddConcreteSalesInvoice = () => {
         }
     }, []);
 
-    // useEffect(() => {
-    //     if (dataCustomers && dataCustomers.length > 0) {
+    useEffect(() => {
+        if (dataCustomers && dataCustomers.length > 0) {
 
-    //         setSearchOptionsCustoemrs([
-    //             { html: <div><input type="text" onInput={(e) => searchOptionsCustomers(e)} /></div> },
-    //         ]);
-    //     }
-    // }, [dataCustomers]);
+            setSearchOptionsCustoemrs([
+                { html: <div><input type="text" onInput={(e) => searchOptionsCustomers(e)} /></div> },
+            ]);
+        }
+    }, [dataCustomers]);
 
     useEffect(() => {
         if (!hasCalledGetConcretes.current) {

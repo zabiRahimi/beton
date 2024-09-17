@@ -21,11 +21,11 @@ const SelectZabi2 = forwardRef(({ options, searchOptions, primaryLabel, saveOpti
 
     const returnSearchOptions = () => {
         let vals;
-        vals = searchOptions.map((val, i) => {
-            if (i == 0) {
-                return <div key={i}>{val.html}</div>
-            } else {
-                return <div
+        vals = searchOptions.map((val, i) => (
+            i == 0 ?
+                <div key={i}>{val.html}</div>
+                :
+                <div
                     className='containerOptionSZ'
                     key={i}
                     onClick={() => {
@@ -34,9 +34,10 @@ const SelectZabi2 = forwardRef(({ options, searchOptions, primaryLabel, saveOpti
                     }}>
                     {val.html}
                 </div>
-            }
 
-        });
+
+        ));
+        console.log(vals);
         return vals;
     }
 
@@ -118,11 +119,11 @@ const SelectZabi2 = forwardRef(({ options, searchOptions, primaryLabel, saveOpti
                 <i className="icofont-caret-down iSZ" />
             </div>
             <div className='mainOptionSZ --hidden ' ref={mainOptionRef} >
-                {searchOptions && searchOptions.length > 0 
+                {searchOptions && searchOptions.length > 0
                     && returnSearchOptions()}
-                
+
                 {options.length > 0 ? returnOptions() : <Skeleton height={32} count={6} />}
-            
+
             </div>
         </div>
     );
