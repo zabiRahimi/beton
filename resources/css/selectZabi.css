@@ -36,6 +36,36 @@
     flex-direction: column;
 }
 
+.divContainerInputSZ{
+
+}
+
+.divContainerOptionSearchSZ{
+ max-height: 170px;
+ overflow: hidden;
+ overflow-y: auto;
+ border-bottom: 2px solid blue;
+}
+
+.divContainerOptionsSZ{
+    max-height: 270px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.containerSearchOptionSZ:nth-child(even) {
+    background-color: #d7e5e3;
+}
+
+.containerSearchOptionSZ:nth-child(odd) {
+    background-color: #e8f6f4;
+}
+
+.containerSearchOptionSZ:hover {
+    background-color: #4f4ffa;
+    color: #fff;
+}
+
 .containerOptionSZ:nth-child(even) {
     background-color: #eae9e9;
 }

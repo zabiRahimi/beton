@@ -210,16 +210,9 @@ const AddConcreteSalesInvoice = () => {
     /**
      * ########## جستجو برای تگ‌های سلکت ##########
      */
-    const [searchOptionsCustoemrs, setSearchOptionsCustoemrs] = useState(
-        [
 
-        ]
-    );
-    // const [searchOptionsCustoemrs, setSearchOptionsCustoemrs] = useState(
-    //     [
-    //         {html:<div><input type="text" onInput={(e)=>searchOptionsCustomers(e)} /></div>},
-    //     ]
-    // );
+    const [searchInputCustoemrs, setSearchInputCustoemrs] = useState();
+    const [searchOptionsCustoemrs, setSearchOptionsCustoemrs] = useState([]);
 
     const searchOptionsCustomers = (e) => {
         const { value } = e.target;
@@ -230,7 +223,6 @@ const AddConcreteSalesInvoice = () => {
         const ids = searchByName(newDataCustoemrs, value);
         let filteredArr = dataCustomers.filter(item => ids.includes(item.id));
 
-
         const newSearchOptions = filteredArr.map((data, i) => ({
             value: data.id,
             html: <div key={i} className="personnelAption_addPerS">
@@ -238,27 +230,13 @@ const AddConcreteSalesInvoice = () => {
                 <span className="fther_addPers">{data.father || ''}</span>
             </div>
         }));
-        // console.log(newSearchOptions);
 
-        setSearchOptionsCustoemrs(
-            { html: <div><input type="text" onInput={(e) => searchOptionsCustomers(e)} /></div> },newSearchOptions);
-        // filteredArr.map((data, i) => {
-        //     setSearchOptionsCustoemrs(perv => ([...perv, {
-        //         value: data.id,
-        //         html: <div className="personnelAption_addPerS">
-        //             <span className="name_addPers">{data.name}
-        //                 {' '}
-        //                 {data.lastName}</span>
+        if (value.length > 0) {
+            setSearchOptionsCustoemrs(newSearchOptions);
+        } else {
+            setSearchOptionsCustoemrs();
 
-        //             <span className="fther_addPers">
-        //                 {data.father || ''}
-        //             </span>
-
-        //         </div>
-        //     }]));
-        // })
-
-
+        }
     }
 
     const searchByName = (newArr, searchTerm) => {
@@ -292,9 +270,15 @@ const AddConcreteSalesInvoice = () => {
     useEffect(() => {
         if (dataCustomers && dataCustomers.length > 0) {
 
-            setSearchOptionsCustoemrs([
-                { html: <div><input type="text" onInput={(e) => searchOptionsCustomers(e)} /></div> },
-            ]);
+            setSearchInputCustoemrs([{
+                html: <div >
+                    <div>
+                        <input type="text" placeholder="شناسه" />
+                        <i className="icofont-search-2" />
+                    </div>
+                    <input type="text" onInput={(e) => searchOptionsCustomers(e)} placeholder="نام و نام‌خانوادگی" />
+                </div>
+            }]);
         }
     }, [dataCustomers]);
 
@@ -1741,8 +1725,6 @@ const AddConcreteSalesInvoice = () => {
         }
     }
 
-
-
     const handleAddNewInvoice = (e) => {
         e.preventDefault();
         setIndexNewInvoice(invoice.length);
@@ -1869,6 +1851,7 @@ const AddConcreteSalesInvoice = () => {
                                         <SelectZabi2
                                             primaryLabel='انتخاب'
                                             options={customers}
+                                            searchInput={searchInputCustoemrs}
                                             searchOptions={searchOptionsCustoemrs}
                                             saveOption={setCustomerId}
                                             ref={refCustomer_id}
