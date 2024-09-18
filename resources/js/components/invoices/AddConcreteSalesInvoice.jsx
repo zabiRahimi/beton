@@ -271,12 +271,19 @@ const AddConcreteSalesInvoice = () => {
         if (dataCustomers && dataCustomers.length > 0) {
 
             setSearchInputCustoemrs([{
-                html: <div >
-                    <div>
-                        <input type="text" placeholder="شناسه" />
+                html: <div className="DInputsCustomersACSI_SZ">
+                    <div className="DIdsInputsCustomersACSI_SZ">
+                        <input
+                            type="text"
+                            placeholder="شناسه"
+                        />
                         <i className="icofont-search-2" />
                     </div>
-                    <input type="text" onInput={(e) => searchOptionsCustomers(e)} placeholder="نام و نام‌خانوادگی" />
+                    <input className="inputCustomersACSI_SZ"
+                        type="text"
+                        onInput={(e) => searchOptionsCustomers(e)}
+                        placeholder="نام و نام‌خانوادگی"
+                    />
                 </div>
             }]);
         }
