@@ -20,9 +20,66 @@
     padding-left: 5px;
 }
 
-.iSZ{
+.iSZ {
     width: 10px;
 }
+
+/**
+    ### مربوط به فایل AddConcreteSalesInvoice ###
+ */
+
+.DInputsCustomersACSI_SZ {
+    width: 100%;
+    background-color: #000;
+    display: flex;
+}
+
+.DIdsInputsCustomersACSI_SZ {
+    width: 35%;
+    display: flex;
+    background-color: #fff;
+    align-items: center;
+}
+
+.DIdsInputsCustomersACSI_SZ input {
+    width: 80%;
+    padding: 0 3px;
+    border: none;
+    text-align: left;
+}
+
+.DIdsInputsCustomersACSI_SZ input::placeholder {
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.DIdsInputsCustomersACSI_SZ button  {
+    padding: 0 2px;
+    border: none ;
+    color: #016401;
+    background-color: #fff;
+}
+
+.DIdsInputsCustomersACSI_SZ button:hover {
+    color: #0f54a9;
+    background-color: #ebebf6;
+    border-radius: 8px;
+}
+
+
+.inputCustomersACSI_SZ {
+    width: 65%;
+    padding-right: 3px;
+    border: none;
+    border-right: 1px solid #646464;
+}
+
+.inputCustomersACSI_SZ::placeholder{
+    font-size: 0.8rem;
+}
+
+
+/** end file AddConcreteSalesInvoice */
 
 .mainOptionSZ {
     width: 100%;
@@ -36,18 +93,16 @@
     flex-direction: column;
 }
 
-.divContainerInputSZ{
+.divContainerInputSZ {}
 
+.divContainerOptionSearchSZ {
+    max-height: 170px;
+    overflow: hidden;
+    overflow-y: auto;
+    border-bottom: 2px solid blue;
 }
 
-.divContainerOptionSearchSZ{
- max-height: 170px;
- overflow: hidden;
- overflow-y: auto;
- border-bottom: 2px solid blue;
-}
-
-.divContainerOptionsSZ{
+.divContainerOptionsSZ {
     max-height: 270px;
     overflow: hidden;
     overflow-y: auto;

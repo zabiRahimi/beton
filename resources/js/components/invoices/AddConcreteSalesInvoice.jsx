@@ -213,7 +213,30 @@ const AddConcreteSalesInvoice = () => {
 
     const [searchInputCustoemrs, setSearchInputCustoemrs] = useState();
     const [searchOptionsCustoemrs, setSearchOptionsCustoemrs] = useState([]);
+    const [searchIdCustomer, setSearchIdCustomer] = useState();
+    // console.log(searchIdCustomer);
 
+const searchIDCutomer =(e)=>{
+    e.preventDefault();
+    console.log(dataCustomers);
+    console.log(searchIdCustomer);
+    const newDataCustomer=  dataCustomers.find(obj => obj.id == searchIdCustomer);
+   console.log(newDataCustomer);
+
+   const newSearchOptions = newDataCustomer.map((data, i) => ({
+    value: data.id,
+    html: <div key={i} className="personnelAption_addPerS">
+        <span className="name_addPers">{data.name} {data.lastName}</span>
+        <span className="fther_addPers">{data.father || ''}</span>
+    </div>
+}));
+    if (newDataCustomer) {
+        setSearchOptionsCustoemrs(newSearchOptions);
+    } else {
+        setSearchOptionsCustoemrs();
+
+    }
+}
     const searchOptionsCustomers = (e) => {
         const { value } = e.target;
         const newDataCustoemrs = dataCustomers.map(item => ({
@@ -276,8 +299,10 @@ const AddConcreteSalesInvoice = () => {
                         <input
                             type="text"
                             placeholder="شناسه"
+                            onInput={(e)=>{setSearchIdCustomer(e.target.value)}} 
                         />
-                        <i className="icofont-search-2" />
+                        <button onClick={(e)=>searchIDCutomer(e)}><i className="icofont-search-2" /></button>
+                        
                     </div>
                     <input className="inputCustomersACSI_SZ"
                         type="text"
