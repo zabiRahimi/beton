@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 're
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
+const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, warn, searchWarn, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
     const mainSZ = useRef(null);
     const labelRef = useRef(null);
     const mainOptionRef = useRef(null);
@@ -65,6 +65,16 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, primaryLa
                 {val.html}
             </div>
         })
+        return vals;
+    }
+
+    const returnSearchWarn = () => {
+        let vals = <div
+            className='containerWarnSZ'
+        >
+            {searchWarn.val.html}
+        </div>
+
         return vals;
     }
 
@@ -139,6 +149,10 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, primaryLa
                 <div className="divContainerOptionSearchSZ">
                     {searchOptions && searchOptions.length > 0
                         && returnSearchOptions()}
+                </div>
+
+                <div className="divContainerWarnSearchSZ">
+                    {warn && returnSearchWarn()}
                 </div>
 
                 <div className="divContainerOptionsSZ">

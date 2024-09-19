@@ -211,11 +211,13 @@ const AddConcreteSalesInvoice = () => {
      * ########## جستجو برای تگ‌های سلکت ##########
      */
 
-    const [searchInputCustoemrs, setSearchInputCustoemrs] = useState();
-    const [searchOptionsCustoemrs, setSearchOptionsCustoemrs] = useState([]);
+    const [searchInputCustomer, setSearchInputCustomer] = useState();
+    const [searchOptionsCustomers, setSearchOptionsCustomers] = useState([]);
     const [searchIdCustomer, setSearchIdCustomer] = useState();
+    const [divWarnCustomer, setDivWarnCustomer]= useState();
+    const [stringWarnCustomer,setStringWarnCustomer]=useState('oxh');
 
-const searchIDCutomer =(e,id)=>{
+const searchIDCutomer =(e)=>{
     e.preventDefault();
     const newDataCustomer=  [dataCustomers.find(obj => obj.id == searchIdCustomer)];
 
@@ -227,19 +229,19 @@ const searchIDCutomer =(e,id)=>{
     </div>
 }));
     if (newDataCustomer) {
-        setSearchOptionsCustoemrs(newSearchOptions);
+        setSearchOptionsCustomers(newSearchOptions);
     } else {
-        setSearchOptionsCustoemrs();
+        setSearchOptionsCustomers();
 
     }
 }
-    const searchOptionsCustomers = (e) => {
+    const handleSearchOptionsCustomers = (e) => {
         const { value } = e.target;
-        const newDataCustoemrs = dataCustomers.map(item => ({
+        const newDataCustomers = dataCustomers.map(item => ({
             id: item.id,
             name: `${item.name} ${item.lastName}`
         }));
-        const ids = searchByName(newDataCustoemrs, value);
+        const ids = searchByName(newDataCustomers, value);
         let filteredArr = dataCustomers.filter(item => ids.includes(item.id));
 
         const newSearchOptions = filteredArr.map((data, i) => ({
@@ -251,9 +253,9 @@ const searchIDCutomer =(e,id)=>{
         }));
 
         if (value.length > 0) {
-            setSearchOptionsCustoemrs(newSearchOptions);
+            setSearchOptionsCustomers(newSearchOptions);
         } else {
-            setSearchOptionsCustoemrs();
+            setSearchOptionsCustomers();
 
         }
     }
@@ -289,7 +291,7 @@ const searchIDCutomer =(e,id)=>{
     useEffect(() => {
         if (dataCustomers && dataCustomers.length > 0) {
 
-            setSearchInputCustoemrs([{
+            setSearchInputCustomer([{
                 html: <div className="DInputsCustomersACSI_SZ">
                     <div className="DIdsInputsCustomersACSI_SZ">
                         <input
@@ -297,18 +299,29 @@ const searchIDCutomer =(e,id)=>{
                             placeholder="شناسه"
                             onInput={(e)=>{setSearchIdCustomer(e.target.value)}} 
                         />
-                        <button onClick={(e)=>searchIDCutomer(e,searchIdCustomer)}><i className="icofont-search-2" /></button>
+                        <button onClick={(e)=>searchIDCutomer(e)}><i className="icofont-search-2" /></button>
                         
                     </div>
                     <input className="inputCustomersACSI_SZ"
                         type="text"
-                        onInput={(e) => searchOptionsCustomers(e)}
+                        onInput={(e) => handleSearchOptionsCustomers(e)}
                         placeholder="نام و نام‌خانوادگی"
                     />
                 </div>
             }]);
         }
     }, [dataCustomers, searchIdCustomer]);
+
+    useEffect(() => {
+        if (dataCustomers && dataCustomers.length > 0) {
+
+            setDivWarnCustomer([{
+                html: <div className="DWarnCustomersACSI_SZ">
+                    {stringWarnCustomer}
+                </div>
+            }]);
+        }
+    }, [stringWarnCustomer, warnSearchCustomer]);
 
     useEffect(() => {
         if (!hasCalledGetConcretes.current) {
@@ -1879,9 +1892,10 @@ const searchIDCutomer =(e,id)=>{
                                         <SelectZabi2
                                             primaryLabel='انتخاب'
                                             options={customers}
-                                            searchInput={searchInputCustoemrs}
-                                            searchOptions={searchOptionsCustoemrs}
+                                            searchInput={searchInputCustomer}
+                                            searchOptions={searchOptionsCustomers}
                                             saveOption={setCustomerId}
+                                            searchWarn={divWarnCustomer}
                                             ref={refCustomer_id}
                                         />
                                     </div>

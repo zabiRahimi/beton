@@ -41,6 +41,14 @@
     align-items: center;
 }
 
+.DWarnCustomersACSI_SZ{
+    width: 100%;
+    background-color: #e2bbbb;
+    color: #c70707;
+    padding: 5px;
+    text-align: center;
+}
+
 .DIdsInputsCustomersACSI_SZ input {
     width: 80%;
     padding: 0 3px;
