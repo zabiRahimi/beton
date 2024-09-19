@@ -67,7 +67,6 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, primaryLa
         })
         return vals;
     }
-    // console.log(searchOptions);
 
     const optionDisplayHandle = (apply = true) => {
         if (apply) {

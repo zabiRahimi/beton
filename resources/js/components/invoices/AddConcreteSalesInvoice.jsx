@@ -214,14 +214,10 @@ const AddConcreteSalesInvoice = () => {
     const [searchInputCustoemrs, setSearchInputCustoemrs] = useState();
     const [searchOptionsCustoemrs, setSearchOptionsCustoemrs] = useState([]);
     const [searchIdCustomer, setSearchIdCustomer] = useState();
-    // console.log(searchIdCustomer);
 
-const searchIDCutomer =(e)=>{
+const searchIDCutomer =(e,id)=>{
     e.preventDefault();
-    console.log(dataCustomers);
-    console.log(searchIdCustomer);
-    const newDataCustomer=  dataCustomers.find(obj => obj.id == searchIdCustomer);
-   console.log(newDataCustomer);
+    const newDataCustomer=  [dataCustomers.find(obj => obj.id == searchIdCustomer)];
 
    const newSearchOptions = newDataCustomer.map((data, i) => ({
     value: data.id,
@@ -301,7 +297,7 @@ const searchIDCutomer =(e)=>{
                             placeholder="شناسه"
                             onInput={(e)=>{setSearchIdCustomer(e.target.value)}} 
                         />
-                        <button onClick={(e)=>searchIDCutomer(e)}><i className="icofont-search-2" /></button>
+                        <button onClick={(e)=>searchIDCutomer(e,searchIdCustomer)}><i className="icofont-search-2" /></button>
                         
                     </div>
                     <input className="inputCustomersACSI_SZ"
@@ -312,7 +308,7 @@ const searchIDCutomer =(e)=>{
                 </div>
             }]);
         }
-    }, [dataCustomers]);
+    }, [dataCustomers, searchIdCustomer]);
 
     useEffect(() => {
         if (!hasCalledGetConcretes.current) {
