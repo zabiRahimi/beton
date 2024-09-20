@@ -72,7 +72,7 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, warn, sea
         let vals = <div
             className='containerWarnSZ'
         >
-            {searchWarn.val.html}
+            {searchWarn}
         </div>
 
         return vals;
@@ -146,14 +146,16 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, warn, sea
                         && returnSearchInput()}
                 </div>
 
+                <div className="divContainerWarnSearchSZ">
+                    {warn && returnSearchWarn()}
+                </div>
+                
                 <div className="divContainerOptionSearchSZ">
                     {searchOptions && searchOptions.length > 0
                         && returnSearchOptions()}
                 </div>
 
-                <div className="divContainerWarnSearchSZ">
-                    {warn && returnSearchWarn()}
-                </div>
+                
 
                 <div className="divContainerOptionsSZ">
                     {options.length > 0 ? returnOptions() : <Skeleton height={32} count={6} />}
