@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 function useChangeForm(args) {
-  const { formCurrent, resetForm, pasteDataForEditing , resetForm2=null} = args
+  const { formCurrent, resetForm, pasteDataForEditing , resetForm2=null} = args;
   const containerShowGeRef = useRef(null);
   // ایجاد state برای آرگومان‌ها
   //   const [args, setArgs] = useState(initialArgs);
