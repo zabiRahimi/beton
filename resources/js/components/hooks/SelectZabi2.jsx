@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 're
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, warn, searchWarn, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
+const SelectZabi2 = forwardRef(({ options, input, optionsSearched, warning, elementWarning, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
     const mainSZ = useRef(null);
     const labelRef = useRef(null);
     const mainOptionRef = useRef(null);
@@ -19,9 +19,9 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, warn, sea
         setHasFocused(true);
     };
 
-    const returnSearchInput = () => {
+    const returnInputSearch = () => {
         let vals;
-        vals = searchInput.map((val, i) => (
+        vals = input.map((val, i) => (
             <div
                 className='containerSearchSZ'
                 key={i}
@@ -33,9 +33,9 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, warn, sea
         ));
         return vals;
     }
-    const returnSearchOptions = () => {
+    const returnOptionsSearched = () => {
         let vals;
-        vals = searchOptions.map((val, i) => (
+        vals = optionsSearched.map((val, i) => (
 
             <div
                 className='containerSearchOptionSZ'
@@ -68,11 +68,11 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, warn, sea
         return vals;
     }
 
-    const returnSearchWarn = () => {
+    const returnSearchWarning = () => {
         let vals = <div
             className='containerWarnSZ'
         >
-            {searchWarn}
+            {elementWarning}
         </div>
 
         return vals;
@@ -142,17 +142,17 @@ const SelectZabi2 = forwardRef(({ options, searchInput, searchOptions, warn, sea
             <div className='mainOptionSZ --hidden ' ref={mainOptionRef} >
 
                 <div className="divContainerInputSZ">
-                    {searchInput && searchInput.length > 0
-                        && returnSearchInput()}
+                    {input && input.length > 0
+                        && returnInputSearch()}
                 </div>
 
                 <div className="divContainerWarnSearchSZ">
-                    {warn && returnSearchWarn()}
+                    {warning && returnSearchWarning()}
                 </div>
                 
                 <div className="divContainerOptionSearchSZ">
-                    {searchOptions && searchOptions.length > 0
-                        && returnSearchOptions()}
+                    {optionsSearched && optionsSearched.length > 0
+                        && returnOptionsSearched()}
                 </div>
 
                 
