@@ -7,76 +7,72 @@ const SearchCustomersSelect = ({ dataCustomers }) => {
 
     const [inputCustomerSearch, setInputCustomerSearch] = useState();
     const [optionsCustomersSearched, setOptionsCustomersSearched] = useState([]);
-    const [customerId, setCustomerId] = useState();
+    const [id, setId] = useState();
     const [elementCustomerSearchWarning, setElementCustomerSearchWarning] = useState();
     const [customerSearchWarning, setCustomerSearchWarning] = useState();
     const [warning, setWarning] = useState();
 
-    const handleSetSearchIdCustomer = (e) => {
+    const handleSetId = (e) => {
         const { value } = e.target;
         setOptionsCustomersSearched();
-        handleClearInput('inputStringSearchCustomerACSI');
+        handleClearInput('nameInput');
         handleClearWarning();
-        setCustomerId(value);
+        if (/^\d*$/.test(value)) {
+            setId(parseInt(value,10));
+          } else {
+            handleThrowWarning('لطفاً فقط عدد وارد کنید');
+          }
     }
 
-    const handleSearchIDCustomer = (e) => {
+    const handleSearchId = (e) => {
         e.preventDefault();
-        if (customerId) {
-            console.log('ok');
-            const newDataCustomer = [dataCustomers.find(obj => obj.id == customerId)];
-            if (newDataCustomer[0] != undefined) {
-                const newSearchOptions = newDataCustomer.map((data, i) => ({
+        handleClearInput('nameInput');
+        setOptionsCustomersSearched();
+        if (id) {
+            const customerIdsFound = [dataCustomers.find(obj => obj.id === id)];
+            if (customerIdsFound[0] != undefined) {
+                const optionsFound = customerIdsFound.map((data, i) => ({
                     value: data.id,
                     html: <div key={i} className="personnelAption_addPerS">
                         <span className="name_addPers">{data.name} {data.lastName}</span>
                         <span className="fther_addPers">{data.father || ''}</span>
                     </div>
                 }));
-                setOptionsCustomersSearched(newSearchOptions);
+                setOptionsCustomersSearched(optionsFound);
             } else {
-                setCustomerSearchWarning(true);
-                setWarning('نتیجه‌ای یافت نشد');
-                setOptionsCustomersSearched();
+                handleThrowWarning(`نتیجه‌ای یافت نشد`);
             }
         } else {
-            console.warn('no');
-            setCustomerSearchWarning(true);
-            setWarning('لطفا شناسه را وارد کنید');
-            setOptionsCustomersSearched();
+            handleThrowWarning('ابتدا شناسه را وارد کنید');
         }
     }
 
     const handleSearchOptionsCustomers = (e) => {
-
         const { value } = e.target;
-        handleClearInput('inputIDSearchCustomerACSI');
+        setId();
+        handleClearInput('idInput');
+        setOptionsCustomersSearched();
         handleClearWarning();
-
-        const newDataCustomers = dataCustomers.map(item => ({
-            id: item.id,
-            name: `${item.name} ${item.lastName}`
-        }));
-        const ids = handleSearchByName(newDataCustomers, value);
-
-        if (value && ids.length > 0) {
-            let filteredArr = dataCustomers.filter(item => ids.includes(item.id));
-
-            const newSearchOptions = filteredArr.map((data, i) => ({
-                value: data.id,
-                html: <div key={i} className="personnelAption_addPerS">
-                    <span className="name_addPers">{data.name} {data.lastName}</span>
-                    <span className="fther_addPers">{data.father || ''}</span>
-                </div>
+        if (value) {
+            const newDataCustomers = dataCustomers.map(item => ({
+                id: item.id,
+                name: `${item.name} ${item.lastName}`
             }));
-            setOptionsCustomersSearched(newSearchOptions);
-        } else if (value) {
-            setOptionsCustomersSearched();
-            setCustomerSearchWarning(true);
-            setWarning('نتیجه‌ای یافت نشد');
-        } else {
-            setOptionsCustomersSearched();
-            handleClearWarning();
+            const ids = handleSearchByName(newDataCustomers, value);
+
+            if (ids.length > 0) {
+                let filteredArr = dataCustomers.filter(item => ids.includes(item.id));
+                const optionsFound = filteredArr.map((data, i) => ({
+                    value: data.id,
+                    html: <div key={i} className="personnelAption_addPerS">
+                        <span className="name_addPers">{data.name} {data.lastName}</span>
+                        <span className="fther_addPers">{data.father || ''}</span>
+                    </div>
+                }));
+                setOptionsCustomersSearched(optionsFound);
+            } else {
+                handleThrowWarning('نتیجه‌ای یافت نشد');
+            }
         }
     }
 
@@ -91,61 +87,76 @@ const SearchCustomersSelect = ({ dataCustomers }) => {
         element.value = '';
     }
 
-    const handleThrowWarning = () => {
+    const handleThrowWarning = (warning) => {
+        setCustomerSearchWarning(true);
+        setWarning(warning);
     }
+
     const handleClearWarning = () => {
         setCustomerSearchWarning(false);
         setWarning();
     }
 
+    /**
+     * این متد در کامپوننت سلکت و هنگامی که کاربر آپشنی را انتخاب کند و یا از سلکت خارج شود
+     * فراخوانی می‌شود
+     */
+    const handleClearAllSearch = () => {
+        handleClearInput('idInput');
+        handleClearInput('nameInput');
+        setOptionsCustomersSearched();
+        handleClearWarning();
+    }
+
     useEffect(() => {
         if (dataCustomers && dataCustomers.length > 0) {
-
             setInputCustomerSearch([{
                 html: <div className="DInputsCustomersACSI_SZ">
                     <div className="DIdsInputsCustomersACSI_SZ">
                         <input
                             type="text"
-                            id="inputIDSearchCustomerACSI"
+                            id="idInput"
                             placeholder="شناسه"
-                            onInput={(e) => { handleSetSearchIdCustomer(e) }}
+                            onInput={(e) => { handleSetId(e) }}
+                            autoComplete="off"
                         />
-                        <button onClick={(e) => handleSearchIDCustomer(e)}><i className="icofont-search-2" /></button>
-
+                        <button onClick={(e) => handleSearchId(e)}><i className="icofont-search-2" /></button>
                     </div>
                     <input
                         type="text"
-                        id="inputStringSearchCustomerACSI"
+                        id="nameInput"
                         className="inputCustomersACSI_SZ"
                         onInput={(e) => handleSearchOptionsCustomers(e)}
                         placeholder="نام و نام‌خانوادگی"
+                        autoComplete="off"
                     />
                 </div>
             }]);
         }
-    }, [dataCustomers, customerId]);
+    }, [dataCustomers, id]);
 
     useEffect(() => {
-
         if (warning && customerSearchWarning) {
             setCustomerSearchWarning(true);
-
             setElementCustomerSearchWarning(<div className="DWarnCustomersACSI_SZ">
                 {warning}
+                {' '}
+                <i className="icofont-worried " />
             </div>
             );
         } else {
-            setCustomerSearchWarning(false);
+            // setCustomerSearchWarning(false);
 
-            setElementCustomerSearchWarning();
+            // setElementCustomerSearchWarning();
         }
-    }, [warning, customerSearchWarning]);
+    }, [warning]);
 
     return {
         inputCustomerSearch,
         optionsCustomersSearched,
         customerSearchWarning,
-        elementCustomerSearchWarning
+        elementCustomerSearchWarning,
+        handleClearAllSearch
     };
 }
 

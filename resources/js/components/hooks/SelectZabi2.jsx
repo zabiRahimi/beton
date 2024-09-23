@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 're
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../../css/selectZabi.css';
-const SelectZabi2 = forwardRef(({ options, input, optionsSearched, warning, elementWarning, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
+const SelectZabi2 = forwardRef(({ options, input, optionsSearched, warning, elementWarning, clearSearch, primaryLabel, saveOption, saveOption2, saveOption3 }, ref) => {
     const mainSZ = useRef(null);
     const labelRef = useRef(null);
     const mainOptionRef = useRef(null);
@@ -15,8 +15,15 @@ const SelectZabi2 = forwardRef(({ options, input, optionsSearched, warning, elem
             setCurrentElement(value);
         }
     }));
+    // useEffect(() => {
+    //     // warning=false;
+    //     // console.log(warning);
+    // }, [hasFocused])
+    
     const handleFocus = () => {
         setHasFocused(true);
+        
+        
     };
 
     const returnInputSearch = () => {
@@ -36,7 +43,6 @@ const SelectZabi2 = forwardRef(({ options, input, optionsSearched, warning, elem
     const returnOptionsSearched = () => {
         let vals;
         vals = optionsSearched.map((val, i) => (
-
             <div
                 className='containerSearchOptionSZ'
                 key={i}
@@ -46,8 +52,6 @@ const SelectZabi2 = forwardRef(({ options, input, optionsSearched, warning, elem
                 }}>
                 {val.html}
             </div>
-
-
         ));
         return vals;
     }
@@ -99,11 +103,7 @@ const SelectZabi2 = forwardRef(({ options, input, optionsSearched, warning, elem
         optionDisplayHandle();
     }
 
-    const handleSearch = (e) => {
-        const searchValue = e.target.value.toLowerCase();
-        setSearchTerm(searchValue);
-        setFilteredOptions(options.filter(option => option.html.toLowerCase().includes(searchValue)));
-    };
+   
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -133,7 +133,7 @@ const SelectZabi2 = forwardRef(({ options, input, optionsSearched, warning, elem
         >
             <div
                 className='titleSZ'
-                onClick={() => { optionDisplayHandle(false) }}
+                onClick={() => { optionDisplayHandle(false);clearSearch() }}
 
             >
                 <span className="labelSZ" ref={labelRef}> {currentElement}</span>

@@ -17,6 +17,7 @@ import useChangeForm from '../hooks/useChangeForm';
 import SelectZabi from "../hooks/SelectZabi";
 import SelectZabi2 from "../hooks/SelectZabi2";
 import SearchCustomersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchCustomersSelect";
+import SearchMixer from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixer";
 import Pagination from "../hooks/Pagination";
 import AddCocreteSalesInvoiceSearch from "../search/AddConcreteSalesInvoiceSearch";
 
@@ -1129,7 +1130,7 @@ const AddConcreteSalesInvoice = () => {
 
         refCustomer_id.current.updateData('انتخاب');
     }
-    const{inputCustomerSearch,optionsCustomersSearched,customerSearchWarning,elementCustomerSearchWarning}=SearchCustomersSelect({dataCustomers});
+    const{inputCustomerSearch,optionsCustomersSearched,customerSearchWarning,elementCustomerSearchWarning,handleClearAllSearch}=SearchCustomersSelect({dataCustomers});
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing, resetForm2 });
 
     useEffect(() => {
@@ -1805,6 +1806,7 @@ const AddConcreteSalesInvoice = () => {
                                             saveOption={setCustomerId}
                                             warning={customerSearchWarning}
                                             elementWarning={elementCustomerSearchWarning}
+                                            clearSearch={handleClearAllSearch}
                                             ref={refCustomer_id}
                                         />
                                     </div>

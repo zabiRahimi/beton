@@ -20,7 +20,7 @@
 		"body": [
 			"import Title from '../hooks/Title'",
 
-			"const $1=()=>{",
+			"const $1 = () => {",
 
 			"return(",
 			"<div className='$2'>",
@@ -35,5 +35,15 @@
 			"export default $1;"
 		],
 		"description": "component create"
+	},
+
+	"arrow function create": {
+		"prefix": "constFun",
+		"body": [
+			"const $1 = () => {",
+
+			"}",
+		],
+		"description": "arrow function create"
 	}
 }
