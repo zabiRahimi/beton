@@ -28,20 +28,23 @@
     ### مربوط به فایل AddConcreteSalesInvoice ###
  */
 
-.DInputsCustomersACSI_SZ {
+.DInputsCustomersACSI_SZ,
+.DInputsDriversACSI_SZ {
     width: 100%;
     background-color: #000;
     display: flex;
 }
 
-.DIdsInputsCustomersACSI_SZ {
+.DIdsInputsCustomersACSI_SZ,
+.DIdsInputsDriversACSI_SZ {
     width: 35%;
     display: flex;
     background-color: #fff;
     align-items: center;
 }
 
-.DWarnCustomersACSI_SZ{
+.DWarnCustomersACSI_SZ,
+.DWarnDriversACSI_SZ {
     width: 100%;
     background-color: #e2bbbb;
     color: #c70707;
@@ -49,40 +52,46 @@
     text-align: center;
 }
 
-.DIdsInputsCustomersACSI_SZ input {
+.DIdsInputsCustomersACSI_SZ input,
+.DIdsInputsDriversACSI_SZ input {
     width: 80%;
     padding: 0 3px;
     border: none;
     text-align: left;
 }
 
-.DIdsInputsCustomersACSI_SZ input::placeholder {
+.DIdsInputsCustomersACSI_SZ input::placeholder,
+.DIdsInputsDriversACSI_SZ input::placeholder {
     font-size: 0.8rem;
     text-align: right;
 }
 
-.DIdsInputsCustomersACSI_SZ button  {
+.DIdsInputsCustomersACSI_SZ button,
+.DIdsInputsDriversACSI_SZ button {
     padding: 0 2px;
-    border: none ;
+    border: none;
     color: #016401;
     background-color: #fff;
 }
 
-.DIdsInputsCustomersACSI_SZ button:hover {
+.DIdsInputsCustomersACSI_SZ button:hover,
+.DIdsInputsDriversACSI_SZ button:hover {
     color: #0f54a9;
     background-color: #ebebf6;
     border-radius: 8px;
 }
 
 
-.inputCustomersACSI_SZ {
+.inputCustomersACSI_SZ,
+.inputDriversACSI_SZ {
     width: 65%;
     padding-right: 3px;
     border: none;
     border-right: 1px solid #646464;
 }
 
-.inputCustomersACSI_SZ::placeholder{
+.inputCustomersACSI_SZ::placeholder,
+.inputDriversACSI_SZ::placeholder {
     font-size: 0.8rem;
 }
 
