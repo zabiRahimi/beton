@@ -18,6 +18,9 @@ import SelectZabi from "../hooks/SelectZabi";
 import SelectZabi2 from "../hooks/SelectZabi2";
 import SearchCustomersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchCustomersSelect";
 import SearchMixersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixersSelect";
+import SearchMixer from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixer";
+import SearchDriversSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchDriversSelect";
+
 import Pagination from "../hooks/Pagination";
 import AddCocreteSalesInvoiceSearch from "../search/AddConcreteSalesInvoiceSearch";
 
@@ -96,6 +99,7 @@ const AddConcreteSalesInvoice = () => {
     const [customers, setCustomers] = useState([]);
     const [concretes, setConcretes] = useState([]);
     const [mixers, setMixers] = useState([]);
+    const [dataDrivers, setDataDrivers] = useState();
     const [drivers, setDrivers] = useState([]);
     const [cementStores, setCementStores] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
@@ -609,6 +613,7 @@ const AddConcreteSalesInvoice = () => {
     async function getCSIDrivers() {
         await axios.get("/api/v1/getCSIDrivers").then((response) => {
             let datas = response.data.drivers;
+            setDataDrivers(datas);
             if (datas.length == 0) {
                 MySwal.fire({
                     icon: "warning",
@@ -1133,6 +1138,8 @@ const AddConcreteSalesInvoice = () => {
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers });
 
     const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataCustomers });
+    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers });
+
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing, resetForm2 });
 
@@ -2172,10 +2179,15 @@ const AddConcreteSalesInvoice = () => {
                                                     className="element"
                                                     onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, refInvoice[`driver_idError${i}`]); }}
                                                 >
-                                                    <SelectZabi
+                                                    <SelectZabi2
                                                         primaryLabel='انتخاب'
                                                         options={drivers}
                                                         saveOption={setDriverId}
+                                                        input={inputDriverSearch}
+                                                        optionsSearched={optionsDriversSearched}
+                                                        warning={driverSearchWarning}
+                                                        elementWarning={elementDriverSearchWarning}
+                                                        clearSearch={handleClearAllSearchDriver}
                                                         ref={refInvoice[`driver_id${i}`]}
                                                     />
                                                 </div>

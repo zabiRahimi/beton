@@ -29,13 +29,15 @@
  */
 
 .DInputsCustomersACSI_SZ,
-.DInputsMixersACSI_SZ {
+.DInputsMixersACSI_SZ ,
+.DInputsDriversACSI_SZ {
     width: 100%;
     display: flex;
 }
 
 .DIdsInputsCustomersACSI_SZ,
-.DIdsInputsMixersACSI_SZ {
+.DIdsInputsMixersACSI_SZ ,
+.DIdsInputsDriversACSI_SZ {
     width: 35%;
     display: flex;
     background-color: #fff;
@@ -43,7 +45,8 @@
 }
 
 .DWarnCustomersACSI_SZ,
-.DWarnMixersACSI_SZ {
+.DWarnMixersACSI_SZ ,
+.DWarnDriversACSI_SZ {
     width: 100%;
     background-color: #e2bbbb;
     color: #c70707;
@@ -52,7 +55,8 @@
 }
 
 .DIdsInputsCustomersACSI_SZ input,
-.DIdsInputsMixersACSI_SZ input {
+.DIdsInputsMixersACSI_SZ input ,
+.DIdsInputsDriversACSI_SZ input {
     width: 80%;
     padding: 0 3px;
     border: none;
@@ -60,7 +64,8 @@
 }
 
 .DIdsInputsCustomersACSI_SZ input::placeholder,
-.DIdsInputsMixersACSI_SZ input::placeholder {
+.DIdsInputsMixersACSI_SZ input::placeholder ,
+.DIdsInputsDriversACSI_SZ input::placeholder {
     font-size: 0.8rem;
     text-align: right;
 }
@@ -70,7 +75,8 @@
 }
 
 .DIdsInputsCustomersACSI_SZ button,
-.DIdsInputsMixersACSI_SZ button {
+.DIdsInputsMixersACSI_SZ button,
+.DIdsInputsDriversACSI_SZ button {
     padding: 0 2px;
     border: none;
     color: #016401;
@@ -78,7 +84,8 @@
 }
 
 .DIdsInputsCustomersACSI_SZ button:hover,
-.DIdsInputsMixersACSI_SZ button:hover {
+.DIdsInputsMixersACSI_SZ button:hover,
+.DIdsInputsDriversACSI_SZ button:hover {
     color: #0f54a9;
     background-color: #ebebf6;
     border-radius: 8px;
@@ -86,7 +93,8 @@
 
 
 .inputCustomersACSI_SZ,
-.inputMixersACSI_SZ {
+.inputMixersACSI_SZ ,
+.inputDriversACSI_SZ {
     width: 65%;
     padding-right: 3px;
     border: none;
@@ -94,7 +102,8 @@
 }
 
 .inputCustomersACSI_SZ::placeholder,
-.inputMixersACSI_SZ::placeholder {
+.inputMixersACSI_SZ::placeholder ,
+.inputDriversACSI_SZ::placeholder {
     font-size: 0.8rem;
 }
 
