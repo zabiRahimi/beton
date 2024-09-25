@@ -17,7 +17,7 @@ import useChangeForm from '../hooks/useChangeForm';
 import SelectZabi from "../hooks/SelectZabi";
 import SelectZabi2 from "../hooks/SelectZabi2";
 import SearchCustomersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchCustomersSelect";
-import SearchMixer from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixer";
+import SearchMixersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixersSelect";
 import Pagination from "../hooks/Pagination";
 import AddCocreteSalesInvoiceSearch from "../search/AddConcreteSalesInvoiceSearch";
 
@@ -34,7 +34,7 @@ const AddConcreteSalesInvoice = () => {
         optionSeconds,
     } = DataZabi();
 
-    
+
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     const container = useRef(null);
@@ -1130,7 +1130,10 @@ const AddConcreteSalesInvoice = () => {
 
         refCustomer_id.current.updateData('انتخاب');
     }
-    const{inputCustomerSearch,optionsCustomersSearched,customerSearchWarning,elementCustomerSearchWarning,handleClearAllSearch}=SearchCustomersSelect({dataCustomers});
+    const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers });
+
+    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataCustomers });
+
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing, resetForm2 });
 
     useEffect(() => {
@@ -1801,9 +1804,9 @@ const AddConcreteSalesInvoice = () => {
                                         <SelectZabi2
                                             primaryLabel='انتخاب'
                                             options={customers}
+                                            saveOption={setCustomerId}
                                             input={inputCustomerSearch}
                                             optionsSearched={optionsCustomersSearched}
-                                            saveOption={setCustomerId}
                                             warning={customerSearchWarning}
                                             elementWarning={elementCustomerSearchWarning}
                                             clearSearch={handleClearAllSearch}
@@ -2143,11 +2146,16 @@ const AddConcreteSalesInvoice = () => {
                                                     className="element"
                                                     onClick={e => { clearInputError(e, refInvoice[`truck_idError${i}`]); setInvoiceIndexForMixer(i) }}
                                                 >
-                                                    <SelectZabi
+                                                    <SelectZabi2
                                                         primaryLabel='انتخاب'
                                                         options={mixers}
                                                         saveOption={setTruckId}
                                                         saveOption2={setOwnerId}
+                                                        input={inputMixerSearch}
+                                                        optionsSearched={optionsMixersSearched}
+                                                        warning={mixerSearchWarning}
+                                                        elementWarning={elementMixerSearchWarning}
+                                                        clearSearch={handleClearAllSearchMixer}
                                                         ref={refInvoice[`truck_id${i}`]}
                                                     />
                                                 </div>
