@@ -175,7 +175,7 @@ const SearchMixersSelect = ({ dataCustomers }) => {
                             />
                             <button onClick={(e) => handleSearchId(e)}><i className="icofont-search-2" /></button>
                         </div>
-                        <div className="divNumberplateConcreteSIS_Se">
+                        <div className="DNumberplateACSI_SZ">
                                 <input
                                     type="text"
                                     name=""
