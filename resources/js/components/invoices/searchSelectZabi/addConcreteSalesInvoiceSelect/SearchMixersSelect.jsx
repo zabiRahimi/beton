@@ -164,7 +164,7 @@ const SearchMixersSelect = ({ dataCustomers }) => {
                             autoComplete="off"
                         />
                     </div>
-                    <div className="DInputsMixersACSI_SZ">
+                    <div className="DInputsMixersACSI_SZ D2InputsMixersACSI_SZ">
                         <div className="DIdsInputsMixersACSI_SZ">
                             <input
                                 type="text"
