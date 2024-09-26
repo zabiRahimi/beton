@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
  * for use in AddCocreteSalesInvoice
  */
 const SearchDriversSelect = ({ dataDrivers }) => {
-console.log(dataDrivers);
     const [inputDriverSearch, setInputDriverSearch] = useState();
     const [optionsDriversSearched, setOptionsDriversSearched] = useState([]);
     const [id, setId] = useState();
