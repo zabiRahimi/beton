@@ -116,7 +116,39 @@
     padding-right: 0;
     display: flex;
     flex-direction: row-reverse;
+    border-right: none;
 
+}
+
+.text2NumberplateACSI_SZ,
+.selectChNumberplateACSI_SZ,
+.text3NumberplateACSI_SZ,
+.textSerialNumberplateACSI_SZ {
+    text-align: center;
+    padding: 0 !important;
+    border: 1px solid #8f8f9d;
+}
+
+.text2NumberplateACSI_SZ {
+    width: 20% !important;
+    border-right: none;
+    position: relative;
+}
+
+.selectChNumberplateACSI_SZ {
+    width: 35% !important;
+    border-left: none;
+    border-right: none;
+}
+
+.text3NumberplateACSI_SZ {
+    width: 25% !important;
+    border-left: none;
+    border-right: none;
+}
+
+.textSerialNumberplateACSI_SZ {
+    width: 20% !important;
 }
 
 /** end file AddConcreteSalesInvoice */

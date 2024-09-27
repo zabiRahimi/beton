@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 /**
  * for use in AddCocreteSalesInvoice
  */
-const SearchMixersSelect = ({ dataCustomers }) => {
+const SearchMixersSelect = ({ dataMixers }) => {
 
     const [inputMixerSearch, setInputMixerSearch] = useState();
-    const [optionsMixerSearched, setOptionsMixerSearched] = useState([]);
+    const [optionsMixersSearched, setOptionsMixerSearched] = useState([]);
     const [id, setId] = useState();
     const [ownerId, setOwnerId] = useState();
     const [elementMixerSearchWarning, MixerSearchWarning] = useState();
@@ -37,15 +37,87 @@ const SearchMixersSelect = ({ dataCustomers }) => {
         handleClearInput('nameInput');
         setOptionsMixerSearched();
         if (id) {
-            const customerIdsFound = [dataCustomers.find(obj => obj.id === id)];
+            const customerIdsFound = dataMixers.filter(obj => obj.customer.id === id);
             if (customerIdsFound[0] != undefined) {
-                const optionsFound = customerIdsFound.map((data, i) => ({
-                    value: data.id,
-                    html: <div key={i} className="personnelAption_addPerS">
-                        <span className="name_addPers">{data.name} {data.lastName}</span>
-                        <span className="fther_addPers">{data.father || ''}</span>
-                    </div>
-                }));
+                const optionsFound = customerIdsFound.map((data, i) => {
+                    let arr = data.numberplate.split('-');
+
+                return    {
+
+
+                        value: data.id,
+                            value2: data.customer.id,
+                                html: <div key={i} className="mixerAptionSelectFB">
+                                    <span className="mixerNamberpalteSelectFB">
+                                        <div className="numberplateDiv">
+                                            <span className="numberplateDivS1">{arr[0]}</span>
+                                            <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                                            <span className="numberplateDivS3">{arr[1]}</span>
+                                            <span className="numberplateDivS4">{arr[2]}</span>
+                                        </div>
+                                    </span>
+
+                                    <span className="mixerOwnerSelectFB">
+                                        {data.customer.name}
+                                        {' '}
+                                        {data.customer.lastName}
+                                    </span>
+
+                                </div>
+                    }
+                });
+                setOptionsMixerSearched(optionsFound);
+            } else {
+                handleThrowWarning(`نتیجه‌ای یافت نشد`);
+            }
+        } else {
+            handleThrowWarning('ابتدا شناسه را وارد کنید');
+        }
+    }
+
+    const handleSetOwnerId = (e) => {
+        const { value } = e.target;
+        setOptionsMixerSearched();
+        handleClearInput('nameInput');
+        handleClearWarning();
+        if (/^\d*$/.test(value)) {
+            setId(parseInt(value, 10));
+        } else {
+            handleThrowWarning('لطفاً فقط عدد وارد کنید');
+        }
+    }
+
+    const handleSearchOwnerId = (e) => {
+        e.preventDefault();
+        handleClearInput('nameInput');
+        setOptionsMixerSearched();
+        if (id) {
+            const customerIdsFound = dataMixers.filter(obj => obj.customer.id === id);
+            if (customerIdsFound[0] != undefined) {
+                const optionsFound = customerIdsFound.map((data, i) => {
+                    let arr = data.numberplate.split('-');
+                return    {
+                        value: data.id,
+                            value2: data.customer.id,
+                                html: <div key={i} className="mixerAptionSelectFB">
+                                    <span className="mixerNamberpalteSelectFB">
+                                        <div className="numberplateDiv">
+                                            <span className="numberplateDivS1">{arr[0]}</span>
+                                            <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                                            <span className="numberplateDivS3">{arr[1]}</span>
+                                            <span className="numberplateDivS4">{arr[2]}</span>
+                                        </div>
+                                    </span>
+
+                                    <span className="mixerOwnerSelectFB">
+                                        {data.customer.name}
+                                        {' '}
+                                        {data.customer.lastName}
+                                    </span>
+
+                                </div>
+                    }
+                });
                 setOptionsMixerSearched(optionsFound);
             } else {
                 handleThrowWarning(`نتیجه‌ای یافت نشد`);
@@ -62,14 +134,20 @@ const SearchMixersSelect = ({ dataCustomers }) => {
         setOptionsMixerSearched();
         handleClearWarning();
         if (value) {
-            const newDataCustomers = dataCustomers.map(item => ({
-                id: item.id,
-                name: `${item.name} ${item.lastName}`
+            // const owners=dataMixers.map
+            const newDataCustomers = dataMixers.map(item => ({
+                id: item.customer.id,
+                name: `${item.customer.name} ${item.customer.lastName}`
             }));
+            // const newDataCustomers = dataMixers.map(item => ({
+            //     id: item.id,
+            //     name: `${item.name} ${item.lastName}`
+            // }));
+
             const ids = handleSearchByName(newDataCustomers, value);
 
             if (ids.length > 0) {
-                let filteredArr = dataCustomers.filter(item => ids.includes(item.id));
+                let filteredArr = dataMixers.filter(item => ids.includes(item.id));
                 const optionsFound = filteredArr.map((data, i) => ({
                     value: data.id,
                     html: <div key={i} className="personnelAption_addPerS">
@@ -141,7 +219,7 @@ const SearchMixersSelect = ({ dataCustomers }) => {
     }
 
     useEffect(() => {
-        if (dataCustomers && dataCustomers.length > 0) {
+        if (dataMixers && dataMixers.length > 0) {
             setInputMixerSearch([{
                 html: <div className="mainSearchMixerACSI_SZ">
                     <div className="DInputsMixersACSI_SZ">
@@ -150,10 +228,10 @@ const SearchMixersSelect = ({ dataCustomers }) => {
                                 type="text"
                                 id="idInput"
                                 placeholder="شناسه‌مالک"
-                                onInput={(e) => { handleSetId(e) }}
+                                onInput={(e) => { handleSetOwnerId(e) }}
                                 autoComplete="off"
                             />
-                            <button onClick={(e) => handleSearchId(e)}><i className="icofont-search-2" /></button>
+                            <button onClick={(e) => handleSearchOwnerId(e)}><i className="icofont-search-2" /></button>
                         </div>
                         <input
                             type="text"
@@ -176,83 +254,83 @@ const SearchMixersSelect = ({ dataCustomers }) => {
                             <button onClick={(e) => handleSearchId(e)}><i className="icofont-search-2" /></button>
                         </div>
                         <div className="DNumberplateACSI_SZ">
-                                <input
-                                    type="text"
-                                    name=""
-                                    id=""
-                                    className="text2NumberplateConcreteSIS_Se"
-                                    placeholder="00"
-                                    maxLength="2"
-                                    value={numberplateVal.left || ''}
-                                    onInput={e => handleSetNumberplate(e, 'left')}
-                                />
+                            <input
+                                type="text"
+                                name=""
+                                id=""
+                                className="text2NumberplateACSI_SZ"
+                                placeholder="00"
+                                maxLength="2"
+                                value={numberplateVal.left || ''}
+                                onInput={e => handleSetNumberplate(e, 'left')}
+                            />
 
-                                <select
-                                    className="selectChNumberplateConcreteSIS_Se"
-                                    value={numberplateVal.alphabet}
-                                    onChange={e => handleSetNumberplate(e, 'alphabet')}
-                                >
-                                    <option value=""> حرف </option>
-                                    <option value="ا"> الف </option>
-                                    <option value="ب"> ب </option>
-                                    <option value="پ"> پ </option>
-                                    <option value="ت"> ت </option>
-                                    <option value="ث"> ث </option>
-                                    <option value="ج"> ج </option>
-                                    <option value="چ"> چ </option>
-                                    <option value="ح"> ح </option>
-                                    <option value="خ"> خ </option>
-                                    <option value="د"> د </option>
-                                    <option value="ذ"> ذ </option>
-                                    <option value="ر"> ر </option>
-                                    <option value="ز"> ز </option>
-                                    <option value="ژ"> ژ </option>
-                                    <option value="س"> س </option>
-                                    <option value="ش"> ش </option>
-                                    <option value="ص"> ص </option>
-                                    <option value="ض"> ض </option>
-                                    <option value="ط"> ط </option>
-                                    <option value="ظ"> ظ </option>
-                                    <option value="ع"> ع </option>
-                                    <option value="غ"> غ </option>
-                                    <option value="ف"> ف </option>
-                                    <option value="ق"> ق </option>
-                                    <option value="ک"> ک </option>
-                                    <option value="گ"> گ </option>
-                                    <option value="ل"> ل </option>
-                                    <option value="م"> م </option>
-                                    <option value="ن"> ن </option>
-                                    <option value="و"> و </option>
-                                    <option value="ه"> ه </option>
-                                    <option value="ی"> ی </option>
-                                </select>
+                            <select
+                                className="selectChNumberplateACSI_SZ"
+                                value={numberplateVal.alphabet}
+                                onChange={e => handleSetNumberplate(e, 'alphabet')}
+                            >
+                                <option value=""> حرف </option>
+                                <option value="ا"> الف </option>
+                                <option value="ب"> ب </option>
+                                <option value="پ"> پ </option>
+                                <option value="ت"> ت </option>
+                                <option value="ث"> ث </option>
+                                <option value="ج"> ج </option>
+                                <option value="چ"> چ </option>
+                                <option value="ح"> ح </option>
+                                <option value="خ"> خ </option>
+                                <option value="د"> د </option>
+                                <option value="ذ"> ذ </option>
+                                <option value="ر"> ر </option>
+                                <option value="ز"> ز </option>
+                                <option value="ژ"> ژ </option>
+                                <option value="س"> س </option>
+                                <option value="ش"> ش </option>
+                                <option value="ص"> ص </option>
+                                <option value="ض"> ض </option>
+                                <option value="ط"> ط </option>
+                                <option value="ظ"> ظ </option>
+                                <option value="ع"> ع </option>
+                                <option value="غ"> غ </option>
+                                <option value="ف"> ف </option>
+                                <option value="ق"> ق </option>
+                                <option value="ک"> ک </option>
+                                <option value="گ"> گ </option>
+                                <option value="ل"> ل </option>
+                                <option value="م"> م </option>
+                                <option value="ن"> ن </option>
+                                <option value="و"> و </option>
+                                <option value="ه"> ه </option>
+                                <option value="ی"> ی </option>
+                            </select>
 
-                                <input
-                                    type="text"
-                                    name=""
-                                    id=""
-                                    className="text3NumberplateConcreteSIS_Se"
-                                    placeholder="000"
-                                    maxLength="3"
-                                    value={numberplateVal.mid || ''}
-                                    onInput={e => handleSetNumberplate(e, 'mid')}
-                                />
-                                <input
-                                    type="text"
-                                    className="textSerialNumberplateConcreteSIS_Se"
-                                    placeholder="00"
-                                    maxLength="2"
-                                    value={numberplateVal.right || ''}
-                                    onInput={e => handleSetNumberplate(e, 'right')}
-                                />
+                            <input
+                                type="text"
+                                name=""
+                                id=""
+                                className="text3NumberplateACSI_SZ"
+                                placeholder="000"
+                                maxLength="3"
+                                value={numberplateVal.mid || ''}
+                                onInput={e => handleSetNumberplate(e, 'mid')}
+                            />
+                            <input
+                                type="text"
+                                className="textSerialNumberplateACSI_SZ"
+                                placeholder="00"
+                                maxLength="2"
+                                value={numberplateVal.right || ''}
+                                onInput={e => handleSetNumberplate(e, 'right')}
+                            />
 
-                            </div>
+                        </div>
                     </div>
                 </div>
 
             }]);
         }
-    }, [dataCustomers, id]);
+    }, [dataMixers, id]);
 
     useEffect(() => {
         if (warning && mixerSearchWarning) {
@@ -272,7 +350,7 @@ const SearchMixersSelect = ({ dataCustomers }) => {
 
     return {
         inputMixerSearch,
-        optionsMixerSearched,
+        optionsMixersSearched,
         mixerSearchWarning,
         elementMixerSearchWarning,
         handleClearAllSearchMixer

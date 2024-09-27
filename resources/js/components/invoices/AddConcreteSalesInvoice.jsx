@@ -97,6 +97,7 @@ const AddConcreteSalesInvoice = () => {
     const [dataCustomers, setDataCustomers] = useState();
     const [customers, setCustomers] = useState([]);
     const [concretes, setConcretes] = useState([]);
+    const [dataMixers, setDataMixers] = useState([]);
     const [mixers, setMixers] = useState([]);
     const [dataDrivers, setDataDrivers] = useState();
     const [drivers, setDrivers] = useState([]);
@@ -650,6 +651,7 @@ const AddConcreteSalesInvoice = () => {
     async function getCSIMixers() {
         await axios.get("/api/v1/getCSIMixers").then((response) => {
             let datas = response.data.mixers;
+            setDataMixers(datas);
             if (datas.length == 0) {
                 MySwal.fire({
                     icon: "warning",
@@ -1136,7 +1138,7 @@ const AddConcreteSalesInvoice = () => {
     }
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers });
 
-    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataCustomers });
+    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({  dataMixers });
     const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers });
 
 
