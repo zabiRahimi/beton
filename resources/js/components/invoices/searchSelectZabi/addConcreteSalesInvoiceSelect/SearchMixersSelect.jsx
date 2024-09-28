@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
  * for use in AddCocreteSalesInvoice
  */
 const SearchMixersSelect = ({ dataMixers }) => {
-
+console.log(dataMixers);
     const [inputMixerSearch, setInputMixerSearch] = useState();
     const [optionsMixersSearched, setOptionsMixerSearched] = useState([]);
     const [id, setId] = useState();
@@ -23,6 +23,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
     const handleSetId = (e) => {
         const { value } = e.target;
         setOptionsMixerSearched();
+        handleClearInput('ownerId_mixer');
         handleClearInput('ownerName_mixer');
         handleClearInput('numberplate_mixer');
         handleClearWarning();
@@ -94,8 +95,8 @@ const SearchMixersSelect = ({ dataMixers }) => {
         e.preventDefault();
         handleClearInput('nameInput');
         setOptionsMixerSearched();
-        if (id) {
-            const customerIdsFound = dataMixers.filter(obj => obj.customer.id === id);
+        if (ownerId) {
+            const customerIdsFound = dataMixers.filter(obj => obj.customer.id === ownerId);
             if (customerIdsFound[0] != undefined) {
                 const optionsFound = customerIdsFound.map((data, i) => {
                     let arr = data.numberplate.split('-');
@@ -133,6 +134,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
     const handleSearchOptionsCustomers = (e) => {
         const { value } = e.target;
         setId();
+        setOwnerId();
         handleClearInput('idInput');
         setOptionsMixerSearched();
         handleClearWarning();
@@ -166,6 +168,45 @@ const SearchMixersSelect = ({ dataMixers }) => {
     }
 
     const handleSearchByName = (newArr, searchTerm) => {
+        return newArr
+            .filter(item => item.name.includes(searchTerm))
+            .map(item => item.id);
+    };
+
+    const handleSearchOptionsByOwners = (e) => {
+        const { value } = e.target;
+        setId();
+        setOwnerId();
+        handleClearInput('ownerId_mixer');
+        handleClearInput('id_mixer');
+        handleClearInput('numberplate_mixer');
+        setOptionsMixerSearched();
+        handleClearWarning();
+        if (value) {
+            const newDataCustomers = dataMixers.map(item => ({
+                id: item.customer.id,
+                name: `${item.customer.name} ${item.customer.lastName}`
+            }));
+
+            const ids = handleSearchByOwnerName(newDataCustomers, value);
+
+            if (ids.length > 0) {
+                let filteredArr = dataMixers.filter(item => ids.includes(item.id));
+                const optionsFound = filteredArr.map((data, i) => ({
+                    value: data.id,
+                    html: <div key={i} className="personnelAption_addPerS">
+                        <span className="name_addPers">{data.name} {data.lastName}</span>
+                        <span className="fther_addPers">{data.father || ''}</span>
+                    </div>
+                }));
+                setOptionsMixerSearched(optionsFound);
+            } else {
+                handleThrowWarning('نتیجه‌ای یافت نشد');
+            }
+        }
+    }
+
+    const handleSearchByOwnerName = (newArr, searchTerm) => {
         return newArr
             .filter(item => item.name.includes(searchTerm))
             .map(item => item.id);
@@ -243,7 +284,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                             type="text"
                             id="nameInput"
                             className="inputMixersACSI_SZ ownerName_mixer"
-                            onInput={(e) => handleSearchOptionsCustomers(e)}
+                            onInput={(e) => handleSearchOptionsByOwners(e)}
                             placeholder="نام و نام‌خانوادگی"
                             autoComplete="off"
                         />
@@ -337,7 +378,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
 
             }]);
         }
-    }, [dataMixers, id]);
+    }, [dataMixers, id, ownerId]);
 
     useEffect(() => {
         if (warning && mixerSearchWarning) {
