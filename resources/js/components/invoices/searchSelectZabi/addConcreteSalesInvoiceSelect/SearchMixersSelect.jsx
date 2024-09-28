@@ -23,7 +23,8 @@ const SearchMixersSelect = ({ dataMixers }) => {
     const handleSetId = (e) => {
         const { value } = e.target;
         setOptionsMixerSearched();
-        handleClearInput('nameInput');
+        handleClearInput('ownerName_mixer');
+        handleClearInput('numberplate_mixer');
         handleClearWarning();
         if (/^\d*$/.test(value)) {
             setId(parseInt(value, 10));
@@ -42,28 +43,28 @@ const SearchMixersSelect = ({ dataMixers }) => {
                 const optionsFound = customerIdsFound.map((data, i) => {
                     let arr = data.numberplate.split('-');
 
-                return    {
+                    return {
 
 
                         value: data.id,
-                            value2: data.customer.id,
-                                html: <div key={i} className="mixerAptionSelectFB">
-                                    <span className="mixerNamberpalteSelectFB">
-                                        <div className="numberplateDiv">
-                                            <span className="numberplateDivS1">{arr[0]}</span>
-                                            <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-                                            <span className="numberplateDivS3">{arr[1]}</span>
-                                            <span className="numberplateDivS4">{arr[2]}</span>
-                                        </div>
-                                    </span>
-
-                                    <span className="mixerOwnerSelectFB">
-                                        {data.customer.name}
-                                        {' '}
-                                        {data.customer.lastName}
-                                    </span>
-
+                        value2: data.customer.id,
+                        html: <div key={i} className="mixerAptionSelectFB">
+                            <span className="mixerNamberpalteSelectFB">
+                                <div className="numberplateDiv">
+                                    <span className="numberplateDivS1">{arr[0]}</span>
+                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                                    <span className="numberplateDivS3">{arr[1]}</span>
+                                    <span className="numberplateDivS4">{arr[2]}</span>
                                 </div>
+                            </span>
+
+                            <span className="mixerOwnerSelectFB">
+                                {data.customer.name}
+                                {' '}
+                                {data.customer.lastName}
+                            </span>
+
+                        </div>
                     }
                 });
                 setOptionsMixerSearched(optionsFound);
@@ -78,10 +79,12 @@ const SearchMixersSelect = ({ dataMixers }) => {
     const handleSetOwnerId = (e) => {
         const { value } = e.target;
         setOptionsMixerSearched();
-        handleClearInput('nameInput');
+        handleClearInput('id_mixer');
+        handleClearInput('ownerName_mixer');
+        handleClearInput('numberplate_mixer');
         handleClearWarning();
         if (/^\d*$/.test(value)) {
-            setId(parseInt(value, 10));
+            setOwnerId(parseInt(value, 10));
         } else {
             handleThrowWarning('لطفاً فقط عدد وارد کنید');
         }
@@ -96,26 +99,26 @@ const SearchMixersSelect = ({ dataMixers }) => {
             if (customerIdsFound[0] != undefined) {
                 const optionsFound = customerIdsFound.map((data, i) => {
                     let arr = data.numberplate.split('-');
-                return    {
+                    return {
                         value: data.id,
-                            value2: data.customer.id,
-                                html: <div key={i} className="mixerAptionSelectFB">
-                                    <span className="mixerNamberpalteSelectFB">
-                                        <div className="numberplateDiv">
-                                            <span className="numberplateDivS1">{arr[0]}</span>
-                                            <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-                                            <span className="numberplateDivS3">{arr[1]}</span>
-                                            <span className="numberplateDivS4">{arr[2]}</span>
-                                        </div>
-                                    </span>
-
-                                    <span className="mixerOwnerSelectFB">
-                                        {data.customer.name}
-                                        {' '}
-                                        {data.customer.lastName}
-                                    </span>
-
+                        value2: data.customer.id,
+                        html: <div key={i} className="mixerAptionSelectFB">
+                            <span className="mixerNamberpalteSelectFB">
+                                <div className="numberplateDiv">
+                                    <span className="numberplateDivS1">{arr[0]}</span>
+                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                                    <span className="numberplateDivS3">{arr[1]}</span>
+                                    <span className="numberplateDivS4">{arr[2]}</span>
                                 </div>
+                            </span>
+
+                            <span className="mixerOwnerSelectFB">
+                                {data.customer.name}
+                                {' '}
+                                {data.customer.lastName}
+                            </span>
+
+                        </div>
                     }
                 });
                 setOptionsMixerSearched(optionsFound);
@@ -192,9 +195,11 @@ const SearchMixersSelect = ({ dataMixers }) => {
         }
     }
 
-    const handleClearInput = (id) => {
-        const element = document.getElementById(id);
-        element.value = '';
+    const handleClearInput = (className) => {
+        const element = document.querySelectorAll(`.${className}`);
+        element.forEach(input => {
+            input.value = '';
+        });
     }
 
     const handleThrowWarning = (warning) => {
@@ -226,7 +231,8 @@ const SearchMixersSelect = ({ dataMixers }) => {
                         <div className="DIdsInputsMixersACSI_SZ">
                             <input
                                 type="text"
-                                id="idInput"
+                                // id="idInput"
+                                className="ownerId_mixer"
                                 placeholder="شناسه‌مالک"
                                 onInput={(e) => { handleSetOwnerId(e) }}
                                 autoComplete="off"
@@ -236,7 +242,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                         <input
                             type="text"
                             id="nameInput"
-                            className="inputMixersACSI_SZ"
+                            className="inputMixersACSI_SZ ownerName_mixer"
                             onInput={(e) => handleSearchOptionsCustomers(e)}
                             placeholder="نام و نام‌خانوادگی"
                             autoComplete="off"
@@ -247,6 +253,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                             <input
                                 type="text"
                                 id="idInput"
+                                className="id_mixer"
                                 placeholder="شناسه‌میکسر"
                                 onInput={(e) => { handleSetId(e) }}
                                 autoComplete="off"
@@ -258,7 +265,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                 type="text"
                                 name=""
                                 id=""
-                                className="text2NumberplateACSI_SZ"
+                                className="text2NumberplateACSI_SZ numberplate_mixer"
                                 placeholder="00"
                                 maxLength="2"
                                 value={numberplateVal.left || ''}
@@ -266,7 +273,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                             />
 
                             <select
-                                className="selectChNumberplateACSI_SZ"
+                                className="selectChNumberplateACSI_SZ numberplate_mixer"
                                 value={numberplateVal.alphabet}
                                 onChange={e => handleSetNumberplate(e, 'alphabet')}
                             >
@@ -309,7 +316,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                 type="text"
                                 name=""
                                 id=""
-                                className="text3NumberplateACSI_SZ"
+                                className="text3NumberplateACSI_SZ numberplate_mixer"
                                 placeholder="000"
                                 maxLength="3"
                                 value={numberplateVal.mid || ''}
@@ -317,7 +324,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                             />
                             <input
                                 type="text"
-                                className="textSerialNumberplateACSI_SZ"
+                                className="textSerialNumberplateACSI_SZ numberplate_mixer"
                                 placeholder="00"
                                 maxLength="2"
                                 value={numberplateVal.right || ''}
