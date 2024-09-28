@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
  * for use in AddCocreteSalesInvoice
  */
 const SearchMixersSelect = ({ dataMixers }) => {
-console.log(dataMixers);
     const [inputMixerSearch, setInputMixerSearch] = useState();
     const [optionsMixersSearched, setOptionsMixerSearched] = useState([]);
     const [id, setId] = useState();
@@ -183,12 +182,12 @@ console.log(dataMixers);
         setOptionsMixerSearched();
         handleClearWarning();
         if (value) {
-            const newDataCustomers = dataMixers.map(item => ({
+            const newDataOwners = dataMixers.map(item => ({
                 id: item.customer.id,
                 name: `${item.customer.name} ${item.customer.lastName}`
             }));
-
-            const ids = handleSearchByOwnerName(newDataCustomers, value);
+            console.log(newDataOwners);
+            const ids = handleSearchByOwnerName(newDataOwners, value);
 
             if (ids.length > 0) {
                 let filteredArr = dataMixers.filter(item => ids.includes(item.id));
