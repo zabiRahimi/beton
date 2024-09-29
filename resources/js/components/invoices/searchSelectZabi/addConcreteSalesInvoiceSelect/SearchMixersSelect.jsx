@@ -18,6 +18,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
         mid: '',
         right: ''
     });
+    const [stringNumberplate, setStringNumberplate] = useState();
 
     const handleSetId = (e) => {
         const { value } = e.target;
@@ -183,15 +184,10 @@ const SearchMixersSelect = ({ dataMixers }) => {
                 id: item.customer.id,
                 name: `${item.customer.name} ${item.customer.lastName}`
             }));
-            // console.log(newDataOwners);
             const ids = handleSearchByOwnerName(newDataOwners, value);
 
             if (ids.length > 0) {
                 let filteredArr = dataMixers.filter(item => ids.includes(item.customer.id));
-            // const customerIdsFound = dataMixers.filter(obj => obj.customer.id === ownerId);
-
-            console.log(filteredArr);
-
                 const optionsFound = filteredArr.map((data, i) => {
                     let arr = data.numberplate.split('-');
                     return {
@@ -231,28 +227,40 @@ const SearchMixersSelect = ({ dataMixers }) => {
 
     const handleSetNumberplate = (e, input) => {
         const { value } = e.target;
-        let numberplate;
         setNumberplate(prev => ({ ...prev, [input]: value }));
-        if (input == 'left' && (value || numberplate.alphabet || numberplate.mid || numberplate.right)) {
-            numberplate = value + '-' + numberplate.mid + '-' + numberplate.right + '-' + numberplate.alphabet;
-            setInput(prev => ({ ...prev, numberplate }));
-
-        } else if (input == 'alphabet' && (value || numberplate.left || numberplate.mid || numberplate.right)) {
-            numberplate = numberplate.left + '-' + numberplate.mid + '-' + numberplate.right + '-' + value;
-            setInput(prev => ({ ...prev, numberplate }));
-
-        } else if (input == 'mid' && (value || numberplate.left || numberplate.alphabet || numberplate.right)) {
-            numberplate = numberplate.left + '-' + value + '-' + numberplate.right + '-' + numberplate.alphabet;
-            setInput(prev => ({ ...prev, numberplate }));
-
-        } else if (input == 'right' && (value || numberplate.left || numberplate.alphabet || numberplate.mid)) {
-            numberplate = numberplate.left + '-' + numberplate.mid + '-' + value + '-' + numberplate.alphabet;
-            setInput(prev => ({ ...prev, numberplate }));
-        } else {
-            setInput(prev => ({ ...prev, numberplate: '' }));
-        }
     }
 
+    const handleSearchByNumberplate = () => {
+        const newDataMixers = dataMixers.filter(item => {
+            const [leftPart, midPart, rightPart, alphabetPart] = item.numberplate.split('-');
+            return (
+                (numberplate.left === '' || leftPart.includes(numberplate.left)) &&
+                (numberplate.alphabet === '' || alphabetPart === numberplate.alphabet) &&
+                (numberplate.mid === '' || midPart.includes(numberplate.mid)) &&
+                (numberplate.right === '' || rightPart.includes(numberplate.right))
+            );
+        });
+        console.log(newDataMixers);
+
+    }
+    // const zabi=[
+    //     {
+    //         id:1,
+    //         numberplate:'12-ب-456-41'
+    //     },
+    //     {
+    //         id:2,
+    //         numberplate:'13-ق-467-52'
+    //     },
+    //     {
+    //         id:3,
+    //         numberplate:'14-ع-478-63'
+    //     },
+    //     {
+    //         id:4,
+    //         numberplate:'15-خ-489-74'
+    //     }
+    // ]
     const handleClearInput = (className) => {
         const element = document.querySelectorAll(`.${className}`);
         element.forEach(input => {
@@ -326,13 +334,13 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                 className="text2NumberplateACSI_SZ numberplate_mixer"
                                 placeholder="00"
                                 maxLength="2"
-                                value={numberplate.left || ''}
+                                // value={numberplate.left || ''}
                                 onInput={e => handleSetNumberplate(e, 'left')}
                             />
 
                             <select
                                 className="selectChNumberplateACSI_SZ numberplate_mixer"
-                                value={numberplate.alphabet}
+                                // value={numberplate.alphabet}
                                 onChange={e => handleSetNumberplate(e, 'alphabet')}
                             >
                                 <option value=""> حرف </option>
@@ -377,7 +385,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                 className="text3NumberplateACSI_SZ numberplate_mixer"
                                 placeholder="000"
                                 maxLength="3"
-                                value={numberplate.mid || ''}
+                                // value={numberplate.mid || ''}
                                 onInput={e => handleSetNumberplate(e, 'mid')}
                             />
                             <input
@@ -385,7 +393,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                 className="textSerialNumberplateACSI_SZ numberplate_mixer"
                                 placeholder="00"
                                 maxLength="2"
-                                value={numberplate.right || ''}
+                                // value={numberplate.right || ''}
                                 onInput={e => handleSetNumberplate(e, 'right')}
                             />
 
@@ -412,6 +420,11 @@ const SearchMixersSelect = ({ dataMixers }) => {
             // MixerSearchWarning();
         }
     }, [warning]);
+
+    useEffect(() => {
+        handleSearchByNumberplate();
+
+    }, [numberplate]);
 
     return {
         inputMixerSearch,
