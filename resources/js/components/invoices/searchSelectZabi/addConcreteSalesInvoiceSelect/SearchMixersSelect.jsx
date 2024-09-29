@@ -12,7 +12,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
     const [elementMixerSearchWarning, MixerSearchWarning] = useState();
     const [mixerSearchWarning, setCustomerSearchWarning] = useState();
     const [warning, setWarning] = useState();
-    const [numberplateVal, setNumberplateVal] = useState({
+    const [numberplate, setNumberplate] = useState({
         left: '',
         alphabet: '',
         mid: '',
@@ -38,14 +38,11 @@ const SearchMixersSelect = ({ dataMixers }) => {
         handleClearInput('nameInput');
         setOptionsMixerSearched();
         if (id) {
-            const customerIdsFound = dataMixers.filter(obj => obj.customer.id === id);
-            if (customerIdsFound[0] != undefined) {
-                const optionsFound = customerIdsFound.map((data, i) => {
+            const mixerFound = [dataMixers.find(obj => obj.id === id)];
+            if (mixerFound[0] != undefined) {
+                const optionsFound = mixerFound.map((data, i) => {
                     let arr = data.numberplate.split('-');
-
                     return {
-
-
                         value: data.id,
                         value2: data.customer.id,
                         html: <div key={i} className="mixerAptionSelectFB">
@@ -186,18 +183,39 @@ const SearchMixersSelect = ({ dataMixers }) => {
                 id: item.customer.id,
                 name: `${item.customer.name} ${item.customer.lastName}`
             }));
-            console.log(newDataOwners);
+            // console.log(newDataOwners);
             const ids = handleSearchByOwnerName(newDataOwners, value);
 
             if (ids.length > 0) {
-                let filteredArr = dataMixers.filter(item => ids.includes(item.id));
-                const optionsFound = filteredArr.map((data, i) => ({
-                    value: data.id,
-                    html: <div key={i} className="personnelAption_addPerS">
-                        <span className="name_addPers">{data.name} {data.lastName}</span>
-                        <span className="fther_addPers">{data.father || ''}</span>
-                    </div>
-                }));
+                let filteredArr = dataMixers.filter(item => ids.includes(item.customer.id));
+            // const customerIdsFound = dataMixers.filter(obj => obj.customer.id === ownerId);
+
+            console.log(filteredArr);
+
+                const optionsFound = filteredArr.map((data, i) => {
+                    let arr = data.numberplate.split('-');
+                    return {
+                        value: data.id,
+                        value2: data.customer.id,
+                        html: <div key={i} className="mixerAptionSelectFB">
+                            <span className="mixerNamberpalteSelectFB">
+                                <div className="numberplateDiv">
+                                    <span className="numberplateDivS1">{arr[0]}</span>
+                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                                    <span className="numberplateDivS3">{arr[1]}</span>
+                                    <span className="numberplateDivS4">{arr[2]}</span>
+                                </div>
+                            </span>
+
+                            <span className="mixerOwnerSelectFB">
+                                {data.customer.name}
+                                {' '}
+                                {data.customer.lastName}
+                            </span>
+
+                        </div>
+                    }
+                });
                 setOptionsMixerSearched(optionsFound);
             } else {
                 handleThrowWarning('نتیجه‌ای یافت نشد');
@@ -214,21 +232,21 @@ const SearchMixersSelect = ({ dataMixers }) => {
     const handleSetNumberplate = (e, input) => {
         const { value } = e.target;
         let numberplate;
-        setNumberplateVal(prev => ({ ...prev, [input]: value }));
-        if (input == 'left' && (value || numberplateVal.alphabet || numberplateVal.mid || numberplateVal.right)) {
-            numberplate = value + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+        setNumberplate(prev => ({ ...prev, [input]: value }));
+        if (input == 'left' && (value || numberplate.alphabet || numberplate.mid || numberplate.right)) {
+            numberplate = value + '-' + numberplate.mid + '-' + numberplate.right + '-' + numberplate.alphabet;
             setInput(prev => ({ ...prev, numberplate }));
 
-        } else if (input == 'alphabet' && (value || numberplateVal.left || numberplateVal.mid || numberplateVal.right)) {
-            numberplate = numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
+        } else if (input == 'alphabet' && (value || numberplate.left || numberplate.mid || numberplate.right)) {
+            numberplate = numberplate.left + '-' + numberplate.mid + '-' + numberplate.right + '-' + value;
             setInput(prev => ({ ...prev, numberplate }));
 
-        } else if (input == 'mid' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.right)) {
-            numberplate = numberplateVal.left + '-' + value + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+        } else if (input == 'mid' && (value || numberplate.left || numberplate.alphabet || numberplate.right)) {
+            numberplate = numberplate.left + '-' + value + '-' + numberplate.right + '-' + numberplate.alphabet;
             setInput(prev => ({ ...prev, numberplate }));
 
-        } else if (input == 'right' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.mid)) {
-            numberplate = numberplateVal.left + '-' + numberplateVal.mid + '-' + value + '-' + numberplateVal.alphabet;
+        } else if (input == 'right' && (value || numberplate.left || numberplate.alphabet || numberplate.mid)) {
+            numberplate = numberplate.left + '-' + numberplate.mid + '-' + value + '-' + numberplate.alphabet;
             setInput(prev => ({ ...prev, numberplate }));
         } else {
             setInput(prev => ({ ...prev, numberplate: '' }));
@@ -308,13 +326,13 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                 className="text2NumberplateACSI_SZ numberplate_mixer"
                                 placeholder="00"
                                 maxLength="2"
-                                value={numberplateVal.left || ''}
+                                value={numberplate.left || ''}
                                 onInput={e => handleSetNumberplate(e, 'left')}
                             />
 
                             <select
                                 className="selectChNumberplateACSI_SZ numberplate_mixer"
-                                value={numberplateVal.alphabet}
+                                value={numberplate.alphabet}
                                 onChange={e => handleSetNumberplate(e, 'alphabet')}
                             >
                                 <option value=""> حرف </option>
@@ -359,7 +377,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                 className="text3NumberplateACSI_SZ numberplate_mixer"
                                 placeholder="000"
                                 maxLength="3"
-                                value={numberplateVal.mid || ''}
+                                value={numberplate.mid || ''}
                                 onInput={e => handleSetNumberplate(e, 'mid')}
                             />
                             <input
@@ -367,7 +385,7 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                 className="textSerialNumberplateACSI_SZ numberplate_mixer"
                                 placeholder="00"
                                 maxLength="2"
-                                value={numberplateVal.right || ''}
+                                value={numberplate.right || ''}
                                 onInput={e => handleSetNumberplate(e, 'right')}
                             />
 
