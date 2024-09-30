@@ -36,7 +36,6 @@ const AddConcreteSalesInvoice = () => {
         optionSeconds,
     } = DataZabi();
 
-
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     const container = useRef(null);
@@ -84,6 +83,11 @@ const AddConcreteSalesInvoice = () => {
 
     const refCheckedMaskanShahidEdit = useRef(null);
 
+    const [date, setDate] = useState({
+            day: '',
+            month: '',
+            year: ''
+    });
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
@@ -735,6 +739,70 @@ const AddConcreteSalesInvoice = () => {
             </div>
         })
         return value;
+    }
+
+    const handleSetDate = (e,i, input) => {
+        let { value } = e.target,
+            day,
+            month,
+            year,
+            valDate;
+        value = value.toString();
+
+        if (input == 'day') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+                setDate(prev => ({...prev, [input]: value  }));
+                if (!editMode) {
+                    refInvoice[`dayInput${i}`].current.value = value;
+                    refInvoice[`daySelect${i}`].current.value = value;
+                }
+            } else {
+                e.target.value = day;
+            }
+            let date = year + '-' + month + '-' + value;
+            if (!editMode) {
+                setInput(prevInput => {
+                    let newInvoice;
+                    newInvoice = [...prevInput.invoice];
+                    newInvoice[i] = { ...newInvoice[i], date };
+                    return { ...prevInput, invoice: newInvoice };
+                });
+            } else {
+                setInputEdit(prevInput => ({ ...prevInput, date }));
+            }
+            // let { value } = e.target;
+            // value = value.toString();
+            // (value != 0 && value.length == 1) && (value = '0' + value);
+            // (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+
+            // if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+            //     value == 0 ? value = '' : '';
+            //     day = value
+            //     setDate(prev => ({...prev, [input]: value  }));
+            // }
+
+        } else if (input == 'month') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
+                value == 0 ? value = '' : '';
+                month = value;
+                setDate(prev => ({...prev, [input]: value  }));
+            }
+        } else {
+            if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+                value == 0 ? value = '' : '';
+                year = value;
+                setDate(prev => ({...prev, [input]: value  }));
+            }
+        }
+        if (year == '' && month == '' && day == '') {
+            valDate = '';
+        } else {
+            valDate = year + '/' + month + '/' + day;
+        }
     }
 
     const changeDay = (e, i) => {
