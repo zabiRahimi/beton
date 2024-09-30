@@ -681,7 +681,6 @@ const AddConcreteSalesInvoice = () => {
                                     <span className="numberplateDivS4">{arr[2]}</span>
                                 </div>
                             </span>
-
                             <span className="mixerOwnerSelectFB">
                                 {data.customer.name}
                                 {' '}
@@ -704,7 +703,6 @@ const AddConcreteSalesInvoice = () => {
         if (length == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
-
         let value = concreteSalesInvoices.map((concreteSalesInvoice, i) => {
             let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
             let date = concreteSalesInvoice['date'].split('-');
@@ -722,7 +720,6 @@ const AddConcreteSalesInvoice = () => {
                 <span className="driverACSI_Ge"> {concreteSalesInvoice['driver'].name}{'  '}{concreteSalesInvoice['driver'].lastName}</span>{/* راننده */}
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>{/* تاریخ */}
                 <span className="timeACSI_Ge">{concreteSalesInvoice['time']}</span>{/* ساعت */}
-
                 <div className="divEditACSI_Ge">
                     <button className="--styleLessBtn btnEditACSI_Ge" title=" ویرایش "
                         onClick={() => { showEditForm(concreteSalesInvoice.id); handleRemoveErrorCustomer() }}
@@ -730,18 +727,13 @@ const AddConcreteSalesInvoice = () => {
                         <i className="icofont-pencil iEditGe" />
                     </button>
                 </div>
-
                 <div className="divDelACSI_Ge">
-
                     <button className="--styleLessBtn btnDelACSI_Ge" title=" حذف ">
                         <i className="icofont-trash iDelGe" />
                     </button>
                 </div>
-
             </div>
-
         })
-
         return value;
     }
 
@@ -750,14 +742,12 @@ const AddConcreteSalesInvoice = () => {
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
         if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
             setDay(value);
             if (!editMode) {
                 refInvoice[`dayInput${i}`].current.value = value;
                 refInvoice[`daySelect${i}`].current.value = value;
             }
-
         } else {
             e.target.value = day;
         }
@@ -779,7 +769,6 @@ const AddConcreteSalesInvoice = () => {
         value = value.toString();
         (value != 0 && value.length == 1) && (value = '0' + value);
         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
         if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
             setMonth(value);
             if (!editMode) {

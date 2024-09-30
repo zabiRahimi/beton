@@ -37,6 +37,7 @@
 
 .D2InputsMixersACSI_SZ{
     margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 .DIdsInputsCustomersACSI_SZ,
@@ -165,13 +166,11 @@
     flex-direction: column;
 }
 
-.divContainerInputSZ {}
-
 .divContainerOptionSearchSZ {
     max-height: 170px;
     overflow: hidden;
     overflow-y: auto;
-    border-bottom: 2px solid blue;
+    border-bottom: 3px solid #5382bd;
 }
 
 .divContainerOptionsSZ {

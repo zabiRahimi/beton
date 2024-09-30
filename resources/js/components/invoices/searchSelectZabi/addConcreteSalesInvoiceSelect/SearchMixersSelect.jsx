@@ -18,10 +18,16 @@ const SearchMixersSelect = ({ dataMixers }) => {
         mid: '',
         right: ''
     });
-    const [stringNumberplate, setStringNumberplate] = useState();
 
     const handleSetId = (e) => {
         const { value } = e.target;
+        setOwnerId();
+        setNumberplate({
+            left: '',
+            alphabet: '',
+            mid: '',
+            right: ''
+        })
         setOptionsMixerSearched();
         handleClearInput('ownerId_mixer');
         handleClearInput('ownerName_mixer');
@@ -36,8 +42,12 @@ const SearchMixersSelect = ({ dataMixers }) => {
 
     const handleSearchId = (e) => {
         e.preventDefault();
-        handleClearInput('nameInput');
+        setOwnerId();
+        handleClearInput('ownerId_mixer');
+        handleClearInput('ownerName_mixer');
+        handleClearInput('numberplate_mixer');
         setOptionsMixerSearched();
+        handleClearWarning();
         if (id) {
             const mixerFound = [dataMixers.find(obj => obj.id === id)];
             if (mixerFound[0] != undefined) {
@@ -70,16 +80,25 @@ const SearchMixersSelect = ({ dataMixers }) => {
                 handleThrowWarning(`نتیجه‌ای یافت نشد`);
             }
         } else {
-            handleThrowWarning('ابتدا شناسه را وارد کنید');
+            handleThrowWarning('ابتدا شناسه میکسر را وارد کنید');
         }
     }
 
     const handleSetOwnerId = (e) => {
         const { value } = e.target;
-        setOptionsMixerSearched();
+        setId();
+        setNumberplate(
+            {
+                left: '',
+                alphabet: '',
+                mid: '',
+                right: ''
+            }
+        );
         handleClearInput('id_mixer');
         handleClearInput('ownerName_mixer');
         handleClearInput('numberplate_mixer');
+        setOptionsMixerSearched();
         handleClearWarning();
         if (/^\d*$/.test(value)) {
             setOwnerId(parseInt(value, 10));
@@ -90,8 +109,20 @@ const SearchMixersSelect = ({ dataMixers }) => {
 
     const handleSearchOwnerId = (e) => {
         e.preventDefault();
-        handleClearInput('nameInput');
+        setId();
+        setNumberplate(
+            {
+                left: '',
+                alphabet: '',
+                mid: '',
+                right: ''
+            }
+        );
+        handleClearInput('id_mixer');
+        handleClearInput('ownerName_mixer');
+        handleClearInput('numberplate_mixer');
         setOptionsMixerSearched();
+        handleClearWarning();
         if (ownerId) {
             const customerIdsFound = dataMixers.filter(obj => obj.customer.id === ownerId);
             if (customerIdsFound[0] != undefined) {
@@ -109,7 +140,6 @@ const SearchMixersSelect = ({ dataMixers }) => {
                                     <span className="numberplateDivS4">{arr[2]}</span>
                                 </div>
                             </span>
-
                             <span className="mixerOwnerSelectFB">
                                 {data.customer.name}
                                 {' '}
@@ -124,56 +154,20 @@ const SearchMixersSelect = ({ dataMixers }) => {
                 handleThrowWarning(`نتیجه‌ای یافت نشد`);
             }
         } else {
-            handleThrowWarning('ابتدا شناسه را وارد کنید');
+            handleThrowWarning('ابتدا شناسه مالک را وارد کنید');
         }
     }
-
-    const handleSearchOptionsCustomers = (e) => {
-        const { value } = e.target;
-        setId();
-        setOwnerId();
-        handleClearInput('idInput');
-        setOptionsMixerSearched();
-        handleClearWarning();
-        if (value) {
-            // const owners=dataMixers.map
-            const newDataCustomers = dataMixers.map(item => ({
-                id: item.customer.id,
-                name: `${item.customer.name} ${item.customer.lastName}`
-            }));
-            // const newDataCustomers = dataMixers.map(item => ({
-            //     id: item.id,
-            //     name: `${item.name} ${item.lastName}`
-            // }));
-
-            const ids = handleSearchByName(newDataCustomers, value);
-
-            if (ids.length > 0) {
-                let filteredArr = dataMixers.filter(item => ids.includes(item.id));
-                const optionsFound = filteredArr.map((data, i) => ({
-                    value: data.id,
-                    html: <div key={i} className="personnelAption_addPerS">
-                        <span className="name_addPers">{data.name} {data.lastName}</span>
-                        <span className="fther_addPers">{data.father || ''}</span>
-                    </div>
-                }));
-                setOptionsMixerSearched(optionsFound);
-            } else {
-                handleThrowWarning('نتیجه‌ای یافت نشد');
-            }
-        }
-    }
-
-    const handleSearchByName = (newArr, searchTerm) => {
-        return newArr
-            .filter(item => item.name.includes(searchTerm))
-            .map(item => item.id);
-    };
 
     const handleSearchOptionsByOwners = (e) => {
         const { value } = e.target;
         setId();
         setOwnerId();
+        setNumberplate({
+            left: '',
+            alphabet: '',
+            mid: '',
+            right: ''
+        })
         handleClearInput('ownerId_mixer');
         handleClearInput('id_mixer');
         handleClearInput('numberplate_mixer');
@@ -227,40 +221,63 @@ const SearchMixersSelect = ({ dataMixers }) => {
 
     const handleSetNumberplate = (e, input) => {
         const { value } = e.target;
+        setId();
+        setOwnerId();
+        handleClearInput('ownerId_mixer');
+        handleClearInput('ownerName_mixer');
+        handleClearInput('id_mixer');
+        setOptionsMixerSearched();
+        handleClearWarning();
         setNumberplate(prev => ({ ...prev, [input]: value }));
     }
 
     const handleSearchByNumberplate = () => {
-        const newDataMixers = dataMixers.filter(item => {
-            const [leftPart, midPart, rightPart, alphabetPart] = item.numberplate.split('-');
-            return (
-                (numberplate.left === '' || leftPart.includes(numberplate.left)) &&
-                (numberplate.alphabet === '' || alphabetPart === numberplate.alphabet) &&
-                (numberplate.mid === '' || midPart.includes(numberplate.mid)) &&
-                (numberplate.right === '' || rightPart.includes(numberplate.right))
-            );
-        });
-        console.log(newDataMixers);
+        if (numberplate.left || numberplate.alphabet || numberplate.mid || numberplate.right) {
+            const filteredMixers = dataMixers.filter(item => {
+                const [leftPart, midPart, rightPart, alphabetPart] = item.numberplate.split('-');
+                return (
+                    (numberplate.left === '' || leftPart.includes(numberplate.left)) &&
+                    (numberplate.alphabet === '' || alphabetPart === numberplate.alphabet) &&
+                    (numberplate.mid === '' || midPart.includes(numberplate.mid)) &&
+                    (numberplate.right === '' || rightPart.includes(numberplate.right))
+                );
+            });
+            if (filteredMixers.length > 0) {
+                const optionsFound = filteredMixers.map((data, i) => {
+                    let arr = data.numberplate.split('-');
+                    return {
+                        value: data.id,
+                        value2: data.customer.id,
+                        html: <div key={i} className="mixerAptionSelectFB">
+                            <span className="mixerNamberpalteSelectFB">
+                                <div className="numberplateDiv">
+                                    <span className="numberplateDivS1">{arr[0]}</span>
+                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                                    <span className="numberplateDivS3">{arr[1]}</span>
+                                    <span className="numberplateDivS4">{arr[2]}</span>
+                                </div>
+                            </span>
 
+                            <span className="mixerOwnerSelectFB">
+                                {data.customer.name}
+                                {' '}
+                                {data.customer.lastName}
+                            </span>
+
+                        </div>
+                    }
+                });
+                setOptionsMixerSearched(optionsFound);
+            } else {
+                setOptionsMixerSearched();
+                handleThrowWarning('نتیجه‌ای یافت نشد');
+            }
+
+        } else {
+            setOptionsMixerSearched();
+        }
     }
-    // const zabi=[
-    //     {
-    //         id:1,
-    //         numberplate:'12-ب-456-41'
-    //     },
-    //     {
-    //         id:2,
-    //         numberplate:'13-ق-467-52'
-    //     },
-    //     {
-    //         id:3,
-    //         numberplate:'14-ع-478-63'
-    //     },
-    //     {
-    //         id:4,
-    //         numberplate:'15-خ-489-74'
-    //     }
-    // ]
+
     const handleClearInput = (className) => {
         const element = document.querySelectorAll(`.${className}`);
         element.forEach(input => {
@@ -283,8 +300,18 @@ const SearchMixersSelect = ({ dataMixers }) => {
      * فراخوانی می‌شود
      */
     const handleClearAllSearchMixer = () => {
-        handleClearInput('idInput');
-        handleClearInput('nameInput');
+        setId();
+        setOwnerId();
+        setNumberplate({
+            left: '',
+            alphabet: '',
+            mid: '',
+            right: ''
+        });
+        handleClearInput('ownerId_mixer');
+        handleClearInput('ownerName_mixer');
+        handleClearInput('id_mixer');
+        handleClearInput('numberplate_mixer');
         setOptionsMixerSearched();
         handleClearWarning();
     }
@@ -297,7 +324,6 @@ const SearchMixersSelect = ({ dataMixers }) => {
                         <div className="DIdsInputsMixersACSI_SZ">
                             <input
                                 type="text"
-                                // id="idInput"
                                 className="ownerId_mixer"
                                 placeholder="شناسه‌مالک"
                                 onInput={(e) => { handleSetOwnerId(e) }}
@@ -422,8 +448,9 @@ const SearchMixersSelect = ({ dataMixers }) => {
     }, [warning]);
 
     useEffect(() => {
-        handleSearchByNumberplate();
-
+        if (numberplate.left || numberplate.alphabet || numberplate.mid || numberplate.right) {
+            handleSearchByNumberplate();
+        }
     }, [numberplate]);
 
     return {
