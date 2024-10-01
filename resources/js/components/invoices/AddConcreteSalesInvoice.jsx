@@ -208,6 +208,7 @@ const AddConcreteSalesInvoice = () => {
         driverName: '',
         driverLastName: '',
     });
+    console.log(inputEdit);
 
     /**
      * id to edit the model
@@ -763,7 +764,6 @@ const AddConcreteSalesInvoice = () => {
             }
              valDate = year + '-' + date.month + '-' + value;
              if (!editMode) {
-                console.log(date);
                 setInput(prevInput => {
                     let newInvoice;
                     newInvoice = [...prevInput.invoice];
@@ -855,7 +855,6 @@ const AddConcreteSalesInvoice = () => {
         // }
     }
 
-    console.log(input);
 
     const changeDay = (e, i) => {
         let { value } = e.target;
@@ -1101,6 +1100,11 @@ const AddConcreteSalesInvoice = () => {
 
         if (rest.date) {
             let parts = rest.date.split("-");
+            setDate({
+                day:parts[2],
+                month:parts[1],
+                year:parts[0]
+            });
             setYear(parts[0]);
             setMonth(parts[1]);
             setDay(parts[2]);
@@ -2073,7 +2077,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="1300"
-                                                            defaultValue={year}
+                                                            defaultValue={date.year}
                                                             // onInput={(e) => { changeYear(e, i) }}
                                                             onInput={(e) => { handleSetDate(e, i, 'year') }}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
@@ -2107,7 +2111,7 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            defaultValue={year}
+                                                            defaultValue={date.year}
                                                             // onChange={(e) => { changeYear(e, i) }}
                                                             onChange={(e) => { handleSetDate(e, i, 'year') }}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
@@ -2561,7 +2565,7 @@ const AddConcreteSalesInvoice = () => {
                                                         type="text"
                                                         className="inputTextDateACus inputYearTDACus element"
                                                         placeholder="1300"
-                                                        value={year || ''}
+                                                        value={date.year || ''}
                                                         // onInput={(e) => { changeYear(e, 0) }}
                                                         onInput={(e) => { handleSetDate(e, 0,'year') }}
                                                         onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
@@ -2573,7 +2577,8 @@ const AddConcreteSalesInvoice = () => {
                                                     <select
                                                         className="element"
                                                         value={day}
-                                                        onChange={(e) => changeDay(e, 0)}
+                                                        // onChange={(e) => changeDay(e, 0)}
+                                                        onChange={(e) => handleSetDate(e, 0, 'year')}
                                                         onClick={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
                                                     >
                                                         <option value="">روز</option>
@@ -2591,7 +2596,7 @@ const AddConcreteSalesInvoice = () => {
                                                     </select>
                                                     <select
                                                         className="element"
-                                                        value={year}
+                                                        value={date.year}
                                                         onChange={(e) => { changeYear(e, 0) }}
                                                         onClick={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
 
