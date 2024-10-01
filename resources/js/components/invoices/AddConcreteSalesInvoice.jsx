@@ -815,12 +815,38 @@ const AddConcreteSalesInvoice = () => {
             //     month = value;
             //     setDate(prev => ({...prev, [input]: value  }));
             // }
-        } else {
+        } else if(input='year') {
+
             if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-                value == 0 ? value = '' : '';
-                year = value;
+                
                 setDate(prev => ({...prev, [input]: value  }));
+
+                if (!editMode) {
+                    refInvoice[`yearInput${i}`].current.value = value;
+                    refInvoice[`yearSelect${i}`].current.value = value;
+                }
+    
+            } else {
+                e.target.value = year;
             }
+    
+            valDate = value + '-' + date.month + '-' + date.day;
+            if (!editMode) {
+                setInput(prevInput => {
+                    let newInvoice;
+                    newInvoice = [...prevInput.invoice];
+                    newInvoice[i] = { ...newInvoice[i], date:valDate };
+                    return { ...prevInput, invoice: newInvoice };
+                });
+            } else {
+                setInputEdit(prevInput => ({ ...prevInput, date:valDate }));
+            }
+
+            // if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+            //     value == 0 ? value = '' : '';
+            //     year = value;
+            //     setDate(prev => ({...prev, [input]: value  }));
+            // }
         }
         // if (year == '' && month == '' && day == '') {
         //     date = '';
@@ -2048,7 +2074,8 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="1300"
                                                             defaultValue={year}
-                                                            onInput={(e) => { changeYear(e, i) }}
+                                                            // onInput={(e) => { changeYear(e, i) }}
+                                                            onInput={(e) => { handleSetDate(e, i, 'year') }}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`yearInput${i}`]}
                                                         />
@@ -2081,7 +2108,8 @@ const AddConcreteSalesInvoice = () => {
                                                         <select
                                                             className="element"
                                                             defaultValue={year}
-                                                            onChange={(e) => { changeYear(e, i) }}
+                                                            // onChange={(e) => { changeYear(e, i) }}
+                                                            onChange={(e) => { handleSetDate(e, i, 'year') }}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`yearSelect${i}`]}
                                                         >
@@ -2534,7 +2562,8 @@ const AddConcreteSalesInvoice = () => {
                                                         className="inputTextDateACus inputYearTDACus element"
                                                         placeholder="1300"
                                                         value={year || ''}
-                                                        onInput={(e) => { changeYear(e, 0) }}
+                                                        // onInput={(e) => { changeYear(e, 0) }}
+                                                        onInput={(e) => { handleSetDate(e, 0,'year') }}
                                                         onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
                                                     />
                                                     <i className="icofont-ui-rating starFB" />
