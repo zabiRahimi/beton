@@ -84,13 +84,15 @@ const AddConcreteSalesInvoice = () => {
     const refCheckedMaskanShahidEdit = useRef(null);
 
     const [date, setDate] = useState({
-            day: '',
-            month: '',
-            year: ''
+        day: '',
+        month: '',
+        year: ''
     });
-    const [day, setDay] = useState('');
-    const [month, setMonth] = useState('');
-    const [year, setYear] = useState('');
+    const [time, setTime] = useState({
+        second: '',
+        minute: '',
+        hour: ''
+    });
     const [hour, setHour] = useState('');
     const [minute, setMinute] = useState('');
     const [second, setSecond] = useState('');
@@ -742,198 +744,165 @@ const AddConcreteSalesInvoice = () => {
         return value;
     }
 
-    const handleSetDate = (e,i, input) => {
+    const handleSetDate = (e, i, input) => {
         let { value } = e.target,
-            day,
-            month,
-            year,
             valDate;
         value = value.toString();
-
         if (input == 'day') {
             (value != 0 && value.length == 1) && (value = '0' + value);
             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
             if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-                setDate(prev => ({...prev, [input]: value  }));
+                setDate(prev => ({ ...prev, [input]: value }));
                 if (!editMode) {
                     refInvoice[`dayInput${i}`].current.value = value;
                     refInvoice[`daySelect${i}`].current.value = value;
                 }
             } else {
-                e.target.value = day;
+                e.target.value = date.day;
             }
-             valDate = year + '-' + date.month + '-' + value;
-             if (!editMode) {
+            valDate = date.year + '-' + date.month + '-' + value;
+            if (!editMode) {
                 setInput(prevInput => {
                     let newInvoice;
                     newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], date:valDate };
+                    newInvoice[i] = { ...newInvoice[i], date: valDate };
                     return { ...prevInput, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, date:valDate }));
+                setInputEdit(prevInput => ({ ...prevInput, date: valDate }));
             }
-            // let { value } = e.target;
-            // value = value.toString();
-            // (value != 0 && value.length == 1) && (value = '0' + value);
-            // (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            // if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-            //     value == 0 ? value = '' : '';
-            //     day = value
-            //     setDate(prev => ({...prev, [input]: value  }));
-            // }
 
         } else if (input == 'month') {
             (value != 0 && value.length == 1) && (value = '0' + value);
             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
             if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-                setDate(prev => ({...prev, [input]: value  }));
+                setDate(prev => ({ ...prev, [input]: value }));
                 if (!editMode) {
                     refInvoice[`monthInput${i}`].current.value = value;
                     refInvoice[`monthSelect${i}`].current.value = value;
                 }
             }
             else {
-                e.target.value = month;
+                e.target.value = date.month;
             }
-            valDate = year + '-' + value + '-' + date.day;
+            valDate = date.year + '-' + value + '-' + date.day;
             if (!editMode) {
                 setInput(prevInput => {
                     let newInvoice;
                     newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], date:valDate };
+                    newInvoice[i] = { ...newInvoice[i], date: valDate };
                     return { ...prevInput, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, date:valDate }));
+                setInputEdit(prevInput => ({ ...prevInput, date: valDate }));
             }
-            // (value != 0 && value.length == 1) && (value = '0' + value);
-            // (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            // if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-            //     value == 0 ? value = '' : '';
-            //     month = value;
-            //     setDate(prev => ({...prev, [input]: value  }));
-            // }
-        } else if(input='year') {
-
+        } else if (input = 'year') {
             if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-                
-                setDate(prev => ({...prev, [input]: value  }));
-
+                setDate(prev => ({ ...prev, [input]: value }));
                 if (!editMode) {
                     refInvoice[`yearInput${i}`].current.value = value;
                     refInvoice[`yearSelect${i}`].current.value = value;
                 }
-    
             } else {
-                e.target.value = year;
+                e.target.value = date.year;
             }
-    
             valDate = value + '-' + date.month + '-' + date.day;
             if (!editMode) {
                 setInput(prevInput => {
                     let newInvoice;
                     newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], date:valDate };
+                    newInvoice[i] = { ...newInvoice[i], date: valDate };
                     return { ...prevInput, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, date:valDate }));
+                setInputEdit(prevInput => ({ ...prevInput, date: valDate }));
             }
-
-            // if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-            //     value == 0 ? value = '' : '';
-            //     year = value;
-            //     setDate(prev => ({...prev, [input]: value  }));
-            // }
         }
-        // if (year == '' && month == '' && day == '') {
-        //     date = '';
-        // } else {
-        //     date = year + '/' + month + '/' + day;
-        // }
     }
 
-
-    const changeDay = (e, i) => {
-        let { value } = e.target;
+    const handleSetTime = (e, i, input) => {
+        let { value } = e.target,
+            valDate;
         value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-            setDay(value);
-            if (!editMode) {
-                refInvoice[`dayInput${i}`].current.value = value;
-                refInvoice[`daySelect${i}`].current.value = value;
-            }
-        } else {
-            e.target.value = day;
-        }
-        let date = year + '-' + month + '-' + value;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
-        }
-    }
+        if (input == 'second') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
-    const changeMonth = (e, i) => {
-        let { value } = e.target;
-        value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-            setMonth(value);
-            if (!editMode) {
-                refInvoice[`monthInput${i}`].current.value = value;
-                refInvoice[`monthSelect${i}`].current.value = value;
-            }
-        }
-        else {
-            e.target.value = month;
-        }
-        let date = year + '-' + value + '-' + day;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
-        }
-    }
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
+                setSecond(value);
+                if (!editMode) {
+                    refInvoice[`secondSelect${i}`].current.value = value;
+                    refInvoice[`secondInput${i}`].current.value = value;
+                }
 
-    const changeYear = (e, i) => {
-        let { value } = e.target;
-        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-            setYear(value);
+            } else {
+
+                e.target.value = second;
+            }
+            let time = hour + ':' + minute + ':' + value;
             if (!editMode) {
-                refInvoice[`yearInput${i}`].current.value = value;
-                refInvoice[`yearSelect${i}`].current.value = value;
+                setInput(prevInput => {
+                    let newInvoice;
+                    newInvoice = [...prevInput.invoice];
+                    newInvoice[i] = { ...newInvoice[i], time };
+                    return { ...prevInput, invoice: newInvoice };
+                });
+            } else {
+                setInputEdit(prevInput => ({ ...prevInput, time }));
             }
 
-        } else {
-            e.target.value = year;
-        }
+        } else if (input == 'minute') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
-        let date = value + '-' + month + '-' + day;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], date };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, date }));
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
+                setMinute(value);
+                if (!editMode) {
+                    refInvoice[`minuteSelect${i}`].current.value = value;
+                    refInvoice[`minuteInput${i}`].current.value = value;
+                }
+
+            } else {
+                e.target.value = minute;
+            }
+
+            let time = hour + ':' + value + ':' + second;
+            if (!editMode) {
+                setInput(prevInput => {
+                    let newInvoice;
+                    newInvoice = [...prevInput.invoice];
+                    newInvoice[i] = { ...newInvoice[i], time };
+                    return { ...prevInput, invoice: newInvoice };
+                });
+            } else {
+                setInputEdit(prevInput => ({ ...prevInput, time }));
+            }
+        } else if (input = 'hour') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
+                setHour(value);
+                if (!editMode) {
+                    refInvoice[`hourSelect${i}`].current.value = value;
+                    refInvoice[`hourInput${i}`].current.value = value;
+                }
+
+            } else {
+                e.target.value = hour;
+            }
+
+            let time = value + ':' + minute + ':' + second;
+            if (!editMode) {
+                setInput(prevInput => {
+                    let newInvoice;
+                    newInvoice = [...prevInput.invoice];
+                    newInvoice[i] = { ...newInvoice[i], time };
+                    return { ...prevInput, invoice: newInvoice };
+                });
+            } else {
+                setInputEdit(prevInput => ({ ...prevInput, time }));
+            }
         }
     }
 
@@ -1101,13 +1070,11 @@ const AddConcreteSalesInvoice = () => {
         if (rest.date) {
             let parts = rest.date.split("-");
             setDate({
-                day:parts[2],
-                month:parts[1],
-                year:parts[0]
+                day: parts[2],
+                month: parts[1],
+                year: parts[0]
             });
-            setYear(parts[0]);
-            setMonth(parts[1]);
-            setDay(parts[2]);
+
         }
 
         if (rest.time) {
@@ -1166,9 +1133,11 @@ const AddConcreteSalesInvoice = () => {
         setMinute('');
         setSecond('');
 
-        setDay('');
-        setMonth('');
-        setYear('');
+        setDate({
+            day: '',
+            month: '',
+            year: ''
+        });
 
         setUnitPrice('');
         setFare('');
@@ -1233,9 +1202,11 @@ const AddConcreteSalesInvoice = () => {
         setMinute('');
         setSecond('');
 
-        setDay('');
-        setMonth('');
-        setYear('');
+        setDate({
+            day: '',
+            month: '',
+            year: ''
+        });
 
         setUnitPrice('');
         setFare('');
@@ -1251,7 +1222,7 @@ const AddConcreteSalesInvoice = () => {
     }
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers });
 
-    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({  dataMixers });
+    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers });
     const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers });
 
 
@@ -1825,8 +1796,8 @@ const AddConcreteSalesInvoice = () => {
     }
 
     const handleSetDateForNewInvoice = () => {
-        let date = year + '-' + month + '-' + day;
-        return date;
+        let valDate = date.year + '-' + date.month + '-' + date.day;
+        return valDate;
     }
 
     const handleSetConcreteForNewInvoice = () => {
@@ -2055,8 +2026,7 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="1"
                                                             id="day"
-                                                            defaultValue={day}
-                                                            // onInput={(e) => changeDay(e, i)}
+                                                            defaultValue={date.day}
                                                             onInput={(e) => handleSetDate(e, i, 'day')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`dayInput${i}`]}
@@ -2066,9 +2036,8 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputMonthTDACus element"
                                                             placeholder="1"
-                                                            defaultValue={month}
-                                                            // onInput={(e) => changeMonth(e, i)}
-                                                            onInput={(e) => handleSetDate(e, i,'month')}
+                                                            defaultValue={date.month}
+                                                            onInput={(e) => handleSetDate(e, i, 'month')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`monthInput${i}`]}
                                                         />
@@ -2078,7 +2047,6 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="1300"
                                                             defaultValue={date.year}
-                                                            // onInput={(e) => { changeYear(e, i) }}
                                                             onInput={(e) => { handleSetDate(e, i, 'year') }}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`yearInput${i}`]}
@@ -2089,8 +2057,7 @@ const AddConcreteSalesInvoice = () => {
                                                     <div className="divDownDateAcus" >
                                                         <select
                                                             className="element"
-                                                            defaultValue={day}
-                                                            // onChange={(e) => changeDay(e, i)}
+                                                            defaultValue={date.day}
                                                             onChange={(e) => handleSetDate(e, i, 'day')}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`daySelect${i}`]}
@@ -2100,8 +2067,7 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            defaultValue={month}
-                                                            // onChange={(e) => changeMonth(e, i)}
+                                                            defaultValue={date.month}
                                                             onChange={(e) => handleSetDate(e, i, 'month')}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`monthSelect${i}`]}
@@ -2112,7 +2078,6 @@ const AddConcreteSalesInvoice = () => {
                                                         <select
                                                             className="element"
                                                             defaultValue={date.year}
-                                                            // onChange={(e) => { changeYear(e, i) }}
                                                             onChange={(e) => { handleSetDate(e, i, 'year') }}
                                                             onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`yearSelect${i}`]}
@@ -2547,8 +2512,8 @@ const AddConcreteSalesInvoice = () => {
                                                         className="inputTextDateACus inputDayTDACus element"
                                                         placeholder="1"
                                                         id="day"
-                                                        value={day || ''}
-                                                        onInput={(e) => changeDay(e, 0)}
+                                                        value={date.day || ''}
+                                                        onInput={(e) => handleSetDate(e, 0, 'day')}
                                                         onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
                                                     />
                                                     <span>/</span>
@@ -2556,8 +2521,8 @@ const AddConcreteSalesInvoice = () => {
                                                         type="text"
                                                         className="inputTextDateACus inputMonthTDACus element"
                                                         placeholder="1"
-                                                        value={month || ''}
-                                                        onInput={(e) => changeMonth(e, 0)}
+                                                        value={date.month || ''}
+                                                        onInput={(e) => handleSetDate(e, 0, 'month')}
                                                         onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
                                                     />
                                                     <span>/</span>
@@ -2566,8 +2531,7 @@ const AddConcreteSalesInvoice = () => {
                                                         className="inputTextDateACus inputYearTDACus element"
                                                         placeholder="1300"
                                                         value={date.year || ''}
-                                                        // onInput={(e) => { changeYear(e, 0) }}
-                                                        onInput={(e) => { handleSetDate(e, 0,'year') }}
+                                                        onInput={(e) => { handleSetDate(e, 0, 'year') }}
                                                         onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
                                                     />
                                                     <i className="icofont-ui-rating starFB" />
@@ -2576,9 +2540,8 @@ const AddConcreteSalesInvoice = () => {
                                                 <div className="divDownDateAcus" >
                                                     <select
                                                         className="element"
-                                                        value={day}
-                                                        // onChange={(e) => changeDay(e, 0)}
-                                                        onChange={(e) => handleSetDate(e, 0, 'year')}
+                                                        value={date.day}
+                                                        onChange={(e) => handleSetDate(e, 0, 'day')}
                                                         onClick={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
                                                     >
                                                         <option value="">روز</option>
@@ -2586,8 +2549,8 @@ const AddConcreteSalesInvoice = () => {
                                                     </select>
                                                     <select
                                                         className="element"
-                                                        value={month}
-                                                        onChange={(e) => changeMonth(e, 0)}
+                                                        value={date.month}
+                                                        onChange={(e) => handleSetDate(e, 0, 'month')}
                                                         onClick={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
 
                                                     >
@@ -2597,9 +2560,8 @@ const AddConcreteSalesInvoice = () => {
                                                     <select
                                                         className="element"
                                                         value={date.year}
-                                                        onChange={(e) => { changeYear(e, 0) }}
+                                                        onChange={(e) => { handleSetDate(e, 0, 'year') }}
                                                         onClick={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
-
                                                     >
                                                         <option value="">سال</option>
                                                         {optionShortYears}
