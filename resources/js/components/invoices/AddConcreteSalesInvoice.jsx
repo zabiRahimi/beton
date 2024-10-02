@@ -1306,10 +1306,12 @@ const AddConcreteSalesInvoice = () => {
                 }
             }
         ).then((response) => {
-            response.data.concreteSalesInvoice.map((invoice) => {
+            const resutl= response.data.concreteSalesInvoice;
+            resutl.map((invoice) => {
                 setConcreteSalesInvoices(prev => [invoice,...prev ]);
             });
-            setTicketNumber(ticketNumber + response.data.concreteSalesInvoice.length);
+            setTicketNumber(ticketNumber + resutl.length);
+            setTotalRecords(totalRecords + resutl.length)
 
             form.current.reset();
             MySwal.fire({
