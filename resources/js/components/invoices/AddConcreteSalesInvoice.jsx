@@ -93,9 +93,6 @@ const AddConcreteSalesInvoice = () => {
         minute: '',
         hour: ''
     });
-    const [hour, setHour] = useState('');
-    const [minute, setMinute] = useState('');
-    const [second, setSecond] = useState('');
 
     const [refInvoice, setRefInvoice] = useState({});
 
@@ -210,7 +207,7 @@ const AddConcreteSalesInvoice = () => {
         driverName: '',
         driverLastName: '',
     });
-    console.log(inputEdit);
+    console.log(input.invoice);
 
     /**
      * id to edit the model
@@ -348,10 +345,10 @@ const AddConcreteSalesInvoice = () => {
     useEffect(() => {
         if (concreteId) {
             if (!editMode) {
-                setInput(prevInput => {
-                    let invoices = [...prevInput.invoice];
+                setInput(perv => {
+                    let invoices = [...perv.invoice];
                     invoices[invoiceIndexForConcrete] = { ...invoices[invoiceIndexForConcrete], concrete_id: concreteId };
-                    return { ...prevInput, invoice: invoices };
+                    return { ...perv, invoice: invoices };
                 });
             } else {
                 setInputEdit(prev => ({ ...prev, concrete_id: concreteId }));
@@ -362,10 +359,10 @@ const AddConcreteSalesInvoice = () => {
     useEffect(() => {
         if (truckId) {
             if (!editMode) {
-                setInput(prevInput => {
-                    let invoices = [...prevInput.invoice];
+                setInput(perv => {
+                    let invoices = [...perv.invoice];
                     invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
-                    return { ...prevInput, invoice: invoices };
+                    return { ...perv, invoice: invoices };
                 });
 
             } else {
@@ -378,10 +375,10 @@ const AddConcreteSalesInvoice = () => {
     useEffect(() => {
         if (driverId) {
             if (!editMode) {
-                setInput(prevInput => {
-                    let invoices = [...prevInput.invoice];
+                setInput(perv => {
+                    let invoices = [...perv.invoice];
                     invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
-                    return { ...prevInput, invoice: invoices };
+                    return { ...perv, invoice: invoices };
                 });
 
             } else {
@@ -395,10 +392,10 @@ const AddConcreteSalesInvoice = () => {
     useEffect(() => {
         if (cementStoreId) {
             if (!editMode) {
-                setInput(prevInput => {
-                    let invoices = [...prevInput.invoice];
+                setInput(perv => {
+                    let invoices = [...perv.invoice];
                     invoices[invoiceIndexForCementStore] = { ...invoices[invoiceIndexForCementStore], cementStore_id: cementStoreId };
-                    return { ...prevInput, invoice: invoices };
+                    return { ...perv, invoice: invoices };
                 });
             } else {
                 setInputEdit(prev => ({ ...prev, cementStore_id: cementStoreId }));
@@ -762,14 +759,14 @@ const AddConcreteSalesInvoice = () => {
             }
             valDate = date.year + '-' + date.month + '-' + value;
             if (!editMode) {
-                setInput(prevInput => {
+                setInput(perv => {
                     let newInvoice;
-                    newInvoice = [...prevInput.invoice];
+                    newInvoice = [...perv.invoice];
                     newInvoice[i] = { ...newInvoice[i], date: valDate };
-                    return { ...prevInput, invoice: newInvoice };
+                    return { ...perv, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, date: valDate }));
+                setInputEdit(perv => ({ ...perv, date: valDate }));
             }
 
         } else if (input == 'month') {
@@ -787,14 +784,14 @@ const AddConcreteSalesInvoice = () => {
             }
             valDate = date.year + '-' + value + '-' + date.day;
             if (!editMode) {
-                setInput(prevInput => {
+                setInput(perv => {
                     let newInvoice;
-                    newInvoice = [...prevInput.invoice];
+                    newInvoice = [...perv.invoice];
                     newInvoice[i] = { ...newInvoice[i], date: valDate };
-                    return { ...prevInput, invoice: newInvoice };
+                    return { ...perv, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, date: valDate }));
+                setInputEdit(perv => ({ ...perv, date: valDate }));
             }
         } else if (input = 'year') {
             if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
@@ -808,28 +805,28 @@ const AddConcreteSalesInvoice = () => {
             }
             valDate = value + '-' + date.month + '-' + date.day;
             if (!editMode) {
-                setInput(prevInput => {
+                setInput(perv => {
                     let newInvoice;
-                    newInvoice = [...prevInput.invoice];
+                    newInvoice = [...perv.invoice];
                     newInvoice[i] = { ...newInvoice[i], date: valDate };
-                    return { ...prevInput, invoice: newInvoice };
+                    return { ...perv, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, date: valDate }));
+                setInputEdit(perv => ({ ...perv, date: valDate }));
             }
         }
     }
 
     const handleSetTime = (e, i, input) => {
         let { value } = e.target,
-            valDate;
+            valTime;
         value = value.toString();
         if (input == 'second') {
             (value != 0 && value.length == 1) && (value = '0' + value);
             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
             if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setSecond(value);
+                setTime(prev => ({ ...prev, [input]: value }));
                 if (!editMode) {
                     refInvoice[`secondSelect${i}`].current.value = value;
                     refInvoice[`secondInput${i}`].current.value = value;
@@ -837,18 +834,18 @@ const AddConcreteSalesInvoice = () => {
 
             } else {
 
-                e.target.value = second;
+                e.target.value = time.second;
             }
-            let time = hour + ':' + minute + ':' + value;
+            valTime = time.hour + ':' + time.minute + ':' + value;
             if (!editMode) {
-                setInput(prevInput => {
+                setInput(perv => {
                     let newInvoice;
-                    newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], time };
-                    return { ...prevInput, invoice: newInvoice };
+                    newInvoice = [...perv.invoice];
+                    newInvoice[i] = { ...newInvoice[i], time: valTime };
+                    return { ...perv, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, time }));
+                setInputEdit(perv => ({ ...perv, time: valTime }));
             }
 
         } else if (input == 'minute') {
@@ -856,144 +853,53 @@ const AddConcreteSalesInvoice = () => {
             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
             if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setMinute(value);
+                setTime(prev => ({ ...prev, [input]: value }));
                 if (!editMode) {
                     refInvoice[`minuteSelect${i}`].current.value = value;
                     refInvoice[`minuteInput${i}`].current.value = value;
                 }
 
             } else {
-                e.target.value = minute;
+                e.target.value = time.minute;
             }
 
-            let time = hour + ':' + value + ':' + second;
+            valTime = time.hour + ':' + value + ':' + time.second;
             if (!editMode) {
-                setInput(prevInput => {
+                setInput(perv => {
                     let newInvoice;
-                    newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], time };
-                    return { ...prevInput, invoice: newInvoice };
+                    newInvoice = [...perv.invoice];
+                    newInvoice[i] = { ...newInvoice[i], time: valTime };
+                    return { ...perv, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, time }));
+                setInputEdit(perv => ({ ...perv, time: valTime }));
             }
         } else if (input = 'hour') {
             (value != 0 && value.length == 1) && (value = '0' + value);
             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
 
             if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
-                setHour(value);
+                setTime(prev => ({ ...prev, [input]: value }));
                 if (!editMode) {
                     refInvoice[`hourSelect${i}`].current.value = value;
                     refInvoice[`hourInput${i}`].current.value = value;
                 }
 
             } else {
-                e.target.value = hour;
+                e.target.value = time.hour;
             }
 
-            let time = value + ':' + minute + ':' + second;
+            valTime = value + ':' + time.minute + ':' + time.second;
             if (!editMode) {
-                setInput(prevInput => {
+                setInput(perv => {
                     let newInvoice;
-                    newInvoice = [...prevInput.invoice];
-                    newInvoice[i] = { ...newInvoice[i], time };
-                    return { ...prevInput, invoice: newInvoice };
+                    newInvoice = [...perv.invoice];
+                    newInvoice[i] = { ...newInvoice[i], time: valTime };
+                    return { ...perv, invoice: newInvoice };
                 });
             } else {
-                setInputEdit(prevInput => ({ ...prevInput, time }));
+                setInputEdit(perv => ({ ...perv, time: valTime }));
             }
-        }
-    }
-
-    const changeHour = (e, i) => {
-        let { value } = e.target;
-        value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
-            setHour(value);
-            if (!editMode) {
-                refInvoice[`hourSelect${i}`].current.value = value;
-                refInvoice[`hourInput${i}`].current.value = value;
-            }
-
-        } else {
-            e.target.value = hour;
-        }
-
-        let time = value + ':' + minute + ':' + second;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], time };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, time }));
-        }
-
-    }
-
-    const changeMinute = (e, i) => {
-        let { value } = e.target;
-        value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-            setMinute(value);
-            if (!editMode) {
-                refInvoice[`minuteSelect${i}`].current.value = value;
-                refInvoice[`minuteInput${i}`].current.value = value;
-            }
-
-        } else {
-            e.target.value = minute;
-        }
-
-        let time = hour + ':' + value + ':' + second;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], time };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, time }));
-        }
-    }
-
-    const changeSecond = (e, i) => {
-        let { value } = e.target;
-        value = value.toString();
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-            setSecond(value);
-            if (!editMode) {
-                refInvoice[`secondSelect${i}`].current.value = value;
-                refInvoice[`secondInput${i}`].current.value = value;
-            }
-
-        } else {
-
-            e.target.value = second;
-        }
-        let time = hour + ':' + minute + ':' + value;
-        if (!editMode) {
-            setInput(prevInput => {
-                let newInvoice;
-                newInvoice = [...prevInput.invoice];
-                newInvoice[i] = { ...newInvoice[i], time };
-                return { ...prevInput, invoice: newInvoice };
-            });
-        } else {
-            setInputEdit(prevInput => ({ ...prevInput, time }));
         }
     }
 
@@ -1079,9 +985,11 @@ const AddConcreteSalesInvoice = () => {
 
         if (rest.time) {
             let parts = rest.time.split(":");
-            setHour(parts[0]);
-            setMinute(parts[1]);
-            setSecond(parts[2]);
+            setTime({
+                second: parts[2],
+                minute: parts[1],
+                hour: parts[0]
+            })
         }
 
         if (datas.maskanMeli == 'مسکن ملی شهرک امام خمینی') {
@@ -1129,9 +1037,11 @@ const AddConcreteSalesInvoice = () => {
         setCementStoreId('');
         setCheckedMaskanMeli();
 
-        setHour('');
-        setMinute('');
-        setSecond('');
+        setTime({
+            second:'',
+            minute: '',
+            hour: ''
+        });
 
         setDate({
             day: '',
@@ -1198,9 +1108,11 @@ const AddConcreteSalesInvoice = () => {
         setCementStoreId('');
         setCheckedMaskanMeli();
 
-        setHour('');
-        setMinute('');
-        setSecond('');
+        setTime({
+            second:'',
+            minute: '',
+            hour: ''
+        });
 
         setDate({
             day: '',
@@ -1290,10 +1202,10 @@ const AddConcreteSalesInvoice = () => {
             }
 
             if (!customer) {
-                setInput(prevInput => {
+                setInput(perv => {
                     let newInvoice;
-                    if (Array.isArray(prevInput.invoice)) {
-                        newInvoice = [...prevInput.invoice];
+                    if (Array.isArray(perv.invoice)) {
+                        newInvoice = [...perv.invoice];
                         newInvoice[i] = { ...newInvoice[i], [input]: value };
                     } else {
                         newInvoice[i] = {
@@ -1317,7 +1229,7 @@ const AddConcreteSalesInvoice = () => {
                         newInvoice[i] = { ...newInvoice[i], [input]: value };
                     }
 
-                    return { ...prevInput, invoice: newInvoice };
+                    return { ...perv, invoice: newInvoice };
                 });
 
             } else {
@@ -1395,7 +1307,7 @@ const AddConcreteSalesInvoice = () => {
             }
         ).then((response) => {
             response.data.concreteSalesInvoice.map((invoice) => {
-                setConcreteSalesInvoices(prev => [...prev, invoice]);
+                setConcreteSalesInvoices(prev => [invoice,...prev ]);
             });
             setTicketNumber(ticketNumber + response.data.concreteSalesInvoice.length);
 
@@ -1690,11 +1602,11 @@ const AddConcreteSalesInvoice = () => {
 
         if (!editMode) {
             refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
-            setInput(prevInput => {
+            setInput(perv => {
                 let newInvoice;
-                newInvoice = [...prevInput.invoice];
+                newInvoice = [...perv.invoice];
                 newInvoice[i] = { ...newInvoice[i], cubicMeters };
-                return { ...prevInput, invoice: newInvoice };
+                return { ...perv, invoice: newInvoice };
             });
         } else {
             refCubicMetersEdit.current.innerHTML = cubicMeters;
@@ -1720,11 +1632,11 @@ const AddConcreteSalesInvoice = () => {
                 if (Number.isInteger(Number(unitPrice))) {
                     // totalPrice = (unitPrice * cubicMeters).toFixed();
                     totalPrice = unitPrice * cubicMeters;
-                    setInput(prevInput => {
+                    setInput(perv => {
                         let newInvoice;
-                        newInvoice = [...prevInput.invoice];
+                        newInvoice = [...perv.invoice];
                         newInvoice[i] = { ...newInvoice[i], totalPrice };
-                        return { ...prevInput, invoice: newInvoice };
+                        return { ...perv, invoice: newInvoice };
                     });
                     refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
                 }
@@ -1746,11 +1658,11 @@ const AddConcreteSalesInvoice = () => {
                         cubicMeters = cubicMeters.toFixed(2);
                     }
                     totalPrice = value * cubicMeters;
-                    setInput(prevInput => {
+                    setInput(perv => {
                         let newInvoice;
-                        newInvoice = [...prevInput.invoice];
+                        newInvoice = [...perv.invoice];
                         newInvoice[i] = { ...newInvoice[i], totalPrice };
-                        return { ...prevInput, invoice: newInvoice };
+                        return { ...perv, invoice: newInvoice };
                     });
                     refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
                 }
@@ -1779,10 +1691,10 @@ const AddConcreteSalesInvoice = () => {
         let concrete_id = handleSetConcreteForNewInvoice();
         let maskanMeli = handleSetMaskanMeliForNewInvoice();
         let cementStore_id = handleSetCementStoreForNewInvoice();
-        setInput(prevInput => {
-            let newInvoice = [...prevInput.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
+        setInput(perv => {
+            let newInvoice = [...perv.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
 
-            return { ...prevInput, invoice: newInvoice };
+            return { ...perv, invoice: newInvoice };
         });
 
         handleClearTime();
@@ -1790,9 +1702,11 @@ const AddConcreteSalesInvoice = () => {
     }
 
     const handleClearTime = () => {
-        setHour('');
-        setMinute('');
-        setSecond('');
+        setTime({
+            second:'',
+            minute: '',
+            hour: ''
+        });
     }
 
     const handleSetDateForNewInvoice = () => {
@@ -1956,7 +1870,7 @@ const AddConcreteSalesInvoice = () => {
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="00"
                                                             id="hour"
-                                                            onInput={(e) => changeSecond(e, i)}
+                                                            onInput={(e) => handleSetTime(e, i, 'second')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondInput${i}`]}
                                                         />
@@ -1965,7 +1879,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputMonthTDACus element"
                                                             placeholder="00"
-                                                            onInput={(e) => changeMinute(e, i)}
+                                                            onInput={(e) => handleSetTime(e, i, 'minute')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`minuteInput${i}`]}
                                                         />
@@ -1974,7 +1888,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="00"
-                                                            onInput={(e) => { changeHour(e, i) }}
+                                                            onInput={(e) => { handleSetTime(e, i, 'hour') }}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`hourInput${i}`]}
                                                         />
@@ -1984,7 +1898,7 @@ const AddConcreteSalesInvoice = () => {
                                                     <div className="divDownDateAcus" >
                                                         <select
                                                             className="element"
-                                                            onChange={(e) => changeSecond(e, i)}
+                                                            onChange={(e) => handleSetTime(e, i, 'second')}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondSelect${i}`]}
                                                         >
@@ -1993,7 +1907,7 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            onChange={(e) => changeMinute(e, i)}
+                                                            onChange={(e) => handleSetTime(e, i, 'minute')}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`minuteSelect${i}`]}
                                                         >
@@ -2002,7 +1916,7 @@ const AddConcreteSalesInvoice = () => {
                                                         </select>
                                                         <select
                                                             className="element"
-                                                            onChange={(e) => { changeHour(e, i) }}
+                                                            onChange={(e) => { handleSetTime(e, i, 'hour') }}
                                                             onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`hourSelect${i}`]}
                                                         >
@@ -2440,8 +2354,8 @@ const AddConcreteSalesInvoice = () => {
                                                         className="inputTextDateACus inputDayTDACus element"
                                                         placeholder="00"
                                                         id="hourEdit"
-                                                        value={second || ''}
-                                                        onInput={(e) => changeSecond(e, 0)}
+                                                        value={time.second || ''}
+                                                        onInput={(e) => handleSetTime(e, 0, 'second')}
                                                         onFocus={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
 
                                                     />
@@ -2450,8 +2364,8 @@ const AddConcreteSalesInvoice = () => {
                                                         type="text"
                                                         className="inputTextDateACus inputMonthTDACus element"
                                                         placeholder="00"
-                                                        value={minute || ''}
-                                                        onInput={(e) => changeMinute(e, 0)}
+                                                        value={time.minute || ''}
+                                                        onInput={(e) => handleSetTime(e, 0, 'minute')}
                                                         onFocus={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
 
                                                     />
@@ -2460,8 +2374,8 @@ const AddConcreteSalesInvoice = () => {
                                                         type="text"
                                                         className="inputTextDateACus inputYearTDACus element"
                                                         placeholder="00"
-                                                        value={hour || ''}
-                                                        onInput={(e) => { changeHour(e, 0) }}
+                                                        value={time.hour || ''}
+                                                        onInput={(e) => { handleSetTime(e, 0, 'hour') }}
                                                         onFocus={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
                                                     />
                                                     <i className="icofont-ui-rating starFB" />
@@ -2470,8 +2384,8 @@ const AddConcreteSalesInvoice = () => {
                                                 <div className="divDownDateAcus" >
                                                     <select
                                                         className="element"
-                                                        value={second}
-                                                        onChange={(e) => changeSecond(e, 0)}
+                                                        value={time.second}
+                                                        onChange={(e) => handleSetTime(e, 0, 'second')}
                                                         onClick={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
                                                     >
                                                         <option value=""> ثانیه </option>
@@ -2479,8 +2393,8 @@ const AddConcreteSalesInvoice = () => {
                                                     </select>
                                                     <select
                                                         className="element"
-                                                        value={minute}
-                                                        onChange={(e) => changeMinute(e, 0)}
+                                                        value={time.minute}
+                                                        onChange={(e) => handleSetTime(e, 0, 'minute')}
                                                         onClick={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
                                                     >
                                                         <option value=""> دقیقه </option>
@@ -2488,8 +2402,8 @@ const AddConcreteSalesInvoice = () => {
                                                     </select>
                                                     <select
                                                         className="element"
-                                                        value={hour}
-                                                        onChange={(e) => { changeHour(e, 0) }}
+                                                        value={time.hour}
+                                                        onChange={(e) => { handleSetTime(e, 0, 'hour') }}
                                                         onClick={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
                                                     >
                                                         <option value=""> ساعت </option>
