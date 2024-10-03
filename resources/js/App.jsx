@@ -32,6 +32,7 @@ import AddWaterStore from "./components/AddWaterStore";
 import Invoices from "./components/invoices/Invoices";
 import NavigateInvoices from "./components/invoices/NavigateInvoices";
 import AddConcreteSalesInvoice from "./components/invoices/AddConcreteSalesInvoice";
+import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -75,6 +76,10 @@ function App() {
                 <Route path="invoices" element={<Invoices />} >
                     <Route index element={<NavigateInvoices />} />
                     <Route path="addConcreteSalesInvoice" element={<AddConcreteSalesInvoice />} />
+                   
+                    <Route path="sand/addSandInvoice" element={<AddSandInvoice />} />
+                    
+
                     {/* <Route path="addBuyerContract" element={<AddBuyerContract />} />
                     <Route path="addSellerContract" element={<AddSellerContract />} /> */}
 
