@@ -31,7 +31,7 @@ const NavigateInvoices = () => {
                 <div className="borderDivHome"></div>
 
                 <section className="categoryLinksHome">
-                    <Link to="addBuyerContract" className="linksHome --styleLessLink ">
+                    <Link to="cement/addCementInvoice" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment  iLinksHome2  " />
                             <i className="icofont-oil-truck  iLinksHome3 " />
@@ -49,7 +49,7 @@ const NavigateInvoices = () => {
                         <span>ایجاد فاکتور خرید شن‌وماسه</span>
                     </Link>
 
-                    <Link to="addSellerContract" className="linksHome --styleLessLink ">
+                    <Link to="water/addWaterInvoice" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment  iLinksHome2  " />
                             <i className="icofont-truck-alt   iLinksHome3 " />

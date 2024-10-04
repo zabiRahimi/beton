@@ -1,8 +1,10 @@
-import Title from '../../hooks/Title';
+import { useRef, useState } from 'react';
+import HeadPage from './HeadPage';
 const AddSandInvoice = () => {
+    const [loading, setLoading] = useState(false);
     return (
-        <div className=''>
-            <Title title='ایجاد فاکتور خرید شن و ماسه' />
+        <div>
+            <HeadPage loading={loading}/>
         </div>
     );
 }

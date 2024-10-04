@@ -33,6 +33,8 @@ import Invoices from "./components/invoices/Invoices";
 import NavigateInvoices from "./components/invoices/NavigateInvoices";
 import AddConcreteSalesInvoice from "./components/invoices/AddConcreteSalesInvoice";
 import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
+import AddWaterInvoice from "./components/invoices/water/AddWaterInvoice";
+import AddCementInvoice from "./components/invoices/cement/AddCementInvoice";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -78,6 +80,10 @@ function App() {
                     <Route path="addConcreteSalesInvoice" element={<AddConcreteSalesInvoice />} />
                    
                     <Route path="sand/addSandInvoice" element={<AddSandInvoice />} />
+
+                    <Route path="cement/addCementInvoice" element={<AddCementInvoice />} />
+
+                    <Route path="water/addWaterInvoice" element={<AddWaterInvoice />} />
                     
 
                     {/* <Route path="addBuyerContract" element={<AddBuyerContract />} />
