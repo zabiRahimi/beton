@@ -1,16 +1,23 @@
 import { ScaleLoader } from 'react-spinners';
 import Title from '../../hooks/Title'
 import { useEffect, useRef, useState } from 'react';
-const headPage = ({loading}) => {
+
+const headPage = ({ loading }) => {
     const container = useRef(null);
-     /**
-     * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
-     */
-     const [widthComponent, setWidthComponent] = useState(0);
-     useEffect(() => {
-         let widths = container.current.offsetWidth;
-         setWidthComponent(widths)
-     }, []);
+    const btnAddGeRef = useRef(null);
+    const btnGetGeRef = useRef(null);
+    const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
+  const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
+
+
+    /**
+    * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
+    */
+    const [widthComponent, setWidthComponent] = useState(0);
+    useEffect(() => {
+        let widths = container.current.offsetWidth;
+        setWidthComponent(widths)
+    }, []);
     return (
         <div ref={container}>
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
@@ -26,6 +33,24 @@ const headPage = ({loading}) => {
                 alignItems: 'center'
             }} />
             <Title title='sand' />
+            <div className="headPageGe">
+                <button
+                    className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
+                    // ref={btnAddGeRef} onClick={() => showAddForm(true)}
+                    disabled={disabledBtnShowForm}
+                >
+                    ایجاد فاکتور
+                </button>
+
+                <button
+                    className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
+                    ref={btnGetGeRef}
+                    // onClick={() => { showCreatedRecord(true); handleRemoveAllError() }}
+                    disabled={disabledBtnShowRecords}
+                >
+                    مشاهده فاکتورها
+                </button>
+            </div>
         </div>
     )
 }
