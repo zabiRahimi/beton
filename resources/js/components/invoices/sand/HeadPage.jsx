@@ -36,38 +36,28 @@ const headPage = ({ loading }) => {
             }} />
             <Title title='sand' />
             <div className="headPageGe">
-                <button
+                {/* <button
                     className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
                     // ref={btnAddGeRef} onClick={() => showAddForm(true)}
                     disabled={disabledBtnShowForm}
                 >
                     ایجاد فاکتور
-                </button>
+                </button> */}
 
-                <button
+                {/* <button
                     className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
                     ref={btnGetGeRef}
                     // onClick={() => { showCreatedRecord(true); handleRemoveAllError() }}
                     disabled={disabledBtnShowRecords}
                 >
                     مشاهده فاکتورها
-                </button>
-                <Link to="editSandInvoice" className="linksHome --styleLessLink ">
-                        <div className="divIcofontLinksHome">
-                            <i className="icofont-attachment  iLinksHome2  " />
-                            <i className="icofont-concrete-mixer iLinksHome3 " />
-                            <i className="icofont-plus Iplus" />
-                        </div>
-                        <span>edit</span>
-                    </Link>
-                    <Link to="showSandInvoices" className="linksHome --styleLessLink ">
-                        <div className="divIcofontLinksHome">
-                            <i className="icofont-attachment  iLinksHome2  " />
-                            <i className="icofont-concrete-mixer iLinksHome3 " />
-                            <i className="icofont-plus Iplus" />
-                        </div>
-                        <span>show sand invoices</span>
-                    </Link>
+                </button> */}
+                <Link to="editSandInvoice" className="btnGetGe --styleLessLink ">
+                    ایجاد فاکتور
+                </Link>
+                <Link to="showSandInvoices" className="btnGetGe --styleLessLink ">
+                    مشاهده فاکتورها
+                </Link>
             </div>
         </div>
     )
