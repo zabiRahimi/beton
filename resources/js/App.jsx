@@ -35,6 +35,9 @@ import AddConcreteSalesInvoice from "./components/invoices/AddConcreteSalesInvoi
 import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
 import AddWaterInvoice from "./components/invoices/water/AddWaterInvoice";
 import AddCementInvoice from "./components/invoices/cement/AddCementInvoice";
+import Sand from "./components/invoices/sand/Sand";
+import EditSandInvoice from "./components/invoices/sand/EditSandInvoice";
+import ShowSandInvoices from "./components/invoices/sand/ShowSandInvoices";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -56,7 +59,7 @@ function App() {
                 <Route path="addDriver" element={<AddDriver />} />
 
                 <Route path="addConcrete" element={<AddConcrete />} />
-                
+
                 <Route path="addCurrentCosts" element={<AddCurrentCosts />} />
                 <Route path="addPumpOperator" element={<AddPumpOperator />} />
                 <Route path="addPersonnelSlip" element={<AddPersonnelSlip />} />
@@ -65,7 +68,7 @@ function App() {
                 <Route path="addSandStore" element={<AddSandStore />} />
                 <Route path="addWaterStore" element={<AddWaterStore />} />
 
-                
+
 
                 {/* <Route path="customerContract" element={<CustomerContract />} >
                     <Route index element={<NavigateCustmoerContract />} />
@@ -78,13 +81,19 @@ function App() {
                 <Route path="invoices" element={<Invoices />} >
                     <Route index element={<NavigateInvoices />} />
                     <Route path="addConcreteSalesInvoice" element={<AddConcreteSalesInvoice />} />
-                   
-                    <Route path="sand/addSandInvoice" element={<AddSandInvoice />} />
+
+                    <Route path="sand" element={<Sand />} >
+                        <Route index  element={<AddSandInvoice />} />
+                        <Route path="editSandInvoice"  element={<EditSandInvoice />} />
+                        <Route path="showSandInvoices"  element={<ShowSandInvoices />} />
+
+                        
+                    </Route>
 
                     <Route path="cement/addCementInvoice" element={<AddCementInvoice />} />
 
                     <Route path="water/addWaterInvoice" element={<AddWaterInvoice />} />
-                    
+
 
                     {/* <Route path="addBuyerContract" element={<AddBuyerContract />} />
                     <Route path="addSellerContract" element={<AddSellerContract />} /> */}

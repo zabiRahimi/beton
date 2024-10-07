@@ -1,13 +1,15 @@
 import { ScaleLoader } from 'react-spinners';
 import Title from '../../hooks/Title'
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 
 const headPage = ({ loading }) => {
     const container = useRef(null);
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
     const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
-  const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
+    const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
 
 
     /**
@@ -50,6 +52,22 @@ const headPage = ({ loading }) => {
                 >
                     مشاهده فاکتورها
                 </button>
+                <Link to="editSandInvoice" className="linksHome --styleLessLink ">
+                        <div className="divIcofontLinksHome">
+                            <i className="icofont-attachment  iLinksHome2  " />
+                            <i className="icofont-concrete-mixer iLinksHome3 " />
+                            <i className="icofont-plus Iplus" />
+                        </div>
+                        <span>edit</span>
+                    </Link>
+                    <Link to="showSandInvoices" className="linksHome --styleLessLink ">
+                        <div className="divIcofontLinksHome">
+                            <i className="icofont-attachment  iLinksHome2  " />
+                            <i className="icofont-concrete-mixer iLinksHome3 " />
+                            <i className="icofont-plus Iplus" />
+                        </div>
+                        <span>show sand invoices</span>
+                    </Link>
             </div>
         </div>
     )

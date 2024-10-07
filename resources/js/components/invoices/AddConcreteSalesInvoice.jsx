@@ -217,6 +217,7 @@ const AddConcreteSalesInvoice = () => {
     const [invoice, setInvoice] = useState([sampleInvoice]);
 
     const [maskan, setMaskan] = useState([...invoice.map(item => ''), '']);
+    console.log(invoice);
 
     useEffect(() => {
         if (isRef) {
@@ -1863,7 +1864,7 @@ const AddConcreteSalesInvoice = () => {
                                     <div className="sectionFB">
                                         <div className="containerInputFB">
                                             <div className="divInputFB ">
-                                                <label htmlFor="day"> ساعت </label>
+                                                <label > ساعت </label>
                                                 <div className="divDateBirth">
                                                     <div className="divUpDateAcus element" id={`invoice.${i}.time`}
                                                     >
@@ -1871,7 +1872,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="00"
-                                                            id="hour"
+                                                           
                                                             onInput={(e) => handleSetTime(e, i, 'second')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondInput${i}`]}

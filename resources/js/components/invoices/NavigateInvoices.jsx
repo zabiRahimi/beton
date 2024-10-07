@@ -40,7 +40,7 @@ const NavigateInvoices = () => {
                         <span>ایجاد فاکتور خرید سیمان</span>
                     </Link>
 
-                    <Link to="sand/addSandInvoice" className="linksHome --styleLessLink ">
+                    <Link to="sand" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment  iLinksHome2  " />
                             <i className="icofont-articulated-truck iLinksHome3 " />
