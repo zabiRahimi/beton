@@ -1,9 +1,11 @@
-import Title from '../../hooks/Title'
+import { useState } from 'react';
+import HeadPage from './HeadPage';
 const EditSandInvoice = () => {
-return(
-<div className=''>
- <Title title='edit'/>
-</div>
-)
+    const [loading, setLoading] = useState(false);
+    return (
+        <div className=''>
+            <HeadPage loading={loading} title='ویرایش فاکتور' />
+        </div>
+    )
 }
 export default EditSandInvoice;

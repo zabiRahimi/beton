@@ -1,9 +1,11 @@
-import Title from '../../hooks/Title'
+import { useState } from 'react';
+import HeadPage from './HeadPage';
 const ShowSandInvoices = () => {
-return(
-<div className=''>
- <Title title='showSand Invoices'/>
-</div>
-)
+    const [loading, setLoading] = useState(false);
+    return (
+        <div className=''>
+            <HeadPage loading={loading} title='مشاهده فاکتورها' />
+        </div>
+    )
 }
 export default ShowSandInvoices;

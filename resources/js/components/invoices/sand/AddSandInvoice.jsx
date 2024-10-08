@@ -4,7 +4,7 @@ const AddSandInvoice = () => {
     const [loading, setLoading] = useState(false);
     return (
         <div>
-            <HeadPage loading={loading}/>
+            <HeadPage loading={loading} title='ایجاد فاکتور'/>
         </div>
     );
 }

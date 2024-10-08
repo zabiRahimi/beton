@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
-const headPage = ({ loading }) => {
+const headPage = ({ loading, title }) => {
     const container = useRef(null);
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
@@ -34,28 +34,12 @@ const headPage = ({ loading }) => {
                 justifyContent: 'center',
                 alignItems: 'center'
             }} />
-            <Title title='sand' />
+            <Title title={title} />
             <div className="headPageGe">
-                {/* <button
-                    className={`--styleLessBtn btnAddGe ${disabledBtnShowForm ? 'disabledBtnGe' : 'enabledBtnGe'}`}
-                    // ref={btnAddGeRef} onClick={() => showAddForm(true)}
-                    disabled={disabledBtnShowForm}
-                >
-                    ایجاد فاکتور
-                </button> */}
-
-                {/* <button
-                    className={`--styleLessBtn btnGetGe ${disabledBtnShowRecords ? 'disabledBtnGe' : 'enabledBtnGe'} `}
-                    ref={btnGetGeRef}
-                    // onClick={() => { showCreatedRecord(true); handleRemoveAllError() }}
-                    disabled={disabledBtnShowRecords}
-                >
-                    مشاهده فاکتورها
-                </button> */}
-                <Link to="editSandInvoice" className="btnGetGe --styleLessLink ">
+                <Link to="/invoices/sand/editSandInvoice" className="btnAddGe --styleLessLink ">
                     ایجاد فاکتور
                 </Link>
-                <Link to="showSandInvoices" className="btnGetGe --styleLessLink ">
+                <Link to="/invoices/sand/showSandInvoices" className="btnGetGe --styleLessLink ">
                     مشاهده فاکتورها
                 </Link>
             </div>
