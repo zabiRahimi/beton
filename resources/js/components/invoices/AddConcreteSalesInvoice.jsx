@@ -1834,7 +1834,7 @@ const AddConcreteSalesInvoice = () => {
                                     <div className="sectionFB">
                                         <div className="containerInputFB">
                                             <div className="divInputFB">
-                                                <label>شماره قبض </label>
+                                                <label>شماره فاکتور </label>
                                                 <div className="mainTicketNumberACSI_FB">
                                                     <div className="ticketNumberACSI_FB">
                                                         {ticketNumber + i}
