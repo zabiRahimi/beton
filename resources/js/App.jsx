@@ -3,6 +3,7 @@ import {
     RouterProvider,
     createBrowserRouter,
     createRoutesFromElements,
+    Navigate 
 } from "react-router-dom";
 
 import "./bootstrap";
@@ -83,9 +84,10 @@ function App() {
                     <Route path="addConcreteSalesInvoice" element={<AddConcreteSalesInvoice />} />
 
                     <Route path="sand" element={<Sand />} >
-                        <Route index  element={<AddSandInvoice />} />
-                        <Route path="editSandInvoice"  element={<EditSandInvoice />} />
-                        <Route path="showSandInvoices"  element={<ShowSandInvoices />} />
+                        <Route index element={<Navigate to="addSandInvoice" replace />} />
+                        <Route path="addSandInvoice" element={<AddSandInvoice />} />
+                        <Route path="editSandInvoice" element={<EditSandInvoice />} />
+                        <Route path="showSandInvoices" element={<ShowSandInvoices />} />
                     </Route>
 
                     <Route path="cement/addCementInvoice" element={<AddCementInvoice />} />

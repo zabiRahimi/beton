@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
-const headPage = ({ loading, title }) => {
+const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
     const container = useRef(null);
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
@@ -36,12 +36,19 @@ const headPage = ({ loading, title }) => {
             }} />
             <Title title={title} />
             <div className="headPageGe">
-                <Link to="/invoices/sand/editSandInvoice" className="btnAddGe --styleLessLink ">
-                    ایجاد فاکتور
-                </Link>
-                <Link to="/invoices/sand/showSandInvoices" className="btnGetGe --styleLessLink ">
-                    مشاهده فاکتورها
-                </Link>
+                {
+                    displayBtnAdd &&
+                    <Link to="/invoices/sand" className="btnAddGe --styleLessLink ">
+                        ایجاد فاکتور
+                    </Link>
+                }
+
+                {
+                    displayBtnShow &&
+                    <Link to="/invoices/sand/showSandInvoices" className="btnGetGe --styleLessLink ">
+                        مشاهده فاکتورها
+                    </Link>
+                }
             </div>
         </div>
     )

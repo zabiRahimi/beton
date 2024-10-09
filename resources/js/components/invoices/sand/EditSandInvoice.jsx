@@ -4,7 +4,12 @@ const EditSandInvoice = () => {
     const [loading, setLoading] = useState(false);
     return (
         <div className=''>
-            <HeadPage loading={loading} title='ویرایش فاکتور' />
+            <HeadPage
+                loading={loading}
+                title='ویرایش فاکتور شن و ماسه'
+                displayBtnAdd={true}
+                displayBtnShow={true}
+            />
         </div>
     )
 }
