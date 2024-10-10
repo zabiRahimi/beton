@@ -22,11 +22,28 @@ const AddSandInvoice = () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
+    const factoryRef = useRef(null);
+    const factoryError = useRef(null);
     const timeRef = useRef(null);
-    const dateRef  = useRef(null);
+    const dateRef = useRef(null);
     const dateError = useRef(null);
     const timeError = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [factory, setFactory] = useState([
+        {
+            value: 'شهرداری ارسنجان',
+            html: <div className="factoryAptionSelectFB">شهرداری ارسنجان</div>
+        },
+        {
+            value: 'ریگزار جمال آباد',
+            html: <div className="factoryAptionSelectFB">ریگزار جمال آباد</div>
+        },
+        {
+            value: 'سایر',
+            html: <div className="factoryAptionSelectFB">سایر</div>
+        }
+    ]);
+    const [factorySelected, setFactorySelected] = useState('');
     const [date, setDate] = useState({
         day: '',
         month: '',
@@ -36,6 +53,11 @@ const AddSandInvoice = () => {
         second: '',
         minute: '',
         hour: ''
+    });
+
+    const [input, setInput] = useState({
+        factroy:'',
+        referenceNumber:'',
     });
 
     const handleSetDate = (e, input) => {
@@ -166,7 +188,8 @@ const AddSandInvoice = () => {
 
         }
     }
-
+    const handleSaveValInput = (e, input) => {
+    }
     const clearInputError = (e, refErr, time = false, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '')
@@ -198,17 +221,42 @@ const AddSandInvoice = () => {
                             </div>
                             <div className="errorContainerFB elementError"> </div>
                         </div>
+                    </section>
+                    <section className="sectionFB">
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label>شماره قبض  </label>
-                                <div className="mainTicketNumberACSI_FB">
-                                    <div className="ticketNumberACSI_FB">
-                                        {/* {ticketNumber + i} */}
-                                        1
-                                    </div>
+                                <label>کارخانه  </label>
+                                <div
+                                    id='factory'
+                                    className="element"
+                                    onClick={e => { clearInputError(e, factoryError) }}
+                                >
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={factory}
+                                        saveOption={setFactorySelected}
+                                        ref={factoryRef}
+                                    />
                                 </div>
+                                <i className="icofont-ui-rating starFB" />
+
                             </div>
-                            <div className="errorContainerFB elementError"> </div>
+                            <div className="errorContainerFB elementError" id='factoryError' ref={factoryError}> </div>
+                        </div>
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="lastName">شماره حواله</label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB element"
+                                    id="lastName"
+                                    defaultValue={input.referenceNumber}
+                                    onInput={e => handleSaveValInput(e, 'referenceNumber')}
+                                    onFocus={e => clearInputError(e, lastNameErrorRef)}
+                                />
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id="referenceNumberError" ref={referenceNumberError}> </div>
                         </div>
                     </section>
                     <section className="sectionFB">

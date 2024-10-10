@@ -550,15 +550,22 @@
           استفاده می شود
 */
 .concreteAptionSelectFB,
-.mixerAptionSelectFB{
+.mixerAptionSelectFB,
+.factoryAptionSelectFB
+{
     padding: 3px 8px 2px 15px;
     display: flex;
     justify-content: space-between;
 }
 
-.mixerAptionSelectFB{
+.mixerAptionSelectFB,
+.factoryAptionSelectFB{
     width: 100%;
     padding: 3px 2px 3px 2px;
+}
+.factoryAptionSelectFB{
+    cursor: pointer;
+    padding-right: 8px;
 }
 
 .mixerAptionSelectFB .numberplateDiv{
