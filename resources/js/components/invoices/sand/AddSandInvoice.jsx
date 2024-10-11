@@ -24,10 +24,17 @@ const AddSandInvoice = () => {
     const form = useRef(null);
     const factoryRef = useRef(null);
     const factoryError = useRef(null);
+    const billNumberError = useRef(null);
+    const referenceNumberError = useRef(null);
     const timeRef = useRef(null);
     const dateRef = useRef(null);
     const dateError = useRef(null);
     const timeError = useRef(null);
+    const typeSandRef = useRef(null);
+    const tyepSandError = useRef(null);
+    const weightError = useRef(null);
+    const unitPriceError = useRef(null);
+    const totalPriceError = useRef(null);
     const [loading, setLoading] = useState(false);
     const [factory, setFactory] = useState([
         {
@@ -44,6 +51,29 @@ const AddSandInvoice = () => {
         }
     ]);
     const [factorySelected, setFactorySelected] = useState('');
+    const [typeSand, setTypeSand] = useState([
+        {
+            value: 'ماسه شسته',
+            html: <div className="sandAptionSelectFB">ماسه شسته</div>
+        },
+        {
+            value: 'ماسه 06',
+            html: <div className="sandAptionSelectFB">ماسه 06</div>
+        },
+        {
+            value: 'شن بادامی',
+            html: <div className="sandAptionSelectFB">شن بادامی</div>
+        },
+        {
+            value: 'شن نخودی',
+            html: <div className="sandAptionSelectFB">شن نخودی</div>
+        },
+        {
+            value: 'سایر',
+            html: <div className="sandAptionSelectFB">سایر</div>
+        }
+    ]);
+    const [typeSandSelected, setTypeSandSelected] = useState('');
     const [date, setDate] = useState({
         day: '',
         month: '',
@@ -56,8 +86,15 @@ const AddSandInvoice = () => {
     });
 
     const [input, setInput] = useState({
-        factroy:'',
-        referenceNumber:'',
+        factroy: '',
+        referenceNumber: '',
+        billNumber: '',
+        time: '',
+        date: '',
+        tyepSand: '',
+        weight: '',
+        unitPrice: '',
+        totalPrice: '',
     });
 
     const handleSetDate = (e, input) => {
@@ -221,8 +258,6 @@ const AddSandInvoice = () => {
                             </div>
                             <div className="errorContainerFB elementError"> </div>
                         </div>
-                    </section>
-                    <section className="sectionFB">
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label>کارخانه  </label>
@@ -243,6 +278,24 @@ const AddSandInvoice = () => {
                             </div>
                             <div className="errorContainerFB elementError" id='factoryError' ref={factoryError}> </div>
                         </div>
+                    </section>
+                    <section className="sectionFB">
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="lastName">شماره قبض</label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB element"
+                                    id="lastName"
+                                    defaultValue={input.referenceNumber}
+                                    onInput={e => handleSaveValInput(e, 'billNumber')}
+                                    onFocus={e => clearInputError(e, billNumberError)}
+                                />
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                        </div>
+
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="lastName">شماره حواله</label>
@@ -254,7 +307,6 @@ const AddSandInvoice = () => {
                                     onInput={e => handleSaveValInput(e, 'referenceNumber')}
                                     onFocus={e => clearInputError(e, lastNameErrorRef)}
                                 />
-                                <i className="icofont-ui-rating starFB" />
                             </div>
                             <div className="errorContainerFB elementError" id="referenceNumberError" ref={referenceNumberError}> </div>
                         </div>
@@ -392,6 +444,78 @@ const AddSandInvoice = () => {
                             </div>
                             <div className="errorContainerFB elementError" id='dateError' ref={dateError}> </div>
                         </div>
+                    </section>
+                    <section className="sectionFB">
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label> نوع‌ شن‌وماسه </label>
+                                <div
+                                    id='factory'
+                                    className="element"
+                                    onClick={e => { clearInputError(e, factoryError) }}
+                                >
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={typeSand}
+                                        saveOption={setTypeSandSelected}
+                                        ref={typeSandRef}
+                                    />
+                                </div>
+                                <i className="icofont-ui-rating starFB" />
+
+                            </div>
+                            <div className="errorContainerFB elementError" id='factoryError' ref={factoryError}> </div>
+                        </div>
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="lastName">شماره قبض</label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB element"
+                                    id="lastName"
+                                    defaultValue={input.referenceNumber}
+                                    onInput={e => handleSaveValInput(e, 'billNumber')}
+                                    onFocus={e => clearInputError(e, billNumberError)}
+                                />
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                        </div>
+                    </section>
+                    <section className="sectionFB">
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="lastName">شماره قبض</label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB element"
+                                    id="lastName"
+                                    defaultValue={input.referenceNumber}
+                                    onInput={e => handleSaveValInput(e, 'billNumber')}
+                                    onFocus={e => clearInputError(e, billNumberError)}
+                                />
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                        </div>
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="lastName">شماره قبض</label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB element"
+                                    id="lastName"
+                                    defaultValue={input.referenceNumber}
+                                    onInput={e => handleSaveValInput(e, 'billNumber')}
+                                    onFocus={e => clearInputError(e, billNumberError)}
+                                />
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                        </div>
+                    </section>
+                    <section className="sectionFB">
+
                     </section>
                 </form>
             </div>
