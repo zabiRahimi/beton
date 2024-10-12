@@ -10,9 +10,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Driver extends Model
 {
     use HasFactory;
+    
     protected $guarded = ['id', 'created_at', 'updated_at'];
+
     public function concreteSalesInvoice():HasMany
     {
         return $this->hasMany(ConcreteSalesInvoice::class);
+    }
+
+    public function sandInvoice(): HasMany
+    {
+        return $this->hasMany(SandInvoice::class);
     }
 }

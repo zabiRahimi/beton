@@ -23,6 +23,11 @@ class Truck extends Model
         return $this->hasMany(ConcreteSalesInvoice::class);
     }
 
+    public function sandInvoice(): HasMany
+    {
+        return $this->hasMany(SandInvoice::class);
+    }
+
     public static function getMixers() {
         return self::where('truckType', 'میکسر')->with('customer')->get();
     }

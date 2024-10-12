@@ -60,7 +60,11 @@ class Customer extends Model
     {
         return $this->hasMany(ConcreteSalesInvoice::class);
     }
-    
+
+    public function sandInvoice(): HasMany
+    {
+        return $this->hasMany(SandInvoice::class);
+    }
 
     public function scopeConcreteBuyers($query)
     {
