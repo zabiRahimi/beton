@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('sand_invoices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('customer_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('truck_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('driver_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sandStore_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
