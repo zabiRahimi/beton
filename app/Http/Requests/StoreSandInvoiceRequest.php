@@ -11,7 +11,7 @@ class StoreSandInvoiceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,22 @@ class StoreSandInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'sandSeller_id' => 'required|integer',
+            'dumpTruckOwner_id' => 'required|integer',
+            'truck_id' => 'required|integer',
+            'driver_id' => 'required|integer',
+            'sandStore_id' => 'required|integer',
+            'referenceNumber' => 'nullable|string',
+            'billNumber' => 'required|string',
+            'time' => 'required|time',
+            'date' => 'required|date',
+            'typeSand' => 'required|string',
+            'weight' => 'required|integer|digits_between:1,5',
+            'unitPrice' => 'required|integer|digits_between:1,10',
+            'totalPrice' => 'required|integer|digits_between:1,10',
+            'unitFare' => 'required|integer|digits_between:1,10',
+            'totalFare' => 'required|integer|digits_between:1,10',
+            'description' => 'nullable|string',
         ];
     }
 }

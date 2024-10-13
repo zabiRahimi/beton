@@ -13,10 +13,22 @@ return new class extends Migration
     {
         Schema::create('sand_invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sandSeller_id')->constrained('customers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('dumpTruckOwner_id')->constrained('customers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('truck_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('driver_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sandStore_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('referenceNumber', 30)->comment('شماره حواله');
+            $table->string('billNumber',30)->comment('شماره قبض');
+            $table->string('time', 25);
+            $table->date('date');
+            $table->string('typeSand', 100);
+            $table->string('weight', 5);
+            $table->string('unitPrice', 10);
+            $table->string('totalPrice', 10);
+            $table->string('unitFare', 10);
+            $table->string('totalFare', 10);
+            $table->text('description');
             $table->timestamps();
         });
     }

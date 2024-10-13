@@ -29,4 +29,14 @@ class SandInvoice extends Model
     {
         return $this->belongsTo(Driver::class);
     }
+
+    public function sandSeller()
+    {
+        return $this->belongsTo(Customer::class, 'sandSeller_id');
+    }
+
+    public function dumpTruckOwner()
+    {
+        return $this->belongsTo(Customer::class, 'dumpTruckOwner_id');
+    }
 }
