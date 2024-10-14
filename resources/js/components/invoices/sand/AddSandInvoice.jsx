@@ -111,7 +111,8 @@ const AddSandInvoice = () => {
         dumpTruck: '',
         driverId: '',
         unitFare: '',
-        totalFare: ''
+        totalFare: '',
+        description:''
     });
 
     const handleSetDate = (e, input) => {
@@ -605,6 +606,23 @@ const AddSandInvoice = () => {
                             </div>
                             <div className="errorContainerFB elementError" id="totalFareError" ref={totalFareError}> </div>
                         </div>
+                    </section>
+                    <section className="sectionFB">
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="description">توضیحات</label>
+                                <textarea
+                                           
+                                            // className="textareaAddressACu"
+                                    className="textareaFB element"
+                                    id="description"
+                                    defaultValue={input.description}
+                                    onInput={e => handleSaveValInput(e, 'description')}
+                                />
+                            </div>
+                            <div className="errorContainerFB elementError"> </div>
+                        </div>
+                       
                     </section>
                     <section className="sectionFB divBtnsFB">
                         <Button

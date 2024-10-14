@@ -90,6 +90,7 @@
 .inputTextFB,
 .inputTextUnitFB,
 .inputShabaFB,
+.textareaFB,
 .divRadioFB,
 .mainCubicMetersACSL_FB,
 .mainTotalPriceACSL_FB {
@@ -98,6 +99,10 @@
     padding: 0 7px;
     font-size: 0.91rem;
     border: 1px solid #8f8f9d;
+}
+
+.textareaFB{
+    height: 70px;
 }
 
 .inputCheckboxFB {
@@ -513,7 +518,7 @@
 }
 
 /*  مربوط به کامپوننت ایجاد فیش حقوقی پرسنل، دکمه وضعیت بیمه   */
-.labelInsuranceAPS_FB {}
+
 
 .hasRadioInsuAPS_FB {
     padding-right: 10px;
@@ -700,6 +705,7 @@
     }
 
     .inputTextFB,
+    .textareaFB,
     .selectFB,
     .divExampleNumberplate,
     .divRadioFB,
