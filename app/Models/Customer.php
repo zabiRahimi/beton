@@ -73,6 +73,13 @@ class Customer extends Model
         });
     }
 
+    public function scopeSandSellers($query)
+    {
+        return $query->whereHas('customerType', function ($query) {
+            $query->where('code', 1);
+        });
+    }
+
     
 
 }
