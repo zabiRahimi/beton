@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('dumpTruckOwner_id')->constrained('customers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('truck_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('driver_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sandStore_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sandStore_id')->constrained('sand_stores')->onUpdate('cascade')->onDelete('cascade');
             $table->string('referenceNumber', 30)->comment('شماره حواله');
             $table->string('billNumber',30)->comment('شماره قبض');
             $table->string('time', 25);
