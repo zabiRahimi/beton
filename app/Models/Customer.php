@@ -76,7 +76,7 @@ class Customer extends Model
     public function scopeSandSellers($query)
     {
         return $query->whereHas('customerType', function ($query) {
-            $query->where('code', 1);
+            $query->where('code', 2);
         });
     }
 
