@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -41,21 +41,12 @@ const AddSandInvoice = () => {
     const driverError = useRef(null);
     const unitFareError = useRef(null);
     const totalFareError = useRef(null);
+    const sandStoreRef = useRef(null);
+    const sandStoreError = useRef(null);
+    const hasCalledGetSandSellers = useRef(false);
+    const hasCalledGetSandStores = useRef(false);
     const [loading, setLoading] = useState(false);
-    const [factory, setFactory] = useState([
-        {
-            value: 'شهرداری ارسنجان',
-            html: <div className="factoryAptionSelectFB">شهرداری ارسنجان</div>
-        },
-        {
-            value: 'ریگزار جمال آباد',
-            html: <div className="factoryAptionSelectFB">ریگزار جمال آباد</div>
-        },
-        {
-            value: 'سایر',
-            html: <div className="factoryAptionSelectFB">سایر</div>
-        }
-    ]);
+    const [factory, setFactory] = useState([]);
     const [factorySelected, setFactorySelected] = useState('');
     const [typeSand, setTypeSand] = useState([
         {
@@ -96,6 +87,9 @@ const AddSandInvoice = () => {
         minute: '',
         hour: ''
     });
+    const [sandStores, setSandStores] = useState([]);
+    const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
+
 
     const [input, setInput] = useState({
         factroy: '',
@@ -114,6 +108,78 @@ const AddSandInvoice = () => {
         totalFare: '',
         description:''
     });
+
+    useEffect(() => {
+        if (!hasCalledGetSandSellers.current) {
+            getSandSellers();
+            hasCalledGetSandSellers.current = true;
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!hasCalledGetSandStores.current) {
+            getSandStores();
+            hasCalledGetSandStores.current = true;
+        }
+    }, []);
+
+    const getSandSellers = async() =>{
+        await axios.get("/api/v1/sandInvoice/getSandSellers").then((response) => {
+            let datas = response.data.sandSellers;
+            if (datas.length == 0) {
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    text: `هنوز هیچ کارخانه‌ای (فروشنده شن‌وماسه) ثبت نشده است. لازم است ابتدا کارخانه را ثبت کنید.`,
+                    confirmButtonText: "  ثبت کارخانه   ",
+                    showCancelButton: true,
+                    cancelButtonText: "کنسل",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    preConfirm: () => {
+                        navigate("/addCustomer");
+                    }
+                });
+            } else {
+                datas.map((data, i) => {
+                    setFactory(perv => ([...perv, {
+                        value: data.id,
+                        // cementStoreName: data.silo,
+                        html: <div className="factoryAptionSelectFB"> {data.name}  {data.lastName} </div>
+                    }]));
+                })
+            }
+        });
+    }
+
+    const getSandStores = async() =>{
+        await axios.get("/api/v1/sandInvoice/getSandStores").then((response) => {
+            let datas = response.data.sandStores;
+            if (datas.length == 0) {
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    text: `هنوز هیچ سیلوی شن‌وماسه‌ای ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید.`,
+                    confirmButtonText: "  ثبت سیلو   ",
+                    showCancelButton: true,
+                    cancelButtonText: "کنسل",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    preConfirm: () => {
+                        navigate("/addSandStore");
+                    }
+                });
+            } else {
+                datas.map((data, i) => {
+                    setSandStores(perv => ([...perv, {
+                        value: data.id,
+                        // cementStoreName: data.silo,
+                        html: <div className="factoryAptionSelectFB"> {data.silo} </div>
+                    }]));
+                })
+            }
+        });
+    }
 
     const handleSetDate = (e, input) => {
         let { value } = e.target,
@@ -243,8 +309,10 @@ const AddSandInvoice = () => {
 
         }
     }
+
     const handleSaveValInput = (e, input) => {
     }
+    
     const clearInputError = (e, refErr, time = false, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '')
@@ -608,6 +676,26 @@ const AddSandInvoice = () => {
                         </div>
                     </section>
                     <section className="sectionFB">
+                    <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label>سیلوی تخلیه  </label>
+                                <div
+                                    id='sandStore'
+                                    className="element"
+                                    onClick={e => { clearInputError(e, sandStoreError) }}
+                                >
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={sandStores}
+                                        saveOption={setSandStoreIdSelected}
+                                        ref={sandStoreRef}
+                                    />
+                                </div>
+                                <i className="icofont-ui-rating starFB" />
+
+                            </div>
+                            <div className="errorContainerFB elementError" id='sandStoreError' ref={sandStoreError}> </div>
+                        </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="description">توضیحات</label>

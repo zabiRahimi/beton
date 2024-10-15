@@ -8,6 +8,7 @@ use App\Http\Requests\StoreSandInvoiceRequest;
 use App\Http\Requests\UpdateSandInvoiceRequest;
 use App\Models\Customer;
 use App\Models\Driver;
+use App\Models\SandStore;
 use App\Models\Truck;
 
 class SandInvoiceController extends Controller
@@ -180,5 +181,16 @@ class SandInvoiceController extends Controller
     public function destroy(SandInvoice $sandInvoice)
     {
         //
+    }
+
+    public function getSandSellers()
+    {
+        $sandSellers = Customer::sandSellers()->get();
+        return response()->json(['sandSellers' => $sandSellers]);
+    }
+
+   public function getSandStores() {
+    $sandStores = SandStore::get();
+    return response()->json(['sandStores' => $sandStores]);
     }
 }

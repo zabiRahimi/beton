@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonnelSlipController;
+use App\Http\Controllers\SandInvoiceController;
 use App\Http\Controllers\SandStoreController;
 use App\Http\Controllers\TruckController;
 use App\Http\Controllers\WaterStoreController;
@@ -119,6 +120,20 @@ Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
     Route::get('/getCSIDrivers', 'getCSIDrivers');
     Route::get('/getCSICementStores', 'getCSICementStores');
     Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
+
+});
+
+Route::controller(SandInvoiceController::class)->group(function () {
+    
+    Route::post('/addSandInvoice', 'store');
+    Route::get('/getSandInvoices', 'index');
+    Route::get('/sandInvoice/getSandSellers', 'getSandSellers');
+    Route::get('/sandInvoice/getSandStores', 'getSandStores');
+    // Route::get('/getCSIConcretes', 'getCSIConcretes');
+    // Route::get('/getCSIMixers', 'getCSIMixers');
+    // Route::get('/getCSIDrivers', 'getCSIDrivers');
+    // Route::get('/getCSICementStores', 'getCSICementStores');
+    // Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
 
 });
 
