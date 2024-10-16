@@ -31,4 +31,8 @@ class Truck extends Model
     public static function getMixers() {
         return self::where('truckType', 'میکسر')->with('customer')->get();
     }
+
+    public static function getDumpTrucks() {
+        return self::where('truckType', 'کمپرسی')->with('customer')->get();
+    }
 }
