@@ -110,23 +110,26 @@ Route::controller(WaterStoreController::class)->group(function () {
 
 });
 
-Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
+Route::resource('concreteSalesInvoices', ConcreteSalesInvoiceController::class);
+// Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
     
-    Route::post('/addConcreteSalesInvoice', 'store');
-    Route::get('/getConcreteSalesInvoices', 'index');
-    Route::get('/getCSIConcreteBuyers', 'getCSIConcreteBuyers');
-    Route::get('/getCSIConcretes', 'getCSIConcretes');
-    Route::get('/getCSIMixers', 'getCSIMixers');
-    Route::get('/getCSIDrivers', 'getCSIDrivers');
-    Route::get('/getCSICementStores', 'getCSICementStores');
-    Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
+//     Route::post('/addConcreteSalesInvoice', 'store');
+//     Route::get('/getConcreteSalesInvoices', 'index');
+//     Route::get('/getCSIConcreteBuyers', 'getCSIConcreteBuyers');
+//     Route::get('/getCSIConcretes', 'getCSIConcretes');
+//     Route::get('/getCSIMixers', 'getCSIMixers');
+//     Route::get('/getCSIDrivers', 'getCSIDrivers');
+//     Route::get('/getCSICementStores', 'getCSICementStores');
+//     Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
 
-});
+// });
+
+Route::resource('sandInvoices', SandInvoiceController::class);
 
 Route::controller(SandInvoiceController::class)->group(function () {
     
-    Route::post('/addSandInvoice', 'store');
-    Route::get('/getSandInvoices', 'index');
+    // Route::post('/addSandInvoice', 'store');
+    // Route::get('/getSandInvoices', 'index');
     Route::get('/sandInvoice/getSandSellers', 'getSandSellers');
     Route::get('/sandInvoice/getSandStores', 'getSandStores');
     // Route::get('/getCSIConcretes', 'getCSIConcretes');

@@ -193,4 +193,10 @@ class SandInvoiceController extends Controller
     $sandStores = SandStore::get();
     return response()->json(['sandStores' => $sandStores]);
     }
+
+    public function getDumpTrucks() {
+        $dumpTrucks = Truck::dumpTrucks()->get();
+        return response()->json(['dumpTrucks' => $dumpTrucks]);
+        }
+
 }

@@ -32,7 +32,8 @@ class Truck extends Model
         return self::where('truckType', 'میکسر')->with('customer')->get();
     }
 
-    public static function getDumpTrucks() {
-        return self::where('truckType', 'کمپرسی')->with('customer')->get();
+    public function scopeDumpTrucks($query) {
+        return $query->where('truckType', 'کمپرسی')->with('customer');
     }
+    
 }
