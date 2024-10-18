@@ -32,7 +32,7 @@ import AddSandStore from "./components/AddSandStore";
 import AddWaterStore from "./components/AddWaterStore";
 import Invoices from "./components/invoices/Invoices";
 import NavigateInvoices from "./components/invoices/NavigateInvoices";
-import AddConcreteSalesInvoice from "./components/invoices/AddConcreteSalesInvoice";
+import AddConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/AddConcreteSalesInvoice";
 import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
 import AddWaterInvoice from "./components/invoices/water/AddWaterInvoice";
 import AddCementInvoice from "./components/invoices/cement/AddCementInvoice";
