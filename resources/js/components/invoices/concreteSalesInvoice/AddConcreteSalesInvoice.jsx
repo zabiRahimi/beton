@@ -83,6 +83,7 @@ const AddConcreteSalesInvoice = () => {
 
     const refCheckedMaskanShahidEdit = useRef(null);
 
+
     const [date, setDate] = useState({
         day: '',
         month: '',
@@ -233,13 +234,13 @@ const AddConcreteSalesInvoice = () => {
         }
     }, []);
 
-    useEffect(() => {
-        // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
-        if (!hasCalledGetConcreteBuyers.current) {
-            getCSIConcreteBuyers();
-            hasCalledGetConcreteBuyers.current = true;
-        }
-    }, []);
+    // useEffect(() => {
+    //     // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
+    //     if (!hasCalledGetConcreteBuyers.current) {
+    //         getCSIConcreteBuyers();
+    //         hasCalledGetConcreteBuyers.current = true;
+    //     }
+    // }, []);
 
     useEffect(() => {
         if (!hasCalledGetConcretes.current) {
@@ -506,44 +507,44 @@ const AddConcreteSalesInvoice = () => {
         setSearch(data);
     }
 
-    async function getCSIConcreteBuyers() {
-        await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
-            let datas = response.data.concreteBuyers;
-            setDataCustomers(datas);
-            if (datas.length == 0) {
-                MySwal.fire({
-                    icon: "warning",
-                    title: "هشدار",
-                    text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا خریداران بتن را به عنوان مشتری ثبت کنید.`,
-                    confirmButtonText: "  ثبت مشتری   ",
-                    showCancelButton: true,
-                    cancelButtonText: "کنسل",
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    preConfirm: () => {
+    // async function getCSIConcreteBuyers() {
+    //     await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
+    //         let datas = response.data.concreteBuyers;
+    //         setDataCustomers(datas);
+    //         if (datas.length == 0) {
+    //             MySwal.fire({
+    //                 icon: "warning",
+    //                 title: "هشدار",
+    //                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا خریداران بتن را به عنوان مشتری ثبت کنید.`,
+    //                 confirmButtonText: "  ثبت مشتری   ",
+    //                 showCancelButton: true,
+    //                 cancelButtonText: "کنسل",
+    //                 confirmButtonColor: "#3085d6",
+    //                 cancelButtonColor: "#d33",
+    //                 preConfirm: () => {
 
-                        navigate("/addCustomer");
-                    }
-                });
-            } else {
-                datas.map((data, i) => {
-                    setCustomers(perv => ([...perv, {
-                        value: data.id,
-                        html: <div className="personnelAption_addPerS">
-                            <span className="name_addPers">{data.name}
-                                {' '}
-                                {data.lastName}</span>
+    //                     navigate("/addCustomer");
+    //                 }
+    //             });
+    //         } else {
+    //             datas.map((data, i) => {
+    //                 setCustomers(perv => ([...perv, {
+    //                     value: data.id,
+    //                     html: <div className="personnelAption_addPerS">
+    //                         <span className="name_addPers">{data.name}
+    //                             {' '}
+    //                             {data.lastName}</span>
 
-                            <span className="fther_addPers">
-                                {data.father || ''}
-                            </span>
+    //                         <span className="fther_addPers">
+    //                             {data.father || ''}
+    //                         </span>
 
-                        </div>
-                    }]));
-                })
-            }
-        });
-    }
+    //                     </div>
+    //                 }]));
+    //             })
+    //         }
+    //     });
+    // }
 
     async function getCSIConcretes() {
         await axios.get("/api/v1/getCSIConcretes").then((response) => {

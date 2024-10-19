@@ -218,7 +218,7 @@ class ConcreteSalesInvoiceController extends Controller
         //
     }
 
-    public function getCSIConcreteBuyers()
+    public function concreteBuyers()
     {
         $concreteBuyers = Customer::concreteBuyers()->get();
         return response()->json(['concreteBuyers' => $concreteBuyers]);
