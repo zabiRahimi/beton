@@ -209,7 +209,7 @@ const AddConcreteSalesInvoice = () => {
         driverName: '',
         driverLastName: '',
     });
-    
+
 
     /**
      * id to edit the model
@@ -1040,7 +1040,7 @@ const AddConcreteSalesInvoice = () => {
         setCheckedMaskanMeli();
 
         setTime({
-            second:'',
+            second: '',
             minute: '',
             hour: ''
         });
@@ -1111,7 +1111,7 @@ const AddConcreteSalesInvoice = () => {
         setCheckedMaskanMeli();
 
         setTime({
-            second:'',
+            second: '',
             minute: '',
             hour: ''
         });
@@ -1295,18 +1295,22 @@ const AddConcreteSalesInvoice = () => {
     }
     const [zabi, setZabi] = useState(true);
     const [zabioption, setZabioption] = useState([]);
-    const {checkDataAvailability}=RouteService(token);
+    if (zabi) {
+
+        const { concreteBuyers } = RouteService();
+    }
+    // setZabioption(concreteBuyers.options);
     useEffect(() => {
         if (zabi) {
-          const {concreteBuyers}= checkDataAvailability(token)
-            setZabioption(concreteBuyers.options);
-            console.log(concreteBuyers.options);
+            //   const {concreteBuyers}= checkDataAvailability(token)
+            // setZabioption(concreteBuyers.options);
+            // console.log(concreteBuyers.options);
             setZabi(false);
         }
-        
-    }, [zabi])
-    
-    
+
+    }, [])
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -1322,9 +1326,9 @@ const AddConcreteSalesInvoice = () => {
                 }
             }
         ).then((response) => {
-            const resutl= response.data.concreteSalesInvoice;
+            const resutl = response.data.concreteSalesInvoice;
             resutl.map((invoice) => {
-                setConcreteSalesInvoices(prev => [invoice,...prev ]);
+                setConcreteSalesInvoices(prev => [invoice, ...prev]);
             });
             setTicketNumber(ticketNumber + resutl.length);
             setTotalRecords(totalRecords + resutl.length)
@@ -1721,7 +1725,7 @@ const AddConcreteSalesInvoice = () => {
 
     const handleClearTime = () => {
         setTime({
-            second:'',
+            second: '',
             minute: '',
             hour: ''
         });
@@ -1887,7 +1891,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="00"
-                                                           
+
                                                             onInput={(e) => handleSetTime(e, i, 'second')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondInput${i}`]}
