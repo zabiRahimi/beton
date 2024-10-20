@@ -1,8 +1,11 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import SweetAlertHandler from './SweetAlertHandler';
+// import SweetAlertHandler from './SweetAlertHandler';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
-const RouteService = ({ token }) => {
+const RouteService = () => {
+  const MySwal = withReactContent(Swal);
   const [dataState, setDataState] = useState({
     hasBuyers: true,
     hasMixers: true,
@@ -10,19 +13,20 @@ const RouteService = ({ token }) => {
     hasDrivers: true,
     hasConcreteTypes: true,
   });
-  const [concreteBuers, setConcreteBuers] = useState({
+  const [isChecked, setIsChecked] = useState(false);
+  const [concreteBuyers, setConcreteBuyers] = useState({
     datas:'',
     options:[]
   });
 
-  const checkDataAvailability = async () => {
+  const checkDataAvailability = async (token) => {
     try {
        await axios.get("/api/v1/concreteSalesInvoice/concreteBuyers").then((response) => {
         let datas = response.data.concreteBuyers;
-        setConcreteBuers(prev=>({...prev, datas}));
+        setConcreteBuyers(prev=>({...prev, datas}));
         if (datas.length == 0) {
             MySwal.fire({
-                icon: "warning",
+                // icon: "warning",
                 title: "هشدار",
                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا خریداران بتن را به عنوان مشتری ثبت کنید.`,
                 confirmButtonText: "  ثبت مشتری   ",
@@ -65,40 +69,44 @@ const RouteService = ({ token }) => {
                 )
               }));
               
-              setConcreteBuers(prev => ({
+              setConcreteBuyers(prev => ({
                 ...prev,
                 options
               }));
         }
     });
 
-      const mixersResponse = await axios.get('/api/v1/getMixers', { headers: { Authorization: `Bearer ${token}` } });
-      const hasMixers = mixersResponse.data.length > 0;
+      // const mixersResponse = await axios.get('/api/v1/getMixers', { headers: { Authorization: `Bearer ${token}` } });
+      // const hasMixers = mixersResponse.data.length > 0;
 
-      const mixerOwnersResponse = await axios.get('/api/v1/getMixerOwners', { headers: { Authorization: `Bearer ${token}` } });
-      const hasMixerOwners = mixerOwnersResponse.data.length > 0;
+      // const mixerOwnersResponse = await axios.get('/api/v1/getMixerOwners', { headers: { Authorization: `Bearer ${token}` } });
+      // const hasMixerOwners = mixerOwnersResponse.data.length > 0;
 
-      const driversResponse = await axios.get('/api/v1/getDrivers', { headers: { Authorization: `Bearer ${token}` } });
-      const hasDrivers = driversResponse.data.length > 0;
+      // const driversResponse = await axios.get('/api/v1/getDrivers', { headers: { Authorization: `Bearer ${token}` } });
+      // const hasDrivers = driversResponse.data.length > 0;
 
-      const concreteTypesResponse = await axios.get('/api/v1/getConcreteTypes', { headers: { Authorization: `Bearer ${token}` } });
-      const hasConcreteTypes = concreteTypesResponse.data.length > 0;
+      // const concreteTypesResponse = await axios.get('/api/v1/getConcreteTypes', { headers: { Authorization: `Bearer ${token}` } });
+      // const hasConcreteTypes = concreteTypesResponse.data.length > 0;
 
-      setDataState({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, hasConcreteTypes });
+      // setDataState({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, hasConcreteTypes });
 
-      const alertHandler = SweetAlertHandler({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, hasConcreteTypes });
-      alertHandler.showAlert();
-
+      // const alertHandler = SweetAlertHandler({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, hasConcreteTypes });
+      // alertHandler.showAlert();
+return {concreteBuyers}
     } catch (error) {
       console.error('Error checking data availability', error);
     }
   };
 
-  useEffect(() => {
-    checkDataAvailability();
-  }, [token]);
+// useEffect(() => {
+//   // if (!isChecked) {
+//     checkDataAvailability();
+//     // setIsChecked(true);
+//     console.log('z');
+//   // }
+// }, [ isChecked]);
 
-  return {concreteBuers};
+  return {checkDataAvailability};
 };
 
 export default RouteService;

@@ -22,6 +22,7 @@ import SearchDriversSelect from "../searchSelectZabi/addConcreteSalesInvoiceSele
 
 import Pagination from "../../hooks/Pagination";
 import AddCocreteSalesInvoiceSearch from "../../search/AddConcreteSalesInvoiceSearch";
+import RouteService from "./RouteService";
 
 
 const AddConcreteSalesInvoice = () => {
@@ -208,7 +209,7 @@ const AddConcreteSalesInvoice = () => {
         driverName: '',
         driverLastName: '',
     });
-    console.log(input.invoice);
+    
 
     /**
      * id to edit the model
@@ -218,7 +219,6 @@ const AddConcreteSalesInvoice = () => {
     const [invoice, setInvoice] = useState([sampleInvoice]);
 
     const [maskan, setMaskan] = useState([...invoice.map(item => ''), '']);
-    console.log(invoice);
 
     useEffect(() => {
         if (isRef) {
@@ -550,19 +550,19 @@ const AddConcreteSalesInvoice = () => {
         await axios.get("/api/v1/getCSIConcretes").then((response) => {
             let datas = response.data.concretes;
             if (datas.length == 0) {
-                MySwal.fire({
-                    icon: "warning",
-                    title: "هشدار",
-                    text: `هنوز هیچ عیار بتنی ثبت نشده است. لازم است ابتدا عیار بتن را ثبت کنید.`,
-                    confirmButtonText: "  ثبت بتن   ",
-                    showCancelButton: true,
-                    cancelButtonText: "کنسل",
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    preConfirm: () => {
-                        navigate("/addConcrete");
-                    }
-                });
+                // MySwal.fire({
+                //     icon: "warning",
+                //     title: "هشدار",
+                //     text: `هنوز هیچ عیار بتنی ثبت نشده است. لازم است ابتدا عیار بتن را ثبت کنید.`,
+                //     confirmButtonText: "  ثبت بتن   ",
+                //     showCancelButton: true,
+                //     cancelButtonText: "کنسل",
+                //     confirmButtonColor: "#3085d6",
+                //     cancelButtonColor: "#d33",
+                //     preConfirm: () => {
+                //         navigate("/addConcrete");
+                //     }
+                // });
             } else {
                 datas.map((data, i) => {
                     setConcretes(perv => ([...perv, {
@@ -587,19 +587,19 @@ const AddConcreteSalesInvoice = () => {
         await axios.get("/api/v1/getCSICementStores").then((response) => {
             let datas = response.data.cementStores;
             if (datas.length == 0) {
-                MySwal.fire({
-                    icon: "warning",
-                    title: "هشدار",
-                    text: `هنوز هیچ سیلوی سیمانی ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید.`,
-                    confirmButtonText: "  ثبت سیلو   ",
-                    showCancelButton: true,
-                    cancelButtonText: "کنسل",
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    preConfirm: () => {
-                        navigate("/addCementStore");
-                    }
-                });
+                // MySwal.fire({
+                //     icon: "warning",
+                //     title: "هشدار",
+                //     text: `هنوز هیچ سیلوی سیمانی ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید.`,
+                //     confirmButtonText: "  ثبت سیلو   ",
+                //     showCancelButton: true,
+                //     cancelButtonText: "کنسل",
+                //     confirmButtonColor: "#3085d6",
+                //     cancelButtonColor: "#d33",
+                //     preConfirm: () => {
+                //         navigate("/addCementStore");
+                //     }
+                // });
             } else {
                 datas.map((data, i) => {
                     setCementStores(perv => ([...perv, {
@@ -621,19 +621,19 @@ const AddConcreteSalesInvoice = () => {
             let datas = response.data.drivers;
             setDataDrivers(datas);
             if (datas.length == 0) {
-                MySwal.fire({
-                    icon: "warning",
-                    title: "هشدار",
-                    text: `هنوز هیچ راننده‌ای ثبت نشده است. لازم است ابتدا راننده را ثبت کنید.`,
-                    confirmButtonText: "  ثبت راننده   ",
-                    showCancelButton: true,
-                    cancelButtonText: "کنسل",
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    preConfirm: () => {
-                        navigate("/addDriver");
-                    }
-                });
+                // MySwal.fire({
+                //     icon: "warning",
+                //     title: "هشدار",
+                //     text: `هنوز هیچ راننده‌ای ثبت نشده است. لازم است ابتدا راننده را ثبت کنید.`,
+                //     confirmButtonText: "  ثبت راننده   ",
+                //     showCancelButton: true,
+                //     cancelButtonText: "کنسل",
+                //     confirmButtonColor: "#3085d6",
+                //     cancelButtonColor: "#d33",
+                //     preConfirm: () => {
+                //         navigate("/addDriver");
+                //     }
+                // });
             } else {
                 datas.map((data, i) => {
                     setDrivers(perv => ([...perv, {
@@ -659,19 +659,19 @@ const AddConcreteSalesInvoice = () => {
             let datas = response.data.mixers;
             setDataMixers(datas);
             if (datas.length == 0) {
-                MySwal.fire({
-                    icon: "warning",
-                    title: "هشدار",
-                    text: `هنوز هیچ کامیونی به عنوان میکسر ثبت نشده است. لازم است ابتدا کامیونی به عنوان میکسر ثبت کنید.`,
-                    confirmButtonText: "  ثبت میکسر   ",
-                    showCancelButton: true,
-                    cancelButtonText: "کنسل",
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    preConfirm: () => {
-                        navigate("/addTruck");
-                    }
-                });
+                // MySwal.fire({
+                //     icon: "warning",
+                //     title: "هشدار",
+                //     text: `هنوز هیچ کامیونی به عنوان میکسر ثبت نشده است. لازم است ابتدا کامیونی به عنوان میکسر ثبت کنید.`,
+                //     confirmButtonText: "  ثبت میکسر   ",
+                //     showCancelButton: true,
+                //     cancelButtonText: "کنسل",
+                //     confirmButtonColor: "#3085d6",
+                //     cancelButtonColor: "#d33",
+                //     preConfirm: () => {
+                //         navigate("/addTruck");
+                //     }
+                // });
             } else {
                 datas.map((data, i) => {
                     let arr = data.numberplate.split('-');
@@ -1293,6 +1293,20 @@ const AddConcreteSalesInvoice = () => {
             refErr.current && (refErr.current.innerHTML = '')
         }
     }
+    const [zabi, setZabi] = useState(true);
+    const [zabioption, setZabioption] = useState([]);
+    const {checkDataAvailability}=RouteService(token);
+    useEffect(() => {
+        if (zabi) {
+          const {concreteBuyers}= checkDataAvailability(token)
+            setZabioption(concreteBuyers.options);
+            console.log(concreteBuyers.options);
+            setZabi(false);
+        }
+        
+    }, [zabi])
+    
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -1813,7 +1827,7 @@ const AddConcreteSalesInvoice = () => {
                                     >
                                         <SelectZabi2
                                             primaryLabel='انتخاب'
-                                            options={customers}
+                                            options={zabioption}
                                             saveOption={setCustomerId}
                                             input={inputCustomerSearch}
                                             optionsSearched={optionsCustomersSearched}
