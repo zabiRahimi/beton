@@ -5,7 +5,7 @@ const MySwal = withReactContent(Swal);
 
 const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, hasConcreteTypes }) => {
   const alerts = [];
-
+console.log(`hasBuyers: ${hasBuyers}`);
   if (!hasBuyers) {
     alerts.push({
       title: 'اخطار',

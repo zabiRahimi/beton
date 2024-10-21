@@ -1294,6 +1294,27 @@ const AddConcreteSalesInvoice = () => {
             refErr.current && (refErr.current.innerHTML = '')
         }
     }
+<<<<<<< HEAD
+=======
+    const [zabi, setZabi] = useState(true);
+    const [zabioption, setZabioption] = useState([]);
+    if (zabi) {
+
+        const { concreteBuyers } = RouteService();
+    }
+    // setZabioption(concreteBuyers.options);
+    useEffect(() => {
+        if (zabi) {
+            //   const {concreteBuyers}= checkDataAvailability(token)
+            // setZabioption(concreteBuyers.options);
+            // console.log(concreteBuyers.options);
+            setZabi(false);
+        }
+
+    }, [])
+
+
+>>>>>>> ffe46981f94fc3b54e1ce0e4d59443216faef6d4
 
     const handleSubmit = async (e) => {
         e.preventDefault();
