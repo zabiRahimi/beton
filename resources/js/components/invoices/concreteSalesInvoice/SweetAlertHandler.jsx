@@ -12,9 +12,9 @@ const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, h
       text: 'اطلاعات مربوط به خریداران بتن ثبت نشده است!',
       icon: 'warning',
       confirmButtonText: 'باشه',
-      preConfirm: () => {
-        navigate("/addCustomer");
-      }
+      // preConfirm: () => {
+      //   navigate("/addCustomer");
+      // }
     });
   }
   if (!hasMixers) {

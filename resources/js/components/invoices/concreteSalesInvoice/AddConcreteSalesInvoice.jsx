@@ -100,7 +100,8 @@ const AddConcreteSalesInvoice = () => {
 
     const [loading, setLoading] = useState(false);
     const [dataCustomers, setDataCustomers] = useState();
-    const [customers, setCustomers] = useState([]);
+    // const [customers, setCustomers] = useState([]);
+    // const [concreteBuyers, setConcreteBuyers]= useState([]);
     const [concretes, setConcretes] = useState([]);
     const [dataMixers, setDataMixers] = useState([]);
     const [mixers, setMixers] = useState([]);
@@ -209,7 +210,7 @@ const AddConcreteSalesInvoice = () => {
         driverName: '',
         driverLastName: '',
     });
-    
+
 
     /**
      * id to edit the model
@@ -494,7 +495,7 @@ const AddConcreteSalesInvoice = () => {
             }
         )
         setTimeout(() => {
-            setLoading(false)
+            // setLoading(false)
         }, 300);
     }
 
@@ -1040,7 +1041,7 @@ const AddConcreteSalesInvoice = () => {
         setCheckedMaskanMeli();
 
         setTime({
-            second:'',
+            second: '',
             minute: '',
             hour: ''
         });
@@ -1111,7 +1112,7 @@ const AddConcreteSalesInvoice = () => {
         setCheckedMaskanMeli();
 
         setTime({
-            second:'',
+            second: '',
             minute: '',
             hour: ''
         });
@@ -1293,20 +1294,6 @@ const AddConcreteSalesInvoice = () => {
             refErr.current && (refErr.current.innerHTML = '')
         }
     }
-    const [zabi, setZabi] = useState(true);
-    const [zabioption, setZabioption] = useState([]);
-    const {checkDataAvailability}=RouteService(token);
-    useEffect(() => {
-        if (zabi) {
-          const {concreteBuyers}= checkDataAvailability(token)
-            setZabioption(concreteBuyers.options);
-            console.log(concreteBuyers.options);
-            setZabi(false);
-        }
-        
-    }, [zabi])
-    
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -1322,9 +1309,9 @@ const AddConcreteSalesInvoice = () => {
                 }
             }
         ).then((response) => {
-            const resutl= response.data.concreteSalesInvoice;
+            const resutl = response.data.concreteSalesInvoice;
             resutl.map((invoice) => {
-                setConcreteSalesInvoices(prev => [invoice,...prev ]);
+                setConcreteSalesInvoices(prev => [invoice, ...prev]);
             });
             setTicketNumber(ticketNumber + resutl.length);
             setTotalRecords(totalRecords + resutl.length)
@@ -1721,7 +1708,7 @@ const AddConcreteSalesInvoice = () => {
 
     const handleClearTime = () => {
         setTime({
-            second:'',
+            second: '',
             minute: '',
             hour: ''
         });
@@ -1777,7 +1764,7 @@ const AddConcreteSalesInvoice = () => {
         document.getElementById('customer_id').classList.remove('borderRedFB');
         document.getElementById('customer_idError').innerHTML = '';
     }
-
+   const{concreteBuyers, mixers}= RouteService({ token, setLoading });
     return (
         <div ref={container}>
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
@@ -1827,7 +1814,7 @@ const AddConcreteSalesInvoice = () => {
                                     >
                                         <SelectZabi2
                                             primaryLabel='انتخاب'
-                                            options={zabioption}
+                                            options={concreteBuyers.options}
                                             saveOption={setCustomerId}
                                             input={inputCustomerSearch}
                                             optionsSearched={optionsCustomersSearched}
@@ -1887,7 +1874,7 @@ const AddConcreteSalesInvoice = () => {
                                                             type="text"
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="00"
-                                                           
+
                                                             onInput={(e) => handleSetTime(e, i, 'second')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondInput${i}`]}
