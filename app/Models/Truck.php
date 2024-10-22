@@ -28,8 +28,8 @@ class Truck extends Model
         return $this->hasMany(SandInvoice::class);
     }
 
-    public static function getMixers() {
-        return self::where('truckType', 'میکسر')->with('customer')->get();
+    public function scopeMixers($query) {
+        return $query->where('truckType', 'میکسر')->with('customer');
     }
 
     public function scopeDumpTrucks($query) {

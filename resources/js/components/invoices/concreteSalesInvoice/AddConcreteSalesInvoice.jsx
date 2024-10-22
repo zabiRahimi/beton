@@ -104,7 +104,7 @@ const AddConcreteSalesInvoice = () => {
     // const [concreteBuyers, setConcreteBuyers]= useState([]);
     const [concretes, setConcretes] = useState([]);
     const [dataMixers, setDataMixers] = useState([]);
-    const [mixers, setMixers] = useState([]);
+    // const [mixers, setMixers] = useState([]);
     const [dataDrivers, setDataDrivers] = useState();
     const [drivers, setDrivers] = useState([]);
     const [cementStores, setCementStores] = useState([]);
@@ -250,12 +250,12 @@ const AddConcreteSalesInvoice = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (!hasCalledGetMixers.current) {
-            getCSIMixers();
-            hasCalledGetMixers.current = true;
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!hasCalledGetMixers.current) {
+    //         getCSIMixers();
+    //         hasCalledGetMixers.current = true;
+    //     }
+    // }, []);
 
     useEffect(() => {
         if (!hasCalledGetDrivers.current) {
@@ -655,51 +655,51 @@ const AddConcreteSalesInvoice = () => {
         });
     }
 
-    async function getCSIMixers() {
-        await axios.get("/api/v1/getCSIMixers").then((response) => {
-            let datas = response.data.mixers;
-            setDataMixers(datas);
-            if (datas.length == 0) {
-                // MySwal.fire({
-                //     icon: "warning",
-                //     title: "هشدار",
-                //     text: `هنوز هیچ کامیونی به عنوان میکسر ثبت نشده است. لازم است ابتدا کامیونی به عنوان میکسر ثبت کنید.`,
-                //     confirmButtonText: "  ثبت میکسر   ",
-                //     showCancelButton: true,
-                //     cancelButtonText: "کنسل",
-                //     confirmButtonColor: "#3085d6",
-                //     cancelButtonColor: "#d33",
-                //     preConfirm: () => {
-                //         navigate("/addTruck");
-                //     }
-                // });
-            } else {
-                datas.map((data, i) => {
-                    let arr = data.numberplate.split('-');
-                    setMixers(perv => ([...perv, {
-                        value: data.id,
-                        value2: data.customer.id,
-                        html: <div className="mixerAptionSelectFB">
-                            <span className="mixerNamberpalteSelectFB">
-                                <div className="numberplateDiv">
-                                    <span className="numberplateDivS1">{arr[0]}</span>
-                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-                                    <span className="numberplateDivS3">{arr[1]}</span>
-                                    <span className="numberplateDivS4">{arr[2]}</span>
-                                </div>
-                            </span>
-                            <span className="mixerOwnerSelectFB">
-                                {data.customer.name}
-                                {' '}
-                                {data.customer.lastName}
-                            </span>
+    // async function getCSIMixers() {
+    //     await axios.get("/api/v1/getCSIMixers").then((response) => {
+    //         let datas = response.data.mixers;
+    //         setDataMixers(datas);
+    //         if (datas.length == 0) {
+    //             // MySwal.fire({
+    //             //     icon: "warning",
+    //             //     title: "هشدار",
+    //             //     text: `هنوز هیچ کامیونی به عنوان میکسر ثبت نشده است. لازم است ابتدا کامیونی به عنوان میکسر ثبت کنید.`,
+    //             //     confirmButtonText: "  ثبت میکسر   ",
+    //             //     showCancelButton: true,
+    //             //     cancelButtonText: "کنسل",
+    //             //     confirmButtonColor: "#3085d6",
+    //             //     cancelButtonColor: "#d33",
+    //             //     preConfirm: () => {
+    //             //         navigate("/addTruck");
+    //             //     }
+    //             // });
+    //         } else {
+    //             datas.map((data, i) => {
+    //                 let arr = data.numberplate.split('-');
+    //                 setMixers(perv => ([...perv, {
+    //                     value: data.id,
+    //                     value2: data.customer.id,
+    //                     html: <div className="mixerAptionSelectFB">
+    //                         <span className="mixerNamberpalteSelectFB">
+    //                             <div className="numberplateDiv">
+    //                                 <span className="numberplateDivS1">{arr[0]}</span>
+    //                                 <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+    //                                 <span className="numberplateDivS3">{arr[1]}</span>
+    //                                 <span className="numberplateDivS4">{arr[2]}</span>
+    //                             </div>
+    //                         </span>
+    //                         <span className="mixerOwnerSelectFB">
+    //                             {data.customer.name}
+    //                             {' '}
+    //                             {data.customer.lastName}
+    //                         </span>
 
-                        </div>
-                    }]));
-                })
-            }
-        });
-    }
+    //                     </div>
+    //                 }]));
+    //             })
+    //         }
+    //     });
+    // }
 
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -1294,27 +1294,10 @@ const AddConcreteSalesInvoice = () => {
             refErr.current && (refErr.current.innerHTML = '')
         }
     }
-<<<<<<< HEAD
-=======
-    const [zabi, setZabi] = useState(true);
-    const [zabioption, setZabioption] = useState([]);
-    if (zabi) {
-
-        const { concreteBuyers } = RouteService();
-    }
-    // setZabioption(concreteBuyers.options);
-    useEffect(() => {
-        if (zabi) {
-            //   const {concreteBuyers}= checkDataAvailability(token)
-            // setZabioption(concreteBuyers.options);
-            // console.log(concreteBuyers.options);
-            setZabi(false);
-        }
-
-    }, [])
+   
+   
 
 
->>>>>>> ffe46981f94fc3b54e1ce0e4d59443216faef6d4
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -1785,7 +1768,12 @@ const AddConcreteSalesInvoice = () => {
         document.getElementById('customer_id').classList.remove('borderRedFB');
         document.getElementById('customer_idError').innerHTML = '';
     }
-   const{concreteBuyers, mixers}= RouteService({ token, setLoading });
+    // if (true) {
+        
+        const{concreteBuyers, mixers}= RouteService({ token, setLoading });
+      
+    // }
+    
     return (
         <div ref={container}>
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
@@ -2180,7 +2168,7 @@ const AddConcreteSalesInvoice = () => {
                                                 >
                                                     <SelectZabi2
                                                         primaryLabel='انتخاب'
-                                                        options={mixers}
+                                                        options={mixers.options}
                                                         saveOption={setTruckId}
                                                         saveOption2={setOwnerId}
                                                         input={inputMixerSearch}

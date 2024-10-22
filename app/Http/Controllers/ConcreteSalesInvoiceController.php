@@ -230,9 +230,16 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['concretes' => $concretes]);
     }
 
-    public function getCSIMixers()
+    // public function getCSIMixers()
+    // {
+    //     $mixers = Truck::getMixers();
+    //     return response()->json(['mixers' => $mixers]);
+    // }
+
+    
+    public function mixers()
     {
-        $mixers = Truck::getMixers();
+        $mixers = Truck::mixers()->get();
         return response()->json(['mixers' => $mixers]);
     }
 

@@ -7,6 +7,13 @@ const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, h
   const alerts = [];
 console.log(`hasBuyers: ${hasBuyers}`);
   if (!hasBuyers) {
+    MySwal.fire({
+      icon: "warning",
+      title: "هشدار",
+      html: `hhhssss`,
+      confirmButtonText: "متوجه شدم!",
+      confirmButtonColor: "#d33",
+  });
     alerts.push({
       title: 'اخطار',
       text: 'اطلاعات مربوط به خریداران بتن ثبت نشده است!',
@@ -50,15 +57,15 @@ console.log(`hasBuyers: ${hasBuyers}`);
     });
   }
 
-  const showAlert = (index = 0) => {
-    if (index < alerts.length) {
-      MySwal.fire(alerts[index]).then(() => {
-        showAlert(index + 1);
-      });
-    }
-  };
+  // const showAlert = (index = 0) => {
+  //   if (index < alerts.length) {
+  //     MySwal.fire(alerts[index]).then(() => {
+  //       showAlert(index + 1);
+  //     });
+  //   }
+  // };
 
-  return { showAlert };
+  // return { showAlert };
 };
 
 export default SweetAlertHnadler;
