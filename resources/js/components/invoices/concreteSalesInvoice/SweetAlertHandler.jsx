@@ -5,26 +5,25 @@ const MySwal = withReactContent(Swal);
 
 const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, hasConcreteTypes }) => {
   const alerts = [];
-console.log(`hasBuyers: ${hasBuyers}`);
+  console.log(`hasBuyers: ${hasBuyers}`);
   if (!hasBuyers) {
-    MySwal.fire({
+    alerts.push({
       icon: "warning",
       title: "هشدار",
-      html: `hhhssss`,
-      confirmButtonText: "متوجه شدم!",
-      confirmButtonColor: "#d33",
-  });
-    alerts.push({
-      title: 'اخطار',
-      text: 'اطلاعات مربوط به خریداران بتن ثبت نشده است!',
-      icon: 'warning',
-      confirmButtonText: 'باشه',
+      text: `هنوز هیچ مشتری‌ای به عنوان خریدار بتن ثبت نشده است. لازم است ابتدا خریداران بتن را به عنوان مشتری ثبت کنید.`,
+      confirmButtonText: "  ثبت مشتری   ",
+      showCancelButton: true,
+      cancelButtonText: "کنسل",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
       // preConfirm: () => {
+
       //   navigate("/addCustomer");
       // }
     });
   }
   if (!hasMixers) {
+
     alerts.push({
       title: 'اخطار',
       text: 'اطلاعات مربوط به میکسرها ثبت نشده است!',
@@ -57,14 +56,14 @@ console.log(`hasBuyers: ${hasBuyers}`);
     });
   }
 
-  // const showAlert = (index = 0) => {
-  //   if (index < alerts.length) {
-  //     MySwal.fire(alerts[index]).then(() => {
-  //       showAlert(index + 1);
-  //     });
-  //   }
-  // };
-
+  const showAlert = (index = 0) => {
+    if (index < alerts.length) {
+      MySwal.fire(alerts[index]).then(() => {
+        showAlert(index + 1);
+      });
+    }
+  };
+  showAlert();
   // return { showAlert };
 };
 
