@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-const MySwal = withReactContent(Swal);
 
-const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, hasConcreteTypes }) => {
+const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasDrivers, hasConcreteTypes }) => {
+  const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
   const alerts = [];
   console.log(`hasBuyers: ${hasBuyers}`);
   if (!hasBuyers) {
@@ -16,10 +18,11 @@ const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, h
       cancelButtonText: "کنسل",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      // preConfirm: () => {
+      preConfirm: () => {
 
-      //   navigate("/addCustomer");
-      // }
+        navigate("/addCustomer");
+        
+      }
     });
   }
   if (!hasMixers) {
@@ -31,20 +34,20 @@ const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, h
       confirmButtonText: 'باشه',
     });
   }
-  if (!hasMixerOwners) {
-    alerts.push({
-      title: 'اخطار',
-      text: 'اطلاعات مربوط به صاحبان میکسرها ثبت نشده است!',
-      icon: 'warning',
-      confirmButtonText: 'باشه',
-    });
-  }
+
   if (!hasDrivers) {
     alerts.push({
-      title: 'اخطار',
-      text: 'اطلاعات مربوط به راننده‌ها ثبت نشده است!',
-      icon: 'warning',
-      confirmButtonText: 'باشه',
+      icon: "warning",
+      title: "هشدار",
+      text: `هنوز هیچ راننده‌ای ثبت نشده است. لازم است ابتدا راننده را ثبت کنید.`,
+      confirmButtonText: "  ثبت راننده   ",
+      showCancelButton: true,
+      cancelButtonText: "کنسل",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      preConfirm: () => {
+        navigate("/addDriver");
+      }
     });
   }
   if (!hasConcreteTypes) {
@@ -56,15 +59,23 @@ const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasMixerOwners, hasDrivers, h
     });
   }
 
-  const showAlert = (index = 0) => {
+  
+
+  const showAlert = ( index = 0) => {
+  console.log( alerts.length);
     if (index < alerts.length) {
-      MySwal.fire(alerts[index]).then(() => {
-        showAlert(index + 1);
+      MySwal.fire(alerts[index]).then((result) => {
+        if (result.isConfirmed && alerts[index].preConfirm) {
+          alerts[index].preConfirm();
+        } else {
+          showAlert( index + 1);
+        }
       });
     }
-  };
-  showAlert();
-  // return { showAlert };
+  }
+  
+  
+  return { showAlert };
 };
 
 export default SweetAlertHnadler;

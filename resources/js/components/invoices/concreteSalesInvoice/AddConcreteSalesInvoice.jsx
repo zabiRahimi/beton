@@ -257,12 +257,12 @@ const AddConcreteSalesInvoice = () => {
     //     }
     // }, []);
 
-    useEffect(() => {
-        if (!hasCalledGetDrivers.current) {
-            getCSIDrivers();
-            hasCalledGetDrivers.current = true;
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!hasCalledGetDrivers.current) {
+    //         getCSIDrivers();
+    //         hasCalledGetDrivers.current = true;
+    //     }
+    // }, []);
 
     useEffect(() => {
         if (!hasCalledGetCementStores.current) {
@@ -617,43 +617,43 @@ const AddConcreteSalesInvoice = () => {
         });
     }
 
-    async function getCSIDrivers() {
-        await axios.get("/api/v1/getCSIDrivers").then((response) => {
-            let datas = response.data.drivers;
-            setDataDrivers(datas);
-            if (datas.length == 0) {
-                // MySwal.fire({
-                //     icon: "warning",
-                //     title: "هشدار",
-                //     text: `هنوز هیچ راننده‌ای ثبت نشده است. لازم است ابتدا راننده را ثبت کنید.`,
-                //     confirmButtonText: "  ثبت راننده   ",
-                //     showCancelButton: true,
-                //     cancelButtonText: "کنسل",
-                //     confirmButtonColor: "#3085d6",
-                //     cancelButtonColor: "#d33",
-                //     preConfirm: () => {
-                //         navigate("/addDriver");
-                //     }
-                // });
-            } else {
-                datas.map((data, i) => {
-                    setDrivers(perv => ([...perv, {
-                        value: data.id,
-                        html: <div className="personnelAption_addPerS">
-                            <span className="name_addPers">{data.name}
-                                {' '}
-                                {data.lastName}</span>
+    // async function getCSIDrivers() {
+    //     await axios.get("/api/v1/getCSIDrivers").then((response) => {
+    //         let datas = response.data.drivers;
+    //         setDataDrivers(datas);
+    //         if (datas.length == 0) {
+    //             // MySwal.fire({
+    //             //     icon: "warning",
+    //             //     title: "هشدار",
+    //             //     text: `هنوز هیچ راننده‌ای ثبت نشده است. لازم است ابتدا راننده را ثبت کنید.`,
+    //             //     confirmButtonText: "  ثبت راننده   ",
+    //             //     showCancelButton: true,
+    //             //     cancelButtonText: "کنسل",
+    //             //     confirmButtonColor: "#3085d6",
+    //             //     cancelButtonColor: "#d33",
+    //             //     preConfirm: () => {
+    //             //         navigate("/addDriver");
+    //             //     }
+    //             // });
+    //         } else {
+    //             datas.map((data, i) => {
+    //                 setDrivers(perv => ([...perv, {
+    //                     value: data.id,
+    //                     html: <div className="personnelAption_addPerS">
+    //                         <span className="name_addPers">{data.name}
+    //                             {' '}
+    //                             {data.lastName}</span>
 
-                            <span className="fther_addPers">
-                                {data.father || ''}
-                            </span>
+    //                         <span className="fther_addPers">
+    //                             {data.father || ''}
+    //                         </span>
 
-                        </div>
-                    }]));
-                })
-            }
-        });
-    }
+    //                     </div>
+    //                 }]));
+    //             })
+    //         }
+    //     });
+    // }
 
     // async function getCSIMixers() {
     //     await axios.get("/api/v1/getCSIMixers").then((response) => {

@@ -243,7 +243,7 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['mixers' => $mixers]);
     }
 
-    public function getCSIDrivers()
+    public function drivers()
     {
         $drivers = Driver::get();
         return response()->json(['drivers' => $drivers]);

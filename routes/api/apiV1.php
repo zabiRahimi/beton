@@ -113,14 +113,15 @@ Route::controller(WaterStoreController::class)->group(function () {
 Route::resource('concreteSalesInvoices', ConcreteSalesInvoiceController::class);
 Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
     
-    // Route::post('/addConcreteSalesInvoice', 'store');
-    // Route::get('/getConcreteSalesInvoices', 'index');
     Route::get('/concreteSalesInvoice/concreteBuyers', 'concreteBuyers');
     Route::get('/getCSIConcretes', 'getCSIConcretes');
-    // Route::get('/getCSIMixers', 'getCSIMixers');
     Route::get('/concreteSalesInvoice/mixers', 'mixers');
-    Route::get('/getCSIDrivers', 'getCSIDrivers');
+    Route::get('/concreteSalesInvoice/drivers', 'drivers');
     Route::get('/getCSICementStores', 'getCSICementStores');
+    // Route::post('/addConcreteSalesInvoice', 'store');
+    // Route::get('/getConcreteSalesInvoices', 'index');
+    // Route::get('/getCSIMixers', 'getCSIMixers');
+    // Route::get('/getCSIDrivers', 'getCSIDrivers');
     // Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
 
 });
