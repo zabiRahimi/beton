@@ -243,12 +243,12 @@ const AddConcreteSalesInvoice = () => {
     //     }
     // }, []);
 
-    useEffect(() => {
-        if (!hasCalledGetConcretes.current) {
-            getCSIConcretes();
-            hasCalledGetConcretes.current = true;
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!hasCalledGetConcretes.current) {
+    //         getCSIConcretes();
+    //         hasCalledGetConcretes.current = true;
+    //     }
+    // }, []);
 
     // useEffect(() => {
     //     if (!hasCalledGetMixers.current) {
@@ -264,12 +264,12 @@ const AddConcreteSalesInvoice = () => {
     //     }
     // }, []);
 
-    useEffect(() => {
-        if (!hasCalledGetCementStores.current) {
-            getCSICementStores();
-            hasCalledGetCementStores.current = true;
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!hasCalledGetCementStores.current) {
+    //         getCSICementStores();
+    //         hasCalledGetCementStores.current = true;
+    //     }
+    // }, []);
 
     /**
     * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -547,75 +547,75 @@ const AddConcreteSalesInvoice = () => {
     //     });
     // }
 
-    async function getCSIConcretes() {
-        await axios.get("/api/v1/getCSIConcretes").then((response) => {
-            let datas = response.data.concretes;
-            if (datas.length == 0) {
-                // MySwal.fire({
-                //     icon: "warning",
-                //     title: "هشدار",
-                //     text: `هنوز هیچ عیار بتنی ثبت نشده است. لازم است ابتدا عیار بتن را ثبت کنید.`,
-                //     confirmButtonText: "  ثبت بتن   ",
-                //     showCancelButton: true,
-                //     cancelButtonText: "کنسل",
-                //     confirmButtonColor: "#3085d6",
-                //     cancelButtonColor: "#d33",
-                //     preConfirm: () => {
-                //         navigate("/addConcrete");
-                //     }
-                // });
-            } else {
-                datas.map((data, i) => {
-                    setConcretes(perv => ([...perv, {
-                        value: data.id,
-                        concreteName: data.concreteName,
-                        html: <div className="concreteAptionSelectFB">
-                            <span className="concreteLabelSelectFB">بتن
-                            </span>
+    // async function getCSIConcretes() {
+    //     await axios.get("/api/v1/getCSIConcretes").then((response) => {
+    //         let datas = response.data.concretes;
+    //         if (datas.length == 0) {
+    //             // MySwal.fire({
+    //             //     icon: "warning",
+    //             //     title: "هشدار",
+    //             //     text: `هنوز هیچ عیار بتنی ثبت نشده است. لازم است ابتدا عیار بتن را ثبت کنید.`,
+    //             //     confirmButtonText: "  ثبت بتن   ",
+    //             //     showCancelButton: true,
+    //             //     cancelButtonText: "کنسل",
+    //             //     confirmButtonColor: "#3085d6",
+    //             //     cancelButtonColor: "#d33",
+    //             //     preConfirm: () => {
+    //             //         navigate("/addConcrete");
+    //             //     }
+    //             // });
+    //         } else {
+    //             datas.map((data, i) => {
+    //                 setConcretes(perv => ([...perv, {
+    //                     value: data.id,
+    //                     concreteName: data.concreteName,
+    //                     html: <div className="concreteAptionSelectFB">
+    //                         <span className="concreteLabelSelectFB">بتن
+    //                         </span>
 
-                            <span className="concreteSelectFB">
-                                {data.concreteName}
-                            </span>
+    //                         <span className="concreteSelectFB">
+    //                             {data.concreteName}
+    //                         </span>
 
-                        </div>
-                    }]));
-                })
-            }
-        });
-    }
+    //                     </div>
+    //                 }]));
+    //             })
+    //         }
+    //     });
+    // }
 
-    async function getCSICementStores() {
-        await axios.get("/api/v1/getCSICementStores").then((response) => {
-            let datas = response.data.cementStores;
-            if (datas.length == 0) {
-                // MySwal.fire({
-                //     icon: "warning",
-                //     title: "هشدار",
-                //     text: `هنوز هیچ سیلوی سیمانی ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید.`,
-                //     confirmButtonText: "  ثبت سیلو   ",
-                //     showCancelButton: true,
-                //     cancelButtonText: "کنسل",
-                //     confirmButtonColor: "#3085d6",
-                //     cancelButtonColor: "#d33",
-                //     preConfirm: () => {
-                //         navigate("/addCementStore");
-                //     }
-                // });
-            } else {
-                datas.map((data, i) => {
-                    setCementStores(perv => ([...perv, {
-                        value: data.id,
-                        cementStoreName: data.silo,
-                        html: <div className="mixerAptionSelectFB">
-                            <span className="mixerOwnerSelectFB">
-                                {data.silo}
-                            </span>
-                        </div>
-                    }]));
-                })
-            }
-        });
-    }
+    // async function getCSICementStores() {
+    //     await axios.get("/api/v1/getCSICementStores").then((response) => {
+    //         let datas = response.data.cementStores;
+    //         if (datas.length == 0) {
+    //             // MySwal.fire({
+    //             //     icon: "warning",
+    //             //     title: "هشدار",
+    //             //     text: `هنوز هیچ سیلوی سیمانی ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید.`,
+    //             //     confirmButtonText: "  ثبت سیلو   ",
+    //             //     showCancelButton: true,
+    //             //     cancelButtonText: "کنسل",
+    //             //     confirmButtonColor: "#3085d6",
+    //             //     cancelButtonColor: "#d33",
+    //             //     preConfirm: () => {
+    //             //         navigate("/addCementStore");
+    //             //     }
+    //             // });
+    //         } else {
+    //             datas.map((data, i) => {
+    //                 setCementStores(perv => ([...perv, {
+    //                     value: data.id,
+    //                     cementStoreName: data.silo,
+    //                     html: <div className="mixerAptionSelectFB">
+    //                         <span className="mixerOwnerSelectFB">
+    //                             {data.silo}
+    //                         </span>
+    //                     </div>
+    //                 }]));
+    //             })
+    //         }
+    //     });
+    // }
 
     // async function getCSIDrivers() {
     //     await axios.get("/api/v1/getCSIDrivers").then((response) => {
@@ -1771,6 +1771,7 @@ const AddConcreteSalesInvoice = () => {
     // if (true) {
         
         const{concreteBuyers, mixers}= RouteService({ token, setLoading });
+        console.log(concreteBuyers.options);
       
     // }
     

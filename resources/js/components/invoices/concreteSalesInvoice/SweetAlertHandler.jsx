@@ -2,12 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-
-const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasDrivers, hasConcreteTypes }) => {
+const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasDrivers, hasConcretes, hasCementStores }) => {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const alerts = [];
-  console.log(`hasBuyers: ${hasBuyers}`);
   if (!hasBuyers) {
     alerts.push({
       icon: "warning",
@@ -19,19 +17,23 @@ const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasDrivers, hasConcreteTypes 
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       preConfirm: () => {
-
         navigate("/addCustomer");
-        
       }
     });
   }
   if (!hasMixers) {
-
     alerts.push({
-      title: 'اخطار',
-      text: 'اطلاعات مربوط به میکسرها ثبت نشده است!',
-      icon: 'warning',
-      confirmButtonText: 'باشه',
+      icon: "warning",
+      title: "هشدار",
+      text: `هنوز هیچ کامیونی به عنوان میکسر ثبت نشده است. لازم است ابتدا کامیونی به عنوان میکسر ثبت کنید.`,
+      confirmButtonText: "  ثبت میکسر   ",
+      showCancelButton: true,
+      cancelButtonText: "کنسل",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      preConfirm: () => {
+        navigate("/addTruck");
+      }
     });
   }
 
@@ -50,31 +52,50 @@ const SweetAlertHnadler = ({ hasBuyers, hasMixers, hasDrivers, hasConcreteTypes 
       }
     });
   }
-  if (!hasConcreteTypes) {
+  if (!hasConcretes) {
     alerts.push({
-      title: 'اخطار',
-      text: 'اطلاعات مربوط به انواع بتن ثبت نشده است!',
-      icon: 'warning',
-      confirmButtonText: 'باشه',
+      icon: "warning",
+      title: "هشدار",
+      text: `هنوز هیچ عیار بتنی ثبت نشده است. لازم است ابتدا عیار بتن را ثبت کنید.`,
+      confirmButtonText: "  ثبت بتن   ",
+      showCancelButton: true,
+      cancelButtonText: "کنسل",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      preConfirm: () => {
+        navigate("/addConcrete");
+      }
     });
   }
 
-  
+  if (!hasCementStores) {
+    alerts.push({
+      icon: "warning",
+      title: "هشدار",
+      text: `هنوز هیچ سیلوی سیمانی ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید.`,
+      confirmButtonText: "  ثبت سیلو   ",
+      showCancelButton: true,
+      cancelButtonText: "کنسل",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      preConfirm: () => {
+        navigate("/addCementStore");
+      }
+    });
+  }
 
-  const showAlert = ( index = 0) => {
-  console.log( alerts.length);
+  const showAlert = (index = 0) => {
     if (index < alerts.length) {
       MySwal.fire(alerts[index]).then((result) => {
         if (result.isConfirmed && alerts[index].preConfirm) {
           alerts[index].preConfirm();
         } else {
-          showAlert( index + 1);
+          showAlert(index + 1);
         }
       });
     }
   }
-  
-  
+
   return { showAlert };
 };
 

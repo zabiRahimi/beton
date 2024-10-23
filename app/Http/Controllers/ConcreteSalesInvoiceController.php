@@ -224,7 +224,7 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['concreteBuyers' => $concreteBuyers]);
     }
 
-    public function getCSIConcretes()
+    public function concretes()
     {
         $concretes = Concrete::get();
         return response()->json(['concretes' => $concretes]);
@@ -249,7 +249,7 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['drivers' => $drivers]);
     }
 
-    public function getCSICementStores()
+    public function cementStores()
     {
         $cementStores = CementStore::get();
         return response()->json(['cementStores' => $cementStores]);
