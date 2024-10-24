@@ -565,7 +565,8 @@
 
 .mixerAptionSelectFB,
 .factoryAptionSelectFB,
-.sandAptionSelectFB {
+.sandAptionSelectFB,
+.notOptionsFB {
     width: 100%;
     padding: 3px 2px 3px 2px;
 }
@@ -574,6 +575,10 @@
 .sandAptionSelectFB {
     cursor: pointer;
     padding-right: 8px;
+}
+
+.notOptionsFB{
+    color: #ff0000;
 }
 
 .mixerAptionSelectFB .numberplateDiv {

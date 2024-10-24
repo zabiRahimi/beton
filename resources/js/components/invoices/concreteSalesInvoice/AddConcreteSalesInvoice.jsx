@@ -1294,8 +1294,8 @@ const AddConcreteSalesInvoice = () => {
             refErr.current && (refErr.current.innerHTML = '')
         }
     }
-   
-   
+
+
 
 
 
@@ -1768,13 +1768,9 @@ const AddConcreteSalesInvoice = () => {
         document.getElementById('customer_id').classList.remove('borderRedFB');
         document.getElementById('customer_idError').innerHTML = '';
     }
-    // if (true) {
-        
-        const{concreteBuyers, mixers}= RouteService({ token, setLoading });
-        console.log(concreteBuyers.options);
-      
-    // }
-    
+
+    const { concreteBuyers, mixers } = RouteService({ token, setLoading });
+
     return (
         <div ref={container}>
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
