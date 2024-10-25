@@ -19,12 +19,8 @@ const RouteService = ({ token, setLoading }) => {
     datas: '',
     options: []
   });
-  const [concretes, setConcretes] = useState({
-    options: []
-  });
-  const [cementStores, setCementStores] = useState({
-    options: []
-  });
+  const [concretes, setConcretes] = useState([]);
+  const [cementStores, setCementStores] = useState([]);
   const [mixers, setMixers] = useState({
     datas: '',
     options: []
@@ -75,7 +71,6 @@ const RouteService = ({ token, setLoading }) => {
     await axios.get('/api/v1/concreteSalesInvoice/concretes').then((response) => {
       const datas = response.data.concretes;
       let options;
-      setConcretes(prev => ({ ...prev, datas }));
       if (datas.length == 0) {
         setDataState(prev => ({ ...prev, hasConcretes: false }));
         options = notOption(' هنوز هیچ نوع بتنی ثبت نشده است، ابتدا نوع بتن را ثبت کنید ');
@@ -92,16 +87,12 @@ const RouteService = ({ token, setLoading }) => {
           </div>
         }));
       }
-      setConcretes(prev => ({
-        ...prev,
-        options
-      }));
+      setConcretes(options);
     });
 
     await axios.get('/api/v1/concreteSalesInvoice/cementStores').then((response) => {
       const datas = response.data.cementStores;
       let options;
-      setCementStores(prev => ({ ...prev, datas }));
       if (datas.length == 0) {
         setDataState(prev => ({ ...prev, hasCementStores: false }));
         options = notOption('هنوز هیچ سیلوی سیمانی ثبت نشده است، ابتدا سیلوی سیمان را ثبت کنید');
@@ -116,10 +107,7 @@ const RouteService = ({ token, setLoading }) => {
           </div>
         }));
       }
-      setCementStores(prev => ({
-        ...prev,
-        options
-      }));
+      setCementStores(options);
     });
 
     await axios.get('/api/v1/concreteSalesInvoice/mixers').then((response) => {
