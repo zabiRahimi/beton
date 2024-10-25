@@ -20,11 +20,9 @@ const RouteService = ({ token, setLoading }) => {
     options: []
   });
   const [concretes, setConcretes] = useState({
-    datas: '',
     options: []
   });
   const [cementStores, setCementStores] = useState({
-    datas: '',
     options: []
   });
   const [mixers, setMixers] = useState({
@@ -47,25 +45,14 @@ const RouteService = ({ token, setLoading }) => {
   const fetchData = async (token) => {
 
     await axios.get("/api/v1/concreteSalesInvoice/concreteBuyers").then((response) => {
-      let datas = response.data.concreteBuyers;
+      const datas = response.data.concreteBuyers;
+      let options;
       setConcreteBuyers(prev => ({ ...prev, datas }));
       if (datas.length == 0) {
         setDataState(prev => ({ ...prev, hasBuyers: false }));
-        const options = [{
-          value: '',
-          html: (
-            <div className="notOptionsFB">
-              هنوز هیچ مشتری به عنوان خریدار ثبت نشده است، ابتدا خریدار را ثبت کنید
-            </div>
-          )
-        }];
-        setConcreteBuyers(prev => ({
-          ...prev,
-          options
-        }));
-
+        options = notOption('هیچ مشتری به عنوان خریدار ثبت نشده است، ابتدا خریدار را ثبت کنید');
       } else {
-        const options = datas.map(data => ({
+        options = datas.map(data => ({
           value: data.id,
           html: (
             <div className="personnelAption_addPerS">
@@ -78,32 +65,22 @@ const RouteService = ({ token, setLoading }) => {
             </div>
           )
         }));
-        setConcreteBuyers(prev => ({
-          ...prev,
-          options
-        }));
       }
+      setConcreteBuyers(prev => ({
+        ...prev,
+        options
+      }));
     });
 
     await axios.get('/api/v1/concreteSalesInvoice/concretes').then((response) => {
-      let datas = response.data.concretes;
+      const datas = response.data.concretes;
+      let options;
       setConcretes(prev => ({ ...prev, datas }));
       if (datas.length == 0) {
         setDataState(prev => ({ ...prev, hasConcretes: false }));
-        const options = [{
-          value: '',
-          html: (
-            <div className="notOptionsFB">
-              هنوز هیچ نوع بتنی ثبت نشده است، ابتدا نوع بتن را ثبت کنید
-            </div>
-          )
-        }];
-        setConcretes(prev => ({
-          ...prev,
-          options
-        }));
+        options = notOption(' هنوز هیچ نوع بتنی ثبت نشده است، ابتدا نوع بتن را ثبت کنید ');
       } else {
-        const options = datas.map(data => ({
+        options = datas.map(data => ({
           value: data.id,
           concreteName: data.concreteName,
           html: <div className="concreteAptionSelectFB">
@@ -114,131 +91,84 @@ const RouteService = ({ token, setLoading }) => {
             </span>
           </div>
         }));
-        setConcretes(prev => ({
-          ...prev,
-          options
-        }));
       }
+      setConcretes(prev => ({
+        ...prev,
+        options
+      }));
     });
 
     await axios.get('/api/v1/concreteSalesInvoice/cementStores').then((response) => {
-      let datas = response.data.cementStores;
+      const datas = response.data.cementStores;
+      let options;
       setCementStores(prev => ({ ...prev, datas }));
       if (datas.length == 0) {
         setDataState(prev => ({ ...prev, hasCementStores: false }));
-        const options = [{
-          value: '',
-          html: (
-            <div className="notOptionsFB">
-              هنوز هیچ سیلوی سیمانی ثبت نشده است، ابتدا سیلوی سیمان را ثبت کنید
-            </div>
-          )
-        }];
-        setCementStores(prev => ({
-          ...prev,
-          options
-        }));
+        options = notOption('هنوز هیچ سیلوی سیمانی ثبت نشده است، ابتدا سیلوی سیمان را ثبت کنید');
       } else {
-        const options = datas.map(data => ({
+        options = datas.map(data => ({
           value: data.id,
-          html: (
-            <div className="personnelAption_addPerS">
-              <span className="name_addPers">
-                {data.name} {' '} {data.lastName}
-              </span>
-              <span className="fther_addPers">
-                {data.father || ''}
-              </span>
-            </div>
-          )
-        }));
-        setCementStores(prev => ({
-          ...prev,
-          options
+          cementStoreName: data.silo,
+          html: <div className="mixerAptionSelectFB">
+            <span className="mixerOwnerSelectFB">
+              {data.silo}
+            </span>
+          </div>
         }));
       }
+      setCementStores(prev => ({
+        ...prev,
+        options
+      }));
     });
+
     await axios.get('/api/v1/concreteSalesInvoice/mixers').then((response) => {
-      let datas = response.data.mixers;
+      const datas = response.data.mixers;
+      let options;
       setMixers(prev => ({ ...prev, datas }));
       if (datas.length == 0) {
         setDataState(prev => ({ ...prev, hasMixers: false }));
-        const options = [{
-          value: '',
-          html: (
-            <div className="notOptionsFB">
-              هنوز هیچ میکسری ثبت نشده است، ابتدا میکسر را ثبت کنید
-            </div>
-          )
-        }];
-        setMixers(prev => ({
-          ...prev,
-          options
-        }));
+        options = notOption('هنوز هیچ میکسری ثبت نشده است، ابتدا میکسر را ثبت کنید');
       } else {
-        const options = datas.map(data => ({
-          value: data.id,
-          html: (
-            <div className="personnelAption_addPerS">
-              <span className="name_addPers">
-                {data.name} {' '} {data.lastName}
+        options = datas.map(data => {
+          let arr = data.numberplate.split('-');
+          return {
+            value: data.id,
+            value2: data.customer.id,
+            html: <div className="mixerAptionSelectFB">
+              <span className="mixerNamberpalteSelectFB">
+                <div className="numberplateDiv">
+                  <span className="numberplateDivS1">{arr[0]}</span>
+                  <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+                  <span className="numberplateDivS3">{arr[1]}</span>
+                  <span className="numberplateDivS4">{arr[2]}</span>
+                </div>
               </span>
-              <span className="fther_addPers">
-                {data.father || ''}
+              <span className="mixerOwnerSelectFB">
+                {data.customer.name}
+                {' '}
+                {data.customer.lastName}
               </span>
+
             </div>
-          )
-        }));
-        datas.map((data, i) => {
-          // let arr = data.numberplate.split('-');
-          // setMixers(perv => ([...perv, {
-          //     value: data.id,
-          //     value2: data.customer.id,
-          //     html: <div className="mixerAptionSelectFB">
-          //         <span className="mixerNamberpalteSelectFB">
-          //             <div className="numberplateDiv">
-          //                 <span className="numberplateDivS1">{arr[0]}</span>
-          //                 <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-          //                 <span className="numberplateDivS3">{arr[1]}</span>
-          //                 <span className="numberplateDivS4">{arr[2]}</span>
-          //             </div>
-          //         </span>
-          //         <span className="mixerOwnerSelectFB">
-          //             {data.customer.name}
-          //             {' '}
-          //             {data.customer.lastName}
-          //         </span>
-
-          //     </div>
-          // }]));
-        })
-
-        // setMixers(prev => ({
-        //   ...prev,
-        //   options
-        // }));
+          }
+        });
       }
+      setMixers(prev => ({
+        ...prev,
+        options
+      }));
     });
 
     await axios.get('/api/v1/concreteSalesInvoice/drivers').then((response) => {
       let datas = response.data.drivers;
-      // setConcreteBuyers(prev=>({...prev, datas}));
+      let options;
+      setDrivers(prev => ({ ...prev, datas }));
       if (datas.length == 0) {
         setDataState(prev => ({ ...prev, hasDrivers: false }));
-        const options = [{
-          value: '',
-          html: (
-            <div className="notOptionsFB">
-              هنوز هیچ میکسری ثبت نشده است، ابتدا میکسر را ثبت کنید
-            </div>
-          )
-        }];
-        setMixers(prev => ({
-          ...prev,
-          options
-        }));
+        options = notOption('هنوز هیچ راننده‌ای ثبت نشده است، ابتدا راننده را ثبت کنید');
       } else {
-        const options = datas.map(data => ({
+        options = datas.map(data => ({
           value: data.id,
           html: (
             <div className="personnelAption_addPerS">
@@ -251,46 +181,28 @@ const RouteService = ({ token, setLoading }) => {
             </div>
           )
         }));
-        datas.map((data, i) => {
-          // let arr = data.numberplate.split('-');
-          // setMixers(perv => ([...perv, {
-          //     value: data.id,
-          //     value2: data.customer.id,
-          //     html: <div className="mixerAptionSelectFB">
-          //         <span className="mixerNamberpalteSelectFB">
-          //             <div className="numberplateDiv">
-          //                 <span className="numberplateDivS1">{arr[0]}</span>
-          //                 <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-          //                 <span className="numberplateDivS3">{arr[1]}</span>
-          //                 <span className="numberplateDivS4">{arr[2]}</span>
-          //             </div>
-          //         </span>
-          //         <span className="mixerOwnerSelectFB">
-          //             {data.customer.name}
-          //             {' '}
-          //             {data.customer.lastName}
-          //         </span>
-
-          //     </div>
-          // }]));
-        })
-
-        // setMixers(prev => ({
-        //   ...prev,
-        //   options
-        // }));
       }
+      setDrivers(prev => ({
+        ...prev,
+        options
+      }));
     });
-
-
-
-
 
     setCallHandler(true);
     setLoading(false);
     return { concreteBuyers }
-
   };
+
+  const notOption = (message) => {
+    return [{
+      value: '',
+      html: (
+        <div className="notOptionsFB">
+          {message}
+        </div>
+      )
+    }];
+  }
 
   const alertHandler = SweetAlertHandler(
     {

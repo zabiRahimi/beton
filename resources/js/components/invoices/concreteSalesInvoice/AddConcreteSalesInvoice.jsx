@@ -1,5 +1,4 @@
 import { createRef, useEffect, useRef, useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import Title from '../../hooks/Title';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -24,9 +23,7 @@ import Pagination from "../../hooks/Pagination";
 import AddCocreteSalesInvoiceSearch from "../../search/AddConcreteSalesInvoiceSearch";
 import RouteService from "./RouteService";
 
-
 const AddConcreteSalesInvoice = () => {
-    let navigate = useNavigate();
     const MySwal = withReactContent(Swal);
     const {
         optionDays,
@@ -76,14 +73,8 @@ const AddConcreteSalesInvoice = () => {
     const nationalCodeErrorRef = useRef(null);
 
     const hasCalledGetConcreteSalesInvoices = useRef(false);
-    const hasCalledGetConcreteBuyers = useRef(false);
-    const hasCalledGetConcretes = useRef(false);
-    const hasCalledGetMixers = useRef(false);
-    const hasCalledGetDrivers = useRef(false);
-    const hasCalledGetCementStores = useRef(false);
 
     const refCheckedMaskanShahidEdit = useRef(null);
-
 
     const [date, setDate] = useState({
         day: '',
@@ -99,15 +90,8 @@ const AddConcreteSalesInvoice = () => {
     const [refInvoice, setRefInvoice] = useState({});
 
     const [loading, setLoading] = useState(false);
-    const [dataCustomers, setDataCustomers] = useState();
-    // const [customers, setCustomers] = useState([]);
-    // const [concreteBuyers, setConcreteBuyers]= useState([]);
-    const [concretes, setConcretes] = useState([]);
     const [dataMixers, setDataMixers] = useState([]);
-    // const [mixers, setMixers] = useState([]);
     const [dataDrivers, setDataDrivers] = useState();
-    const [drivers, setDrivers] = useState([]);
-    const [cementStores, setCementStores] = useState([]);
     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
@@ -211,7 +195,6 @@ const AddConcreteSalesInvoice = () => {
         driverLastName: '',
     });
 
-
     /**
      * id to edit the model
     */
@@ -234,42 +217,6 @@ const AddConcreteSalesInvoice = () => {
             hasCalledGetConcreteSalesInvoices.current = true;
         }
     }, []);
-
-    // useEffect(() => {
-    //     // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
-    //     if (!hasCalledGetConcreteBuyers.current) {
-    //         getCSIConcreteBuyers();
-    //         hasCalledGetConcreteBuyers.current = true;
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     if (!hasCalledGetConcretes.current) {
-    //         getCSIConcretes();
-    //         hasCalledGetConcretes.current = true;
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     if (!hasCalledGetMixers.current) {
-    //         getCSIMixers();
-    //         hasCalledGetMixers.current = true;
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     if (!hasCalledGetDrivers.current) {
-    //         getCSIDrivers();
-    //         hasCalledGetDrivers.current = true;
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     if (!hasCalledGetCementStores.current) {
-    //         getCSICementStores();
-    //         hasCalledGetCementStores.current = true;
-    //     }
-    // }, []);
 
     /**
     * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
@@ -507,199 +454,6 @@ const AddConcreteSalesInvoice = () => {
     const handelSetDataSearch = (data) => {
         setSearch(data);
     }
-
-    // async function getCSIConcreteBuyers() {
-    //     await axios.get("/api/v1/getCSIConcreteBuyers").then((response) => {
-    //         let datas = response.data.concreteBuyers;
-    //         setDataCustomers(datas);
-    //         if (datas.length == 0) {
-    //             MySwal.fire({
-    //                 icon: "warning",
-    //                 title: "هشدار",
-    //                 text: `هنوز هیچ مشتری‌ای به عنوان پرسنل ثبت نشده است. لازم است ابتدا خریداران بتن را به عنوان مشتری ثبت کنید.`,
-    //                 confirmButtonText: "  ثبت مشتری   ",
-    //                 showCancelButton: true,
-    //                 cancelButtonText: "کنسل",
-    //                 confirmButtonColor: "#3085d6",
-    //                 cancelButtonColor: "#d33",
-    //                 preConfirm: () => {
-
-    //                     navigate("/addCustomer");
-    //                 }
-    //             });
-    //         } else {
-    //             datas.map((data, i) => {
-    //                 setCustomers(perv => ([...perv, {
-    //                     value: data.id,
-    //                     html: <div className="personnelAption_addPerS">
-    //                         <span className="name_addPers">{data.name}
-    //                             {' '}
-    //                             {data.lastName}</span>
-
-    //                         <span className="fther_addPers">
-    //                             {data.father || ''}
-    //                         </span>
-
-    //                     </div>
-    //                 }]));
-    //             })
-    //         }
-    //     });
-    // }
-
-    // async function getCSIConcretes() {
-    //     await axios.get("/api/v1/getCSIConcretes").then((response) => {
-    //         let datas = response.data.concretes;
-    //         if (datas.length == 0) {
-    //             // MySwal.fire({
-    //             //     icon: "warning",
-    //             //     title: "هشدار",
-    //             //     text: `هنوز هیچ عیار بتنی ثبت نشده است. لازم است ابتدا عیار بتن را ثبت کنید.`,
-    //             //     confirmButtonText: "  ثبت بتن   ",
-    //             //     showCancelButton: true,
-    //             //     cancelButtonText: "کنسل",
-    //             //     confirmButtonColor: "#3085d6",
-    //             //     cancelButtonColor: "#d33",
-    //             //     preConfirm: () => {
-    //             //         navigate("/addConcrete");
-    //             //     }
-    //             // });
-    //         } else {
-    //             datas.map((data, i) => {
-    //                 setConcretes(perv => ([...perv, {
-    //                     value: data.id,
-    //                     concreteName: data.concreteName,
-    //                     html: <div className="concreteAptionSelectFB">
-    //                         <span className="concreteLabelSelectFB">بتن
-    //                         </span>
-
-    //                         <span className="concreteSelectFB">
-    //                             {data.concreteName}
-    //                         </span>
-
-    //                     </div>
-    //                 }]));
-    //             })
-    //         }
-    //     });
-    // }
-
-    // async function getCSICementStores() {
-    //     await axios.get("/api/v1/getCSICementStores").then((response) => {
-    //         let datas = response.data.cementStores;
-    //         if (datas.length == 0) {
-    //             // MySwal.fire({
-    //             //     icon: "warning",
-    //             //     title: "هشدار",
-    //             //     text: `هنوز هیچ سیلوی سیمانی ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید.`,
-    //             //     confirmButtonText: "  ثبت سیلو   ",
-    //             //     showCancelButton: true,
-    //             //     cancelButtonText: "کنسل",
-    //             //     confirmButtonColor: "#3085d6",
-    //             //     cancelButtonColor: "#d33",
-    //             //     preConfirm: () => {
-    //             //         navigate("/addCementStore");
-    //             //     }
-    //             // });
-    //         } else {
-    //             datas.map((data, i) => {
-    //                 setCementStores(perv => ([...perv, {
-    //                     value: data.id,
-    //                     cementStoreName: data.silo,
-    //                     html: <div className="mixerAptionSelectFB">
-    //                         <span className="mixerOwnerSelectFB">
-    //                             {data.silo}
-    //                         </span>
-    //                     </div>
-    //                 }]));
-    //             })
-    //         }
-    //     });
-    // }
-
-    // async function getCSIDrivers() {
-    //     await axios.get("/api/v1/getCSIDrivers").then((response) => {
-    //         let datas = response.data.drivers;
-    //         setDataDrivers(datas);
-    //         if (datas.length == 0) {
-    //             // MySwal.fire({
-    //             //     icon: "warning",
-    //             //     title: "هشدار",
-    //             //     text: `هنوز هیچ راننده‌ای ثبت نشده است. لازم است ابتدا راننده را ثبت کنید.`,
-    //             //     confirmButtonText: "  ثبت راننده   ",
-    //             //     showCancelButton: true,
-    //             //     cancelButtonText: "کنسل",
-    //             //     confirmButtonColor: "#3085d6",
-    //             //     cancelButtonColor: "#d33",
-    //             //     preConfirm: () => {
-    //             //         navigate("/addDriver");
-    //             //     }
-    //             // });
-    //         } else {
-    //             datas.map((data, i) => {
-    //                 setDrivers(perv => ([...perv, {
-    //                     value: data.id,
-    //                     html: <div className="personnelAption_addPerS">
-    //                         <span className="name_addPers">{data.name}
-    //                             {' '}
-    //                             {data.lastName}</span>
-
-    //                         <span className="fther_addPers">
-    //                             {data.father || ''}
-    //                         </span>
-
-    //                     </div>
-    //                 }]));
-    //             })
-    //         }
-    //     });
-    // }
-
-    // async function getCSIMixers() {
-    //     await axios.get("/api/v1/getCSIMixers").then((response) => {
-    //         let datas = response.data.mixers;
-    //         setDataMixers(datas);
-    //         if (datas.length == 0) {
-    //             // MySwal.fire({
-    //             //     icon: "warning",
-    //             //     title: "هشدار",
-    //             //     text: `هنوز هیچ کامیونی به عنوان میکسر ثبت نشده است. لازم است ابتدا کامیونی به عنوان میکسر ثبت کنید.`,
-    //             //     confirmButtonText: "  ثبت میکسر   ",
-    //             //     showCancelButton: true,
-    //             //     cancelButtonText: "کنسل",
-    //             //     confirmButtonColor: "#3085d6",
-    //             //     cancelButtonColor: "#d33",
-    //             //     preConfirm: () => {
-    //             //         navigate("/addTruck");
-    //             //     }
-    //             // });
-    //         } else {
-    //             datas.map((data, i) => {
-    //                 let arr = data.numberplate.split('-');
-    //                 setMixers(perv => ([...perv, {
-    //                     value: data.id,
-    //                     value2: data.customer.id,
-    //                     html: <div className="mixerAptionSelectFB">
-    //                         <span className="mixerNamberpalteSelectFB">
-    //                             <div className="numberplateDiv">
-    //                                 <span className="numberplateDivS1">{arr[0]}</span>
-    //                                 <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-    //                                 <span className="numberplateDivS3">{arr[1]}</span>
-    //                                 <span className="numberplateDivS4">{arr[2]}</span>
-    //                             </div>
-    //                         </span>
-    //                         <span className="mixerOwnerSelectFB">
-    //                             {data.customer.name}
-    //                             {' '}
-    //                             {data.customer.lastName}
-    //                         </span>
-
-    //                     </div>
-    //                 }]));
-    //             })
-    //         }
-    //     });
-    // }
 
     /**
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
@@ -1135,10 +889,13 @@ const AddConcreteSalesInvoice = () => {
 
         refCustomer_id.current.updateData('انتخاب');
     }
-    const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers });
+    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading });
 
-    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers });
-    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers });
+    const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({dataCustomers:concreteBuyers.datas });
+
+    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers:mixers.datas });
+
+    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers:drivers.datas });
 
 
     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing, resetForm2 });
@@ -1294,10 +1051,6 @@ const AddConcreteSalesInvoice = () => {
             refErr.current && (refErr.current.innerHTML = '')
         }
     }
-
-
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -1769,8 +1522,6 @@ const AddConcreteSalesInvoice = () => {
         document.getElementById('customer_idError').innerHTML = '';
     }
 
-    const { concreteBuyers, mixers } = RouteService({ token, setLoading });
-
     return (
         <div ref={container}>
             <ScaleLoader color="#fff" height={90} width={8} radius={16} loading={loading} cssOverride={{
@@ -2027,7 +1778,7 @@ const AddConcreteSalesInvoice = () => {
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
-                                                        options={concretes}
+                                                        options={concretes.options}
                                                         saveOption={setConcreteId}
                                                         ref={refInvoice[`concrete_id${i}`]}
                                                     />
@@ -2127,7 +1878,7 @@ const AddConcreteSalesInvoice = () => {
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
-                                                        options={cementStores}
+                                                        options={cementStores.options}
                                                         saveOption={setCementStoreId}
                                                         ref={refInvoice[`cementStore_id${i}`]}
                                                     />
@@ -2191,7 +1942,7 @@ const AddConcreteSalesInvoice = () => {
                                                 >
                                                     <SelectZabi2
                                                         primaryLabel='انتخاب'
-                                                        options={drivers}
+                                                        options={drivers.options}
                                                         saveOption={setDriverId}
                                                         input={inputDriverSearch}
                                                         optionsSearched={optionsDriversSearched}
