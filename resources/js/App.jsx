@@ -3,7 +3,7 @@ import {
     RouterProvider,
     createBrowserRouter,
     createRoutesFromElements,
-    Navigate 
+    Navigate
 } from "react-router-dom";
 
 import "./bootstrap";
@@ -32,13 +32,14 @@ import AddSandStore from "./components/AddSandStore";
 import AddWaterStore from "./components/AddWaterStore";
 import Invoices from "./components/invoices/Invoices";
 import NavigateInvoices from "./components/invoices/NavigateInvoices";
-import AddConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/AddConcreteSalesInvoice";
+import Add from "./components/invoices/concreteSalesInvoice/Add";
 import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
 import AddWaterInvoice from "./components/invoices/water/AddWaterInvoice";
 import AddCementInvoice from "./components/invoices/cement/AddCementInvoice";
 import Sand from "./components/invoices/sand/Sand";
 import EditSandInvoice from "./components/invoices/sand/EditSandInvoice";
 import ShowSandInvoices from "./components/invoices/sand/ShowSandInvoices";
+import ConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/ConcreteSalesInvoice";
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -81,7 +82,10 @@ function App() {
 
                 <Route path="invoices" element={<Invoices />} >
                     <Route index element={<NavigateInvoices />} />
-                    <Route path="addConcreteSalesInvoice" element={<AddConcreteSalesInvoice />} />
+                    <Route path="concreteSalesInvoice" element={<ConcreteSalesInvoice />}>
+                    <Route index element={<Navigate to="addConcreteSalesInvoice" replace />} />
+                    <Route path="addConcreteSalseInvoice" element={<Add />} />
+                    </Route>
 
                     <Route path="sand" element={<Sand />} >
                         <Route index element={<Navigate to="addSandInvoice" replace />} />
