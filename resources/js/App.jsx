@@ -32,7 +32,9 @@ import AddSandStore from "./components/AddSandStore";
 import AddWaterStore from "./components/AddWaterStore";
 import Invoices from "./components/invoices/Invoices";
 import NavigateInvoices from "./components/invoices/NavigateInvoices";
-import Add from "./components/invoices/concreteSalesInvoice/Add";
+import AddConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/Add";
+import ShowConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/Show";
+import EditConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/Edit";
 import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
 import AddWaterInvoice from "./components/invoices/water/AddWaterInvoice";
 import AddCementInvoice from "./components/invoices/cement/AddCementInvoice";
@@ -40,6 +42,7 @@ import Sand from "./components/invoices/sand/Sand";
 import EditSandInvoice from "./components/invoices/sand/EditSandInvoice";
 import ShowSandInvoices from "./components/invoices/sand/ShowSandInvoices";
 import ConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/ConcreteSalesInvoice";
+
 
 // import ReactDOM from "react-dom/client";
 // import Index from "./components/Index";
@@ -82,9 +85,12 @@ function App() {
 
                 <Route path="invoices" element={<Invoices />} >
                     <Route index element={<NavigateInvoices />} />
+
                     <Route path="concreteSalesInvoice" element={<ConcreteSalesInvoice />}>
-                    <Route index element={<Navigate to="addConcreteSalesInvoice" replace />} />
-                    <Route path="addConcreteSalseInvoice" element={<Add />} />
+                        <Route index element={<Navigate to="add" replace />} />
+                        <Route path="add" element={<AddConcreteSalesInvoice />} />
+                        <Route path="edit" element={<EditConcreteSalesInvoice />} />
+                        <Route path="show" element={<ShowConcreteSalesInvoice />} />
                     </Route>
 
                     <Route path="sand" element={<Sand />} >

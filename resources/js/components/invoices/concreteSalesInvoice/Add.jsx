@@ -1,908 +1,498 @@
+import { createRef, useEffect, useRef, useState } from 'react';
+import HeadPage from './HeadPage';
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import "../../../../css/general.css";
+import "../../../../css/formBeton.css";
+import "../../../../css/addCustomer.css";
+import "../../../../css/search.css";
+import DataZabi from "../../hooks/DateZabi";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import ScaleLoader from 'react-spinners/ScaleLoader';
+import useChangeForm from '../../hooks/useChangeForm';
+import SelectZabi from "../../hooks/SelectZabi";
+import SelectZabi2 from "../../hooks/SelectZabi2";
+import SearchCustomersSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchCustomersSelect";
+import SearchMixersSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixersSelect";
+import SearchDriversSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchDriversSelect";
 
+import Pagination from "../../hooks/Pagination";
+import AddCocreteSalesInvoiceSearch from "../../search/AddConcreteSalesInvoiceSearch";
+import RouteService from "./RouteService";
 
 const Add = () => {
-return(
-<div className=''>
- add concreteSalesInvoice
-</div>
-)
+    const [loading, setLoading] = useState(false);
+    const MySwal = withReactContent(Swal);
+    const {
+        optionDays,
+        optionMonth,
+        optionShortYears,
+        optionHours,
+        optionMinutes,
+        optionSeconds,
+    } = DataZabi();
+
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    const container = useRef(null);
+    const btnAddGeRef = useRef(null);
+    const btnGetGeRef = useRef(null);
+
+    const form = useRef(null);
+    const formCurrent = form.current;
+
+    const refCustomer_id = useRef(null);
+    const refCustomer_idError = useRef(null);
+
+    const refTimeEditError = useRef(null);
+    const refDateEditError = useRef(null);
+    const refConcrete_idEdit = createRef();
+    const refConcrete_idEditError = useRef(null);
+    const refUnitPriceEdit = useRef(null);
+    const refUnitPriceEditError = useRef(null);
+    const refWeightEdit = useRef(null);
+    const refWeightEditError = useRef(null);
+    const refCubicMetersEdit = useRef(null);
+    const refCementStore_idEdit = useRef(null);
+    const refCementStore_idEditError = useRef(null);
+    const refTotalPriceEdit = useRef(null);
+    const refTruck_idEdit = useRef(null);
+    const refTruck_idEditError = useRef(null);
+    const refDriver_idEdit = useRef(null);
+    const refDriver_idEditError = useRef(null);
+    const refFareEdit = useRef(null);
+    const refFareEditError = useRef(null);
+    const refCheckBaxEmamEdit = useRef(null);
+    const refCheckBaxShahidEdit = useRef(null);
+    const refVahedEditError = useRef(null);
+    const refAddressEditError = useRef(null);
+    const refConcretingPositionEditError = useRef(null);
+
+    const nationalCodeErrorRef = useRef(null);
+
+    const hasCalledGetConcreteSalesInvoices = useRef(false);
+
+    const refCheckedMaskanShahidEdit = useRef(null);
+
+    const [date, setDate] = useState({
+        day: '',
+        month: '',
+        year: ''
+    });
+    const [time, setTime] = useState({
+        second: '',
+        minute: '',
+        hour: ''
+    });
+
+    const [refInvoice, setRefInvoice] = useState({});
+    const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
+    const [ticketNumber, setTicketNumber] = useState('');
+    const [isRef, setIsRef] = useState(false);
+    /**
+    * ############### states for paginate
+    */
+    const [totalPage, setTotalPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalRecords, setTotalRecords] = useState(0);
+
+    /**
+ * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
+ * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
+ */
+    const [invoiceIndexForConcrete, setInvoiceIndexForConcrete] = useState('');
+    const [invoiceIndexForMixer, setInvoiceIndexForMixer] = useState('');
+    const [invoiceIndexForDriver, setInvoiceIndexForDriver] = useState('');
+    const [invoiceIndexForCementStore, setInvoiceIndexForCementStore] = useState('');
+    const [customerId, setCustomerId] = useState('');
+    const [concreteId, setConcreteId] = useState('');
+    const [truckId, setTruckId] = useState('');
+    const [ownerId, setOwnerId] = useState('');
+    const [driverId, setDriverId] = useState('');
+    const [cementStoreId, setCementStoreId] = useState('');
+    const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
+    const [checkedMaskanMeliEdit, setCheckedMaskanMeliEdit] = useState('');
+
+    /**
+ * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
+ * جهت جایگذاری مقادیر پیش فرض المنت ها از استیت‌های زیر استفاده می‌شود
+ */
+    const [isNewInvoice, setIsNewInvoice] = useState(false);
+    const [indexNewInvoice, setIndexNewInvoice] = useState('');
+    const [concreteName, setConcreteName] = useState('');
+    const [cementStoreName, setCementStoreName] = useState('');
+    const [unitPrice, setUnitPrice] = useState('');
+    const [vahed, setVahed] = useState('');
+    const [address, setAddress] = useState('');
+    const [concretingPosition, setConcretingPosition] = useState('');
+    const [fare, setFare] = useState('');
+    const [checkedValue, setCheckedValue] = useState('');
+    const [isChecked, setIsChecked] = useState(false)
+   
+     const sampleInvoice = 'invoice';
+     const [invoice, setInvoice] = useState([sampleInvoice]);
+ 
+     const [maskan, setMaskan] = useState([...invoice.map(item => ''), '']);
+    const [input, setInput] = useState({
+        customer_id: '',
+        invoice: [{
+            date: '',
+            time: '',
+            weight: '',
+            cubicMeters: "",
+            concrete_id: '',
+            truck_id: '',
+            ownerId: '',
+            driver_id: '',
+            cementStore_id: '',
+            unitPrice: '',
+            totalPrice: '',
+            fare: '',
+            maskanMeli: '',
+            vahed: '',
+            address: '',
+            concretingPosition: ''
+        }],
+    });
+
+    /**
+     * برای تخصیص رف به هر اینپوت 
+    */
+    useEffect(() => {
+        if (invoice) {
+            let refs = invoice.reduce((acc, cur, i) => {
+                acc[`time${i}`] = createRef();
+                acc[`secondInput${i}`] = createRef();
+                acc[`secondSelect${i}`] = createRef();
+                acc[`minuteInput${i}`] = createRef();
+                acc[`minuteSelect${i}`] = createRef();
+                acc[`hourInput${i}`] = createRef();
+                acc[`hourSelect${i}`] = createRef();
+                acc[`timeError${i}`] = createRef();
+                acc[`date${i}`] = createRef();
+                acc[`dayInput${i}`] = createRef();
+                acc[`daySelect${i}`] = createRef();
+                acc[`monthInput${i}`] = createRef();
+                acc[`monthSelect${i}`] = createRef();
+                acc[`yearInput${i}`] = createRef();
+                acc[`yearSelect${i}`] = createRef();
+                acc[`dateError${i}`] = createRef();
+                acc[`weight${i}`] = createRef();
+                acc[`weightError${i}`] = createRef();
+                acc[`cubicMeters${i}`] = createRef();
+                acc[`concrete_id${i}`] = createRef();
+                acc[`concrete_idError${i}`] = createRef();
+                acc[`truck_id${i}`] = createRef();
+                acc[`truck_idError${i}`] = createRef();
+                acc[`driver_id${i}`] = createRef();
+                acc[`driver_idError${i}`] = createRef();
+                acc[`cementStore_id${i}`] = createRef();
+                acc[`cementStore_idError${i}`] = createRef();
+                acc[`unitPrice${i}`] = createRef();
+                acc[`unitPriceError${i}`] = createRef();
+                acc[`totalPrice${i}`] = createRef();
+                acc[`fare${i}`] = createRef();
+                acc[`fareError${i}`] = createRef();
+                acc[`maskanMeli${i}`] = createRef();
+                acc[`vahed${i}`] = createRef();
+                acc[`vahedError${i}`] = createRef();
+                acc[`address${i}`] = createRef();
+                acc[`addressError${i}`] = createRef();
+                acc[`concretingPosition${i}`] = createRef();
+                acc[`concretingPositionError${i}`] = createRef();
+                acc[`checkBaxEmam${i}`] = createRef();
+                acc[`checkBaxShahid${i}`] = createRef();
+                acc[`checkedMaskanEmam${i}`] = createRef();
+                acc[`checkedMaskanEmam${i}`].current = true;
+                acc[`checkedMaskanShahid${i}`] = createRef();
+                acc[`checkedMaskanShahid${i}`].current = true;
+                return acc;
+            }, {});
+            setRefInvoice(refs);
+            setIsRef(true);
+        }
+    }, [invoice]);
+
+    useEffect(() => {
+        if (customerId) {
+            setInput(prev => ({ ...prev, customer_id: customerId }))
+        }
+    }, [customerId]);
+
+    useEffect(() => {
+        if (concreteId) {
+            setInput(perv => {
+                let invoices = [...perv.invoice];
+                invoices[invoiceIndexForConcrete] = { ...invoices[invoiceIndexForConcrete], concrete_id: concreteId };
+                return { ...perv, invoice: invoices };
+            });
+        }
+    }, [concreteId, invoiceIndexForConcrete]);
+
+    useEffect(() => {
+        if (truckId) {
+            setInput(perv => {
+                let invoices = [...perv.invoice];
+                invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
+                return { ...perv, invoice: invoices };
+            });
+        }
+    }, [truckId, invoiceIndexForMixer]);
+
+    useEffect(() => {
+        if (driverId) {
+            setInput(perv => {
+                let invoices = [...perv.invoice];
+                invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
+                return { ...perv, invoice: invoices };
+            });
+        }
+    }, [driverId, invoiceIndexForDriver]);
+
+    useEffect(() => {
+        if (cementStoreId) {
+            setInput(perv => {
+                let invoices = [...perv.invoice];
+                invoices[invoiceIndexForCementStore] = { ...invoices[invoiceIndexForCementStore], cementStore_id: cementStoreId };
+                return { ...perv, invoice: invoices };
+            });
+        }
+    }, [cementStoreId, invoiceIndexForCementStore]);
+
+    useEffect(() => {
+        if (isRef && refInvoice[`concrete_id${indexNewInvoice}`]) {
+            concreteName && refInvoice[`concrete_id${indexNewInvoice}`].current.updateData(<div className="defaultConcreteNameACSI_FB"><span>بتن</span> <span>{concreteName}</span></div>);
+        }
+        setIsNewInvoice(false);
+    }, [isNewInvoice, isRef]);
+
+    useEffect(() => {
+        if (isRef && refInvoice[`cementStore_id${indexNewInvoice}`]) {
+            cementStoreName && refInvoice[`cementStore_id${indexNewInvoice}`].current.updateData(<div className="defaultConcreteNameACSI_FB"> <span>{cementStoreName}</span></div>);
+        }
+        setIsNewInvoice(false);
+    }, [isNewInvoice, isRef]);
+
+    useEffect(() => {
+        let index = invoice.length - 1;
+        if (isRef) {
+            input.invoice[index].unitPrice && refInvoice[`unitPrice${index}`] && (refInvoice[`unitPrice${index}`].current.value = parseFloat(input.invoice[index].unitPrice).toLocaleString());
+            input.invoice[index].fare && refInvoice[`fare${index}`] && (refInvoice[`fare${index}`].current.value = parseFloat(input.invoice[index].fare).toLocaleString());
+        }
+
+    }, [isNewInvoice]);
+
+    const handleSetDate = (e, i, input) => {
+        let { value } = e.target,
+            valDate;
+        value = value.toString();
+        if (input == 'day') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+                refInvoice[`dayInput${i}`].current.value = value;
+                refInvoice[`daySelect${i}`].current.value = value;
+            } else {
+                e.target.value = date.day;
+            }
+            valDate = date.year + '-' + date.month + '-' + value;
+            setInput(perv => {
+                let newInvoice;
+                newInvoice = [...perv.invoice];
+                newInvoice[i] = { ...newInvoice[i], date: valDate };
+                return { ...perv, invoice: newInvoice };
+            });
+        } else if (input == 'month') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+                refInvoice[`monthInput${i}`].current.value = value;
+                refInvoice[`monthSelect${i}`].current.value = value;
+            }
+            else {
+                e.target.value = date.month;
+            }
+            valDate = date.year + '-' + value + '-' + date.day;
+            setInput(perv => {
+                let newInvoice;
+                newInvoice = [...perv.invoice];
+                newInvoice[i] = { ...newInvoice[i], date: valDate };
+                return { ...perv, invoice: newInvoice };
+            });
+        } else if (input = 'year') {
+            if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+                refInvoice[`yearInput${i}`].current.value = value;
+                refInvoice[`yearSelect${i}`].current.value = value;
+            } else {
+                e.target.value = date.year;
+            }
+            valDate = value + '-' + date.month + '-' + date.day;
+            setInput(perv => {
+                let newInvoice;
+                newInvoice = [...perv.invoice];
+                newInvoice[i] = { ...newInvoice[i], date: valDate };
+                return { ...perv, invoice: newInvoice };
+            });
+        }
+    }
+
+    const handleSetTime = (e, i, input) => {
+        let { value } = e.target,
+            valTime;
+        value = value.toString();
+        if (input == 'second') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+                refInvoice[`secondSelect${i}`].current.value = value;
+                refInvoice[`secondInput${i}`].current.value = value;
+            } else {
+                e.target.value = time.second;
+            }
+            valTime = time.hour + ':' + time.minute + ':' + value;
+            setInput(perv => {
+                let newInvoice;
+                newInvoice = [...perv.invoice];
+                newInvoice[i] = { ...newInvoice[i], time: valTime };
+                return { ...perv, invoice: newInvoice };
+            });
+        } else if (input == 'minute') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+                refInvoice[`minuteSelect${i}`].current.value = value;
+                refInvoice[`minuteInput${i}`].current.value = value;
+            } else {
+                e.target.value = time.minute;
+            }
+            valTime = time.hour + ':' + value + ':' + time.second;
+            setInput(perv => {
+                let newInvoice;
+                newInvoice = [...perv.invoice];
+                newInvoice[i] = { ...newInvoice[i], time: valTime };
+                return { ...perv, invoice: newInvoice };
+            });
+        } else if (input = 'hour') {
+            (value != 0 && value.length == 1) && (value = '0' + value);
+            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+            if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+                refInvoice[`hourSelect${i}`].current.value = value;
+                refInvoice[`hourInput${i}`].current.value = value;
+            } else {
+                e.target.value = time.hour;
+            }
+            valTime = value + ':' + time.minute + ':' + time.second;
+            setInput(perv => {
+                let newInvoice;
+                newInvoice = [...perv.invoice];
+                newInvoice[i] = { ...newInvoice[i], time: valTime };
+                return { ...perv, invoice: newInvoice };
+            });
+        }
+    }
+
+   
+    
+        useEffect(() => {
+            if (isRef) {
+                setMaskan((prev) => [...prev, '']);
+            }
+        }, [invoice]);
+
+    const resetForm = (apply = true) => {
+        setInvoice([sampleInvoice]);
+        setInput({
+            customer_id: '',
+            invoice: [{
+                date: '',
+                time: '',
+                weight: '',
+                cubicMeters: "",
+                concrete_id: '',
+                truck_id: '',
+                ownerId: '',
+                driver_id: '',
+                cementStore_id: '',
+                unitPrice: '',
+                totalPrice: '',
+                fare: '',
+                maskanMeli: '',
+                vahed: '',
+                address: '',
+                concretingPosition: ''
+            }],
+        });
+
+        setCustomerId('');
+        setConcreteId('');
+        setTruckId('');
+        setOwnerId('');
+        setDriverId('');
+        setCementStoreId('');
+        setCheckedMaskanMeli();
+
+        setTime({
+            second: '',
+            minute: '',
+            hour: ''
+        });
+
+        setDate({
+            day: '',
+            month: '',
+            year: ''
+        });
+
+        setUnitPrice('');
+        setFare('');
+
+        setCheckedValue('');
+        setMaskan(['']);
+
+        setVahed('');
+        setAddress('');
+        setConcretingPosition('');
+
+        refInvoice[`cubicMeters0`].current.innerHTML = '0';
+
+        refInvoice[`totalPrice0`].current.innerHTML = '0';
+
+        refCustomer_id.current.updateData('انتخاب');
+        refInvoice[`concrete_id0`].current.updateData('انتخاب');
+        refInvoice[`cementStore_id0`].current.updateData('انتخاب');
+        refInvoice[`truck_id0`].current.updateData('انتخاب');
+        refInvoice[`driver_id0`].current.updateData('انتخاب');
+        handleRemoveAllError();
+
+        // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
+        if (apply) {
+            window.scrollTo({ top: 0 });
+        }
+    }
+
+    return (
+        <div className=''>
+            <HeadPage
+                loading={loading}
+                title='ایجاد فاکتور خرید بتن'
+                displayBtnAdd={false}
+                displayBtnShow={true}
+            />
+
+        </div>
+    )
 }
 export default Add;
 
-
-
-
-
-
-// import { createRef, useEffect, useRef, useState } from "react";
-// import Title from '../../hooks/Title';
-// import Button from 'react-bootstrap/Button';
-// import axios from 'axios';
-// import "../../../../css/general.css";
-// import "../../../../css/formBeton.css";
-// import "../../../../css/addCustomer.css";
-// import "../../../../css/search.css";
-// import DataZabi from "../../hooks/DateZabi";
-// import Skeleton from 'react-loading-skeleton';
-// import 'react-loading-skeleton/dist/skeleton.css';
-// import Swal from 'sweetalert2';
-// import withReactContent from 'sweetalert2-react-content';
-// import ScaleLoader from 'react-spinners/ScaleLoader';
-// import useChangeForm from '../../hooks/useChangeForm';
-// import SelectZabi from "../../hooks/SelectZabi";
-// import SelectZabi2 from "../../hooks/SelectZabi2";
-// import SearchCustomersSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchCustomersSelect";
-// import SearchMixersSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixersSelect";
-// import SearchDriversSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchDriversSelect";
-
-// import Pagination from "../../hooks/Pagination";
-// import AddCocreteSalesInvoiceSearch from "../../search/AddConcreteSalesInvoiceSearch";
-// import RouteService from "./RouteService";
-
-// const AddConcreteSalesInvoice = () => {
-//     const MySwal = withReactContent(Swal);
-//     const {
-//         optionDays,
-//         optionMonth,
-//         optionShortYears,
-//         optionHours,
-//         optionMinutes,
-//         optionSeconds,
-//     } = DataZabi();
-
-//     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-//     const container = useRef(null);
-//     const btnAddGeRef = useRef(null);
-//     const btnGetGeRef = useRef(null);
-
-//     const form = useRef(null);
-//     const formCurrent = form.current;
-
-//     const refCustomer_id = useRef(null);
-//     const refCustomer_idError = useRef(null);
-
-//     const refTimeEditError = useRef(null);
-//     const refDateEditError = useRef(null);
-//     const refConcrete_idEdit = createRef();
-//     const refConcrete_idEditError = useRef(null);
-//     const refUnitPriceEdit = useRef(null);
-//     const refUnitPriceEditError = useRef(null);
-//     const refWeightEdit = useRef(null);
-//     const refWeightEditError = useRef(null);
-//     const refCubicMetersEdit = useRef(null);
-//     const refCementStore_idEdit = useRef(null);
-//     const refCementStore_idEditError = useRef(null);
-//     const refTotalPriceEdit = useRef(null);
-//     const refTruck_idEdit = useRef(null);
-//     const refTruck_idEditError = useRef(null);
-//     const refDriver_idEdit = useRef(null);
-//     const refDriver_idEditError = useRef(null);
-//     const refFareEdit = useRef(null);
-//     const refFareEditError = useRef(null);
-//     const refCheckBaxEmamEdit = useRef(null);
-//     const refCheckBaxShahidEdit = useRef(null);
-//     const refVahedEditError = useRef(null);
-//     const refAddressEditError = useRef(null);
-//     const refConcretingPositionEditError = useRef(null);
-
-//     const nationalCodeErrorRef = useRef(null);
-
-//     const hasCalledGetConcreteSalesInvoices = useRef(false);
-
-//     const refCheckedMaskanShahidEdit = useRef(null);
-
-//     const [date, setDate] = useState({
-//         day: '',
-//         month: '',
-//         year: ''
-//     });
-//     const [time, setTime] = useState({
-//         second: '',
-//         minute: '',
-//         hour: ''
-//     });
-
-//     const [refInvoice, setRefInvoice] = useState({});
-
-//     const [loading, setLoading] = useState(false);
-//     const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
-//     const [ticketNumber, setTicketNumber] = useState('');
-//     const [isRef, setIsRef] = useState(false);
-//     /**
-//     * ############### states for paginate
-//     */
-//     const [totalPage, setTotalPage] = useState(0);
-//     const [currentPage, setCurrentPage] = useState(1);
-//     const [totalRecords, setTotalRecords] = useState(0);
-
-//     /**
-//      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
-//      * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
-//      */
-//     const [invoiceIndexForConcrete, setInvoiceIndexForConcrete] = useState('');
-//     const [invoiceIndexForMixer, setInvoiceIndexForMixer] = useState('');
-//     const [invoiceIndexForDriver, setInvoiceIndexForDriver] = useState('');
-//     const [invoiceIndexForCementStore, setInvoiceIndexForCementStore] = useState('');
-//     const [customerId, setCustomerId] = useState('');
-//     const [concreteId, setConcreteId] = useState('');
-//     const [truckId, setTruckId] = useState('');
-//     const [ownerId, setOwnerId] = useState('');
-//     const [driverId, setDriverId] = useState('');
-//     const [cementStoreId, setCementStoreId] = useState('');
-//     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
-//     const [checkedMaskanMeliEdit, setCheckedMaskanMeliEdit] = useState('');
-
-//     /**
-//      * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
-//      * جهت جایگذاری مقادیر پیش فرض المنت ها از استیت‌های زیر استفاده می‌شود
-//      */
-//     const [isNewInvoice, setIsNewInvoice] = useState(false);
-//     const [indexNewInvoice, setIndexNewInvoice] = useState('');
-//     const [concreteName, setConcreteName] = useState('');
-//     const [cementStoreName, setCementStoreName] = useState('');
-//     const [unitPrice, setUnitPrice] = useState('');
-//     const [vahed, setVahed] = useState('');
-//     const [address, setAddress] = useState('');
-//     const [concretingPosition, setConcretingPosition] = useState('');
-//     const [fare, setFare] = useState('');
-//     const [checkedValue, setCheckedValue] = useState('');
-//     const [isChecked, setIsChecked] = useState(false)
-
-//     const [input, setInput] = useState({
-//         customer_id: '',
-//         invoice: [{
-//             date: '',
-//             time: '',
-//             weight: '',
-//             cubicMeters: "",
-//             concrete_id: '',
-//             truck_id: '',
-//             ownerId: '',
-//             driver_id: '',
-//             cementStore_id: '',
-//             unitPrice: '',
-//             totalPrice: '',
-//             fare: '',
-//             maskanMeli: '',
-//             vahed: '',
-//             address: '',
-//             concretingPosition: ''
-//         }],
-//     });
-
-//     const [inputEdit, setInputEdit] = useState({
-//         customer_id: '',
-//         date: '',
-//         time: '',
-//         weight: '',
-//         cubicMeters: "",
-//         concrete_id: '',
-//         truck_id: '',
-//         ownerId: '',
-//         driver_id: '',
-//         cementStore_id: '',
-//         unitPrice: '',
-//         totalPrice: '',
-//         fare: '',
-//         maskanMeli: '',
-//         vahed: '',
-//         address: '',
-//         concretingPosition: ''
-//     });
-
-//     const [search, setSearch] = useState({
-//         startDate: '',
-//         endDate: '',
-//         id: '',
-//         concrete_id: '',
-//         customer_id: '',
-//         customerName: '',
-//         customerLastName: '',
-//         truck_id: '',
-//         numberplate: '',
-//         owner_id: '',
-//         ownerName: '',
-//         ownerLastName: '',
-//         driver_id: '',
-//         driverName: '',
-//         driverLastName: '',
-//     });
-
-//     /**
-//      * id to edit the model
-//     */
-//     const [id, setId] = useState(null);
-//     const sampleInvoice = 'invoice';
-//     const [invoice, setInvoice] = useState([sampleInvoice]);
-
-//     const [maskan, setMaskan] = useState([...invoice.map(item => ''), '']);
-
-//     useEffect(() => {
-//         if (isRef) {
-//             setMaskan((prev) => [...prev, '']);
-//         }
-//     }, [invoice]);
-
-//     useEffect(() => {
-//         // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
-//         if (!hasCalledGetConcreteSalesInvoices.current) {
-//             getConcreteSalesInvoices();
-//             hasCalledGetConcreteSalesInvoices.current = true;
-//         }
-//     }, []);
-
-//     /**
-//     * برای تخصیص رف به هر لیست نوع مشتری که هنگام نمایش مشتریان حاوی 
-//     * نوع مشتری هر رکورد است
-//     */
-//     useEffect(() => {
-//         if (invoice) {
-//             let refs = invoice.reduce((acc, cur, i) => {
-//                 acc[`time${i}`] = createRef();
-//                 acc[`secondInput${i}`] = createRef();
-//                 acc[`secondSelect${i}`] = createRef();
-//                 acc[`minuteInput${i}`] = createRef();
-//                 acc[`minuteSelect${i}`] = createRef();
-//                 acc[`hourInput${i}`] = createRef();
-//                 acc[`hourSelect${i}`] = createRef();
-//                 acc[`timeError${i}`] = createRef();
-//                 acc[`date${i}`] = createRef();
-//                 acc[`dayInput${i}`] = createRef();
-//                 acc[`daySelect${i}`] = createRef();
-//                 acc[`monthInput${i}`] = createRef();
-//                 acc[`monthSelect${i}`] = createRef();
-//                 acc[`yearInput${i}`] = createRef();
-//                 acc[`yearSelect${i}`] = createRef();
-//                 acc[`dateError${i}`] = createRef();
-//                 acc[`weight${i}`] = createRef();
-//                 acc[`weightError${i}`] = createRef();
-//                 acc[`cubicMeters${i}`] = createRef();
-//                 acc[`concrete_id${i}`] = createRef();
-//                 acc[`concrete_idError${i}`] = createRef();
-//                 acc[`truck_id${i}`] = createRef();
-//                 acc[`truck_idError${i}`] = createRef();
-//                 acc[`driver_id${i}`] = createRef();
-//                 acc[`driver_idError${i}`] = createRef();
-//                 acc[`cementStore_id${i}`] = createRef();
-//                 acc[`cementStore_idError${i}`] = createRef();
-//                 acc[`unitPrice${i}`] = createRef();
-//                 acc[`unitPriceError${i}`] = createRef();
-//                 acc[`totalPrice${i}`] = createRef();
-//                 acc[`fare${i}`] = createRef();
-//                 acc[`fareError${i}`] = createRef();
-//                 acc[`maskanMeli${i}`] = createRef();
-//                 acc[`vahed${i}`] = createRef();
-//                 acc[`vahedError${i}`] = createRef();
-//                 acc[`address${i}`] = createRef();
-//                 acc[`addressError${i}`] = createRef();
-//                 acc[`concretingPosition${i}`] = createRef();
-//                 acc[`concretingPositionError${i}`] = createRef();
-//                 acc[`checkBaxEmam${i}`] = createRef();
-//                 acc[`checkBaxShahid${i}`] = createRef();
-//                 acc[`checkedMaskanEmam${i}`] = createRef();
-//                 acc[`checkedMaskanEmam${i}`].current = true;
-//                 acc[`checkedMaskanShahid${i}`] = createRef();
-//                 acc[`checkedMaskanShahid${i}`].current = true;
-//                 return acc;
-//             }, {});
-//             setRefInvoice(refs);
-//             setIsRef(true);
-//         }
-//     }, [invoice]);
-
-//     /**
-//      * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
-//      */
-//     const [widthComponent, setWidthComponent] = useState(0);
-//     useEffect(() => {
-//         let widths = container.current.offsetWidth;
-//         setWidthComponent(widths)
-//     }, []);
-
-//     useEffect(() => {
-//         if (customerId) {
-//             !editMode ? setInput(prev => ({ ...prev, customer_id: customerId })) : setInputEdit(prev => ({ ...prev, customer_id: customerId }));
-//         }
-//     }, [customerId]);
-
-//     useEffect(() => {
-//         if (concreteId) {
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let invoices = [...perv.invoice];
-//                     invoices[invoiceIndexForConcrete] = { ...invoices[invoiceIndexForConcrete], concrete_id: concreteId };
-//                     return { ...perv, invoice: invoices };
-//                 });
-//             } else {
-//                 setInputEdit(prev => ({ ...prev, concrete_id: concreteId }));
-//             }
-//         }
-//     }, [concreteId, invoiceIndexForConcrete]);
-
-//     useEffect(() => {
-//         if (truckId) {
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let invoices = [...perv.invoice];
-//                     invoices[invoiceIndexForMixer] = { ...invoices[invoiceIndexForMixer], truck_id: truckId, ownerId };
-//                     return { ...perv, invoice: invoices };
-//                 });
-
-//             } else {
-//                 setInputEdit(prev => ({ ...prev, truck_id: truckId, ownerId }));
-
-//             }
-//         }
-//     }, [truckId, invoiceIndexForMixer]);
-
-//     useEffect(() => {
-//         if (driverId) {
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let invoices = [...perv.invoice];
-//                     invoices[invoiceIndexForDriver] = { ...invoices[invoiceIndexForDriver], driver_id: driverId };
-//                     return { ...perv, invoice: invoices };
-//                 });
-
-//             } else {
-//                 setInputEdit(prev => ({ ...prev, driver_id: driverId }));
-
-//             }
-
-//         }
-//     }, [driverId, invoiceIndexForDriver]);
-
-//     useEffect(() => {
-//         if (cementStoreId) {
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let invoices = [...perv.invoice];
-//                     invoices[invoiceIndexForCementStore] = { ...invoices[invoiceIndexForCementStore], cementStore_id: cementStoreId };
-//                     return { ...perv, invoice: invoices };
-//                 });
-//             } else {
-//                 setInputEdit(prev => ({ ...prev, cementStore_id: cementStoreId }));
-//             }
-//         }
-//     }, [cementStoreId, invoiceIndexForCementStore]);
-
-//     useEffect(() => {
-//         if (isRef && refInvoice[`concrete_id${indexNewInvoice}`]) {
-//             concreteName && refInvoice[`concrete_id${indexNewInvoice}`].current.updateData(<div className="defaultConcreteNameACSI_FB"><span>بتن</span> <span>{concreteName}</span></div>);
-//         }
-//         setIsNewInvoice(false);
-//     }, [isNewInvoice, isRef]);
-
-//     useEffect(() => {
-//         if (isRef && refInvoice[`cementStore_id${indexNewInvoice}`]) {
-//             cementStoreName && refInvoice[`cementStore_id${indexNewInvoice}`].current.updateData(<div className="defaultConcreteNameACSI_FB"> <span>{cementStoreName}</span></div>);
-//         }
-//         setIsNewInvoice(false);
-//     }, [isNewInvoice, isRef]);
-
-//     useEffect(() => {
-//         let index = invoice.length - 1;
-//         if (isRef) {
-//             input.invoice[index].unitPrice && refInvoice[`unitPrice${index}`] && (refInvoice[`unitPrice${index}`].current.value = parseFloat(input.invoice[index].unitPrice).toLocaleString());
-//             input.invoice[index].fare && refInvoice[`fare${index}`] && (refInvoice[`fare${index}`].current.value = parseFloat(input.invoice[index].fare).toLocaleString());
-//         }
-
-//     }, [isNewInvoice]);
-
-//     async function getConcreteSalesInvoices(
-//         page = 1,
-//         startDate = search.startDate,
-//         endDate = search.endDate,
-//         id = search.id,
-//         concrete_id = search.concrete_id,
-//         customer_id = search.customer_id,
-//         customerName = search.customerName,
-//         customerLastName = search.customerLastName,
-//         truck_id = search.truck_id,
-//         numberplate = search.numberplate,
-//         owner_id = search.owner_id,
-//         ownerName = search.ownerName,
-//         ownerLastName = search.ownerLastName,
-//         driver_id = search.driver_id,
-//         driverName = search.driverName,
-//         driverLastName = search.driverLastName) {
-//         setLoading(true)
-//         await axios.get(`/api/v1/getConcreteSalesInvoices?page=${page}`, {
-//             params: {
-//                 startDate,
-//                 endDate,
-//                 id,
-//                 concrete_id,
-//                 customer_id,
-//                 customerName,
-//                 customerLastName,
-//                 truck_id,
-//                 numberplate,
-//                 owner_id,
-//                 ownerName,
-//                 ownerLastName,
-//                 driver_id,
-//                 driverName,
-//                 driverLastName
-//             }
-//         }).then((response) => {
-//             const salesInvoices = response.data.concreteSalesInvoices;
-//             setConcreteSalesInvoices(salesInvoices.data);
-//             setTotalPage(salesInvoices.last_page);
-//             setTotalRecords(salesInvoices.total);
-//             if (salesInvoices.current_page == 1) {
-//                 setTicketNumber(salesInvoices.data[0]['id'] + 1);
-//             }
-//             window.scrollTo({
-//                 top: top,
-//                 behavior: 'smooth'
-//             });
-//         }).catch(
-//             error => {
-//                 if (error.response && error.response.status == 422) {
-//                     const objErrors = error.response.data.errors;
-//                     // دریافت اولین کلید آبجکت و سپس مقدار آن
-//                     const firstKey = Object.keys(objErrors)[0];
-//                     const firstValue = objErrors[firstKey];
-//                     MySwal.fire({
-//                         icon: "warning",
-//                         title: "هشدار",
-//                         html: `<div style="color: red;">${firstValue[0]}</div>`,
-//                         confirmButtonText: "متوجه شدم!",
-//                         confirmButtonColor: "#d33",
-//                     });
-//                 }
-//             }
-//         )
-//         setTimeout(() => {
-//             // setLoading(false)
-//         }, 300);
-//     }
-
-//     /**
-//     * از طریق کامپوننت فرزند این متد فراخوانی و مقدار دهی می‌شود
-//     * from AddCustomerSearch.jsx
-//     * @param {} data 
-//     */
-//     const handelSetDataSearch = (data) => {
-//         setSearch(data);
-//     }
-
-//     /**
-//      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
-//      * @returns 
-//      */
-//     const returnCreatedCustomerRecords = () => {
-//         let length = concreteSalesInvoices.length;
-//         if (length == 0) {
-//             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
-//         }
-//         let value = concreteSalesInvoices.map((concreteSalesInvoice, i) => {
-//             let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
-//             let date = concreteSalesInvoice['date'].split('-');
-//             return <div className="rowListShowACSI_Ge" key={i}>
-//                 <span className="rowNumShowACSI_Ge">{i + 1}</span>{/* ردیف */}
-//                 <span className="ticketNumberACSI_Ge">{concreteSalesInvoice['id']}</span>{/* قبض */}
-//                 <span className="customerACSI_Ge">{concreteSalesInvoice['customer'].name}{'  '}{concreteSalesInvoice['customer'].lastName}</span>{/* خریدار */}
-//                 <span className="concreteACSI_Ge">{concreteSalesInvoice['concrete'].concreteName}</span>{/* بتن */}
-//                 <span className="truckACSI_Ge"><div className="numberplateDiv">
-//                     <span className="numberplateDivS1">{numberplate[0]}</span>
-//                     <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
-//                     <span className="numberplateDivS3">{numberplate[1]}</span>
-//                     <span className="numberplateDivS4">{numberplate[2]}</span>
-//                 </div></span>{/* میکسر */}
-//                 <span className="driverACSI_Ge"> {concreteSalesInvoice['driver'].name}{'  '}{concreteSalesInvoice['driver'].lastName}</span>{/* راننده */}
-//                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>{/* تاریخ */}
-//                 <span className="timeACSI_Ge">{concreteSalesInvoice['time']}</span>{/* ساعت */}
-//                 <div className="divEditACSI_Ge">
-//                     <button className="--styleLessBtn btnEditACSI_Ge" title=" ویرایش "
-//                         onClick={() => { showEditForm(concreteSalesInvoice.id); handleRemoveErrorCustomer() }}
-//                     >
-//                         <i className="icofont-pencil iEditGe" />
-//                     </button>
-//                 </div>
-//                 <div className="divDelACSI_Ge">
-//                     <button className="--styleLessBtn btnDelACSI_Ge" title=" حذف ">
-//                         <i className="icofont-trash iDelGe" />
-//                     </button>
-//                 </div>
-//             </div>
-//         })
-//         return value;
-//     }
-
-//     const handleSetDate = (e, i, input) => {
-//         let { value } = e.target,
-//             valDate;
-//         value = value.toString();
-//         if (input == 'day') {
-//             (value != 0 && value.length == 1) && (value = '0' + value);
-//             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-//             if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-//                 setDate(prev => ({ ...prev, [input]: value }));
-//                 if (!editMode) {
-//                     refInvoice[`dayInput${i}`].current.value = value;
-//                     refInvoice[`daySelect${i}`].current.value = value;
-//                 }
-//             } else {
-//                 e.target.value = date.day;
-//             }
-//             valDate = date.year + '-' + date.month + '-' + value;
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let newInvoice;
-//                     newInvoice = [...perv.invoice];
-//                     newInvoice[i] = { ...newInvoice[i], date: valDate };
-//                     return { ...perv, invoice: newInvoice };
-//                 });
-//             } else {
-//                 setInputEdit(perv => ({ ...perv, date: valDate }));
-//             }
-
-//         } else if (input == 'month') {
-//             (value != 0 && value.length == 1) && (value = '0' + value);
-//             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-//             if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-//                 setDate(prev => ({ ...prev, [input]: value }));
-//                 if (!editMode) {
-//                     refInvoice[`monthInput${i}`].current.value = value;
-//                     refInvoice[`monthSelect${i}`].current.value = value;
-//                 }
-//             }
-//             else {
-//                 e.target.value = date.month;
-//             }
-//             valDate = date.year + '-' + value + '-' + date.day;
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let newInvoice;
-//                     newInvoice = [...perv.invoice];
-//                     newInvoice[i] = { ...newInvoice[i], date: valDate };
-//                     return { ...perv, invoice: newInvoice };
-//                 });
-//             } else {
-//                 setInputEdit(perv => ({ ...perv, date: valDate }));
-//             }
-//         } else if (input = 'year') {
-//             if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-//                 setDate(prev => ({ ...prev, [input]: value }));
-//                 if (!editMode) {
-//                     refInvoice[`yearInput${i}`].current.value = value;
-//                     refInvoice[`yearSelect${i}`].current.value = value;
-//                 }
-//             } else {
-//                 e.target.value = date.year;
-//             }
-//             valDate = value + '-' + date.month + '-' + date.day;
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let newInvoice;
-//                     newInvoice = [...perv.invoice];
-//                     newInvoice[i] = { ...newInvoice[i], date: valDate };
-//                     return { ...perv, invoice: newInvoice };
-//                 });
-//             } else {
-//                 setInputEdit(perv => ({ ...perv, date: valDate }));
-//             }
-//         }
-//     }
-
-//     const handleSetTime = (e, i, input) => {
-//         let { value } = e.target,
-//             valTime;
-//         value = value.toString();
-//         if (input == 'second') {
-//             (value != 0 && value.length == 1) && (value = '0' + value);
-//             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-//             if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-//                 setTime(prev => ({ ...prev, [input]: value }));
-//                 if (!editMode) {
-//                     refInvoice[`secondSelect${i}`].current.value = value;
-//                     refInvoice[`secondInput${i}`].current.value = value;
-//                 }
-
-//             } else {
-
-//                 e.target.value = time.second;
-//             }
-//             valTime = time.hour + ':' + time.minute + ':' + value;
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let newInvoice;
-//                     newInvoice = [...perv.invoice];
-//                     newInvoice[i] = { ...newInvoice[i], time: valTime };
-//                     return { ...perv, invoice: newInvoice };
-//                 });
-//             } else {
-//                 setInputEdit(perv => ({ ...perv, time: valTime }));
-//             }
-
-//         } else if (input == 'minute') {
-//             (value != 0 && value.length == 1) && (value = '0' + value);
-//             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-//             if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-//                 setTime(prev => ({ ...prev, [input]: value }));
-//                 if (!editMode) {
-//                     refInvoice[`minuteSelect${i}`].current.value = value;
-//                     refInvoice[`minuteInput${i}`].current.value = value;
-//                 }
-
-//             } else {
-//                 e.target.value = time.minute;
-//             }
-
-//             valTime = time.hour + ':' + value + ':' + time.second;
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let newInvoice;
-//                     newInvoice = [...perv.invoice];
-//                     newInvoice[i] = { ...newInvoice[i], time: valTime };
-//                     return { ...perv, invoice: newInvoice };
-//                 });
-//             } else {
-//                 setInputEdit(perv => ({ ...perv, time: valTime }));
-//             }
-//         } else if (input = 'hour') {
-//             (value != 0 && value.length == 1) && (value = '0' + value);
-//             (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-//             if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
-//                 setTime(prev => ({ ...prev, [input]: value }));
-//                 if (!editMode) {
-//                     refInvoice[`hourSelect${i}`].current.value = value;
-//                     refInvoice[`hourInput${i}`].current.value = value;
-//                 }
-
-//             } else {
-//                 e.target.value = time.hour;
-//             }
-
-//             valTime = value + ':' + time.minute + ':' + time.second;
-//             if (!editMode) {
-//                 setInput(perv => {
-//                     let newInvoice;
-//                     newInvoice = [...perv.invoice];
-//                     newInvoice[i] = { ...newInvoice[i], time: valTime };
-//                     return { ...perv, invoice: newInvoice };
-//                 });
-//             } else {
-//                 setInputEdit(perv => ({ ...perv, time: valTime }));
-//             }
-//         }
-//     }
-
-//     /**
-//      * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
-//      * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
-//      * @param {آدی رکورد} id0 
-//      */
-//     const pasteDataForEditing = (id0) => {
-//         let concreteSalesInvoice = concreteSalesInvoices.find(concreteSalesInvoice => concreteSalesInvoice.id === id0);
-//         concreteSalesInvoice && setId(id0);
-//         let numberplate = concreteSalesInvoice.truck.numberplate.split("-");
-//         const { id, created_at, updated_at, ...rest } = concreteSalesInvoice;//نادیده گرفتن کلید های مشخص شده
-
-//         // کپی از شی برای انجام تغییرات
-//         let datas = { ...rest };
-//         setInputEdit({
-//             customer_id: datas.customer_id,
-//             date: datas.date,
-//             time: datas.time,
-//             weight: datas.weight,
-//             cubicMeters: datas.cubicMeters,
-//             concrete_id: datas.concrete_id,
-//             truck_id: datas.truck_id,
-//             ownerId: datas.truck.customer.id,
-//             driver_id: datas.driver_id,
-//             cementStore_id: datas.cementStore_id,
-//             unitPrice: datas.unitPrice,
-//             totalPrice: datas.totalPrice,
-//             fare: datas.fare,
-//             maskanMeli: datas.maskanMeli,
-//             vahed: datas.vahed,
-//             address: datas.address,
-//             concretingPosition: datas.concretingPosition
-//         });
-//         refCustomer_id.current && refCustomer_id.current.updateData(datas.customer.name + ' ' + datas.customer.lastName);
-//         refConcrete_idEdit.current && refConcrete_idEdit.current.updateData(<div className="concreteAptionSelectFB">
-//             <span className="concreteLabelSelectFB">بتن
-//             </span>
-//             <span className="concreteSelectFB">
-//                 {datas.concrete.concreteName}
-//             </span>
-//         </div>);
-
-//         refCementStore_idEdit.current && refCementStore_idEdit.current.updateData(datas.cement_store.silo);
-//         refTruck_idEdit.current && refTruck_idEdit.current.updateData(<div className="mixerAptionSelectFB">
-//             <span className="mixerNamberpalteSelectFB">
-//                 <div className="numberplateDiv">
-//                     <span className="numberplateDivS1">{numberplate[0]}</span>
-//                     <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
-//                     <span className="numberplateDivS3">{numberplate[1]}</span>
-//                     <span className="numberplateDivS4">{numberplate[2]}</span>
-//                 </div>
-//             </span>
-
-//             <span className="mixerOwnerSelectFB">
-//                 {datas.truck.customer.name}
-//                 {' '}
-//                 {datas.truck.customer.lastName}
-//             </span>
-
-//         </div>);
-//         refDriver_idEdit.current && refDriver_idEdit.current.updateData(<div className="personnelAption_addPerS">
-//             <span className="name_addPers">{datas.driver.name}
-//                 {' '}
-//                 {datas.driver.lastName}</span>
-
-//             <span className="fther_addPers">
-//                 {datas.driver.father || ''}
-//             </span>
-
-//         </div>);
-
-//         if (rest.date) {
-//             let parts = rest.date.split("-");
-//             setDate({
-//                 day: parts[2],
-//                 month: parts[1],
-//                 year: parts[0]
-//             });
-
-//         }
-
-//         if (rest.time) {
-//             let parts = rest.time.split(":");
-//             setTime({
-//                 second: parts[2],
-//                 minute: parts[1],
-//                 hour: parts[0]
-//             })
-//         }
-
-//         if (datas.maskanMeli == 'مسکن ملی شهرک امام خمینی') {
-//             setCheckedMaskanMeliEdit('emam');
-//         }
-//         else if (datas.maskanMeli == 'مسکن ملی شهرک شهید رییسی') {
-//             setCheckedMaskanMeliEdit('shahid');
-
-//         }
-//         else {
-//             setCheckedMaskanMeliEdit('');
-
-//         }
-//     }
-
-//     const resetForm = (apply = true) => {
-//         setInvoice([sampleInvoice]);
-//         setInput({
-//             customer_id: '',
-//             invoice: [{
-//                 date: '',
-//                 time: '',
-//                 weight: '',
-//                 cubicMeters: "",
-//                 concrete_id: '',
-//                 truck_id: '',
-//                 ownerId: '',
-//                 driver_id: '',
-//                 cementStore_id: '',
-//                 unitPrice: '',
-//                 totalPrice: '',
-//                 fare: '',
-//                 maskanMeli: '',
-//                 vahed: '',
-//                 address: '',
-//                 concretingPosition: ''
-//             }],
-//         });
-
-//         setCustomerId('');
-//         setConcreteId('');
-//         setTruckId('');
-//         setOwnerId('');
-//         setDriverId('');
-//         setCementStoreId('');
-//         setCheckedMaskanMeli();
-
-//         setTime({
-//             second: '',
-//             minute: '',
-//             hour: ''
-//         });
-
-//         setDate({
-//             day: '',
-//             month: '',
-//             year: ''
-//         });
-
-//         setUnitPrice('');
-//         setFare('');
-
-//         setCheckedValue('');
-//         setMaskan(['']);
-
-//         setVahed('');
-//         setAddress('');
-//         setConcretingPosition('');
-
-//         refInvoice[`cubicMeters0`].current.innerHTML = '0';
-
-//         refInvoice[`totalPrice0`].current.innerHTML = '0';
-
-//         refCustomer_id.current.updateData('انتخاب');
-//         refInvoice[`concrete_id0`].current.updateData('انتخاب');
-//         refInvoice[`cementStore_id0`].current.updateData('انتخاب');
-//         refInvoice[`truck_id0`].current.updateData('انتخاب');
-//         refInvoice[`driver_id0`].current.updateData('انتخاب');
-//         handleRemoveAllError();
-
-//         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
-//         if (apply) {
-//             window.scrollTo({ top: 0 });
-//         }
-//     }
-
-//     const resetForm2 = () => {
-//         setInvoice([sampleInvoice]);
-//         setInput({
-//             customer_id: '',
-//             invoice: [{
-//                 date: '',
-//                 time: '',
-//                 weight: '',
-//                 cubicMeters: "",
-//                 concrete_id: '',
-//                 truck_id: '',
-//                 ownerId: '',
-//                 driver_id: '',
-//                 cementStore_id: '',
-//                 unitPrice: '',
-//                 totalPrice: '',
-//                 fare: '',
-//                 maskanMeli: '',
-//                 vahed: '',
-//                 address: '',
-//                 concretingPosition: ''
-//             }],
-//         });
-
-//         setCustomerId('');
-//         setConcreteId('');
-//         setTruckId('');
-//         setOwnerId('');
-//         setDriverId('');
-//         setCementStoreId('');
-//         setCheckedMaskanMeli();
-
-//         setTime({
-//             second: '',
-//             minute: '',
-//             hour: ''
-//         });
-
-//         setDate({
-//             day: '',
-//             month: '',
-//             year: ''
-//         });
-
-//         setUnitPrice('');
-//         setFare('');
-
-//         setCheckedValue('');
-//         setMaskan(['']);
-
-//         setVahed('');
-//         setAddress('');
-//         setConcretingPosition('');
-
-//         refCustomer_id.current.updateData('انتخاب');
-//     }
 //     const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading });
 
 //     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({dataCustomers:concreteBuyers.datas });

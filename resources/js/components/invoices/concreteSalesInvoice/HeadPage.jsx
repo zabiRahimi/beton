@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 import { ScaleLoader } from 'react-spinners';
 import Title from '../../hooks/Title'
-import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
@@ -38,14 +38,14 @@ const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
             <div className="headPageGe">
                 {
                     displayBtnAdd &&
-                    <Link to="/invoices/sand" className="btnAddGe --styleLessLink ">
+                    <Link to="/invoices/concreteSalesInvoice" className="btnAddGe --styleLessLink ">
                         ایجاد فاکتور
                     </Link>
                 }
 
                 {
                     displayBtnShow &&
-                    <Link to="/invoices/sand/showSandInvoices" className="btnGetGe --styleLessLink ">
+                    <Link to="/invoices/concreteSalesInvoice/show" className="btnGetGe --styleLessLink ">
                         مشاهده فاکتورها
                     </Link>
                 }

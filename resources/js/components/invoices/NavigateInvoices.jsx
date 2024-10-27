@@ -18,7 +18,7 @@ const NavigateInvoices = () => {
             <div className="mainHome">
 
                 <section className="categoryLinksHome">
-                    <Link to="addConcreteSalesInvoice" className="linksHome --styleLessLink ">
+                    <Link to="concreteSalesInvoice" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment  iLinksHome2  " />
                             <i className="icofont-concrete-mixer iLinksHome3 " />
