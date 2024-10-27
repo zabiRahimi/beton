@@ -131,11 +131,11 @@ const Add = () => {
     const [fare, setFare] = useState('');
     const [checkedValue, setCheckedValue] = useState('');
     const [isChecked, setIsChecked] = useState(false)
-   
-     const sampleInvoice = 'invoice';
-     const [invoice, setInvoice] = useState([sampleInvoice]);
- 
-     const [maskan, setMaskan] = useState([...invoice.map(item => ''), '']);
+
+    const sampleInvoice = 'invoice';
+    const [invoice, setInvoice] = useState([sampleInvoice]);
+
+    const [maskan, setMaskan] = useState([...invoice.map(item => ''), '']);
     const [input, setInput] = useState({
         customer_id: '',
         invoice: [{
@@ -400,13 +400,11 @@ const Add = () => {
         }
     }
 
-   
-    
-        useEffect(() => {
-            if (isRef) {
-                setMaskan((prev) => [...prev, '']);
-            }
-        }, [invoice]);
+    useEffect(() => {
+        if (isRef) {
+            setMaskan((prev) => [...prev, '']);
+        }
+    }, [invoice]);
 
     const resetForm = (apply = true) => {
         setInvoice([sampleInvoice]);
@@ -479,6 +477,368 @@ const Add = () => {
         }
     }
 
+    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading });
+
+    const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers: concreteBuyers.datas });
+
+    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: mixers.datas });
+
+    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers.datas });
+
+
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm });
+
+    /**
+     * ذخیره مقادیر ورودی‌های کاربر در استیت
+     * @param {*} e 
+     * @param {*} input 
+     */
+    const handleSaveValInput = (e, input, i, customer = false) => {
+        let { value } = e.target;
+        switch (input) {
+            case 'unitPrice':
+                value = value.replace(/,/g, '');
+                setUnitPrice(value);
+                break;
+            case 'weight':
+                value = value.replace(/,/g, '');
+                break;
+            case 'fare':
+                value = value.replace(/,/g, '');
+                setFare(value);
+                break;
+            case 'vahed':
+                setVahed(value);
+                break;
+            case 'address':
+                setAddress(value);
+                break;
+            case 'concretingPosition':
+                setConcretingPosition(value);
+                break;
+        }
+
+        if (input == 'maskanMeli') {
+            /**
+             * چنانچه کاربر مبادرت به ایجاد بیش از یک فاکتور کند
+             * کدهای زیر جهت نمایش مسکن ملی بطور پیش فرض در فاکتور جدید
+             * اقدام می‌کنند
+             */
+            const copyMaskan = [...maskan];
+            copyMaskan[i] = value;
+            copyMaskan[maskan.length - 1] = value;
+            setMaskan(copyMaskan);
+        }
+
+        if (!customer) {
+            setInput(perv => {
+                let newInvoice;
+                if (Array.isArray(perv.invoice)) {
+                    newInvoice = [...perv.invoice];
+                    newInvoice[i] = { ...newInvoice[i], [input]: value };
+                } else {
+                    newInvoice[i] = {
+                        date: '',
+                        time: '',
+                        weight: '',
+                        cubicMeters: "",
+                        concrete_id: '',
+                        truck_id: '',
+                        ownerId: '',
+                        driver_id: '',
+                        cementStore_id: '',
+                        unitPrice: '',
+                        totalPrice: '',
+                        fare: '',
+                        maskanMeli: '',
+                        vahed: '',
+                        address: '',
+                        concretingPosition: ''
+                    }
+                    newInvoice[i] = { ...newInvoice[i], [input]: value };
+                }
+
+                return { ...perv, invoice: newInvoice };
+            });
+
+        } else {
+
+            setInput(prev => ({ ...prev, [input]: value }));
+        }
+    }
+
+    /**
+ * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
+ * @param {*} e 
+ * @param {رف مربوط به تگ نمایش خطا} refErr 
+ */
+    const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', i = null) => {
+        if (i !== null && Number(i) >= 0) {
+            const addressElemnt = document.getElementById(`invoice.${i}.address`);
+            const vahedElemnt = document.getElementById(`invoice.${i}.vahed`);
+
+            addressElemnt.classList.remove('borderRedFB');
+            refInvoice[`addressError${i}`].current.innerHTML = '';
+
+            vahedElemnt.classList.remove('borderRedFB');
+            refInvoice[`vahedError${i}`].current.innerHTML = '';
+        } else {
+            if (!dateAndTime) {
+                e.target.classList.remove('borderRedFB');
+                /**
+                         * دو خط کد زیر برای زمانی است‌ که کلاس مورد
+                         *  نظر بر روی پدر تگهااعمال شده‌است
+                         * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
+                         *  و سپس کلاس را از تگ پدر حذف 
+                         * می‌‌کند، این کدها معمولا برای کامپوننتی
+                         *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
+                        */
+                const parentWithClass = e.target.closest('.borderRedFB');
+                parentWithClass && parentWithClass.classList.remove('borderRedFB');
+            } else {
+                const element = document.getElementById(idDivDateAndTime);
+                element.classList.remove('borderRedFB');
+            }
+            refErr.current && (refErr.current.innerHTML = '')
+        }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true)
+        await axios.post(
+            '/api/v1/concreteSalesInvoices',
+            { ...input },
+            {
+                headers:
+                {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then((response) => {
+            const resutl = response.data.concreteSalesInvoice;
+            resutl.map((invoice) => {
+                setConcreteSalesInvoices(prev => [invoice, ...prev]);
+            });
+            setTicketNumber(ticketNumber + resutl.length);
+            setTotalRecords(totalRecords + resutl.length)
+
+            form.current.reset();
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
+                didClose: () => resetForm(),
+            });
+
+        })
+            .catch(
+                error => {
+
+                    if (error.response && error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0];
+                        const checkCubicMeters = /^invoice\.\d+\.cubicMeters$/;
+                        const checkTotalPrice = /^invoice\.\d+\.totalPrice$/;
+                        const checkOwnerId = /^invoice\.\d+\.ownerId$/;
+
+                        if (!checkCubicMeters.test(id) && !checkTotalPrice.test(id) && !checkOwnerId.test(id)) {
+                            const element = document.getElementById(id);
+                            let scrollPosition = window.scrollY || window.pageYOffset;
+
+                            const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                            window.scrollTo({
+                                top: top,
+                                behavior: 'smooth'
+                            });
+                        }
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
+                                document.getElementById(key).classList.add('borderRedFB');
+
+                                document.getElementById(key + 'Error').innerHTML = val;
+                            }
+
+                        });
+                    }
+                }
+            )
+
+        setLoading(false)
+    }
+
+    /**
+* برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
+* به صورت دهگان،صدگان و ...
+* @param {ref} ref 
+*/
+    const formatNub = (input, i) => {
+        let val,
+            checkDthot,
+            resalt,
+            refCurrent;
+        switch (input) {
+            case 'weight':
+                resalt = refInvoice[`weight${i}`].current.value.replace(/[\s,]/g, "");
+                refCurrent = refInvoice[`weight${i}`].current;
+                break;
+            case 'unitPrice':
+                resalt = refInvoice[`unitPrice${i}`].current.value.replace(/[\s,]/g, "");
+                refCurrent = refInvoice[`unitPrice${i}`].current;
+                break;
+            case 'totalPrice':
+                resalt = refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
+                refCurrent = refInvoice[`totalPrice${i}`].current;
+                break;
+            case 'fare':
+                resalt = refInvoice[`fare${i}`].current.value.replace(/[\s,]/g, "");
+                refCurrent = refInvoice[`fare${i}`].current;
+                break;
+        }
+        // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
+        if (resalt.slice(-1) == '.') {
+            checkDthot = true;
+        } else {
+            checkDthot = false;
+        }
+        // چک می کند فقط رشته عددی باشد
+        if (parseFloat(resalt)) {
+            val = parseFloat(resalt);
+            /**
+             * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
+             * علامت را به آخر رشته اضافه می کند
+             */
+            val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
+            refCurrent.value = val;
+        }
+    }
+
+    /**
+* اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
+* کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
+* اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
+* ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
+* @param {number} id 
+*/
+    const htmlFor = (id) => {
+        document.getElementById(id).focus()
+    }
+
+    const handleCheckedMaskanMeli = (e, value, i) => {
+        let checked;
+        if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
+            const copyMaskan = [...maskan];
+            copyMaskan[i] = '';
+            copyMaskan[maskan.length - 1] = '';
+            setMaskan(copyMaskan);
+            checked = false;
+            const checkbox = e.target;
+            checkbox.checked = !checkbox.checked;
+            setCheckedValue('');
+        } else if (value == `shahid${i}` && isChecked && checkedValue == 'مسکن ملی شهرک شهید رییسی') {
+            const copyMaskan = [...maskan];
+            copyMaskan[i] = '';
+            copyMaskan[maskan.length - 1] = '';
+            setMaskan(copyMaskan);
+            checked = false;
+            const checkbox = e.target;
+            checkbox.checked = !checkbox.checked;
+            setCheckedValue('');
+        }
+        else {
+            if (value == `emam${i}`) {
+                checked = refInvoice[`checkedMaskanEmam${i}`].current;
+            } else if (value == `shahid${i}`) {
+                checked = refInvoice[`checkedMaskanShahid${i}`].current;
+            }
+
+            if (value == `emam${i}`) {
+                refInvoice[`checkedMaskanEmam${i}`].current = !checked;
+                refInvoice[`checkedMaskanShahid${i}`].current = true;
+            } else if (value == `shahid${i}`) {
+                refInvoice[`checkedMaskanShahid${i}`].current = !checked;
+                refInvoice[`checkedMaskanEmam${i}`].current = true;
+            }
+        }
+
+        if (checked) {
+            setCheckedMaskanMeli(value);
+
+        } else {
+            setCheckedMaskanMeli('');
+        }
+        setIsChecked(false)
+    }
+
+    const handleCubicMetersCalculation = (e, i = null) => {
+        let { value } = e.target;
+        value = value.replace(/,/g, '');
+        let cubicMeters = value / 2300;
+        cubicMeters = Number(cubicMeters);
+        if (!Number.isInteger(cubicMeters)) {
+            cubicMeters = cubicMeters.toFixed(2);
+        }
+        refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
+        setInput(perv => {
+            let newInvoice;
+            newInvoice = [...perv.invoice];
+            newInvoice[i] = { ...newInvoice[i], cubicMeters };
+            return { ...perv, invoice: newInvoice };
+        });
+    }
+
+    const handleTotalPriceCalculation = (e, i, element) => {
+        let cubicMeters,
+            totalPrice,
+            { value } = e.target;
+        value = value.replace(/,/g, '');
+        value = Number(value);
+
+        if (element == 'weight') {
+            cubicMeters = value / 2300;
+            if (!Number.isInteger(cubicMeters)) {
+                cubicMeters = cubicMeters.toFixed(2);
+            }
+
+            
+                let unitPrice = input.invoice[i].unitPrice;
+                if (Number.isInteger(Number(unitPrice))) {
+                    // totalPrice = (unitPrice * cubicMeters).toFixed();
+                    totalPrice = unitPrice * cubicMeters;
+                    setInput(perv => {
+                        let newInvoice;
+                        newInvoice = [...perv.invoice];
+                        newInvoice[i] = { ...newInvoice[i], totalPrice };
+                        return { ...perv, invoice: newInvoice };
+                    });
+                    refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+                }
+          
+        } else if (element == 'unitPrice') {
+            let weight = input.invoice[i].weight;
+            if (weight && Number(weight)) {
+                cubicMeters = weight / 2300;
+                if (!Number.isInteger(cubicMeters)) {
+                    cubicMeters = cubicMeters.toFixed(2);
+                }
+                totalPrice = value * cubicMeters;
+                setInput(perv => {
+                    let newInvoice;
+                    newInvoice = [...perv.invoice];
+                    newInvoice[i] = { ...newInvoice[i], totalPrice };
+                    return { ...perv, invoice: newInvoice };
+                });
+                refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+            }
+        }
+    }
+
     return (
         <div className=''>
             <HeadPage
@@ -493,560 +853,14 @@ const Add = () => {
 }
 export default Add;
 
-//     const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading });
-
-//     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({dataCustomers:concreteBuyers.datas });
-
-//     const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers:mixers.datas });
-
-//     const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers:drivers.datas });
 
 
-//     const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing, resetForm2 });
 
-//     useEffect(() => {
-//         if (editMode) {
-//             refUnitPriceEdit && (refUnitPriceEdit.current.value = parseFloat(inputEdit.unitPrice).toLocaleString());
 
-//             refWeightEdit && (refWeightEdit.current.value = parseFloat(inputEdit.weight).toLocaleString());
 
-//             refTotalPriceEdit && (refTotalPriceEdit.current.innerHTML = parseFloat(inputEdit.totalPrice).toLocaleString());
 
-//             refFareEdit && (refFareEdit.current.value = parseFloat(inputEdit.fare).toLocaleString());
-//         }
 
-//     }, [editMode]);
 
-//     /**
-//      * ذخیره مقادیر ورودی‌های کاربر در استیت
-//      * @param {*} e 
-//      * @param {*} input 
-//      */
-//     const handleSaveValInput = (e, input, i, customer = false) => {
-//         let { value } = e.target;
-//         switch (input) {
-//             case 'unitPrice':
-//                 value = value.replace(/,/g, '');
-//                 setUnitPrice(value);
-//                 break;
-//             case 'weight':
-//                 value = value.replace(/,/g, '');
-//                 break;
-//             case 'fare':
-//                 value = value.replace(/,/g, '');
-//                 setFare(value);
-//                 break;
-//             case 'vahed':
-//                 setVahed(value);
-//                 break;
-//             case 'address':
-//                 setAddress(value);
-//                 break;
-//             case 'concretingPosition':
-//                 setConcretingPosition(value);
-//                 break;
-//         }
-
-//         /**
-//          * چک می‌کند که کاربر در حال ایجاد یک فاکتور جدید است یا 
-//          * در حال ویرایش یک فاکتور موجود است
-//          */
-//         if (!editMode) {
-
-//             if (input == 'maskanMeli') {
-//                 /**
-//                  * چنانچه کاربر مبادرت به ایجاد بیش از یک فاکتور کند
-//                  * کدهای زیر جهت نمایش مسکن ملی بطور پیش فرض در فاکتور جدید
-//                  * اقدام می‌کنند
-//                  */
-//                 const copyMaskan = [...maskan];
-//                 copyMaskan[i] = value;
-//                 copyMaskan[maskan.length - 1] = value;
-//                 setMaskan(copyMaskan);
-//             }
-
-//             if (!customer) {
-//                 setInput(perv => {
-//                     let newInvoice;
-//                     if (Array.isArray(perv.invoice)) {
-//                         newInvoice = [...perv.invoice];
-//                         newInvoice[i] = { ...newInvoice[i], [input]: value };
-//                     } else {
-//                         newInvoice[i] = {
-//                             date: '',
-//                             time: '',
-//                             weight: '',
-//                             cubicMeters: "",
-//                             concrete_id: '',
-//                             truck_id: '',
-//                             ownerId: '',
-//                             driver_id: '',
-//                             cementStore_id: '',
-//                             unitPrice: '',
-//                             totalPrice: '',
-//                             fare: '',
-//                             maskanMeli: '',
-//                             vahed: '',
-//                             address: '',
-//                             concretingPosition: ''
-//                         }
-//                         newInvoice[i] = { ...newInvoice[i], [input]: value };
-//                     }
-
-//                     return { ...perv, invoice: newInvoice };
-//                 });
-
-//             } else {
-
-//                 setInput(prev => ({ ...prev, [input]: value }));
-//             }
-
-//         } else {
-//             setInputEdit(prev => ({ ...prev, [input]: value }));
-
-//         }
-
-//     }
-
-//     /**
-//      * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
-//      * @param {*} e 
-//      * @param {رف مربوط به تگ نمایش خطا} refErr 
-//      */
-//     const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', i = null) => {
-//         if (i !== null && Number(i) >= 0) {
-//             if (!editMode) {
-//                 const addressElemnt = document.getElementById(`invoice.${i}.address`);
-//                 const vahedElemnt = document.getElementById(`invoice.${i}.vahed`);
-
-//                 addressElemnt.classList.remove('borderRedFB');
-//                 refInvoice[`addressError${i}`].current.innerHTML = '';
-
-//                 vahedElemnt.classList.remove('borderRedFB');
-//                 refInvoice[`vahedError${i}`].current.innerHTML = '';
-//             } else {
-//                 const addressElemnt = document.getElementById('addressEdit');
-//                 const vahedElemnt = document.getElementById('vahedEdit');
-
-//                 addressElemnt.classList.remove('borderRedFB');
-//                 refAddressEditError.current.innerHTML = '';
-
-//                 vahedElemnt.classList.remove('borderRedFB');
-//                 refVahedEditError.current.innerHTML = '';
-//             }
-
-//         } else {
-//             if (!dateAndTime) {
-//                 e.target.classList.remove('borderRedFB');
-//                 /**
-//                          * دو خط کد زیر برای زمانی است‌ که کلاس مورد
-//                          *  نظر بر روی پدر تگهااعمال شده‌است
-//                          * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
-//                          *  و سپس کلاس را از تگ پدر حذف 
-//                          * می‌‌کند، این کدها معمولا برای کامپوننتی
-//                          *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
-//                         */
-//                 const parentWithClass = e.target.closest('.borderRedFB');
-//                 parentWithClass && parentWithClass.classList.remove('borderRedFB');
-//             } else {
-//                 const element = document.getElementById(idDivDateAndTime);
-//                 element.classList.remove('borderRedFB');
-//             }
-//             refErr.current && (refErr.current.innerHTML = '')
-//         }
-//     }
-
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         setLoading(true)
-//         await axios.post(
-//             '/api/v1/concreteSalesInvoices',
-//             { ...input },
-//             {
-//                 headers:
-//                 {
-//                     'X-CSRF-TOKEN': token,
-//                     'Content-Type': 'application/json; charset=utf-8'
-//                 }
-//             }
-//         ).then((response) => {
-//             const resutl = response.data.concreteSalesInvoice;
-//             resutl.map((invoice) => {
-//                 setConcreteSalesInvoices(prev => [invoice, ...prev]);
-//             });
-//             setTicketNumber(ticketNumber + resutl.length);
-//             setTotalRecords(totalRecords + resutl.length)
-
-//             form.current.reset();
-//             MySwal.fire({
-//                 icon: "success",
-//                 title: "با موفقیت ثبت شد",
-//                 confirmButtonText: "  متوجه شدم  ",
-//                 timer: 3000,
-//                 timerProgressBar: true,
-//                 customClass: {
-//                     timerProgressBar: '--progressBarColorBlue',
-//                 },
-//                 didClose: () => resetForm(),
-//             });
-
-//         })
-//             .catch(
-//                 error => {
-
-//                     if (error.response && error.response.status == 422) {
-
-//                         let id = Object.keys(error.response.data.errors)[0];
-//                         const checkCubicMeters = /^invoice\.\d+\.cubicMeters$/;
-//                         const checkTotalPrice = /^invoice\.\d+\.totalPrice$/;
-//                         const checkOwnerId = /^invoice\.\d+\.ownerId$/;
-
-//                         if (!checkCubicMeters.test(id) && !checkTotalPrice.test(id) && !checkOwnerId.test(id)) {
-//                             const element = document.getElementById(id);
-//                             let scrollPosition = window.scrollY || window.pageYOffset;
-
-//                             const top = element.getBoundingClientRect().top + scrollPosition - 20;
-//                             window.scrollTo({
-//                                 top: top,
-//                                 behavior: 'smooth'
-//                             });
-//                         }
-//                         Object.entries(error.response.data.errors).map(([key, val]) => {
-//                             if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
-//                                 document.getElementById(key).classList.add('borderRedFB');
-
-//                                 document.getElementById(key + 'Error').innerHTML = val;
-//                             }
-
-//                         });
-//                     }
-//                 }
-//             )
-
-//         setLoading(false)
-//     }
-
-//     const handleSubmitEdit = async (e) => {
-//         e.preventDefault();
-//         setLoading(true)
-//         await axios.patch(
-//             `/api/v1/editConcreteSalesInvoice/${id}`,
-//             { ...inputEdit },
-//             {
-//                 headers:
-//                 {
-//                     'X-CSRF-TOKEN': token,
-//                     'Content-Type': 'application/json; charset=utf-8'
-//                 }
-//             }
-//         ).then((response) => {
-
-//             replaceObject(id, response.data.concreteSalesInvoice);
-//             MySwal.fire({
-//                 icon: "success",
-//                 title: "با موفقیت ویرایش شد",
-//                 confirmButtonText: "  متوجه شدم  ",
-//                 timer: 3000,
-//                 timerProgressBar: true,
-//                 customClass: {
-//                     timerProgressBar: '--progressBarColorBlue',
-//                 },
-//                 didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
-//             });
-
-//         })
-//             .catch(
-//                 error => {
-//                     if (error.response && error.response.status == 422) {
-
-//                         let id = Object.keys(error.response.data.errors)[0] + 'Edit';
-//                         if (id != 'cubicMetersEdit' && id != 'totalPriceEdit' && id != 'ownerIdEdit') {
-//                             const element = document.getElementById(id);
-//                             let scrollPosition = window.scrollY || window.pageYOffset;
-
-//                             const top = element.getBoundingClientRect().top + scrollPosition - 20;
-//                             window.scrollTo({
-//                                 top: top,
-//                                 behavior: 'smooth'
-//                             });
-//                         }
-//                         Object.entries(error.response.data.errors).map(([key, val]) => {
-//                             if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
-//                                 document.getElementById(key + 'Edit').classList.add('borderRedFB');
-
-//                                 document.getElementById(key + 'Edit' + 'Error').innerHTML = val;
-//                             }
-
-//                         });
-//                     }
-//                 }
-//             )
-
-//         setLoading(false)
-//     }
-
-//     /**
-//      * هنگامی که کاربر اطلاعات یک مشتری را ویرایش می‌کند
-//      * اطلاعات جدید در استیت جایگزین اطلاعات قبلی می‌شود
-//      * @param {number} id 
-//      * @param {object} newObject 
-//      */
-//     const replaceObject = (id, newObject) => {
-//         setConcreteSalesInvoices(concreteSalesInvoices.map((object) => {
-//             if (object.id == id) {
-//                 return newObject;
-//             } else {
-//                 return object;
-//             }
-//         }));
-//     };
-
-//     /**
-//       * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
-//       * به صورت دهگان،صدگان و ...
-//       * @param {ref} ref 
-//       */
-//     const formatNub = (input, i) => {
-//         let val,
-//             checkDthot,
-//             resalt,
-//             refCurrent;
-//         switch (input) {
-//             case 'weight':
-//                 resalt = refInvoice[`weight${i}`].current.value.replace(/[\s,]/g, "");
-//                 refCurrent = refInvoice[`weight${i}`].current;
-//                 break;
-//             case 'unitPrice':
-//                 resalt = refInvoice[`unitPrice${i}`].current.value.replace(/[\s,]/g, "");
-//                 refCurrent = refInvoice[`unitPrice${i}`].current;
-//                 break;
-//             case 'totalPrice':
-//                 resalt = refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
-//                 refCurrent = refInvoice[`totalPrice${i}`].current;
-//                 break;
-//             case 'fare':
-//                 resalt = refInvoice[`fare${i}`].current.value.replace(/[\s,]/g, "");
-//                 refCurrent = refInvoice[`fare${i}`].current;
-//                 break;
-//         }
-//         // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
-//         if (resalt.slice(-1) == '.') {
-//             checkDthot = true;
-//         } else {
-//             checkDthot = false;
-//         }
-//         // چک می کند فقط رشته عددی باشد
-//         if (parseFloat(resalt)) {
-//             val = parseFloat(resalt);
-//             /**
-//              * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
-//              * علامت را به آخر رشته اضافه می کند
-//              */
-//             val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
-//             refCurrent.value = val;
-//         }
-//     }
-
-//     /**
-//      * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
-//      * به صورت دهگان،صدگان و ...
-//      * @param {ref} ref 
-//      */
-//     const formatNubEdit = (input) => {
-//         let val,
-//             checkDthot,
-//             resalt,
-//             refCurrent;
-//         switch (input) {
-//             case 'unitPrice':
-//                 resalt = refUnitPriceEdit.current.value.replace(/[\s,]/g, "");
-//                 refCurrent = refUnitPriceEdit.current;
-//                 break;
-//             case 'weight':
-//                 resalt = refWeightEdit.current.value.replace(/[\s,]/g, "");
-//                 refCurrent = refWeightEdit.current;
-//                 break;
-//             case 'fare':
-//                 resalt = refFareEdit.current.value.replace(/[\s,]/g, "");
-//                 refCurrent = refFareEdit.current;
-//                 break;
-//         }
-//         // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
-//         if (resalt.slice(-1) == '.') {
-//             checkDthot = true;
-//         } else {
-//             checkDthot = false;
-//         }
-//         // چک می کند فقط رشته عددی باشد
-//         if (parseFloat(resalt)) {
-//             val = parseFloat(resalt);
-//             /**
-//              * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
-//              * علامت را به آخر رشته اضافه می کند
-//              */
-//             val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
-//             refCurrent.value = val;
-//         }
-//     }
-
-//     /**
-//     * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
-//     * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
-//     * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
-//     * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
-//     * @param {number} id 
-//     */
-//     const htmlFor = (id) => {
-//         document.getElementById(id).focus()
-//     }
-
-//     const handleCheckedMaskanMeli = (e, value, i) => {
-//         let checked;
-//         if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
-//             const copyMaskan = [...maskan];
-//             copyMaskan[i] = '';
-//             copyMaskan[maskan.length - 1] = '';
-//             setMaskan(copyMaskan);
-//             checked = false;
-//             const checkbox = e.target;
-//             checkbox.checked = !checkbox.checked;
-//             setCheckedValue('');
-//         } else if (value == `shahid${i}` && isChecked && checkedValue == 'مسکن ملی شهرک شهید رییسی') {
-//             const copyMaskan = [...maskan];
-//             copyMaskan[i] = '';
-//             copyMaskan[maskan.length - 1] = '';
-//             setMaskan(copyMaskan);
-//             checked = false;
-//             const checkbox = e.target;
-//             checkbox.checked = !checkbox.checked;
-//             setCheckedValue('');
-//         }
-//         else {
-//             if (value == `emam${i}`) {
-//                 checked = refInvoice[`checkedMaskanEmam${i}`].current;
-//             } else if (value == `shahid${i}`) {
-//                 checked = refInvoice[`checkedMaskanShahid${i}`].current;
-//             }
-
-//             if (value == `emam${i}`) {
-//                 refInvoice[`checkedMaskanEmam${i}`].current = !checked;
-//                 refInvoice[`checkedMaskanShahid${i}`].current = true;
-//             } else if (value == `shahid${i}`) {
-//                 refInvoice[`checkedMaskanShahid${i}`].current = !checked;
-//                 refInvoice[`checkedMaskanEmam${i}`].current = true;
-//             }
-//         }
-
-//         if (checked) {
-//             setCheckedMaskanMeli(value);
-
-//         } else {
-//             setCheckedMaskanMeli('');
-//         }
-//         setIsChecked(false)
-//     }
-
-//     const handleCheckedMaskanMeliEdit = (e, value) => {
-//         let maskanMeli;
-//         if (value == 'emam') {
-//             checkedMaskanMeliEdit == "emam" ? (setCheckedMaskanMeliEdit(''), maskanMeli = '') : (setCheckedMaskanMeliEdit('emam'), maskanMeli = 'مسکن ملی شهرک امام خمینی');
-//         } else {
-//             checkedMaskanMeliEdit == "shahid" ? (setCheckedMaskanMeliEdit(''), maskanMeli = '') : (setCheckedMaskanMeliEdit('shahid'), maskanMeli = 'مسکن ملی شهرک شهید رییسی');
-//         }
-
-//         setInputEdit(pre => ({ ...pre, maskanMeli }));
-//     }
-
-//     const handleCubicMetersCalculation = (e, i = null) => {
-//         let { value } = e.target;
-//         value = value.replace(/,/g, '');
-//         let cubicMeters = value / 2300;
-//         cubicMeters = Number(cubicMeters);
-//         if (!Number.isInteger(cubicMeters)) {
-//             cubicMeters = cubicMeters.toFixed(2);
-//         }
-
-//         if (!editMode) {
-//             refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
-//             setInput(perv => {
-//                 let newInvoice;
-//                 newInvoice = [...perv.invoice];
-//                 newInvoice[i] = { ...newInvoice[i], cubicMeters };
-//                 return { ...perv, invoice: newInvoice };
-//             });
-//         } else {
-//             refCubicMetersEdit.current.innerHTML = cubicMeters;
-//             setInputEdit(prev => ({ ...prev, cubicMeters }));
-//         }
-//     }
-
-//     const handleTotalPriceCalculation = (e, i, element) => {
-//         let cubicMeters,
-//             totalPrice,
-//             { value } = e.target;
-//         value = value.replace(/,/g, '');
-//         value = Number(value);
-
-//         if (element == 'weight') {
-//             cubicMeters = value / 2300;
-//             if (!Number.isInteger(cubicMeters)) {
-//                 cubicMeters = cubicMeters.toFixed(2);
-//             }
-
-//             if (!editMode) {
-//                 let unitPrice = input.invoice[i].unitPrice;
-//                 if (Number.isInteger(Number(unitPrice))) {
-//                     // totalPrice = (unitPrice * cubicMeters).toFixed();
-//                     totalPrice = unitPrice * cubicMeters;
-//                     setInput(perv => {
-//                         let newInvoice;
-//                         newInvoice = [...perv.invoice];
-//                         newInvoice[i] = { ...newInvoice[i], totalPrice };
-//                         return { ...perv, invoice: newInvoice };
-//                     });
-//                     refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-//                 }
-//             } else {
-//                 let unitPrice = inputEdit.unitPrice;
-//                 if (Number.isInteger(Number(unitPrice))) {
-//                     totalPrice = unitPrice * cubicMeters;
-
-//                     setInputEdit(prev => ({ ...prev, totalPrice }));
-//                     refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
-//                 }
-//             }
-//         } else if (element == 'unitPrice') {
-//             if (!editMode) {
-//                 let weight = input.invoice[i].weight;
-//                 if (weight && Number(weight)) {
-//                     cubicMeters = weight / 2300;
-//                     if (!Number.isInteger(cubicMeters)) {
-//                         cubicMeters = cubicMeters.toFixed(2);
-//                     }
-//                     totalPrice = value * cubicMeters;
-//                     setInput(perv => {
-//                         let newInvoice;
-//                         newInvoice = [...perv.invoice];
-//                         newInvoice[i] = { ...newInvoice[i], totalPrice };
-//                         return { ...perv, invoice: newInvoice };
-//                     });
-//                     refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-//                 }
-//             } else {
-//                 let weight = inputEdit.weight;
-//                 if (weight && Number(weight)) {
-//                     cubicMeters = weight / 2300;
-//                     if (!Number.isInteger(cubicMeters)) {
-//                         cubicMeters = cubicMeters.toFixed(2);
-//                     }
-//                     totalPrice = value * cubicMeters;
-//                     setInputEdit(prev => ({ ...prev, totalPrice }));
-
-//                     refTotalPriceEdit.current.innerHTML = totalPrice.toLocaleString();
-//                 }
-//             }
-//         }
-//     }
 
 //     const handleAddNewInvoice = (e) => {
 //         e.preventDefault();
