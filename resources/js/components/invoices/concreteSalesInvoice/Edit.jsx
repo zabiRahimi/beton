@@ -319,107 +319,107 @@ const Edit = () => {
         refCustomer_id.current.updateData('انتخاب');
     }
 
-        /**
-     * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
-     * @param {*} e 
-     * @param {رف مربوط به تگ نمایش خطا} refErr 
-     */
-        const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', i = null) => {
-            if (i !== null && Number(i) >= 0) {
-                    const addressElemnt = document.getElementById('addressEdit');
-                    const vahedElemnt = document.getElementById('vahedEdit');
-                    addressElemnt.classList.remove('borderRedFB');
-                    refAddressEditError.current.innerHTML = '';
-    
-                    vahedElemnt.classList.remove('borderRedFB');
-                    refVahedEditError.current.innerHTML = '';
-    
+    /**
+ * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
+ * @param {*} e 
+ * @param {رف مربوط به تگ نمایش خطا} refErr 
+ */
+    const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', i = null) => {
+        if (i !== null && Number(i) >= 0) {
+            const addressElemnt = document.getElementById('addressEdit');
+            const vahedElemnt = document.getElementById('vahedEdit');
+            addressElemnt.classList.remove('borderRedFB');
+            refAddressEditError.current.innerHTML = '';
+
+            vahedElemnt.classList.remove('borderRedFB');
+            refVahedEditError.current.innerHTML = '';
+
+        } else {
+            if (!dateAndTime) {
+                e.target.classList.remove('borderRedFB');
+                /**
+                         * دو خط کد زیر برای زمانی است‌ که کلاس مورد
+                         *  نظر بر روی پدر تگهااعمال شده‌است
+                         * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
+                         *  و سپس کلاس را از تگ پدر حذف 
+                         * می‌‌کند، این کدها معمولا برای کامپوننتی
+                         *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
+                        */
+                const parentWithClass = e.target.closest('.borderRedFB');
+                parentWithClass && parentWithClass.classList.remove('borderRedFB');
             } else {
-                if (!dateAndTime) {
-                    e.target.classList.remove('borderRedFB');
-                    /**
-                             * دو خط کد زیر برای زمانی است‌ که کلاس مورد
-                             *  نظر بر روی پدر تگهااعمال شده‌است
-                             * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
-                             *  و سپس کلاس را از تگ پدر حذف 
-                             * می‌‌کند، این کدها معمولا برای کامپوننتی
-                             *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
-                            */
-                    const parentWithClass = e.target.closest('.borderRedFB');
-                    parentWithClass && parentWithClass.classList.remove('borderRedFB');
-                } else {
-                    const element = document.getElementById(idDivDateAndTime);
-                    element.classList.remove('borderRedFB');
-                }
-                refErr.current && (refErr.current.innerHTML = '')
+                const element = document.getElementById(idDivDateAndTime);
+                element.classList.remove('borderRedFB');
             }
+            refErr.current && (refErr.current.innerHTML = '')
         }
-    
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            setLoading(true)
-            await axios.patch(
-                `/api/v1/editConcreteSalesInvoice/${id}`,
-                { ...inputEdit },
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true)
+        await axios.patch(
+            `/api/v1/editConcreteSalesInvoice/${id}`,
+            { ...inputEdit },
+            {
+                headers:
                 {
-                    headers:
-                    {
-                        'X-CSRF-TOKEN': token,
-                        'Content-Type': 'application/json; charset=utf-8'
-                    }
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
                 }
-            ).then((response) => {
-    
-                replaceObject(id, response.data.concreteSalesInvoice);
-                MySwal.fire({
-                    icon: "success",
-                    title: "با موفقیت ویرایش شد",
-                    confirmButtonText: "  متوجه شدم  ",
-                    timer: 3000,
-                    timerProgressBar: true,
-                    customClass: {
-                        timerProgressBar: '--progressBarColorBlue',
-                    },
-                    didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
-                });
-    
-            })
-                .catch(
-                    error => {
-                        if (error.response && error.response.status == 422) {
-    
-                            let id = Object.keys(error.response.data.errors)[0] + 'Edit';
-                            if (id != 'cubicMetersEdit' && id != 'totalPriceEdit' && id != 'ownerIdEdit') {
-                                const element = document.getElementById(id);
-                                let scrollPosition = window.scrollY || window.pageYOffset;
-    
-                                const top = element.getBoundingClientRect().top + scrollPosition - 20;
-                                window.scrollTo({
-                                    top: top,
-                                    behavior: 'smooth'
-                                });
-                            }
-                            Object.entries(error.response.data.errors).map(([key, val]) => {
-                                if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
-                                    document.getElementById(key + 'Edit').classList.add('borderRedFB');
-    
-                                    document.getElementById(key + 'Edit' + 'Error').innerHTML = val;
-                                }
-    
+            }
+        ).then((response) => {
+
+            replaceObject(id, response.data.concreteSalesInvoice);
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ویرایش شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
+                didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
+            });
+
+        })
+            .catch(
+                error => {
+                    if (error.response && error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0] + 'Edit';
+                        if (id != 'cubicMetersEdit' && id != 'totalPriceEdit' && id != 'ownerIdEdit') {
+                            const element = document.getElementById(id);
+                            let scrollPosition = window.scrollY || window.pageYOffset;
+
+                            const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                            window.scrollTo({
+                                top: top,
+                                behavior: 'smooth'
                             });
                         }
-                    }
-                )
-    
-            setLoading(false)
-        }
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
+                                document.getElementById(key + 'Edit').classList.add('borderRedFB');
 
-            /**
-     * هنگامی که کاربر اطلاعات یک مشتری را ویرایش می‌کند
-     * اطلاعات جدید در استیت جایگزین اطلاعات قبلی می‌شود
-     * @param {number} id 
-     * @param {object} newObject 
-     */
+                                document.getElementById(key + 'Edit' + 'Error').innerHTML = val;
+                            }
+
+                        });
+                    }
+                }
+            )
+
+        setLoading(false)
+    }
+
+    /**
+* هنگامی که کاربر اطلاعات یک مشتری را ویرایش می‌کند
+* اطلاعات جدید در استیت جایگزین اطلاعات قبلی می‌شود
+* @param {number} id 
+* @param {object} newObject 
+*/
     const replaceObject = (id, newObject) => {
         setConcreteSalesInvoices(concreteSalesInvoices.map((object) => {
             if (object.id == id) {
@@ -430,55 +430,55 @@ const Edit = () => {
         }));
     };
 
-        /**
-     * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
-     * به صورت دهگان،صدگان و ...
-     * @param {ref} ref 
-     */
-        const formatNubEdit = (input) => {
-            let val,
-                checkDthot,
-                resalt,
-                refCurrent;
-            switch (input) {
-                case 'unitPrice':
-                    resalt = refUnitPriceEdit.current.value.replace(/[\s,]/g, "");
-                    refCurrent = refUnitPriceEdit.current;
-                    break;
-                case 'weight':
-                    resalt = refWeightEdit.current.value.replace(/[\s,]/g, "");
-                    refCurrent = refWeightEdit.current;
-                    break;
-                case 'fare':
-                    resalt = refFareEdit.current.value.replace(/[\s,]/g, "");
-                    refCurrent = refFareEdit.current;
-                    break;
-            }
-            // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
-            if (resalt.slice(-1) == '.') {
-                checkDthot = true;
-            } else {
-                checkDthot = false;
-            }
-            // چک می کند فقط رشته عددی باشد
-            if (parseFloat(resalt)) {
-                val = parseFloat(resalt);
-                /**
-                 * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
-                 * علامت را به آخر رشته اضافه می کند
-                 */
-                val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
-                refCurrent.value = val;
-            }
+    /**
+ * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
+ * به صورت دهگان،صدگان و ...
+ * @param {ref} ref 
+ */
+    const formatNubEdit = (input) => {
+        let val,
+            checkDthot,
+            resalt,
+            refCurrent;
+        switch (input) {
+            case 'unitPrice':
+                resalt = refUnitPriceEdit.current.value.replace(/[\s,]/g, "");
+                refCurrent = refUnitPriceEdit.current;
+                break;
+            case 'weight':
+                resalt = refWeightEdit.current.value.replace(/[\s,]/g, "");
+                refCurrent = refWeightEdit.current;
+                break;
+            case 'fare':
+                resalt = refFareEdit.current.value.replace(/[\s,]/g, "");
+                refCurrent = refFareEdit.current;
+                break;
         }
-
+        // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
+        if (resalt.slice(-1) == '.') {
+            checkDthot = true;
+        } else {
+            checkDthot = false;
+        }
+        // چک می کند فقط رشته عددی باشد
+        if (parseFloat(resalt)) {
+            val = parseFloat(resalt);
             /**
-    * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
-    * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
-    * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
-    * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
-    * @param {number} id 
-    */
+             * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
+             * علامت را به آخر رشته اضافه می کند
+             */
+            val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
+            refCurrent.value = val;
+        }
+    }
+
+    /**
+* اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
+* کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
+* اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
+* ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
+* @param {number} id 
+*/
     const htmlFor = (id) => {
         document.getElementById(id).focus()
     }
@@ -518,8 +518,503 @@ const Edit = () => {
     }
 
     return (
-        <div className=''>
-            edit
+        <div ref={container}>
+            <form>
+                <div>
+                    <div className="containerCSI_FB">
+                        <div className="sectionFB">
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label>شماره قبض </label>
+                                    <div className="mainTicketNumberACSI_FB">
+                                        <div className="ticketNumberACSI_FB">
+                                            {id}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="errorContainerFB elementError" > </div>
+                            </div>
+                        </div>
+                        <div className="sectionFB">
+                            <div className="containerInputFB">
+                                <div className="divInputFB ">
+                                    <label htmlFor="day"> ساعت </label>
+                                    <div className="divDateBirth">
+                                        <div className="divUpDateAcus element" id='timeEdit'
+                                        >
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputDayTDACus element"
+                                                placeholder="00"
+                                                id="hourEdit"
+                                                value={time.second || ''}
+                                                onInput={(e) => handleSetTime(e, 0, 'second')}
+                                                onFocus={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
+
+                                            />
+                                            <span>:</span>
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputMonthTDACus element"
+                                                placeholder="00"
+                                                value={time.minute || ''}
+                                                onInput={(e) => handleSetTime(e, 0, 'minute')}
+                                                onFocus={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
+
+                                            />
+                                            <span>:</span>
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputYearTDACus element"
+                                                placeholder="00"
+                                                value={time.hour || ''}
+                                                onInput={(e) => { handleSetTime(e, 0, 'hour') }}
+                                                onFocus={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
+                                            />
+                                            <i className="icofont-ui-rating starFB" />
+                                        </div>
+
+                                        <div className="divDownDateAcus" >
+                                            <select
+                                                className="element"
+                                                value={time.second}
+                                                onChange={(e) => handleSetTime(e, 0, 'second')}
+                                                onClick={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
+                                            >
+                                                <option value=""> ثانیه </option>
+                                                {optionSeconds}
+                                            </select>
+                                            <select
+                                                className="element"
+                                                value={time.minute}
+                                                onChange={(e) => handleSetTime(e, 0, 'minute')}
+                                                onClick={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
+                                            >
+                                                <option value=""> دقیقه </option>
+                                                {optionMinutes}
+                                            </select>
+                                            <select
+                                                className="element"
+                                                value={time.hour}
+                                                onChange={(e) => { handleSetTime(e, 0, 'hour') }}
+                                                onClick={(e) => clearInputError(e, refTimeEditError, true, 'timeEdit')}
+                                            >
+                                                <option value=""> ساعت </option>
+                                                {optionHours}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="errorContainerFB elementError" id='timeEditError' ref={refTimeEditError}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB ">
+                                    <label htmlFor="day">تاریخ  </label>
+                                    <div className="divDateBirth">
+                                        <div className="divUpDateAcus element" id="dateEdit"
+                                        >
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputDayTDACus element"
+                                                placeholder="1"
+                                                id="day"
+                                                value={date.day || ''}
+                                                onInput={(e) => handleSetDate(e, 0, 'day')}
+                                                onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputMonthTDACus element"
+                                                placeholder="1"
+                                                value={date.month || ''}
+                                                onInput={(e) => handleSetDate(e, 0, 'month')}
+                                                onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="text"
+                                                className="inputTextDateACus inputYearTDACus element"
+                                                placeholder="1300"
+                                                value={date.year || ''}
+                                                onInput={(e) => { handleSetDate(e, 0, 'year') }}
+                                                onFocus={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
+                                            />
+                                            <i className="icofont-ui-rating starFB" />
+                                        </div>
+
+                                        <div className="divDownDateAcus" >
+                                            <select
+                                                className="element"
+                                                value={date.day}
+                                                onChange={(e) => handleSetDate(e, 0, 'day')}
+                                                onClick={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
+                                            >
+                                                <option value="">روز</option>
+                                                {optionDays}
+                                            </select>
+                                            <select
+                                                className="element"
+                                                value={date.month}
+                                                onChange={(e) => handleSetDate(e, 0, 'month')}
+                                                onClick={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
+
+                                            >
+                                                <option value="">ماه</option>
+                                                {optionMonth}
+                                            </select>
+                                            <select
+                                                className="element"
+                                                value={date.year}
+                                                onChange={(e) => { handleSetDate(e, 0, 'year') }}
+                                                onClick={(e) => clearInputError(e, refDateEditError, true, 'dateEdit')}
+                                            >
+                                                <option value="">سال</option>
+                                                {optionShortYears}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="errorContainerFB elementError" id='dateEditError' ref={refDateEditError}> </div>
+                            </div>
+                        </div>
+                        <div className="sectionFB">
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='concrete_idEdit'> عیار بتن </label>
+                                    <div
+                                        id='concrete_idEdit'
+                                        className="element"
+                                        onClick={e => { setInvoiceIndexForConcrete(0); clearInputError(e, refConcrete_idEditError) }}
+                                    >
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={concretes}
+                                            saveOption={setConcreteId}
+                                            ref={refConcrete_idEdit}
+                                        />
+                                    </div>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div className="errorContainerFB elementError" id='concrete_idEditError' ref={refConcrete_idEditError}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='unitPriceEdit'> قیمت واحد بتن (مترمکعب) </label>
+                                    <input
+                                        type="text"
+                                        id='unitPriceEdit'
+                                        className="inputTextUnitFB ltrFB element"
+                                        defaultValue={inputEdit.unitPrice}
+                                        ref={refUnitPriceEdit}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'unitPrice', 0);
+                                            formatNubEdit('unitPrice');
+                                            handleTotalPriceCalculation(e, '', 'unitPrice');
+                                        }
+                                        }
+                                        onFocus={e => clearInputError(e, refUnitPriceEditError)}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('unitPriceEdit')}
+                                    >
+                                        تومان
+                                    </span>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id='unitPriceEditError'
+                                    ref={refUnitPriceEditError}
+                                >
+                                </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='weightEdit'> وزن خالص بار </label>
+                                    <input
+                                        type="text"
+                                        id='weightEdit'
+                                        className="inputTextUnitFB ltrFB element"
+                                        defaultValue={inputEdit.weight}
+                                        ref={refWeightEdit}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'weight', 0);
+                                            formatNubEdit('weight');
+                                            handleCubicMetersCalculation(e);
+                                            handleTotalPriceCalculation(e, '', 'weight');
+                                        }
+                                        }
+                                        onFocus={e => clearInputError(e, refWeightEditError)}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('weightEdit')}
+                                    >
+                                        کیلو گرم
+                                    </span>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id='weightEditError'
+                                    ref={refWeightEditError}
+                                >
+                                </div>
+                            </div>
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label> حجم بار </label>
+                                    <div className="mainCubicMetersACSL_FB">
+                                        <div className="cubicMetersACSL_FB"
+                                            ref={refCubicMetersEdit}>{inputEdit.cubicMeters}</div>
+                                        <span className="spanCubicMetersACSL_FB">
+                                            متر مکعب
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='cementStore_idEdit'> سیلوی سیمان </label>
+                                    <div
+                                        id='cementStore_idEdit'
+                                        className="element"
+                                        onClick={e => { clearInputError(e, refCementStore_idEditError); }}
+                                    >
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={cementStores}
+                                            saveOption={setCementStoreId}
+                                            ref={refCementStore_idEdit}
+                                        />
+                                    </div>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id='cementStore_idEditError'
+                                    ref={refCementStore_idEditError}
+                                > </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label> قیمت کل </label>
+                                    <div className="mainTotalPriceACSL_FB">
+                                        <div className="totalPriceACSL_FB"
+                                            ref={refTotalPriceEdit}
+                                        >
+                                        </div>
+                                        <span className="spanTotalPriceACSL_FB">
+                                            تومان
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="sectionFB">
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='truck_idEdit'> میکسر </label>
+                                    <div
+                                        id='truck_idEdit'
+                                        className="element"
+                                        onClick={e => { clearInputError(e, refTruck_idEditError); setInvoiceIndexForMixer(0) }}
+                                    >
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={mixers}
+                                            saveOption={setTruckId}
+                                            saveOption2={setOwnerId}
+                                            ref={refTruck_idEdit}
+                                        />
+                                    </div>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id='refTruck_idEditError'
+                                    ref={refTruck_idEditError}
+                                > </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='driver_idEdit'> راننده </label>
+                                    <div
+                                        id='driver_idEdit'
+                                        className="element"
+                                        onClick={e => { setInvoiceIndexForDriver(0); clearInputError(e, refDriver_idEditError); }}
+                                    >
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={drivers}
+                                            saveOption={setDriverId}
+                                            ref={refDriver_idEdit}
+                                        />
+                                    </div>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id='driver_idEditError'
+                                    ref={refDriver_idEditError}
+                                > </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='fareEdit'> کرایه میکسر </label>
+                                    <input
+                                        type="text"
+                                        id='fareEdit'
+                                        className="inputTextUnitFB ltrFB element"
+                                        defaultValue={inputEdit.fare}
+                                        ref={refFareEdit}
+                                        onInput={e => {
+                                            handleSaveValInput(e, 'fare', 0);
+                                            formatNubEdit('fare');
+                                        }
+                                        }
+                                        onFocus={e => clearInputError(e, refFareEditError)}
+                                    />
+                                    <span
+                                        className="unitFB"
+                                        onClick={() => htmlFor('fareEdit')}
+                                    >
+                                        تومان
+                                    </span>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id='fareEditError'
+                                    ref={refFareEditError}
+                                >
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="sectionFB">
+                            <div className="containerInputFB">
+                                <div className="divInputCheckboxFB">
+                                    <input
+                                        type="checkbox"
+                                        id='emamEdit'
+                                        className="inputCheckboxFB  element pointerFB"
+                                        onChange={e => {
+                                            handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeliEdit(e, `emam`);
+                                            clearInputError(e, '', false, '', 0);
+                                        }}
+                                        checked={checkedMaskanMeliEdit == `emam`}
+                                        ref={refCheckBaxEmamEdit}
+                                    />
+                                    <label htmlFor='emamEdit'
+                                        className={`labelCheckboxFB pointerFB  ${checkedMaskanMeliEdit != 'emam' && 'inactiveLabelCSI_FB'}`}
+                                        id={`labelEmam`}>مسکن ملی (شهرک امام خمینی) </label>
+                                </div>
+                                <div className="errorContainerFB elementError" > </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputCheckboxFB">
+                                    <input
+                                        type="checkbox"
+                                        id='shahidEdit'
+                                        className="inputCheckboxFB  element pointerFB"
+                                        value={refCheckedMaskanShahidEdit && refCheckedMaskanShahidEdit.current ? 'مسکن ملی شهرک شهید رییسی' : ''}
+                                        onChange={e => {
+                                            handleSaveValInput(e, 'maskanMeli', 0, true); handleCheckedMaskanMeliEdit(e, `shahid`);
+                                            clearInputError(e, '', false, '', 0);
+                                        }}
+                                        checked={checkedMaskanMeliEdit == `shahid`}
+                                        ref={refCheckBaxShahidEdit}
+                                    />
+                                    <label htmlFor='shahidEdit'
+                                        className={`labelCheckboxFB pointerFB ${checkedMaskanMeliEdit != `shahid` && 'inactiveLabelCSI_FB'}`}
+                                    >مسکن ملی (شهرک شهید رئیسی) </label>
+                                </div>
+                                <div className="errorContainerFB elementError" > </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='vahedEdit' className={`${(checkedMaskanMeliEdit != 'emam' && checkedMaskanMeliEdit != 'shahid') && 'inactiveLabelCSI_FB'}`}>شماره واحد </label>
+                                    <input
+                                        type="text"
+                                        id='vahedEdit'
+                                        className="inputTextFB ltrFB element"
+                                        defaultValue={inputEdit.vahed}
+                                        onInput={e => handleSaveValInput(e, 'vahed', 0)}
+                                        onFocus={(e) => clearInputError(e, refVahedEditError)}
+                                        disabled={checkedMaskanMeliEdit != 'emam' && checkedMaskanMeliEdit != 'shahid'}
+                                    />
+                                </div>
+                                <div className="errorContainerFB elementError" id='vahedEditError' ref={refVahedEditError}> </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='addressEdit'>آدرس</label>
+                                    <textarea
+                                        id='addressEdit'
+                                        className="textareaAddressCSI_FB element"
+                                        defaultValue={inputEdit.address}
+                                        onInput={e => handleSaveValInput(e, 'address', 0)}
+                                        onFocus={(e) => clearInputError(e, refAddressEditError)}
+
+                                    />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id='addressEditError'
+                                    ref={refAddressEditError}
+                                > </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='concretingPositionEdit' >موقعیت بتن‌ریزی </label>
+                                    <textarea
+                                        id='concretingPositionEdit'
+                                        className="textareaAddressCSI_FB element"
+                                        defaultValue={inputEdit.concretingPosition}
+                                        onInput={e => handleSaveValInput(e, 'concretingPosition', 0)}
+                                        onFocus={(e) => clearInputError(e, refConcretingPositionEditError)}
+
+                                    />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id='concretingPositionEditError'
+                                    ref={refConcretingPositionEditError}
+                                > </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div className={`sectionFB divBtnsFB ${!editMode ? 'hideGe' : ''}`}>
+                    <Button
+                        variant="info"
+                        className="btnSaveFB"
+                        onClick={handleSubmitEdit}
+                    >
+                        ویرایش
+                    </Button>
+                </div>
+            </form>
         </div>
     )
 }

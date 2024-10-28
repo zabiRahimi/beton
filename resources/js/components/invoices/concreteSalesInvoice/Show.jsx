@@ -157,6 +157,46 @@ const Show = () => {
                 displayBtnAdd={true}
                 displayBtnShow={false}
             />
+            {/* //    <div                 className={`containerShowGe containerShowCustomer  ${hideCreatedRecord ? 'hideGe' : ''}`}
+//                     ref={containerShowGeRef}
+//                 >
+//                     <h4 className="titleShowGe"> فاکتورهای ایجاد شده</h4>
+//                     <div className="divListShowGe">
+//                         <AddCocreteSalesInvoiceSearch
+//                             getConcreteSalesInvoices={getConcreteSalesInvoices}
+//                             handelSetDataSearch={handelSetDataSearch}
+//                             concretes={concretes}
+//                             totalRecords={totalRecords}
+//                         />
+
+//                         <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
+//                             <span className="rowNumShowACSI_Ge ">ردیف</span>
+//                             <span className="ticketNumberACSI_Ge ">قبض</span>
+//                             <span className="customerHeadACSI_Ge">خریدار</span>
+//                             <span className="concreteACSI_Ge textAlignCenter"> بتن</span>
+
+//                             <span className="truckACSI_Ge textAlignCenter">میکسر</span>
+//                             <span className="driverHeadACSI_Ge">راننده</span>
+//                             <span className="dateACSI_Ge textAlignCenter">تاریخ</span>
+//                             <span className="timeACSI_Ge textAlignCenter">ساعت</span>
+
+//                             <span className="editHeadShowACSI_Ge"> ویرایش  </span>
+//                             <span className="delHeadShowACSI_Ge"> حذف </span>
+//                         </div>
+//                         {concreteSalesInvoices ? returnCreatedCustomerRecords() : <Skeleton height={40} count={12} />}
+//                         <Pagination
+//                             className="pagination-bar"
+//                             currentPage={currentPage}
+//                             totalPage={totalPage}
+//                             siblingCount={3}
+//                             onPageChange={page => { setCurrentPage(page); getConcreteSalesInvoices(page) }}
+//                         />
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     )
+// } */}
         </div>
     )
 }
