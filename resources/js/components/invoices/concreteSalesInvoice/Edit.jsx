@@ -1,12 +1,39 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Edit = () => {
+    const refTimeEditError = useRef(null);
+    const refDateEditError = useRef(null);
+    const refConcrete_idEdit = createRef();
+    const refConcrete_idEditError = useRef(null);
+    const refUnitPriceEdit = useRef(null);
+    const refUnitPriceEditError = useRef(null);
+    const refWeightEdit = useRef(null);
+    const refWeightEditError = useRef(null);
+    const refCubicMetersEdit = useRef(null);
+    const refCementStore_idEdit = useRef(null);
+    const refCementStore_idEditError = useRef(null);
+    const refTotalPriceEdit = useRef(null);
+    const refTruck_idEdit = useRef(null);
+    const refTruck_idEditError = useRef(null);
+    const refDriver_idEdit = useRef(null);
+    const refDriver_idEditError = useRef(null);
+    const refFareEdit = useRef(null);
+    const refFareEditError = useRef(null);
+    const refCheckBaxEmamEdit = useRef(null);
+    const refCheckBaxShahidEdit = useRef(null);
+    const refVahedEditError = useRef(null);
+    const refAddressEditError = useRef(null);
+    const refConcretingPositionEditError = useRef(null);
+    const refCheckedMaskanShahidEdit = useRef(null);
+
     const [customerId, setCustomerId] = useState('');
     const [concreteId, setConcreteId] = useState('');
     const [truckId, setTruckId] = useState('');
     const [ownerId, setOwnerId] = useState('');
     const [driverId, setDriverId] = useState('');
     const [cementStoreId, setCementStoreId] = useState('');
+    const [checkedMaskanMeliEdit, setCheckedMaskanMeliEdit] = useState('');
+
     /**
        * id to edit the model
       */

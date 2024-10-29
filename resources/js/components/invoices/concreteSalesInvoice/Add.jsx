@@ -19,10 +19,18 @@ import SearchCustomersSelect from "../searchSelectZabi/addConcreteSalesInvoiceSe
 import SearchMixersSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixersSelect";
 import SearchDriversSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchDriversSelect";
 
-import Pagination from "../../hooks/Pagination";
-import AddCocreteSalesInvoiceSearch from "../../search/AddConcreteSalesInvoiceSearch";
 import RouteService from "./RouteService";
-import Helper from './helper/AddHelper';
+import {
+    clearInputError,
+    htmlFor,
+    formatNub,
+    handleCheckedMaskanMeli,
+    handleCubicMetersCalculation,
+    handleTotalPriceCalculation,
+    handleAddNewInvoice,
+    handleDelInvoice,
+    handleRemoveAllError
+} from './helper/AddHelper';
 
 const Add = () => {
     const [loading, setLoading] = useState(false);
@@ -35,49 +43,13 @@ const Add = () => {
         optionMinutes,
         optionSeconds,
     } = DataZabi();
-
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
     const container = useRef(null);
-    const btnAddGeRef = useRef(null);
-    const btnGetGeRef = useRef(null);
-
     const form = useRef(null);
     const formCurrent = form.current;
-
     const refCustomer_id = useRef(null);
     const refCustomer_idError = useRef(null);
-
-    const refTimeEditError = useRef(null);
-    const refDateEditError = useRef(null);
-    const refConcrete_idEdit = createRef();
-    const refConcrete_idEditError = useRef(null);
-    const refUnitPriceEdit = useRef(null);
-    const refUnitPriceEditError = useRef(null);
-    const refWeightEdit = useRef(null);
-    const refWeightEditError = useRef(null);
-    const refCubicMetersEdit = useRef(null);
-    const refCementStore_idEdit = useRef(null);
-    const refCementStore_idEditError = useRef(null);
-    const refTotalPriceEdit = useRef(null);
-    const refTruck_idEdit = useRef(null);
-    const refTruck_idEditError = useRef(null);
-    const refDriver_idEdit = useRef(null);
-    const refDriver_idEditError = useRef(null);
-    const refFareEdit = useRef(null);
-    const refFareEditError = useRef(null);
-    const refCheckBaxEmamEdit = useRef(null);
-    const refCheckBaxShahidEdit = useRef(null);
-    const refVahedEditError = useRef(null);
-    const refAddressEditError = useRef(null);
-    const refConcretingPositionEditError = useRef(null);
-
     const nationalCodeErrorRef = useRef(null);
-
-    const hasCalledGetConcreteSalesInvoices = useRef(false);
-
-    const refCheckedMaskanShahidEdit = useRef(null);
-
     const [date, setDate] = useState({
         day: '',
         month: '',
@@ -90,20 +62,13 @@ const Add = () => {
     });
 
     const [refInvoice, setRefInvoice] = useState({});
-    const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
     const [ticketNumber, setTicketNumber] = useState('');
     const [isRef, setIsRef] = useState(false);
-    /**
-    * ############### states for paginate
-    */
-    const [totalPage, setTotalPage] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalRecords, setTotalRecords] = useState(0);
 
     /**
- * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
- * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
- */
+      * اندیس فاکتوری که کاربر در حال تکمیل آن است را ذخیره می‌کند
+      * برای ذخیره مقادیر سلکت‌ها در کلیدهای خودشان
+    */
     const [invoiceIndexForConcrete, setInvoiceIndexForConcrete] = useState('');
     const [invoiceIndexForMixer, setInvoiceIndexForMixer] = useState('');
     const [invoiceIndexForDriver, setInvoiceIndexForDriver] = useState('');
@@ -115,12 +80,11 @@ const Add = () => {
     const [driverId, setDriverId] = useState('');
     const [cementStoreId, setCementStoreId] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState();
-    const [checkedMaskanMeliEdit, setCheckedMaskanMeliEdit] = useState('');
 
     /**
- * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
- * جهت جایگذاری مقادیر پیش فرض المنت ها از استیت‌های زیر استفاده می‌شود
- */
+      * هنگامی که کاربر مبادرت به ایجاد فاکتور جدید می‌کند
+      * جهت جایگذاری مقادیر پیش فرض المنت ها از استیت‌های زیر استفاده می‌شود
+    */
     const [isNewInvoice, setIsNewInvoice] = useState(false);
     const [indexNewInvoice, setIndexNewInvoice] = useState('');
     const [concreteName, setConcreteName] = useState('');
@@ -568,44 +532,6 @@ const Add = () => {
         }
     }
 
-    const{clearInputError, htmlFor}=Helper();
-
-//     /**
-//  * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
-//  * @param {*} e 
-//  * @param {رف مربوط به تگ نمایش خطا} refErr 
-//  */
-//     const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', i = null) => {
-//         if (i !== null && Number(i) >= 0) {
-//             const addressElemnt = document.getElementById(`invoice.${i}.address`);
-//             const vahedElemnt = document.getElementById(`invoice.${i}.vahed`);
-
-//             addressElemnt.classList.remove('borderRedFB');
-//             refInvoice[`addressError${i}`].current.innerHTML = '';
-
-//             vahedElemnt.classList.remove('borderRedFB');
-//             refInvoice[`vahedError${i}`].current.innerHTML = '';
-//         } else {
-//             if (!dateAndTime) {
-//                 e.target.classList.remove('borderRedFB');
-//                 /**
-//                          * دو خط کد زیر برای زمانی است‌ که کلاس مورد
-//                          *  نظر بر روی پدر تگهااعمال شده‌است
-//                          * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
-//                          *  و سپس کلاس را از تگ پدر حذف 
-//                          * می‌‌کند، این کدها معمولا برای کامپوننتی
-//                          *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
-//                         */
-//                 const parentWithClass = e.target.closest('.borderRedFB');
-//                 parentWithClass && parentWithClass.classList.remove('borderRedFB');
-//             } else {
-//                 const element = document.getElementById(idDivDateAndTime);
-//                 element.classList.remove('borderRedFB');
-//             }
-//             refErr.current && (refErr.current.innerHTML = '')
-//         }
-//     }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
@@ -625,7 +551,6 @@ const Add = () => {
                 setConcreteSalesInvoices(prev => [invoice, ...prev]);
             });
             setTicketNumber(ticketNumber + resutl.length);
-            setTotalRecords(totalRecords + resutl.length)
 
             form.current.reset();
             MySwal.fire({
@@ -676,241 +601,7 @@ const Add = () => {
         setLoading(false)
     }
 
-    /**
-* برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
-* به صورت دهگان،صدگان و ...
-* @param {ref} ref 
-*/
-    const formatNub = (input, i) => {
-        let val,
-            checkDthot,
-            resalt,
-            refCurrent;
-        switch (input) {
-            case 'weight':
-                resalt = refInvoice[`weight${i}`].current.value.replace(/[\s,]/g, "");
-                refCurrent = refInvoice[`weight${i}`].current;
-                break;
-            case 'unitPrice':
-                resalt = refInvoice[`unitPrice${i}`].current.value.replace(/[\s,]/g, "");
-                refCurrent = refInvoice[`unitPrice${i}`].current;
-                break;
-            case 'totalPrice':
-                resalt = refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
-                refCurrent = refInvoice[`totalPrice${i}`].current;
-                break;
-            case 'fare':
-                resalt = refInvoice[`fare${i}`].current.value.replace(/[\s,]/g, "");
-                refCurrent = refInvoice[`fare${i}`].current;
-                break;
-        }
-        // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
-        if (resalt.slice(-1) == '.') {
-            checkDthot = true;
-        } else {
-            checkDthot = false;
-        }
-        // چک می کند فقط رشته عددی باشد
-        if (parseFloat(resalt)) {
-            val = parseFloat(resalt);
-            /**
-             * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
-             * علامت را به آخر رشته اضافه می کند
-             */
-            val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
-            refCurrent.value = val;
-        }
-    }
 
-//     /**
-// * اگر دقت شود در این‌پوت‌های دریافت وزن‌ها و قیمت بتن، واحدها به صورت
-// * کیلوگرم و تومان اضافه شدن که درواقع جزیی از این پوت نیستن برای اینکه
-// * اگر احتمالا کاربر برروی این واحدها کلید کرد فوکوس در این‌پوت مربوطه
-// * ایجاد شود از این متد استفاده می‌شود، برای تجربه کاربری بهتر
-// * @param {number} id 
-// */
-//     const htmlFor = (id) => {
-//         document.getElementById(id).focus()
-//     }
-
-    const handleCheckedMaskanMeli = (e, value, i) => {
-        let checked;
-        if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
-            const copyMaskan = [...maskan];
-            copyMaskan[i] = '';
-            copyMaskan[maskan.length - 1] = '';
-            setMaskan(copyMaskan);
-            checked = false;
-            const checkbox = e.target;
-            checkbox.checked = !checkbox.checked;
-            setCheckedValue('');
-        } else if (value == `shahid${i}` && isChecked && checkedValue == 'مسکن ملی شهرک شهید رییسی') {
-            const copyMaskan = [...maskan];
-            copyMaskan[i] = '';
-            copyMaskan[maskan.length - 1] = '';
-            setMaskan(copyMaskan);
-            checked = false;
-            const checkbox = e.target;
-            checkbox.checked = !checkbox.checked;
-            setCheckedValue('');
-        }
-        else {
-            if (value == `emam${i}`) {
-                checked = refInvoice[`checkedMaskanEmam${i}`].current;
-            } else if (value == `shahid${i}`) {
-                checked = refInvoice[`checkedMaskanShahid${i}`].current;
-            }
-
-            if (value == `emam${i}`) {
-                refInvoice[`checkedMaskanEmam${i}`].current = !checked;
-                refInvoice[`checkedMaskanShahid${i}`].current = true;
-            } else if (value == `shahid${i}`) {
-                refInvoice[`checkedMaskanShahid${i}`].current = !checked;
-                refInvoice[`checkedMaskanEmam${i}`].current = true;
-            }
-        }
-
-        if (checked) {
-            setCheckedMaskanMeli(value);
-
-        } else {
-            setCheckedMaskanMeli('');
-        }
-        setIsChecked(false)
-    }
-
-    const handleCubicMetersCalculation = (e, i = null) => {
-        let { value } = e.target;
-        value = value.replace(/,/g, '');
-        let cubicMeters = value / 2300;
-        cubicMeters = Number(cubicMeters);
-        if (!Number.isInteger(cubicMeters)) {
-            cubicMeters = cubicMeters.toFixed(2);
-        }
-        refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
-        setInput(perv => {
-            let newInvoice;
-            newInvoice = [...perv.invoice];
-            newInvoice[i] = { ...newInvoice[i], cubicMeters };
-            return { ...perv, invoice: newInvoice };
-        });
-    }
-
-    const handleTotalPriceCalculation = (e, i, element) => {
-        let cubicMeters,
-            totalPrice,
-            { value } = e.target;
-        value = value.replace(/,/g, '');
-        value = Number(value);
-
-        if (element == 'weight') {
-            cubicMeters = value / 2300;
-            if (!Number.isInteger(cubicMeters)) {
-                cubicMeters = cubicMeters.toFixed(2);
-            }
-            let unitPrice = input.invoice[i].unitPrice;
-            if (Number.isInteger(Number(unitPrice))) {
-                totalPrice = unitPrice * cubicMeters;
-                setInput(perv => {
-                    let newInvoice;
-                    newInvoice = [...perv.invoice];
-                    newInvoice[i] = { ...newInvoice[i], totalPrice };
-                    return { ...perv, invoice: newInvoice };
-                });
-                refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-            }
-
-        } else if (element == 'unitPrice') {
-            let weight = input.invoice[i].weight;
-            if (weight && Number(weight)) {
-                cubicMeters = weight / 2300;
-                if (!Number.isInteger(cubicMeters)) {
-                    cubicMeters = cubicMeters.toFixed(2);
-                }
-                totalPrice = value * cubicMeters;
-                setInput(perv => {
-                    let newInvoice;
-                    newInvoice = [...perv.invoice];
-                    newInvoice[i] = { ...newInvoice[i], totalPrice };
-                    return { ...perv, invoice: newInvoice };
-                });
-                refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-            }
-        }
-    }
-
-    const handleAddNewInvoice = (e) => {
-        e.preventDefault();
-        setIndexNewInvoice(invoice.length);
-        setInvoice([...invoice, sampleInvoice]);
-        setIsNewInvoice(true);
-        let date = handleSetDateForNewInvoice();
-        let concrete_id = handleSetConcreteForNewInvoice();
-        let maskanMeli = handleSetMaskanMeliForNewInvoice();
-        let cementStore_id = handleSetCementStoreForNewInvoice();
-        setInput(perv => {
-            let newInvoice = [...perv.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
-
-            return { ...perv, invoice: newInvoice };
-        });
-
-        handleClearTime();
-        setIsChecked(true)
-    }
-
-    const handleClearTime = () => {
-        setTime({
-            second: '',
-            minute: '',
-            hour: ''
-        });
-    }
-
-    const handleSetDateForNewInvoice = () => {
-        let valDate = date.year + '-' + date.month + '-' + date.day;
-        return valDate;
-    }
-
-    const handleSetConcreteForNewInvoice = () => {
-        let concrete_id = input.invoice[invoice.length - 1].concrete_id;
-        concrete_id && (setConcreteName(concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']));
-        return concrete_id;
-    }
-
-    const handleSetCementStoreForNewInvoice = () => {
-        let cementStore_id = input.invoice[invoice.length - 1].cementStore_id;
-        cementStore_id && (setCementStoreName(cementStores.filter(cementStore => cementStore.value == cementStore_id)[0]['cementStoreName']));
-        return cementStore_id;
-    }
-
-    const handleSetMaskanMeliForNewInvoice = () => {
-        let maskanMeli = input.invoice[invoice.length - 1].maskanMeli;
-        const copyMaskan = [...maskan];
-        copyMaskan[maskan.length - 1] = maskanMeli;
-        setMaskan(copyMaskan);
-        setCheckedValue(maskanMeli);
-        return maskanMeli;
-    }
-
-    const handleDelInvoice = (i) => {
-        const updatedInputInvoice = input.invoice.slice(0, -1);
-        const updatedInvoice = invoice.slice(0, -1);
-        setInvoice(updatedInvoice);
-        setInput({ ...input, invoice: updatedInputInvoice });
-    }
-
-    const handleRemoveAllError = () => {
-        var elements = document.getElementsByClassName('element');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('borderRedFB');
-        }
-
-        var elements = document.getElementsByClassName('elementError');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = '';
-        }
-
-    }
 
     const handleRemoveErrorCustomer = () => {
         document.getElementById('customer_id').classList.remove('borderRedFB');
@@ -935,7 +626,7 @@ const Add = () => {
                                     <div
                                         id="customer_id"
                                         className="element"
-                                        onClick={e => clearInputError(e, refCustomer_idError)}
+                                        onClick={e => clearInputError(e, refCustomer_idError, refInvoice)}
                                     >
                                         <SelectZabi2
                                             primaryLabel='انتخاب'
@@ -955,7 +646,7 @@ const Add = () => {
                             </div>
                         </div>
                         {invoice.map((inv, i) => (
-                             <div key={i}>
+                            <div key={i}>
                                 <div className="containerCSI_FB">
                                     <div className="sectionFB">
                                         <div className="containerInputFB">
@@ -998,7 +689,7 @@ const Add = () => {
                                                             className="inputTextDateACus inputDayTDACus element"
                                                             placeholder="00"
                                                             onInput={(e) => handleSetTime(e, i, 'second')}
-                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], refInvoice, true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondInput${i}`]}
                                                         />
                                                         <span>:</span>
@@ -1007,7 +698,7 @@ const Add = () => {
                                                             className="inputTextDateACus inputMonthTDACus element"
                                                             placeholder="00"
                                                             onInput={(e) => handleSetTime(e, i, 'minute')}
-                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], refInvoice, true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`minuteInput${i}`]}
                                                         />
                                                         <span>:</span>
@@ -1016,7 +707,7 @@ const Add = () => {
                                                             className="inputTextDateACus inputYearTDACus element"
                                                             placeholder="00"
                                                             onInput={(e) => { handleSetTime(e, i, 'hour') }}
-                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`timeError${i}`], refInvoice, true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`hourInput${i}`]}
                                                         />
                                                         <i className="icofont-ui-rating starFB" />
@@ -1025,7 +716,7 @@ const Add = () => {
                                                         <select
                                                             className="element"
                                                             onChange={(e) => handleSetTime(e, i, 'second')}
-                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], refInvoice, true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`secondSelect${i}`]}
                                                         >
                                                             <option value=""> ثانیه </option>
@@ -1034,7 +725,7 @@ const Add = () => {
                                                         <select
                                                             className="element"
                                                             onChange={(e) => handleSetTime(e, i, 'minute')}
-                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], refInvoice, true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`minuteSelect${i}`]}
                                                         >
                                                             <option value=""> دقیقه </option>
@@ -1043,7 +734,7 @@ const Add = () => {
                                                         <select
                                                             className="element"
                                                             onChange={(e) => { handleSetTime(e, i, 'hour') }}
-                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], true, `invoice.${i}.time`)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`timeError${i}`], refInvoice, true, `invoice.${i}.time`)}
                                                             ref={refInvoice[`hourSelect${i}`]}
                                                         >
                                                             <option value=""> ساعت </option>
@@ -1067,7 +758,7 @@ const Add = () => {
                                                             id="day"
                                                             defaultValue={date.day}
                                                             onInput={(e) => handleSetDate(e, i, 'day')}
-                                                            onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], refInvoice, true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`dayInput${i}`]}
                                                         />
                                                         <span>/</span>
@@ -1077,7 +768,7 @@ const Add = () => {
                                                             placeholder="1"
                                                             defaultValue={date.month}
                                                             onInput={(e) => handleSetDate(e, i, 'month')}
-                                                            onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], refInvoice, true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`monthInput${i}`]}
                                                         />
                                                         <span>/</span>
@@ -1087,7 +778,7 @@ const Add = () => {
                                                             placeholder="1300"
                                                             defaultValue={date.year}
                                                             onInput={(e) => { handleSetDate(e, i, 'year') }}
-                                                            onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
+                                                            onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], refInvoice, true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`yearInput${i}`]}
                                                         />
                                                         <i className="icofont-ui-rating starFB" />
@@ -1097,7 +788,7 @@ const Add = () => {
                                                             className="element"
                                                             defaultValue={date.day}
                                                             onChange={(e) => handleSetDate(e, i, 'day')}
-                                                            onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], refInvoice, true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`daySelect${i}`]}
                                                         >
                                                             <option value="">روز</option>
@@ -1107,7 +798,7 @@ const Add = () => {
                                                             className="element"
                                                             defaultValue={date.month}
                                                             onChange={(e) => handleSetDate(e, i, 'month')}
-                                                            onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], refInvoice, true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`monthSelect${i}`]}
                                                         >
                                                             <option value="">ماه</option>
@@ -1117,7 +808,7 @@ const Add = () => {
                                                             className="element"
                                                             defaultValue={date.year}
                                                             onChange={(e) => { handleSetDate(e, i, 'year') }}
-                                                            onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], true, `invoice.${i}.date`)}
+                                                            onClick={(e) => clearInputError(e, refInvoice[`dateError${i}`], refInvoice, true, `invoice.${i}.date`)}
                                                             ref={refInvoice[`yearSelect${i}`]}
                                                         >
                                                             <option value="">سال</option>
@@ -1136,7 +827,7 @@ const Add = () => {
                                                 <div
                                                     id={`invoice.${i}.concrete_id`}
                                                     className="element"
-                                                    onClick={e => { setInvoiceIndexForConcrete(i); clearInputError(e, refInvoice[`concrete_idError${i}`]) }}
+                                                    onClick={e => { setInvoiceIndexForConcrete(i); clearInputError(e, refInvoice[`concrete_idError${i}`], refInvoice) }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
@@ -1160,11 +851,11 @@ const Add = () => {
                                                     ref={refInvoice[`unitPrice${i}`]}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'unitPrice', i);
-                                                        formatNub('unitPrice', i);
-                                                        handleTotalPriceCalculation(e, i, 'unitPrice');
+                                                        formatNub('unitPrice', i, refInvoice);
+                                                        handleTotalPriceCalculation(e, i, 'unitPrice', input, setInput, refInvoice);
                                                     }
                                                     }
-                                                    onFocus={e => clearInputError(e, refInvoice[`unitPriceError${i}`])}
+                                                    onFocus={e => clearInputError(e, refInvoice[`unitPriceError${i}`], refInvoice)}
                                                 />
                                                 <span
                                                     className="unitFB"
@@ -1192,12 +883,12 @@ const Add = () => {
                                                     ref={refInvoice[`weight${i}`]}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'weight', i);
-                                                        formatNub('weight', i);
-                                                        handleCubicMetersCalculation(e, i);
-                                                        handleTotalPriceCalculation(e, i, 'weight');
+                                                        formatNub('weight', i, refInvoice);
+                                                        handleCubicMetersCalculation(e, refInvoice, setInput, i);
+                                                        handleTotalPriceCalculation(e, i, 'weight', input, setInput, refInvoice);
                                                     }
                                                     }
-                                                    onFocus={e => clearInputError(e, refInvoice[`weightError${i}`])}
+                                                    onFocus={e => clearInputError(e, refInvoice[`weightError${i}`], refInvoice)}
                                                 />
                                                 <span
                                                     className="unitFB"
@@ -1232,7 +923,7 @@ const Add = () => {
                                                 <div
                                                     id={`invoice.${i}.cementStore_id`}
                                                     className="element"
-                                                    onClick={e => { clearInputError(e, refInvoice[`cementStore_idError${i}`]); setInvoiceIndexForCementStore(i) }}
+                                                    onClick={e => { clearInputError(e, refInvoice[`cementStore_idError${i}`], refInvoice); setInvoiceIndexForCementStore(i) }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
@@ -1267,7 +958,7 @@ const Add = () => {
                                                 <div
                                                     id={`invoice.${i}.truck_id`}
                                                     className="element"
-                                                    onClick={e => { clearInputError(e, refInvoice[`truck_idError${i}`]); setInvoiceIndexForMixer(i) }}
+                                                    onClick={e => { clearInputError(e, refInvoice[`truck_idError${i}`], refInvoice); setInvoiceIndexForMixer(i) }}
                                                 >
                                                     <SelectZabi2
                                                         primaryLabel='انتخاب'
@@ -1292,7 +983,7 @@ const Add = () => {
                                                 <div
                                                     id={`invoice.${i}.driver_id`}
                                                     className="element"
-                                                    onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, refInvoice[`driver_idError${i}`]); }}
+                                                    onClick={e => { setInvoiceIndexForDriver(i); clearInputError(e, refInvoice[`driver_idError${i}`], refInvoice); }}
                                                 >
                                                     <SelectZabi2
                                                         primaryLabel='انتخاب'
@@ -1321,10 +1012,10 @@ const Add = () => {
                                                     ref={refInvoice[`fare${i}`]}
                                                     onInput={e => {
                                                         handleSaveValInput(e, 'fare', i);
-                                                        formatNub('fare', i);
+                                                        formatNub('fare', i, refInvoice);
                                                     }
                                                     }
-                                                    onFocus={e => clearInputError(e, refInvoice[`fareError${i}`])}
+                                                    onFocus={e => clearInputError(e, refInvoice[`fareError${i}`], refInvoice)}
                                                 />
                                                 <span
                                                     className="unitFB"
@@ -1351,8 +1042,8 @@ const Add = () => {
                                                     className="inputCheckboxFB  element pointerFB"
                                                     value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${0}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
                                                     onChange={e => {
-                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i);
-                                                        clearInputError(e, '', false, '', i);
+                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue);
+                                                        clearInputError(e, '', refInvoice, false, '', i);
                                                     }}
                                                     checked={checkedMaskanMeli == `emam${i}` || maskan[i] == 'مسکن ملی شهرک امام خمینی'}
 
@@ -1374,8 +1065,8 @@ const Add = () => {
                                                     className="inputCheckboxFB  element pointerFB"
                                                     value={refInvoice[`checkedMaskanShahid${i}`] && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
                                                     onChange={e => {
-                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `shahid${i}`, i);
-                                                        clearInputError(e, '', false, '', i);
+                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `shahid${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue);
+                                                        clearInputError(e, '', refInvoice, false, '', i);
                                                     }}
                                                     checked={checkedMaskanMeli == `shahid${i}` || maskan[i] == 'مسکن ملی شهرک شهید رییسی'}
                                                     ref={refInvoice[`checkBaxShahid${i}`]}
@@ -1395,7 +1086,7 @@ const Add = () => {
                                                     className="inputTextFB ltrFB element"
                                                     defaultValue={vahed}
                                                     onInput={e => handleSaveValInput(e, 'vahed', i)}
-                                                    onFocus={(e) => clearInputError(e, refInvoice[`vahedError${i}`])}
+                                                    onFocus={(e) => clearInputError(e, refInvoice[`vahedError${i}`], refInvoice)}
                                                     disabled={maskan[i] != 'مسکن ملی شهرک شهید رییسی' && maskan[i] != 'مسکن ملی شهرک امام خمینی'}
                                                 />
                                             </div>
@@ -1409,7 +1100,7 @@ const Add = () => {
                                                     className="textareaAddressCSI_FB element"
                                                     defaultValue={address}
                                                     onInput={e => handleSaveValInput(e, 'address', i)}
-                                                    onFocus={(e) => clearInputError(e, refInvoice[`addressError${i}`])}
+                                                    onFocus={(e) => clearInputError(e, refInvoice[`addressError${i}`], refInvoice)}
                                                 />
                                             </div>
                                             <div className="errorContainerFB elementError" id={`invoice.${i}.addressError`} ref={refInvoice[`addressError${i}`]}> </div>
@@ -1422,7 +1113,7 @@ const Add = () => {
                                                     className="textareaAddressCSI_FB element"
                                                     defaultValue={concretingPosition}
                                                     onInput={e => handleSaveValInput(e, 'concretingPosition', i)}
-                                                    onFocus={(e) => clearInputError(e, refInvoice[`concretingPositionError${i}`])}
+                                                    onFocus={(e) => clearInputError(e, refInvoice[`concretingPositionError${i}`], refInvoice)}
                                                 />
                                             </div>
                                             <div className="errorContainerFB elementError" id={`invoice.${i}.concretingPositionError`} ref={refInvoice[`concretingPositionError${i}`]}> </div>

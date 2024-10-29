@@ -1,8 +1,17 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import HeadPage from './HeadPage';
 
 const Show = () => {
     const [loading, setLoading] = useState(false);
+    const hasCalledGetConcreteSalesInvoices = useRef(false);
+    const [concreteSalesInvoices, setConcreteSalesInvoices] = useState(null);
+     /**
+    * ############### states for paginate
+    */
+     const [totalPage, setTotalPage] = useState(0);
+     const [currentPage, setCurrentPage] = useState(1);
+     const [totalRecords, setTotalRecords] = useState(0);
+
     //     useEffect(() => {
     //         // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
     //         if (!hasCalledGetConcreteSalesInvoices.current) {
