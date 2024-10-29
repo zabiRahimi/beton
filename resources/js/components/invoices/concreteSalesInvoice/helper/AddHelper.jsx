@@ -199,7 +199,7 @@ export  const handleTotalPriceCalculation = (e, i, element, input, setInput, ref
     }
 }
 
-export const handleAddNewInvoice = (e) => {
+export const handleAddNewInvoice = (e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice) => {
     e.preventDefault();
     setIndexNewInvoice(invoice.length);
     setInvoice([...invoice, sampleInvoice]);
@@ -209,7 +209,7 @@ export const handleAddNewInvoice = (e) => {
     let maskanMeli = handleSetMaskanMeliForNewInvoice();
     let cementStore_id = handleSetCementStoreForNewInvoice();
     setInput(perv => {
-        let newInvoice = [...perv.invoice, { date, time: '', weight: '', cubicMeters: "", concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
+        let newInvoice = [...perv.invoice, { date, time: '', weight: '', cubicMeters: '', concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
 
         return { ...perv, invoice: newInvoice };
     });

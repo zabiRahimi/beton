@@ -1123,7 +1123,7 @@ const Add = () => {
                             </div>
                         ))}
                         <div className='divBtnAddInmoiceCSI_FB'>
-                            <button onClick={e => { handleAddNewInvoice(e) }}>
+                            <button onClick={e => { handleAddNewInvoice(e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice) }}>
                                 <i className='icofont-plus' />
                                 اضافه کردن فاکتور جدید
                             </button>
