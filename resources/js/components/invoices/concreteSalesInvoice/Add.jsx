@@ -667,7 +667,7 @@ const Add = () => {
                                                         type="button"
                                                         className="--styleLessBtn btnDelInvoiceACSL_FB"
                                                         onClick={e =>
-                                                            handleDelInvoice(i)
+                                                            handleDelInvoice(input, invoice, setInvoice, setInput, setCheckedValue)
                                                         }
                                                     >
                                                         <span className="spanDelInvoiceACSL_FB"> حذف فاکتور </span>
@@ -1042,7 +1042,7 @@ const Add = () => {
                                                     className="inputCheckboxFB  element pointerFB"
                                                     value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${0}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
                                                     onChange={e => {
-                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue);
+                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue);
                                                         clearInputError(e, '', refInvoice, false, '', i);
                                                     }}
                                                     checked={checkedMaskanMeli == `emam${i}` || maskan[i] == 'مسکن ملی شهرک امام خمینی'}
@@ -1065,7 +1065,8 @@ const Add = () => {
                                                     className="inputCheckboxFB  element pointerFB"
                                                     value={refInvoice[`checkedMaskanShahid${i}`] && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
                                                     onChange={e => {
-                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `shahid${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue);
+                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `shahid${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue,
+                                                        setCheckedValue);
                                                         clearInputError(e, '', refInvoice, false, '', i);
                                                     }}
                                                     checked={checkedMaskanMeli == `shahid${i}` || maskan[i] == 'مسکن ملی شهرک شهید رییسی'}
@@ -1123,7 +1124,7 @@ const Add = () => {
                             </div>
                         ))}
                         <div className='divBtnAddInmoiceCSI_FB'>
-                            <button onClick={e => { handleAddNewInvoice(e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice) }}>
+                            <button onClick={e => { handleAddNewInvoice(e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice, date, input, setConcreteName, concretes, maskan, setMaskan, setCheckedValue, setCementStoreName, cementStores, setTime, unitPrice, fare, vahed, address, concretingPosition) }}>
                                 <i className='icofont-plus' />
                                 اضافه کردن فاکتور جدید
                             </button>

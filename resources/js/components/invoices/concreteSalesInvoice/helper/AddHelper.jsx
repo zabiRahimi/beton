@@ -92,7 +92,7 @@ export const formatNub = (input, i, refInvoice) => {
     }
 }
 
-export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue) => {
+export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue) => {
     let checked;
     if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
         const copyMaskan = [...maskan];
@@ -199,26 +199,40 @@ export  const handleTotalPriceCalculation = (e, i, element, input, setInput, ref
     }
 }
 
-export const handleAddNewInvoice = (e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice) => {
+export const handleAddNewInvoice = (e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice, date, input, setConcreteName, concretes, maskan, setMaskan, setCheckedValue, setCementStoreName, cementStores, setTime, unitPrice, fare, vahed, address, concretingPosition ) => {
     e.preventDefault();
+    console.log(1);
     setIndexNewInvoice(invoice.length);
+    console.log(2);
+
     setInvoice([...invoice, sampleInvoice]);
+    console.log(3);
+
     setIsNewInvoice(true);
-    let date = handleSetDateForNewInvoice();
-    let concrete_id = handleSetConcreteForNewInvoice();
-    let maskanMeli = handleSetMaskanMeliForNewInvoice();
-    let cementStore_id = handleSetCementStoreForNewInvoice();
+    console.log(4);
+
+    let date0 = handleSetDateForNewInvoice(date);
+    console.log(5);
+
+    let concrete_id = handleSetConcreteForNewInvoice(input, invoice, setConcreteName, concretes);
+    console.log(6);
+    let maskanMeli = handleSetMaskanMeliForNewInvoice(input, invoice, maskan, setMaskan, setCheckedValue);
+    console.log(7);
+    let cementStore_id = handleSetCementStoreForNewInvoice(input, invoice, setCementStoreName, cementStores);
+    console.log(8);
     setInput(perv => {
-        let newInvoice = [...perv.invoice, { date, time: '', weight: '', cubicMeters: '', concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
+        let newInvoice = [...perv.invoice, { date:date0, time: '', weight: '', cubicMeters: '', concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
 
         return { ...perv, invoice: newInvoice };
     });
-
-    handleClearTime();
-    setIsChecked(true)
+    console.log(9);
+    handleClearTime(setTime);
+    console.log(10);
+    setIsChecked(true);
+    console.log(11);
 }
 
- const handleClearTime = () => {
+ const handleClearTime = (setTime) => {
     setTime({
         second: '',
         minute: '',
@@ -226,24 +240,24 @@ export const handleAddNewInvoice = (e, setIndexNewInvoice, invoice, setInvoice, 
     });
 }
 
- const handleSetDateForNewInvoice = () => {
+ const handleSetDateForNewInvoice = (date) => {
     let valDate = date.year + '-' + date.month + '-' + date.day;
     return valDate;
 }
 
- const handleSetConcreteForNewInvoice = () => {
+ const handleSetConcreteForNewInvoice = (input, invoice, setConcreteName, concretes) => {
     let concrete_id = input.invoice[invoice.length - 1].concrete_id;
     concrete_id && (setConcreteName(concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']));
     return concrete_id;
 }
 
- const handleSetCementStoreForNewInvoice = () => {
+ const handleSetCementStoreForNewInvoice = (input, invoice, setCementStoreName, cementStores) => {
     let cementStore_id = input.invoice[invoice.length - 1].cementStore_id;
     cementStore_id && (setCementStoreName(cementStores.filter(cementStore => cementStore.value == cementStore_id)[0]['cementStoreName']));
     return cementStore_id;
 }
 
- const handleSetMaskanMeliForNewInvoice = () => {
+ const handleSetMaskanMeliForNewInvoice = (input, invoice, maskan, setMaskan, setCheckedValue) => {
     let maskanMeli = input.invoice[invoice.length - 1].maskanMeli;
     const copyMaskan = [...maskan];
     copyMaskan[maskan.length - 1] = maskanMeli;
@@ -252,7 +266,7 @@ export const handleAddNewInvoice = (e, setIndexNewInvoice, invoice, setInvoice, 
     return maskanMeli;
 }
 
-export const handleDelInvoice = (i) => {
+export const handleDelInvoice = (input, invoice, setInvoice, setInput) => {
     const updatedInputInvoice = input.invoice.slice(0, -1);
     const updatedInvoice = invoice.slice(0, -1);
     setInvoice(updatedInvoice);
