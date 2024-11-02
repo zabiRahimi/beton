@@ -546,17 +546,9 @@ const Add = () => {
                 }
             }
         ).then((response) => {
-            console.log(1);
             const resutl = response.data.concreteSalesInvoice;
-            console.log(2);
-            // resutl.map((invoice) => {
-            //     setConcreteSalesInvoices(prev => [invoice, ...prev]);
-            // });
-            console.log(3);
             setTicketNumber(ticketNumber + resutl.length);
-console.log(4);
             form.current.reset();
-            console.log(5);
             MySwal.fire({
                 icon: "success",
                 title: "با موفقیت ثبت شد",
@@ -566,10 +558,9 @@ console.log(4);
                 customClass: {
                     timerProgressBar: '--progressBarColorBlue',
                 },
-                
+
                 didClose: () => resetForm(),
             });
-            console.log(6)
         })
             .catch(
                 error => {
@@ -603,14 +594,7 @@ console.log(4);
                 }
             )
 
-        setLoading(false)
-    }
-
-
-
-    const handleRemoveErrorCustomer = () => {
-        document.getElementById('customer_id').classList.remove('borderRedFB');
-        document.getElementById('customer_idError').innerHTML = '';
+        setLoading(false);
     }
 
     return (
@@ -1071,7 +1055,7 @@ console.log(4);
                                                     value={refInvoice[`checkedMaskanShahid${i}`] && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
                                                     onChange={e => {
                                                         handleSaveValInput(e, 'maskanMeli', i); handleCheckedMaskanMeli(e, `shahid${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue,
-                                                        setCheckedValue, setMaskan, maskan);
+                                                            setCheckedValue, setMaskan, maskan);
                                                         clearInputError(e, '', refInvoice, false, '', i);
                                                     }}
                                                     checked={checkedMaskanMeli == `shahid${i}` || maskan[i] == 'مسکن ملی شهرک شهید رییسی'}

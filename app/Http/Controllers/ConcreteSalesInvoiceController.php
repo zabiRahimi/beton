@@ -141,6 +141,11 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['concreteSalesInvoices' => $concreteSalesInvoices], 200);
     }
 
+    public function count(){
+        $count = ConcreteSalesInvoice::count();
+        return response()->json(['count' => $count], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

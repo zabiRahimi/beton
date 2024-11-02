@@ -118,6 +118,7 @@ Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
     Route::get('/concreteSalesInvoice/mixers', 'mixers');
     Route::get('/concreteSalesInvoice/drivers', 'drivers');
     Route::get('/concreteSalesInvoice/cementStores', 'cementStores');
+    Route::get('/concreteSalesInvoice/count', 'count');
     // Route::post('/addConcreteSalesInvoice', 'store');
     // Route::get('/getConcreteSalesInvoices', 'index');
     // Route::get('/getCSIConcretes', 'getCSIConcretes');
