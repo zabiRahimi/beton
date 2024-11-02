@@ -546,13 +546,17 @@ const Add = () => {
                 }
             }
         ).then((response) => {
+            console.log(1);
             const resutl = response.data.concreteSalesInvoice;
-            resutl.map((invoice) => {
-                setConcreteSalesInvoices(prev => [invoice, ...prev]);
-            });
+            console.log(2);
+            // resutl.map((invoice) => {
+            //     setConcreteSalesInvoices(prev => [invoice, ...prev]);
+            // });
+            console.log(3);
             setTicketNumber(ticketNumber + resutl.length);
-
+console.log(4);
             form.current.reset();
+            console.log(5);
             MySwal.fire({
                 icon: "success",
                 title: "با موفقیت ثبت شد",
@@ -562,9 +566,10 @@ const Add = () => {
                 customClass: {
                     timerProgressBar: '--progressBarColorBlue',
                 },
+                
                 didClose: () => resetForm(),
             });
-
+            console.log(6)
         })
             .catch(
                 error => {
@@ -1040,9 +1045,9 @@ const Add = () => {
                                                     type="checkbox"
                                                     id={`invoice.${i}.emam`}
                                                     className="inputCheckboxFB  element pointerFB"
-                                                    value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${0}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
+                                                    value={refInvoice[`checkedMaskanEmam${i}`] && refInvoice[`checkedMaskanEmam${i}`].current ? 'مسکن ملی شهرک امام خمینی' : ''}
                                                     onChange={e => {
-                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `emam${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue);
+                                                        handleSaveValInput(e, 'maskanMeli', i); handleCheckedMaskanMeli(e, `emam${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue, setMaskan, maskan);
                                                         clearInputError(e, '', refInvoice, false, '', i);
                                                     }}
                                                     checked={checkedMaskanMeli == `emam${i}` || maskan[i] == 'مسکن ملی شهرک امام خمینی'}
@@ -1065,8 +1070,8 @@ const Add = () => {
                                                     className="inputCheckboxFB  element pointerFB"
                                                     value={refInvoice[`checkedMaskanShahid${i}`] && refInvoice[`checkedMaskanShahid${i}`].current ? 'مسکن ملی شهرک شهید رییسی' : ''}
                                                     onChange={e => {
-                                                        handleSaveValInput(e, 'maskanMeli', i,); handleCheckedMaskanMeli(e, `shahid${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue,
-                                                        setCheckedValue);
+                                                        handleSaveValInput(e, 'maskanMeli', i); handleCheckedMaskanMeli(e, `shahid${i}`, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue,
+                                                        setCheckedValue, setMaskan, maskan);
                                                         clearInputError(e, '', refInvoice, false, '', i);
                                                     }}
                                                     checked={checkedMaskanMeli == `shahid${i}` || maskan[i] == 'مسکن ملی شهرک شهید رییسی'}

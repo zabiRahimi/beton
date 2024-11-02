@@ -92,51 +92,85 @@ export const formatNub = (input, i, refInvoice) => {
     }
 }
 
-export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue) => {
+// export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue, setMaskan, maskan) => {
+//     let checked;
+//     if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
+//         const copyMaskan = [...maskan];
+//         copyMaskan[i] = '';
+//         copyMaskan[maskan.length - 1] = '';
+//         setMaskan(copyMaskan);
+//         checked = false;
+//         const checkbox = e.target;
+//         checkbox.checked = !checkbox.checked;
+//         setCheckedValue('');
+//     } else if (value == `shahid${i}` && isChecked && checkedValue == 'مسکن ملی شهرک شهید رییسی') {
+//         const copyMaskan = [...maskan];
+//         copyMaskan[i] = '';
+//         copyMaskan[maskan.length - 1] = '';
+//         setMaskan(copyMaskan);
+//         checked = false;
+//         const checkbox = e.target;
+//         checkbox.checked = !checkbox.checked;
+//         setCheckedValue('');
+//     }
+//     else {
+//         if (value == `emam${i}`) {
+//             checked = refInvoice[`checkedMaskanEmam${i}`].current;
+//         } else if (value == `shahid${i}`) {
+//             checked = refInvoice[`checkedMaskanShahid${i}`].current;
+//         }
+
+//         if (value == `emam${i}`) {
+//             refInvoice[`checkedMaskanEmam${i}`].current = !checked;
+//             refInvoice[`checkedMaskanShahid${i}`].current = true;
+//         } else if (value == `shahid${i}`) {
+//             refInvoice[`checkedMaskanShahid${i}`].current = !checked;
+//             refInvoice[`checkedMaskanEmam${i}`].current = true;
+//         }
+//     }
+
+//     if (checked) {
+//         setCheckedMaskanMeli(value);
+
+//     } else {
+//         setCheckedMaskanMeli('');
+//     }
+//     setIsChecked(false)
+// }
+
+export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue, setMaskan, maskan) => {
     let checked;
-    if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
-        const copyMaskan = [...maskan];
-        copyMaskan[i] = '';
-        copyMaskan[maskan.length - 1] = '';
-        setMaskan(copyMaskan);
-        checked = false;
-        const checkbox = e.target;
-        checkbox.checked = !checkbox.checked;
-        setCheckedValue('');
-    } else if (value == `shahid${i}` && isChecked && checkedValue == 'مسکن ملی شهرک شهید رییسی') {
-        const copyMaskan = [...maskan];
-        copyMaskan[i] = '';
-        copyMaskan[maskan.length - 1] = '';
-        setMaskan(copyMaskan);
-        checked = false;
-        const checkbox = e.target;
-        checkbox.checked = !checkbox.checked;
-        setCheckedValue('');
-    }
-    else {
-        if (value == `emam${i}`) {
-            checked = refInvoice[`checkedMaskanEmam${i}`].current;
-        } else if (value == `shahid${i}`) {
-            checked = refInvoice[`checkedMaskanShahid${i}`].current;
-        }
-
-        if (value == `emam${i}`) {
-            refInvoice[`checkedMaskanEmam${i}`].current = !checked;
-            refInvoice[`checkedMaskanShahid${i}`].current = true;
-        } else if (value == `shahid${i}`) {
-            refInvoice[`checkedMaskanShahid${i}`].current = !checked;
-            refInvoice[`checkedMaskanEmam${i}`].current = true;
-        }
-    }
-
-    if (checked) {
-        setCheckedMaskanMeli(value);
-
+  console.log(e.target);
+    const resetMaskan = () => {
+      const copyMaskan = [...maskan];
+      copyMaskan[i] = '';
+      copyMaskan[maskan.length - 1] = '';
+      setMaskan(copyMaskan);
+      setCheckedValue('');
+    };
+  
+    const toggleCheckbox = (ref) => {
+        if (ref && ref.current) {
+            ref.current.checked = !ref.current.checked;
+          }
+    };
+  
+    if (value === `emam${i}` && isChecked && checkedValue === 'مسکن ملی شهرک امام خمینی') {
+      resetMaskan();
+      toggleCheckbox(e.target);
+    } else if (value === `shahid${i}` && isChecked && checkedValue === 'مسکن ملی شهرک شهید رییسی') {
+      resetMaskan();
+      toggleCheckbox(e.target);
     } else {
-        setCheckedMaskanMeli('');
+      checked = refInvoice[`checkedMaskan${value.charAt(0).toUpperCase() + value.slice(1, value.length - 1)}${i}`].current;
+      refInvoice[`checkedMaskanEmam${i}`].current = value === `emam${i}` ? !checked : true;
+      refInvoice[`checkedMaskanShahid${i}`].current = value === `shahid${i}` ? !checked : true;
     }
-    setIsChecked(false)
-}
+  
+    setCheckedMaskanMeli(checked ? value : '');
+    setIsChecked(false);
+  };
+  
 
 export  const handleCubicMetersCalculation = (e, refInvoice, setInput, i = null) => {
     let { value } = e.target;
@@ -201,35 +235,20 @@ export  const handleTotalPriceCalculation = (e, i, element, input, setInput, ref
 
 export const handleAddNewInvoice = (e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice, date, input, setConcreteName, concretes, maskan, setMaskan, setCheckedValue, setCementStoreName, cementStores, setTime, unitPrice, fare, vahed, address, concretingPosition ) => {
     e.preventDefault();
-    console.log(1);
     setIndexNewInvoice(invoice.length);
-    console.log(2);
-
     setInvoice([...invoice, sampleInvoice]);
-    console.log(3);
-
     setIsNewInvoice(true);
-    console.log(4);
-
     let date0 = handleSetDateForNewInvoice(date);
-    console.log(5);
-
     let concrete_id = handleSetConcreteForNewInvoice(input, invoice, setConcreteName, concretes);
-    console.log(6);
     let maskanMeli = handleSetMaskanMeliForNewInvoice(input, invoice, maskan, setMaskan, setCheckedValue);
-    console.log(7);
     let cementStore_id = handleSetCementStoreForNewInvoice(input, invoice, setCementStoreName, cementStores);
-    console.log(8);
     setInput(perv => {
         let newInvoice = [...perv.invoice, { date:date0, time: '', weight: '', cubicMeters: '', concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
 
         return { ...perv, invoice: newInvoice };
     });
-    console.log(9);
     handleClearTime(setTime);
-    console.log(10);
     setIsChecked(true);
-    console.log(11);
 }
 
  const handleClearTime = (setTime) => {
