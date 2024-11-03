@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-const SweetAlertHnadler = ({ hasBuyers, hasConcretes, hasCementStores, hasMixers, hasDrivers }) => {
+const SweetAlertHnadler = ({ hasBuyers, hasConcretes, hasCementStores, hasSandStores, hasWaterStores, hasMixers, hasDrivers }) => {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const alerts = [];
@@ -36,7 +36,6 @@ const SweetAlertHnadler = ({ hasBuyers, hasConcretes, hasCementStores, hasMixers
       }
     });
   }
-
   if (!hasCementStores) {
     alerts.push({
       icon: "warning",
@@ -49,6 +48,36 @@ const SweetAlertHnadler = ({ hasBuyers, hasConcretes, hasCementStores, hasMixers
       cancelButtonColor: "#d33",
       preConfirm: () => {
         navigate("/addCementStore");
+      }
+    });
+  }
+  if (!hasSandStores) {
+    alerts.push({
+      icon: "warning",
+      title: "هشدار",
+      text: `هنوز هیچ سیلوی شن‌وماسه‌ای ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید. دقت کنید یک سیلو برای ماسه شسته و یک سیلو برای شن بادامی ثبت کنید.`,
+      confirmButtonText: "  ثبت سیلو   ",
+      showCancelButton: true,
+      cancelButtonText: "کنسل",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      preConfirm: () => {
+        navigate("/addSandStore");
+      }
+    });
+  }
+  if (!hasWaterStores) {
+    alerts.push({
+      icon: "warning",
+      title: "هشدار",
+      text: `هنوز هیچ مخزن آبی ثبت نشده است. لازم است ابتدا مخزن را ثبت کنید.`,
+      confirmButtonText: "  ثبت مخزن   ",
+      showCancelButton: true,
+      cancelButtonText: "کنسل",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      preConfirm: () => {
+        navigate("/addWaterStore");
       }
     });
   }

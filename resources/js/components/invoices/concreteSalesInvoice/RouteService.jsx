@@ -9,10 +9,12 @@ const RouteService = ({ token, setLoading, setTicketNumber }) => {
   const hasCalledFetchData = useRef(false);
   const [dataState, setDataState] = useState({
     hasBuyers: true,
-    hasMixers: true,
-    hasDrivers: true,
     hasConcretes: true,
     hasCementStores: true,
+    hasSandStores: true,
+    hasWaterStores: true,
+    hasMixers: true,
+    hasDrivers: true,
   });
   const [callHandler, setCallHandler] = useState(false);
   const [concreteBuyers, setConcreteBuyers] = useState({
@@ -136,24 +138,18 @@ const RouteService = ({ token, setLoading, setTicketNumber }) => {
       setCementStores(options);
     });
 
-    await axios.get('/api/v1/concreteSalesInvoice/').then((response) => {
-      const datas = response.data.cementStores;
-      let options;
-      if (datas.length == 0) {
-        setDataState(prev => ({ ...prev, hasCementStores: false }));
-        options = notOption('هنوز هیچ سیلوی سیمانی ثبت نشده است، ابتدا سیلوی سیمان را ثبت کنید');
-      } else {
-        options = datas.map(data => ({
-          value: data.id,
-          cementStoreName: data.silo,
-          html: <div className="mixerAptionSelectFB">
-            <span className="mixerOwnerSelectFB">
-              {data.silo}
-            </span>
-          </div>
-        }));
-      }
-      setCementStores(options);
+    await axios.get('/api/v1/concreteSalesInvoice/sandStoreExists').then((response) => {
+      const exists = response.data.exists;
+      if (!exists) {
+        setDataState(prev => ({ ...prev, hasSandStores: false }));
+      } 
+    });
+
+    await axios.get('/api/v1/concreteSalesInvoice/waterStoreExists').then((response) => {
+      const exists = response.data.exists;
+      if (!exists) {
+        setDataState(prev => ({ ...prev, hasWaterStores: false }));
+      } 
     });
 
     await axios.get('/api/v1/concreteSalesInvoice/mixers').then((response) => {
@@ -243,6 +239,8 @@ const RouteService = ({ token, setLoading, setTicketNumber }) => {
       hasBuyers: dataState.hasBuyers,
       hasConcretes: dataState.hasConcretes,
       hasCementStores: dataState.hasCementStores,
+      hasSandStores: dataState.hasSandStores,
+      hasWaterStores: dataState.hasWaterStores,
       hasMixers: dataState.hasMixers,
       hasDrivers: dataState.hasDrivers,
     }

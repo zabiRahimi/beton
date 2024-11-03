@@ -68,28 +68,28 @@ class ConcreteSalesInvoiceController extends Controller
             }
 
             if ($request->filled('ownerName') || $request->filled('ownerLastName')) {
-               
+
                 $queryCustomer = Customer::query();
                 if ($request->filled('ownerName')) {
                     $queryCustomer->where('name', 'LIKE', "%{$request->ownerName}%");
                 }
-                
+
                 if ($request->filled('ownerLastName')) {
                     $queryCustomer->where('lastName', 'LIKE',  "%{$request->ownerLastName}%");
                 }
-               
+
                 $ownerIds = $queryCustomer->with('customerType')
-                ->whereHas('customerType', function ($queryCustomer) {
-                    $queryCustomer->where('code', 5);
-                })
-                ->pluck('id');
-                $queryTruckIds = Truck::whereIn('customer_id',$ownerIds)->pluck('id');
-                
+                    ->whereHas('customerType', function ($queryCustomer) {
+                        $queryCustomer->where('code', 5);
+                    })
+                    ->pluck('id');
+                $queryTruckIds = Truck::whereIn('customer_id', $ownerIds)->pluck('id');
+
                 $query->whereIn('truck_id', $queryTruckIds);
             }
 
             if ($request->filled('truck_id')) {
-                
+
                 $query->where('truck_id', $request->truck_id);
             }
 
@@ -116,23 +116,23 @@ class ConcreteSalesInvoiceController extends Controller
             }
 
             if ($request->filled('driver_id')) {
-                
+
                 $query->where('driver_id', $request->driver_id);
             }
 
             if ($request->filled('driverName') || $request->filled('driverLastName')) {
-               
+
                 $queryDriver = Driver::query();
                 if ($request->filled('driverName')) {
                     $queryDriver->where('name', 'LIKE', "%{$request->driverName}%");
                 }
-                
+
                 if ($request->filled('driverLastName')) {
                     $queryDriver->where('lastName', 'LIKE',  "%{$request->driverLastName}%");
                 }
-               
+
                 $driverIds = $queryDriver->pluck('id');
-                
+
                 $query->whereIn('driver_id', $driverIds);
             }
         }
@@ -141,7 +141,8 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['concreteSalesInvoices' => $concreteSalesInvoices], 200);
     }
 
-    public function count(){
+    public function count()
+    {
         $count = ConcreteSalesInvoice::count();
         return response()->json(['count' => $count], 200);
     }
@@ -254,6 +255,30 @@ class ConcreteSalesInvoiceController extends Controller
     }
 
     /**
+     * بررسی وجود سیلوی ماسه شسته
+     */
+    public function sandStoreExistsSand()
+    {
+        $exists = SandStore::where('type',1)->exists();
+        return response()->json(['exists' => $exists]);
+    }
+
+    /**
+     * بررسی وجود سیلوی شن بادامی
+     */
+    public function sandStoreExistsGravel()
+    {
+        $exists = SandStore::where('type',2)->exists();
+        return response()->json(['exists' => $exists]);
+    }
+
+    public function waterStoreExists()
+    {
+        $exists = WaterStore::exists();
+        return response()->json(['exists' => $exists]);
+    }
+
+    /**
      * مقدار سیمان مصرف شده را از سیلو مورد نظر کم می کند
      */
     private function cementDeduction(int $cementStoreId, int $concreteId, int|float $cubicMeters)
@@ -313,7 +338,7 @@ class ConcreteSalesInvoiceController extends Controller
     {
         $unitAmountWater = $this->returnUnitAmountWater($concreteId);
         //آب تقریبی مصرف شده در مخزن کامیون و شستشو
-        $truckTank=600;
+        $truckTank = 600;
         $amountWater = ($unitAmountWater * $cubicMeters) + $truckTank;
         return $amountWater;
     }
