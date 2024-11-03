@@ -28,6 +28,7 @@ class UpdateSandStoreRequest extends FormRequest
                 'required', 'bail', 'string',
                 Rule::unique('sand_stores')->ignore($this->sandStore)
             ],
+            'type' => ['required', 'bail', 'numeric', 'in:1,2'],
             'amount' => ['required', 'bail', 'numeric'],
         ];
     }
@@ -37,6 +38,8 @@ class UpdateSandStoreRequest extends FormRequest
         return [
             'silo.required' => 'نام سیلو را وارد کنید',
             'silo.unique' => 'نام سیلو تکراری است.',
+            'type.required' => 'نوع شن‌وماسه را انتخاب کنید',
+            'type.in' => 'مقدار نوع شن‌وماسه باید یکی از مقادیر ماسه یا شن باشد'
         ];
     }
 }

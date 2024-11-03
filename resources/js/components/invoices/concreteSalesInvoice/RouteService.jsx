@@ -116,6 +116,46 @@ const RouteService = ({ token, setLoading, setTicketNumber }) => {
       setCementStores(options);
     });
 
+    await axios.get('/api/v1/concreteSalesInvoice/cementStores').then((response) => {
+      const datas = response.data.cementStores;
+      let options;
+      if (datas.length == 0) {
+        setDataState(prev => ({ ...prev, hasCementStores: false }));
+        options = notOption('هنوز هیچ سیلوی سیمانی ثبت نشده است، ابتدا سیلوی سیمان را ثبت کنید');
+      } else {
+        options = datas.map(data => ({
+          value: data.id,
+          cementStoreName: data.silo,
+          html: <div className="mixerAptionSelectFB">
+            <span className="mixerOwnerSelectFB">
+              {data.silo}
+            </span>
+          </div>
+        }));
+      }
+      setCementStores(options);
+    });
+
+    await axios.get('/api/v1/concreteSalesInvoice/').then((response) => {
+      const datas = response.data.cementStores;
+      let options;
+      if (datas.length == 0) {
+        setDataState(prev => ({ ...prev, hasCementStores: false }));
+        options = notOption('هنوز هیچ سیلوی سیمانی ثبت نشده است، ابتدا سیلوی سیمان را ثبت کنید');
+      } else {
+        options = datas.map(data => ({
+          value: data.id,
+          cementStoreName: data.silo,
+          html: <div className="mixerAptionSelectFB">
+            <span className="mixerOwnerSelectFB">
+              {data.silo}
+            </span>
+          </div>
+        }));
+      }
+      setCementStores(options);
+    });
+
     await axios.get('/api/v1/concreteSalesInvoice/mixers').then((response) => {
       const datas = response.data.mixers;
       let options;

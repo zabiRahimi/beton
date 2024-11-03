@@ -22,27 +22,51 @@ const AddSandStore = () => {
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
-    
+
     const form = useRef(null);
     const formCurrent = form.current;
-    
+
     const typeRef = useRef(null);
     const amountRef = useRef(null);
 
     const siloErrorRef = useRef(null);
+    const typeErrorRef = useRef(null);
     const amountErrorRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
     const [sandStores, setSandStores] = useState(null);
 
     const [id, setId] = useState(null);
+    const typeOptions = [
+        {
+            value: 1,
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">ماسه
+                </span>
+                <span className="concreteSelectFB">
+                    شسته
+                </span>
+            </div>
+        },
+        {
+            value: 2,
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">شن
+                </span>
+                <span className="concreteSelectFB">
+                    بادامی
+                </span>
+            </div>
+        }
+    ]
     const [type, setType] = useState('');
     const [input, setInput] = useState({
         silo: '',
-        type:'',
+        type: '',
         amount: '',
     });
 
+    console.log(input);
 
     /**
      * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
@@ -55,7 +79,7 @@ const AddSandStore = () => {
 
     useEffect(() => {
         if (type) {
-            setInput(perv =>({...perv, type}));
+            setInput(perv => ({ ...perv, type }));
         }
     }, [type]);
 
@@ -123,10 +147,11 @@ const AddSandStore = () => {
     const resetForm = (apply = true) => {
         setInput({
             silo: '',
-            type:'',
+            type: '',
             amoutn: ''
         });
-
+        setType('');
+        typeRef.current.updateData('انتخاب');
         handleRemoveAllError();
 
         // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
@@ -195,6 +220,16 @@ const AddSandStore = () => {
     */
     const clearInputError = (e, refErr, types = false, date = false) => {
         e.target.classList.remove('borderRedFB');
+        /**
+         * دو خط کد زیر برای زمانی است‌ که کلاس مورد
+         *  نظر بر روی پدر تگهااعمال شده‌است
+         * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
+         *  و سپس کلاس را از تگ پدر حذف 
+         * می‌‌کند، این کدها معمولا برای کامپوننتی
+         *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
+        */
+        const parentWithClass = e.target.closest('.borderRedFB');
+        parentWithClass && parentWithClass.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
     }
 
@@ -422,11 +457,11 @@ const AddSandStore = () => {
                                     <div
                                         id='type'
                                         className="element"
-                                        onClick={e => {clearInputError(e, typeRef) }}
+                                        onClick={e => { clearInputError(e, typeErrorRef) }}
                                     >
                                         <SelectZabi
                                             primaryLabel='انتخاب'
-                                            options={typeSand}
+                                            options={typeOptions}
                                             saveOption={setType}
                                             ref={typeRef}
                                         />
