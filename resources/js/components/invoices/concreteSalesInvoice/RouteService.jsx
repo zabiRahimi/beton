@@ -11,8 +11,9 @@ const RouteService = ({ token, setLoading, setTicketNumber }) => {
     hasBuyers: true,
     hasConcretes: true,
     hasCementStores: true,
-    hasSandStores: true,
-    hasWaterStores: true,
+    hasSandStoreSand: true,
+    hasSandStoreGravel: true,
+    hasWaterStore: true,
     hasMixers: true,
     hasDrivers: true,
   });
@@ -118,37 +119,24 @@ const RouteService = ({ token, setLoading, setTicketNumber }) => {
       setCementStores(options);
     });
 
-    await axios.get('/api/v1/concreteSalesInvoice/cementStores').then((response) => {
-      const datas = response.data.cementStores;
-      let options;
-      if (datas.length == 0) {
-        setDataState(prev => ({ ...prev, hasCementStores: false }));
-        options = notOption('هنوز هیچ سیلوی سیمانی ثبت نشده است، ابتدا سیلوی سیمان را ثبت کنید');
-      } else {
-        options = datas.map(data => ({
-          value: data.id,
-          cementStoreName: data.silo,
-          html: <div className="mixerAptionSelectFB">
-            <span className="mixerOwnerSelectFB">
-              {data.silo}
-            </span>
-          </div>
-        }));
-      }
-      setCementStores(options);
-    });
-
-    await axios.get('/api/v1/concreteSalesInvoice/sandStoreExists').then((response) => {
+    await axios.get('/api/v1/concreteSalesInvoice/sandStoreExistsSand').then((response) => {
       const exists = response.data.exists;
       if (!exists) {
-        setDataState(prev => ({ ...prev, hasSandStores: false }));
+        setDataState(prev => ({ ...prev, hasSandStoreSand: false }));
+      } 
+    });
+
+    await axios.get('/api/v1/concreteSalesInvoice/sandStoreExistsGravel').then((response) => {
+      const exists = response.data.exists;
+      if (!exists) {
+        setDataState(prev => ({ ...prev, hasSandStoreGravel: false }));
       } 
     });
 
     await axios.get('/api/v1/concreteSalesInvoice/waterStoreExists').then((response) => {
       const exists = response.data.exists;
       if (!exists) {
-        setDataState(prev => ({ ...prev, hasWaterStores: false }));
+        setDataState(prev => ({ ...prev, hasWaterStore: false }));
       } 
     });
 
@@ -239,8 +227,9 @@ const RouteService = ({ token, setLoading, setTicketNumber }) => {
       hasBuyers: dataState.hasBuyers,
       hasConcretes: dataState.hasConcretes,
       hasCementStores: dataState.hasCementStores,
-      hasSandStores: dataState.hasSandStores,
-      hasWaterStores: dataState.hasWaterStores,
+      hasSandStoreSand: dataState.hasSandStoreSand,
+      hasSandStoreGravel: dataState.hasSandStoreGravel,
+      hasWaterStore: dataState.hasWaterStore,
       hasMixers: dataState.hasMixers,
       hasDrivers: dataState.hasDrivers,
     }

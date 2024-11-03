@@ -236,17 +236,7 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['concretes' => $concretes]);
     }
 
-    public function mixers()
-    {
-        $mixers = Truck::mixers()->get();
-        return response()->json(['mixers' => $mixers]);
-    }
-
-    public function drivers()
-    {
-        $drivers = Driver::get();
-        return response()->json(['drivers' => $drivers]);
-    }
+   
 
     public function cementStores()
     {
@@ -276,6 +266,18 @@ class ConcreteSalesInvoiceController extends Controller
     {
         $exists = WaterStore::exists();
         return response()->json(['exists' => $exists]);
+    }
+
+    public function mixers()
+    {
+        $mixers = Truck::mixers()->get();
+        return response()->json(['mixers' => $mixers]);
+    }
+
+    public function drivers()
+    {
+        $drivers = Driver::get();
+        return response()->json(['drivers' => $drivers]);
     }
 
     /**
