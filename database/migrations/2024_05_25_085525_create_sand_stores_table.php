@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('sand_stores', function (Blueprint $table) {
             $table->id();
             $table->string('silo');
+            $table->unsignedTinyInteger('type');
             $table->string('amount')->default('0');
             $table->timestamps();
         });

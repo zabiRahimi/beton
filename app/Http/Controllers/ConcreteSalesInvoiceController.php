@@ -235,13 +235,6 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['concretes' => $concretes]);
     }
 
-    // public function getCSIMixers()
-    // {
-    //     $mixers = Truck::getMixers();
-    //     return response()->json(['mixers' => $mixers]);
-    // }
-
-    
     public function mixers()
     {
         $mixers = Truck::mixers()->get();
@@ -288,7 +281,7 @@ class ConcreteSalesInvoiceController extends Controller
     private function waterDeduction(int $concreteId, int|float $cubicMeters)
     {
         $amountWater = $this->returnsWaterUsed($concreteId, $cubicMeters);
-        $waterStore = WaterStore::find(1);
+        $waterStore = WaterStore::first();
         $waterStore->amount -= $amountWater;
         $waterStore->save();
     }
@@ -319,7 +312,9 @@ class ConcreteSalesInvoiceController extends Controller
     private function returnsWaterUsed(int $concreteId, int|float $cubicMeters)
     {
         $unitAmountWater = $this->returnUnitAmountWater($concreteId);
-        $amountWater = $unitAmountWater * $cubicMeters;
+        //آب تقریبی مصرف شده در مخزن کامیون و شستشو
+        $truckTank=600;
+        $amountWater = ($unitAmountWater * $cubicMeters) + $truckTank;
         return $amountWater;
     }
 
@@ -500,7 +495,7 @@ class ConcreteSalesInvoiceController extends Controller
         $preAmountWater = $this->returnsWaterUsed($preConcreteId, $preCubicMeters);
         $amountWater = $this->returnsWaterUsed($concreteId, $cubicMeters);
 
-        $waterStore = WaterStore::find(1);
+        $waterStore = WaterStore::first();
         $waterStore->amount += $preAmountWater;
         $waterStore->amount -= $amountWater;
         $waterStore->save();

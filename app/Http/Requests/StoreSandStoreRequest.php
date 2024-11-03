@@ -22,8 +22,9 @@ class StoreSandStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'silo' => ['required', 'bail','string','unique:sand_stores'],
-            'amount' => ['required','bail','numeric'],
+            'silo' => ['required', 'bail', 'string', 'unique:sand_stores'],
+            'type' => ['required', 'bail', 'numeric', 'in:1,2'],
+            'amount' => ['required', 'bail', 'numeric'],
         ];
     }
 
@@ -32,6 +33,8 @@ class StoreSandStoreRequest extends FormRequest
         return [
             'silo.required' => 'نام سیلو را وارد کنید',
             'silo.unique' => 'نام سیلو تکراری است.',
+            'type.required' => 'نوع شن‌وماسه را انتخاب کنید',
+            'type.in' => 'مقدار نوع شن‌وماسه باید یکی از مقادیر ماسه یا شن باشد'
         ];
     }
 }

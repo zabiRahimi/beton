@@ -33,7 +33,7 @@ import {
 } from './helper/AddHelper';
 
 const Add = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const MySwal = withReactContent(Swal);
     const {
         optionDays,
@@ -442,7 +442,7 @@ const Add = () => {
         }
     }
 
-    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading });
+    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading, setTicketNumber });
 
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers: concreteBuyers.datas });
 

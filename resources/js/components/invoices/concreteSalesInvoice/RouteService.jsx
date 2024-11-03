@@ -4,7 +4,7 @@ import SweetAlertHandler from './SweetAlertHandler';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-const RouteService = ({ token, setLoading }) => {
+const RouteService = ({ token, setLoading, setTicketNumber }) => {
   const MySwal = withReactContent(Swal);
   const hasCalledFetchData = useRef(false);
   const [dataState, setDataState] = useState({
@@ -39,6 +39,12 @@ const RouteService = ({ token, setLoading }) => {
 
 
   const fetchData = async (token) => {
+
+    await axios.get("/api/v1/concreteSalesInvoice/count").then((response) => {
+      const count = response.data.count;
+      setTicketNumber(count+1);
+      console.log(count);
+    });
 
     await axios.get("/api/v1/concreteSalesInvoice/concreteBuyers").then((response) => {
       const datas = response.data.concreteBuyers;
