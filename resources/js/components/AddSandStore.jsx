@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from './hooks/useChangeForm';
+import SelectZabi from './hooks/SelectZabi';
 
 const AddSandStore = () => {
 
@@ -21,9 +22,11 @@ const AddSandStore = () => {
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
 
+    
     const form = useRef(null);
     const formCurrent = form.current;
-
+    
+    const typeRef = useRef(null);
     const amountRef = useRef(null);
 
     const siloErrorRef = useRef(null);
@@ -33,8 +36,10 @@ const AddSandStore = () => {
     const [sandStores, setSandStores] = useState(null);
 
     const [id, setId] = useState(null);
+    const [type, setType] = useState('');
     const [input, setInput] = useState({
         silo: '',
+        type:'',
         amount: '',
     });
 
@@ -47,6 +52,12 @@ const AddSandStore = () => {
         let widths = container.current.offsetWidth;
         setWidthComponent(widths)
     }, []);
+
+    useEffect(() => {
+        if (type) {
+            setInput(perv =>({...perv, type}));
+        }
+    }, [type]);
 
     useEffect(() => {
         getSandStores();
@@ -112,6 +123,7 @@ const AddSandStore = () => {
     const resetForm = (apply = true) => {
         setInput({
             silo: '',
+            type:'',
             amoutn: ''
         });
 
@@ -123,7 +135,7 @@ const AddSandStore = () => {
         }
     }
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm  } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, resetForm, pasteDataForEditing });
 
     /**
      * برای خوانایی بهتر قیمت و وزن‌ها اعداد را فرمت دهی می‌کند
@@ -375,7 +387,7 @@ const AddSandStore = () => {
             <div className={`containerMainAS_Ge ${flexDirection}`}>
 
                 <div className="continerAddGe ">
-                    <form action=""   className={`formBeton ${hideShowForm ? 'hideGe' : ''}`} ref={form}>
+                    <form action="" className={`formBeton ${hideShowForm ? 'hideGe' : ''}`} ref={form}>
 
                         <h5 className={`titleFormFB ${editMode ? '' : 'hideGe'}`}>ویرایش سیلو </h5>
 
@@ -400,6 +412,31 @@ const AddSandStore = () => {
                                     className="errorContainerFB elementError"
                                     id="siloError"
                                     ref={siloErrorRef}
+                                >
+                                </div>
+                            </div>
+
+                            <div className="containerInputFB">
+                                <div className="divInputFB">
+                                    <label htmlFor='type'> نوع شن‌وماسه </label>
+                                    <div
+                                        id='type'
+                                        className="element"
+                                        onClick={e => {clearInputError(e, typeRef) }}
+                                    >
+                                        <SelectZabi
+                                            primaryLabel='انتخاب'
+                                            options={typeSand}
+                                            saveOption={setType}
+                                            ref={typeRef}
+                                        />
+                                    </div>
+                                    <i className="icofont-ui-rating starFB" />
+                                </div>
+                                <div
+                                    className="errorContainerFB elementError"
+                                    id="typeError"
+                                    ref={typeErrorRef}
                                 >
                                 </div>
                             </div>
