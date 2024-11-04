@@ -161,6 +161,7 @@ class ConcreteSalesInvoiceController extends Controller
 
                 $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
                 $this->sandDeduction($key['concrete_id'], $key['cubicMeters']);
+                $this->GravelDeduction($key['concrete_id'], $key['cubicMeters']);
                 $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
                 $this->mixerOwnerSalary($key['ownerId'], $key['fare']);
                 $this->customerDebt($customer_id, $key['totalPrice']);
@@ -236,8 +237,6 @@ class ConcreteSalesInvoiceController extends Controller
         return response()->json(['concretes' => $concretes]);
     }
 
-   
-
     public function cementStores()
     {
         $cementStores = CementStore::get();
@@ -249,7 +248,7 @@ class ConcreteSalesInvoiceController extends Controller
      */
     public function sandStoreExistsSand()
     {
-        $exists = SandStore::where('type',1)->exists();
+        $exists = SandStore::where('type', 1)->exists();
         return response()->json(['exists' => $exists]);
     }
 
@@ -258,7 +257,7 @@ class ConcreteSalesInvoiceController extends Controller
      */
     public function sandStoreExistsGravel()
     {
-        $exists = SandStore::where('type',2)->exists();
+        $exists = SandStore::where('type', 2)->exists();
         return response()->json(['exists' => $exists]);
     }
 
@@ -292,13 +291,24 @@ class ConcreteSalesInvoiceController extends Controller
     }
 
     /**
-     * مقدار شن و ماسه مصرف شده را کم می کند
+     * مقدار  ماسه شسته مصرف شده را کم می کند
      */
     private function sandDeduction(int $concreteId, int|float $cubicMeters)
     {
-        $amountSand = $this->returnsSandUsed($concreteId, $cubicMeters);
-        $sandStore = SandStore::find(1);
-        $sandStore->amount -= $amountSand;
+        $amount = $this->returnsSandUsed($concreteId, $cubicMeters);
+        $sandStore = SandStore::where('type',1)->first();
+        $sandStore->amount -= $amount['amountSand'];
+        $sandStore->save();
+    }
+
+     /**
+     * مقدار  شن بادامی مصرف شده را کم می کند
+     */
+    private function gravelDeduction(int $concreteId, int|float $cubicMeters)
+    {
+        $amount = $this->returnsSandUsed($concreteId, $cubicMeters);
+        $sandStore = SandStore::where('type',2)->first();
+        $sandStore->amount -= $amount['amountGravel'];
         $sandStore->save();
     }
 
@@ -328,9 +338,15 @@ class ConcreteSalesInvoiceController extends Controller
      */
     private function returnsSandUsed(int $concreteId, int|float $cubicMeters)
     {
-        $unitAmountSand = $this->returnUnitAmountSand($concreteId);
+        $unitAmount = $this->returnUnitAmountSand($concreteId);
+        $unitAmountSand = $unitAmount['unitAmountSand'];
+        $unitAmountGravel = $unitAmount['unitAmountGravel'];
         $amountSand = $unitAmountSand * $cubicMeters;
-        return $amountSand;
+        $amountGravel = $unitAmountGravel * $cubicMeters;
+        return [
+            'amountSand' => $amountSand,
+            'amountGravel' => $amountGravel
+        ];
     }
 
     /**
@@ -363,9 +379,13 @@ class ConcreteSalesInvoiceController extends Controller
         $concrete = Concrete::find($concreteId);
         $unitAmountSand = $concrete->amountSand;
         $unitAmountGravel = $concrete->amountGravel;
-        $totalUnitSand = $unitAmountSand + $unitAmountGravel;
-        return $totalUnitSand;
+
+        return [
+            'unitAmountSand' => $unitAmountSand,
+            'unitAmountGravel' => $unitAmountGravel
+        ];
     }
+
 
     /**
      * مقدار مصرف آب در هر متر بتن
@@ -476,22 +496,38 @@ class ConcreteSalesInvoiceController extends Controller
              * نشده است، هیچ عملیاتی انجام نمی ‌گیرد
              */
         } else {
-            $this->updateSandStore($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+            $this->updateSandStoreSand($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
+            $this->updateSandStoreGravel($concreteId, $cubicMeters, $preConcreteId, $preCubicMeters);
         }
     }
 
     /**
-     *  ابتدا مقدار شن‌و‌ماسه که قبلا از سیلو کسر شده، به سیلو
-     * اضافه می شود و سپس مقدار شن‌وماسه مصرف شده جدید از سیلو کم می‌شود
+     *  ابتدا مقدار ماسه شسته که قبلا از سیلو کسر شده، به سیلو
+     * اضافه می شود و سپس مقدار ماسه شسته مصرف شده جدید از سیلو کم می‌شود
      */
-    private function updateSandStore(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+    private function updateSandStoreSand(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
     {
-        $preAmountSand = $this->returnsSandUsed($preConcreteId, $preCubicMeters);
-        $amountSand = $this->returnsSandUsed($concreteId, $cubicMeters);
+        $preAmount = $this->returnsSandUsed($preConcreteId, $preCubicMeters);
+        $amount = $this->returnsSandUsed($concreteId, $cubicMeters);
 
-        $sandStore = SandStore::find(1);
-        $sandStore->amount += $preAmountSand;
-        $sandStore->amount -= $amountSand;
+        $sandStore = SandStore::where('type', 1)->first();
+        $sandStore->amount += $preAmount['amountSand'];
+        $sandStore->amount -= $amount['amountSand'];
+        $sandStore->save();
+    }
+
+    /**
+     *  ابتدا مقدار شن بادامی که قبلا از سیلو کسر شده، به سیلو
+     * اضافه می شود و سپس مقدار شن بادامی مصرف شده جدید از سیلو کم می‌شود
+     */
+    private function updateSandStoreGravel(int $concreteId, int|float $cubicMeters, int $preConcreteId, int|float $preCubicMeters)
+    {
+        $preAmount = $this->returnsSandUsed($preConcreteId, $preCubicMeters);
+        $amount = $this->returnsSandUsed($concreteId, $cubicMeters);
+
+        $sandStore = SandStore::where('type', 2)->first();
+        $sandStore->amount += $preAmount['amountGravel'];
+        $sandStore->amount -= $amount['amountGravel'];
         $sandStore->save();
     }
 

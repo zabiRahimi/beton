@@ -66,8 +66,6 @@ const AddSandStore = () => {
         amount: '',
     });
 
-    console.log(input);
-
     /**
      * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
      */
