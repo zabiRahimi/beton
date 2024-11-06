@@ -46,7 +46,6 @@ const RouteService = ({ token, setLoading, setTicketNumber }) => {
     await axios.get("/api/v1/concreteSalesInvoice/count").then((response) => {
       const count = response.data.count;
       setTicketNumber(count+1);
-      console.log(count);
     });
 
     await axios.get("/api/v1/concreteSalesInvoice/concreteBuyers").then((response) => {
