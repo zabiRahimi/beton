@@ -1,23 +1,23 @@
 import { createRef, useEffect, useRef, useState } from 'react';
-import HeadPage from './HeadPage';
+import HeadPage from '../HeadPage';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import "../../../../css/general.css";
-import "../../../../css/formBeton.css";
-import "../../../../css/addCustomer.css";
-import "../../../../css/search.css";
-import DataZabi from "../../hooks/DateZabi";
+import "../../../../../css/general.css";
+import "../../../../../css/formBeton.css";
+import "../../../../../css/addCustomer.css";
+import "../../../../../css/search.css";
+import DataZabi from "../../../hooks/DateZabi";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ScaleLoader from 'react-spinners/ScaleLoader';
-import useChangeForm from '../../hooks/useChangeForm';
-import SelectZabi from "../../hooks/SelectZabi";
-import SelectZabi2 from "../../hooks/SelectZabi2";
-import SearchCustomersSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchCustomersSelect";
-import SearchMixersSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixersSelect";
-import SearchDriversSelect from "../searchSelectZabi/addConcreteSalesInvoiceSelect/SearchDriversSelect";
+import useChangeForm from '../../../hooks/useChangeForm';
+import SelectZabi from "../../../hooks/SelectZabi";
+import SelectZabi2 from "../../../hooks/SelectZabi2";
+import SearchCustomersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchCustomersSelect";
+import SearchMixersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixersSelect";
+import SearchDriversSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchDriversSelect";
 
 import RouteService from "./RouteService";
 import {

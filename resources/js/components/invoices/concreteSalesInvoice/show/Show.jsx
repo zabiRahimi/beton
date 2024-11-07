@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import HeadPage from './HeadPage';
-import AddCocreteSalesInvoiceSearch from './AddConcreteSalesInvoiceSearch';
-import RouteService from './RouteService';
+import HeadPage from '../HeadPage';
+import AddCocreteSalesInvoiceSearch from '../add/AddConcreteSalesInvoiceSearch';
+import RouteService from '../add/RouteService';
 import Skeleton from 'react-loading-skeleton';
 import { Pagination } from 'react-bootstrap';
 

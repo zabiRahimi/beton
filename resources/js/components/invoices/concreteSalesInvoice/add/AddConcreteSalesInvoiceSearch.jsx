@@ -1,8 +1,8 @@
 
 import React, { createRef, useEffect, useRef, useState } from 'react';
-import DataZabi from "../../hooks/DateZabi";
+import DataZabi from "../../../hooks/DateZabi";
 import moment from 'jalali-moment';
-import SelectZabi from '../../hooks/SelectZabi';
+import SelectZabi from '../../../hooks/SelectZabi';
 // import iran from "../../../assets/images/iran.png";
 
 
