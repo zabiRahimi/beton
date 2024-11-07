@@ -15,9 +15,9 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import useChangeForm from '../../../hooks/useChangeForm';
 import SelectZabi from "../../../hooks/SelectZabi";
 import SelectZabi2 from "../../../hooks/SelectZabi2";
-import SearchCustomersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchCustomersSelect";
-import SearchMixersSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchMixersSelect";
-import SearchDriversSelect from "./searchSelectZabi/addConcreteSalesInvoiceSelect/SearchDriversSelect";
+import SearchCustomersSelect from "./searchSelectZabi/SearchCustomersSelect";
+import SearchMixersSelect from "./searchSelectZabi/SearchMixersSelect";
+import SearchDriversSelect from "./searchSelectZabi/SearchDriversSelect";
 
 import RouteService from "./RouteService";
 import {
@@ -30,7 +30,7 @@ import {
     handleAddNewInvoice,
     handleDelInvoice,
     handleRemoveAllError
-} from './helper/AddHelper';
+} from './Helper';
 
 const Add = () => {
     const [loading, setLoading] = useState(true);

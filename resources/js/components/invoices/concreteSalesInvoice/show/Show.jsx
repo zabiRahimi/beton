@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import HeadPage from '../HeadPage';
 import AddCocreteSalesInvoiceSearch from '../add/AddConcreteSalesInvoiceSearch';
-import RouteService from '../add/RouteService';
+import RouteService from './RouteService';
 import Skeleton from 'react-loading-skeleton';
-import { Pagination } from 'react-bootstrap';
+// import { Pagination } from 'react-bootstrap';
+import Pagination from '../../../hooks/Pagination';
 
 const Show = () => {
     const [loading, setLoading] = useState(false);
@@ -16,7 +17,9 @@ const Show = () => {
     const [totalPage, setTotalPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
-    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({  setLoading });
+    const [ticketNumber, setTicketNumber] = useState(0);
+
+    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({  setLoading, setTicketNumber });
 
         useEffect(() => {
             // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
