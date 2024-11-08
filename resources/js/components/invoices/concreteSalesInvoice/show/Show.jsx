@@ -17,9 +17,8 @@ const Show = () => {
     const [totalPage, setTotalPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
-    const [ticketNumber, setTicketNumber] = useState(0);
 
-    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({  setLoading, setTicketNumber });
+    const {concretes} = RouteService({  setLoading });
 
         useEffect(() => {
             // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
@@ -63,7 +62,7 @@ const Show = () => {
             driverName = search.driverName,
             driverLastName = search.driverLastName) {
             setLoading(true)
-            await axios.get(`/api/v1/getConcreteSalesInvoices?page=${page}`, {
+            await axios.get(`/api/v1/concreteSalesInvoices?page=${page}`, {
                 params: {
                     startDate,
                     endDate,
@@ -86,9 +85,9 @@ const Show = () => {
                 setConcreteSalesInvoices(salesInvoices.data);
                 setTotalPage(salesInvoices.last_page);
                 setTotalRecords(salesInvoices.total);
-                if (salesInvoices.current_page == 1) {
-                    setTicketNumber(salesInvoices.data[0]['id'] + 1);
-                }
+                // if (salesInvoices.current_page == 1) {
+                //     setTicketNumber(salesInvoices.data[0]['id'] + 1);
+                // }
                 window.scrollTo({
                     top: top,
                     behavior: 'smooth'
@@ -111,7 +110,7 @@ const Show = () => {
                 }
             )
             setTimeout(() => {
-                // setLoading(false)
+                setLoading(false)
             }, 300);
         }
 
@@ -124,48 +123,48 @@ const Show = () => {
             setSearch(data);
         }
 
-    //     /**
-    //      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
-    //      * @returns 
-    //      */
-    //     const returnCreatedCustomerRecords = () => {
-    //         let length = concreteSalesInvoices.length;
-    //         if (length == 0) {
-    //             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
-    //         }
-    //         let value = concreteSalesInvoices.map((concreteSalesInvoice, i) => {
-    //             let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
-    //             let date = concreteSalesInvoice['date'].split('-');
-    //             return <div className="rowListShowACSI_Ge" key={i}>
-    //                 <span className="rowNumShowACSI_Ge">{i + 1}</span>{/* ردیف */}
-    //                 <span className="ticketNumberACSI_Ge">{concreteSalesInvoice['id']}</span>{/* قبض */}
-    //                 <span className="customerACSI_Ge">{concreteSalesInvoice['customer'].name}{'  '}{concreteSalesInvoice['customer'].lastName}</span>{/* خریدار */}
-    //                 <span className="concreteACSI_Ge">{concreteSalesInvoice['concrete'].concreteName}</span>{/* بتن */}
-    //                 <span className="truckACSI_Ge"><div className="numberplateDiv">
-    //                     <span className="numberplateDivS1">{numberplate[0]}</span>
-    //                     <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
-    //                     <span className="numberplateDivS3">{numberplate[1]}</span>
-    //                     <span className="numberplateDivS4">{numberplate[2]}</span>
-    //                 </div></span>{/* میکسر */}
-    //                 <span className="driverACSI_Ge"> {concreteSalesInvoice['driver'].name}{'  '}{concreteSalesInvoice['driver'].lastName}</span>{/* راننده */}
-    //                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>{/* تاریخ */}
-    //                 <span className="timeACSI_Ge">{concreteSalesInvoice['time']}</span>{/* ساعت */}
-    //                 <div className="divEditACSI_Ge">
-    //                     <button className="--styleLessBtn btnEditACSI_Ge" title=" ویرایش "
-    //                         onClick={() => { showEditForm(concreteSalesInvoice.id); handleRemoveErrorCustomer() }}
-    //                     >
-    //                         <i className="icofont-pencil iEditGe" />
-    //                     </button>
-    //                 </div>
-    //                 <div className="divDelACSI_Ge">
-    //                     <button className="--styleLessBtn btnDelACSI_Ge" title=" حذف ">
-    //                         <i className="icofont-trash iDelGe" />
-    //                     </button>
-    //                 </div>
-    //             </div>
-    //         })
-    //         return value;
-    //     }
+        /**
+         * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
+         * @returns 
+         */
+        const returnCreatedCustomerRecords = () => {
+            let length = concreteSalesInvoices.length;
+            if (length == 0) {
+                return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
+            }
+            let value = concreteSalesInvoices.map((concreteSalesInvoice, i) => {
+                let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
+                let date = concreteSalesInvoice['date'].split('-');
+                return <div className="rowListShowACSI_Ge" key={i}>
+                    <span className="rowNumShowACSI_Ge">{i + 1}</span>{/* ردیف */}
+                    <span className="ticketNumberACSI_Ge">{concreteSalesInvoice['id']}</span>{/* قبض */}
+                    <span className="customerACSI_Ge">{concreteSalesInvoice['customer'].name}{'  '}{concreteSalesInvoice['customer'].lastName}</span>{/* خریدار */}
+                    <span className="concreteACSI_Ge">{concreteSalesInvoice['concrete'].concreteName}</span>{/* بتن */}
+                    <span className="truckACSI_Ge"><div className="numberplateDiv">
+                        <span className="numberplateDivS1">{numberplate[0]}</span>
+                        <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
+                        <span className="numberplateDivS3">{numberplate[1]}</span>
+                        <span className="numberplateDivS4">{numberplate[2]}</span>
+                    </div></span>{/* میکسر */}
+                    <span className="driverACSI_Ge"> {concreteSalesInvoice['driver'].name}{'  '}{concreteSalesInvoice['driver'].lastName}</span>{/* راننده */}
+                    <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>{/* تاریخ */}
+                    <span className="timeACSI_Ge">{concreteSalesInvoice['time']}</span>{/* ساعت */}
+                    <div className="divEditACSI_Ge">
+                        <button className="--styleLessBtn btnEditACSI_Ge" title=" ویرایش "
+                            onClick={() => { showEditForm(concreteSalesInvoice.id); handleRemoveErrorCustomer() }}
+                        >
+                            <i className="icofont-pencil iEditGe" />
+                        </button>
+                    </div>
+                    <div className="divDelACSI_Ge">
+                        <button className="--styleLessBtn btnDelACSI_Ge" title=" حذف ">
+                            <i className="icofont-trash iDelGe" />
+                        </button>
+                    </div>
+                </div>
+            })
+            return value;
+        }
 
     return (
         <div className=''>
