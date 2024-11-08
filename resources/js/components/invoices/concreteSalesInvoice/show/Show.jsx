@@ -5,6 +5,7 @@ import RouteService from './RouteService';
 import Skeleton from 'react-loading-skeleton';
 // import { Pagination } from 'react-bootstrap';
 import Pagination from '../../../hooks/Pagination';
+import { Link } from 'react-router-dom';
 
 const Show = () => {
     const [loading, setLoading] = useState(false);
@@ -150,11 +151,13 @@ const Show = () => {
                     <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>{/* تاریخ */}
                     <span className="timeACSI_Ge">{concreteSalesInvoice['time']}</span>{/* ساعت */}
                     <div className="divEditACSI_Ge">
-                        <button className="--styleLessBtn btnEditACSI_Ge" title=" ویرایش "
-                            onClick={() => { showEditForm(concreteSalesInvoice.id); handleRemoveErrorCustomer() }}
+                        <Link className="--styleLessLink  btnEditACSI_Ge"
+                         title=" ویرایش "
+                         to={`/invoices/concreteSalesInvoice/edit/${concreteSalesInvoice['id']}`}
+                            // onClick={() => { showEditForm(concreteSalesInvoice.id); handleRemoveErrorCustomer() }}
                         >
                             <i className="icofont-pencil iEditGe" />
-                        </button>
+                        </Link>
                     </div>
                     <div className="divDelACSI_Ge">
                         <button className="--styleLessBtn btnDelACSI_Ge" title=" حذف ">

@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-
+import SearchCustomersSelect from "./searchSelectZabi/SearchCustomersSelect";
+import SearchMixersSelect from "./searchSelectZabi/SearchMixersSelect";
+import SearchDriversSelect from "./searchSelectZabi/SearchDriversSelect";
 const Edit = () => {
     const refTimeEditError = useRef(null);
     const refDateEditError = useRef(null);
-    const refConcrete_idEdit = createRef();
+    const refConcrete_idEdit = useRef(null);
     const refConcrete_idEditError = useRef(null);
     const refUnitPriceEdit = useRef(null);
     const refUnitPriceEditError = useRef(null);
@@ -80,7 +82,7 @@ const Edit = () => {
         if (driverId) {
             setInput(prev => ({ ...prev, driver_id: driverId }));
         }
-    }, [driverId, invoiceIndexForDriver]);
+    }, [driverId]);
 
     useEffect(() => {
         if (cementStoreId) {
@@ -162,7 +164,7 @@ const Edit = () => {
         }
     }
 
-    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading });
+    // const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading });
 
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers: concreteBuyers.datas });
 
