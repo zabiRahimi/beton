@@ -1,8 +1,26 @@
 import { useEffect, useRef, useState } from "react";
+import { useParams } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 import SearchCustomersSelect from "./searchSelectZabi/SearchCustomersSelect";
 import SearchMixersSelect from "./searchSelectZabi/SearchMixersSelect";
 import SearchDriversSelect from "./searchSelectZabi/SearchDriversSelect";
+import RouteService from "./RouteService";
+import useChangeForm from "../../../hooks/useChangeForm";
+import DataZabi from "../../../hooks/DateZabi";
+import SelectZabi from "../../../hooks/SelectZabi";
+import SelectZabi2 from "../../../hooks/SelectZabi2";
 const Edit = () => {
+    const { inoviceId } = useParams();
+    const {
+        optionDays,
+        optionMonth,
+        optionShortYears,
+        optionHours,
+        optionMinutes,
+        optionSeconds,
+    } = DataZabi();
+    const container = useRef(null);
     const refTimeEditError = useRef(null);
     const refDateEditError = useRef(null);
     const refConcrete_idEdit = useRef(null);
@@ -28,6 +46,7 @@ const Edit = () => {
     const refConcretingPositionEditError = useRef(null);
     const refCheckedMaskanShahidEdit = useRef(null);
 
+    const [loading, setLoading] = useState(true);
     const [customerId, setCustomerId] = useState('');
     const [concreteId, setConcreteId] = useState('');
     const [truckId, setTruckId] = useState('');
@@ -40,6 +59,16 @@ const Edit = () => {
        * id to edit the model
       */
     const [id, setId] = useState(null);
+    const [date, setDate] = useState({
+        day: '',
+        month: '',
+        year: ''
+    });
+    const [time, setTime] = useState({
+        second: '',
+        minute: '',
+        hour: ''
+    });
     const [input, setInput] = useState({
         customer_id: '',
         date: '',
@@ -59,6 +88,8 @@ const Edit = () => {
         address: '',
         concretingPosition: ''
     });
+
+    const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ setLoading });
 
     useEffect(() => {
         if (customerId) {
@@ -173,20 +204,20 @@ const Edit = () => {
     const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers.datas });
 
 
-    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, editMode, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ formCurrent, pasteDataForEditing, resetForm2 });
+   
 
     useEffect(() => {
-        if (editMode) {
-            refUnitPriceEdit && (refUnitPriceEdit.current.value = parseFloat(inputEdit.unitPrice).toLocaleString());
+        
+            refUnitPriceEdit && (refUnitPriceEdit.current.value = parseFloat(input.unitPrice).toLocaleString());
 
-            refWeightEdit && (refWeightEdit.current.value = parseFloat(inputEdit.weight).toLocaleString());
+            refWeightEdit && (refWeightEdit.current.value = parseFloat(input.weight).toLocaleString());
 
-            refTotalPriceEdit && (refTotalPriceEdit.current.innerHTML = parseFloat(inputEdit.totalPrice).toLocaleString());
+            refTotalPriceEdit && (refTotalPriceEdit.current.innerHTML = parseFloat(input.totalPrice).toLocaleString());
 
-            refFareEdit && (refFareEdit.current.value = parseFloat(inputEdit.fare).toLocaleString());
-        }
+            refFareEdit && (refFareEdit.current.value = parseFloat(input.fare).toLocaleString());
+       
 
-    }, [editMode]);
+    }, []);
 
     //     /**
     //      * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
@@ -348,6 +379,8 @@ const Edit = () => {
         refCustomer_id.current.updateData('انتخاب');
     }
 
+    const { showAddForm, showCreatedRecord, showEditForm, flexDirection, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({  resetForm2 });
+
     /**
  * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
  * @param {*} e 
@@ -389,7 +422,7 @@ const Edit = () => {
         setLoading(true)
         await axios.patch(
             `/api/v1/editConcreteSalesInvoice/${id}`,
-            { ...inputEdit },
+            { ...input },
             {
                 headers:
                 {
@@ -532,18 +565,10 @@ const Edit = () => {
             cubicMeters = cubicMeters.toFixed(2);
         }
 
-        if (!editMode) {
-            refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
-            setInput(perv => {
-                let newInvoice;
-                newInvoice = [...perv.invoice];
-                newInvoice[i] = { ...newInvoice[i], cubicMeters };
-                return { ...perv, invoice: newInvoice };
-            });
-        } else {
+       
             refCubicMetersEdit.current.innerHTML = cubicMeters;
             setInputEdit(prev => ({ ...prev, cubicMeters }));
-        }
+       
     }
 
     return (
@@ -736,7 +761,7 @@ const Edit = () => {
                                         type="text"
                                         id='unitPriceEdit'
                                         className="inputTextUnitFB ltrFB element"
-                                        defaultValue={inputEdit.unitPrice}
+                                        defaultValue={input.unitPrice}
                                         ref={refUnitPriceEdit}
                                         onInput={e => {
                                             handleSaveValInput(e, 'unitPrice', 0);
@@ -769,7 +794,7 @@ const Edit = () => {
                                         type="text"
                                         id='weightEdit'
                                         className="inputTextUnitFB ltrFB element"
-                                        defaultValue={inputEdit.weight}
+                                        defaultValue={input.weight}
                                         ref={refWeightEdit}
                                         onInput={e => {
                                             handleSaveValInput(e, 'weight', 0);
@@ -800,7 +825,7 @@ const Edit = () => {
                                     <label> حجم بار </label>
                                     <div className="mainCubicMetersACSL_FB">
                                         <div className="cubicMetersACSL_FB"
-                                            ref={refCubicMetersEdit}>{inputEdit.cubicMeters}</div>
+                                            ref={refCubicMetersEdit}>{input.cubicMeters}</div>
                                         <span className="spanCubicMetersACSL_FB">
                                             متر مکعب
                                         </span>
@@ -906,7 +931,7 @@ const Edit = () => {
                                         type="text"
                                         id='fareEdit'
                                         className="inputTextUnitFB ltrFB element"
-                                        defaultValue={inputEdit.fare}
+                                        defaultValue={input.fare}
                                         ref={refFareEdit}
                                         onInput={e => {
                                             handleSaveValInput(e, 'fare', 0);
@@ -984,7 +1009,7 @@ const Edit = () => {
                                         type="text"
                                         id='vahedEdit'
                                         className="inputTextFB ltrFB element"
-                                        defaultValue={inputEdit.vahed}
+                                        defaultValue={input.vahed}
                                         onInput={e => handleSaveValInput(e, 'vahed', 0)}
                                         onFocus={(e) => clearInputError(e, refVahedEditError)}
                                         disabled={checkedMaskanMeliEdit != 'emam' && checkedMaskanMeliEdit != 'shahid'}
@@ -999,7 +1024,7 @@ const Edit = () => {
                                     <textarea
                                         id='addressEdit'
                                         className="textareaAddressCSI_FB element"
-                                        defaultValue={inputEdit.address}
+                                        defaultValue={input.address}
                                         onInput={e => handleSaveValInput(e, 'address', 0)}
                                         onFocus={(e) => clearInputError(e, refAddressEditError)}
 
@@ -1018,7 +1043,7 @@ const Edit = () => {
                                     <textarea
                                         id='concretingPositionEdit'
                                         className="textareaAddressCSI_FB element"
-                                        defaultValue={inputEdit.concretingPosition}
+                                        defaultValue={input.concretingPosition}
                                         onInput={e => handleSaveValInput(e, 'concretingPosition', 0)}
                                         onFocus={(e) => clearInputError(e, refConcretingPositionEditError)}
 
@@ -1034,11 +1059,11 @@ const Edit = () => {
                         </div>
                     </div>
                 </div>
-                <div className={`sectionFB divBtnsFB ${!editMode ? 'hideGe' : ''}`}>
+                <div className='sectionFB divBtnsFB' >
                     <Button
                         variant="info"
                         className="btnSaveFB"
-                        onClick={handleSubmitEdit}
+                        onClick={handleSubmit}
                     >
                         ویرایش
                     </Button>
