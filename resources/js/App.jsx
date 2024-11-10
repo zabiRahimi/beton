@@ -90,7 +90,7 @@ function App() {
                         <Route index element={<Navigate to="add" replace />} />
                         <Route path="add" element={<AddConcreteSalesInvoice />} />
                         <Route path="show" element={<ShowConcreteSalesInvoice />} />
-                        <Route path="edit/:inoviceId" element={<EditConcreteSalesInvoice />} />
+                        <Route path="edit/:invoiceId" element={<EditConcreteSalesInvoice />} />
                     </Route>
 
                     <Route path="sand" element={<Sand />} >

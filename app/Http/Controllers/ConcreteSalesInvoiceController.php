@@ -188,7 +188,8 @@ class ConcreteSalesInvoiceController extends Controller
      */
     public function edit(ConcreteSalesInvoice $concreteSalesInvoice)
     {
-        //
+        $concreteSalesInvoice->load(['customer', 'driver', 'truck.customer', 'cementStore', 'concrete']);
+        return response()->json($concreteSalesInvoice);
     }
 
     /**

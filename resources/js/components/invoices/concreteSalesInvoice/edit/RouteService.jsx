@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-const RouteService = ({ token, setLoading }) => {
+const RouteService = ({ token, invoiceId, setLoading, setConcreteSalesInvoice }) => {
   const MySwal = withReactContent(Swal);
   const hasCalledFetchData = useRef(false);
   const [dataState, setDataState] = useState({
@@ -35,15 +35,44 @@ const RouteService = ({ token, setLoading }) => {
 
   useEffect(() => {
     if (!hasCalledFetchData.current) {
-      fetchData(token);
+      fetchData(token, invoiceId);
       hasCalledFetchData.current = true;
     }
   }, []);
 
 
-  const fetchData = async (token) => {
-
+  const fetchData = async (token, invoiceId) => {
+    
    
+
+    await axios.get(`/api/v1/concreteSalesInvoices/${invoiceId}/edit`).then((response) => {
+     
+      setConcreteSalesInvoice(response.data);
+      // const datas = response.data.concreteBuyers;
+      let options;
+      // if (datas.length == 0) {
+      //   setDataState(prev => ({ ...prev, hasBuyers: false }));
+      //   options = notOption('هیچ مشتری به عنوان خریدار ثبت نشده است، ابتدا خریدار را ثبت کنید');
+      // } else {
+      //   options = datas.map(data => ({
+      //     value: data.id,
+      //     html: (
+      //       <div className="personnelAption_addPerS">
+      //         <span className="name_addPers">
+      //           {data.name} {' '} {data.lastName}
+      //         </span>
+      //         <span className="fther_addPers">
+      //           {data.father || ''}
+      //         </span>
+      //       </div>
+      //     )
+      //   }));
+      // }
+      // setConcreteBuyers(prev => ({
+      //   ...prev,
+      //   options
+      // }));
+    });
 
     await axios.get("/api/v1/concreteSalesInvoice/concreteBuyers").then((response) => {
       const datas = response.data.concreteBuyers;
