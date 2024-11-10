@@ -43,24 +43,9 @@ export const htmlFor = (id) => {
 * @param {ref} ref 
 */
 export  const formatNub = (refCurrent) => {
-    console.log(refCurrent);
     let val,
         checkDthot,
-        resalt=refCurrent.value.replace(/[\s,]/g, "");;
-    // switch (input) {
-    //     case 'unitPrice':
-    //         resalt = refUnitPrice.current.value.replace(/[\s,]/g, "");
-    //         refCurrent = refUnitPrice.current;
-    //         break;
-    //     case 'weight':
-    //         resalt = refWeight.current.value.replace(/[\s,]/g, "");
-    //         refCurrent = refWeight.current;
-    //         break;
-    //     case 'fare':
-    //         resalt = refFare.current.value.replace(/[\s,]/g, "");
-    //         refCurrent = refFare.current;
-    //         break;
-    // }
+        resalt=refCurrent.value.replace(/[\s,]/g, "");
     // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
     if (resalt.slice(-1) == '.') {
         checkDthot = true;
@@ -177,45 +162,35 @@ export  const handleCubicMetersCalculation = (e, refInvoice, setInput, i = null)
 }
 
 
-export  const handleTotalPriceCalculation = (e, i, element, input, setInput, refInvoice) => {
+export  const handleTotalPriceCalculation = (e, element, input, setInput, refTotalPrice) => {
     let cubicMeters,
         totalPrice,
         { value } = e.target;
     value = value.replace(/,/g, '');
     value = Number(value);
-
+    
     if (element == 'weight') {
         cubicMeters = value / 2300;
         if (!Number.isInteger(cubicMeters)) {
             cubicMeters = cubicMeters.toFixed(2);
         }
-        let unitPrice = input.invoice[i].unitPrice;
+        let unitPrice = input.unitPrice;
         if (Number.isInteger(Number(unitPrice))) {
             totalPrice = unitPrice * cubicMeters;
-            setInput(perv => {
-                let newInvoice;
-                newInvoice = [...perv.invoice];
-                newInvoice[i] = { ...newInvoice[i], totalPrice };
-                return { ...perv, invoice: newInvoice };
-            });
-            refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+            setInput(perv => ( { ...perv, totalPrice }));
+            refTotalPrice.current.innerHTML = totalPrice.toLocaleString();
         }
 
     } else if (element == 'unitPrice') {
-        let weight = input.invoice[i].weight;
+        let weight = input.weight;
         if (weight && Number(weight)) {
             cubicMeters = weight / 2300;
             if (!Number.isInteger(cubicMeters)) {
                 cubicMeters = cubicMeters.toFixed(2);
             }
             totalPrice = value * cubicMeters;
-            setInput(perv => {
-                let newInvoice;
-                newInvoice = [...perv.invoice];
-                newInvoice[i] = { ...newInvoice[i], totalPrice };
-                return { ...perv, invoice: newInvoice };
-            });
-            refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+            setInput(perv => ( { ...perv, totalPrice }));
+            refTotalPrice.current.innerHTML = totalPrice.toLocaleString();
         }
     }
 }
