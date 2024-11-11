@@ -1,29 +1,110 @@
-
-  /**
- * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
- * @param {*} e 
- * @param {رف مربوط به تگ نمایش خطا} refErr 
- */
- export const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '') => {
-    
-        if (!dateAndTime) {
-            e.target.classList.remove('borderRedFB');
-            /**
-                     * دو خط کد زیر برای زمانی است‌ که کلاس مورد
-                     *  نظر بر روی پدر تگهااعمال شده‌است
-                     * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
-                     *  و سپس کلاس را از تگ پدر حذف 
-                     * می‌‌کند، این کدها معمولا برای کامپوننتی
-                     *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
-                    */
-            const parentWithClass = e.target.closest('.borderRedFB');
-            parentWithClass && parentWithClass.classList.remove('borderRedFB');
+export const handleSetDate = (e, input, date, setDate, setInput) => {
+    let { value } = e.target,
+        valDate;
+    value = value.toString();
+    if (input == 'day') {
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+            setDate(prev => ({ ...prev, [input]: value }));
         } else {
-            const element = document.getElementById(idDivDateAndTime);
-            element.classList.remove('borderRedFB');
+            e.target.value = date.day;
         }
-        refErr.current && (refErr.current.innerHTML = '')
-   
+        valDate = date.year + '-' + date.month + '-' + value;
+        setInput(perv => ({ ...perv, date: valDate }));
+    } else if (input == 'month') {
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
+            setDate(prev => ({ ...prev, [input]: value }));
+        }
+        else {
+            e.target.value = date.month;
+        }
+        valDate = date.year + '-' + value + '-' + date.day;
+        setInput(perv => ({ ...perv, date: valDate }));
+    } else if (input = 'year') {
+        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+            setDate(prev => ({ ...prev, [input]: value }));
+        } else {
+            e.target.value = date.year;
+        }
+        valDate = value + '-' + date.month + '-' + date.day;
+        setInput(perv => ({ ...perv, date: valDate }));
+    }
+}
+
+export  const handleSetTime = (e, input, time, setTime, setInput) => {
+    let { value } = e.target,
+        valTime;
+    value = value.toString();
+    if (input == 'second') {
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
+            setTime(prev => ({ ...prev, [input]: value }));
+        } else {
+            e.target.value = time.second;
+        }
+        valTime = time.hour + ':' + time.minute + ':' + value;
+        setInput(perv => ({ ...perv, time: valTime }));
+    } else if (input == 'minute') {
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
+            setTime(prev => ({ ...prev, [input]: value }));
+        } else {
+            e.target.value = time.minute;
+        }
+        valTime = time.hour + ':' + value + ':' + time.second;
+        setInput(perv => ({ ...perv, time: valTime }));
+    } else if (input = 'hour') {
+        (value != 0 && value.length == 1) && (value = '0' + value);
+        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+        if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
+            setTime(prev => ({ ...prev, [input]: value }));
+        } else {
+            e.target.value = time.hour;
+        }
+        valTime = value + ':' + time.minute + ':' + time.second;
+        setInput(perv => ({ ...perv, time: valTime }));
+    }
+}
+
+/**
+* برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
+* @param {*} e 
+* @param {رف مربوط به تگ نمایش خطا} refErr 
+*/
+export const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', maskan=false, refCurentVahed='', refCurentAddress='' ) => {
+
+    if (!dateAndTime) {
+        e.target.classList.remove('borderRedFB');
+        /**
+                 * دو خط کد زیر برای زمانی است‌ که کلاس مورد
+                 *  نظر بر روی پدر تگهااعمال شده‌است
+                 * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
+                 *  و سپس کلاس را از تگ پدر حذف 
+                 * می‌‌کند، این کدها معمولا برای کامپوننتی
+                 *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
+                */
+        const parentWithClass = e.target.closest('.borderRedFB');
+        parentWithClass && parentWithClass.classList.remove('borderRedFB');
+        if (maskan) {
+        const vahedElemnt = document.getElementById(`vahed`);
+        vahedElemnt.classList.remove('borderRedFB');
+        refCurentAddress.innerHTML = '';
+
+        const addressElemnt = document.getElementById(`address`);
+        addressElemnt.classList.remove('borderRedFB');
+        refCurentVahed.innerHTML = '';
+        }
+    } else {
+        const element = document.getElementById(idDivDateAndTime);
+        element.classList.remove('borderRedFB');
+    }
+    refErr.current && (refErr.current.innerHTML = '')
+
 }
 
 /**
@@ -42,10 +123,10 @@ export const htmlFor = (id) => {
 * به صورت دهگان،صدگان و ...
 * @param {ref} ref 
 */
-export  const formatNub = (refCurrent) => {
+export const formatNub = (refCurrent) => {
     let val,
         checkDthot,
-        resalt=refCurrent.value.replace(/[\s,]/g, "");
+        resalt = refCurrent.value.replace(/[\s,]/g, "");
     // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
     if (resalt.slice(-1) == '.') {
         checkDthot = true;
@@ -64,87 +145,7 @@ export  const formatNub = (refCurrent) => {
     }
 }
 
-// export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue, setMaskan, maskan) => {
-//     let checked;
-//     if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
-//         const copyMaskan = [...maskan];
-//         copyMaskan[i] = '';
-//         copyMaskan[maskan.length - 1] = '';
-//         setMaskan(copyMaskan);
-//         checked = false;
-//         const checkbox = e.target;
-//         checkbox.checked = !checkbox.checked;
-//         setCheckedValue('');
-//     } else if (value == `shahid${i}` && isChecked && checkedValue == 'مسکن ملی شهرک شهید رییسی') {
-//         const copyMaskan = [...maskan];
-//         copyMaskan[i] = '';
-//         copyMaskan[maskan.length - 1] = '';
-//         setMaskan(copyMaskan);
-//         checked = false;
-//         const checkbox = e.target;
-//         checkbox.checked = !checkbox.checked;
-//         setCheckedValue('');
-//     }
-//     else {
-//         if (value == `emam${i}`) {
-//             checked = refInvoice[`checkedMaskanEmam${i}`].current;
-//         } else if (value == `shahid${i}`) {
-//             checked = refInvoice[`checkedMaskanShahid${i}`].current;
-//         }
-
-//         if (value == `emam${i}`) {
-//             refInvoice[`checkedMaskanEmam${i}`].current = !checked;
-//             refInvoice[`checkedMaskanShahid${i}`].current = true;
-//         } else if (value == `shahid${i}`) {
-//             refInvoice[`checkedMaskanShahid${i}`].current = !checked;
-//             refInvoice[`checkedMaskanEmam${i}`].current = true;
-//         }
-//     }
-
-//     if (checked) {
-//         setCheckedMaskanMeli(value);
-
-//     } else {
-//         setCheckedMaskanMeli('');
-//     }
-//     setIsChecked(false)
-// }
-
-export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue, setMaskan, maskan) => {
-    let checked;
-  console.log(e.target);
-    const resetMaskan = () => {
-      const copyMaskan = [...maskan];
-      copyMaskan[i] = '';
-      copyMaskan[maskan.length - 1] = '';
-      setMaskan(copyMaskan);
-      setCheckedValue('');
-    };
-  
-    const toggleCheckbox = (ref) => {
-        if (ref && ref.current) {
-            ref.current.checked = !ref.current.checked;
-          }
-    };
-  
-    if (value === `emam${i}` && isChecked && checkedValue === 'مسکن ملی شهرک امام خمینی') {
-      resetMaskan();
-      toggleCheckbox(e.target);
-    } else if (value === `shahid${i}` && isChecked && checkedValue === 'مسکن ملی شهرک شهید رییسی') {
-      resetMaskan();
-      toggleCheckbox(e.target);
-    } else {
-      checked = refInvoice[`checkedMaskan${value.charAt(0).toUpperCase() + value.slice(1, value.length - 1)}${i}`].current;
-      refInvoice[`checkedMaskanEmam${i}`].current = value === `emam${i}` ? !checked : true;
-      refInvoice[`checkedMaskanShahid${i}`].current = value === `shahid${i}` ? !checked : true;
-    }
-  
-    setCheckedMaskanMeli(checked ? value : '');
-    setIsChecked(false);
-  };
-  
-
-export  const handleCubicMetersCalculation = (e, refInvoice, setInput, i = null) => {
+export const handleCubicMetersCalculation = (e, refCubicMeters, setInput) => {
     let { value } = e.target;
     value = value.replace(/,/g, '');
     let cubicMeters = value / 2300;
@@ -152,23 +153,31 @@ export  const handleCubicMetersCalculation = (e, refInvoice, setInput, i = null)
     if (!Number.isInteger(cubicMeters)) {
         cubicMeters = cubicMeters.toFixed(2);
     }
-    refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
-    setInput(perv => {
-        let newInvoice;
-        newInvoice = [...perv.invoice];
-        newInvoice[i] = { ...newInvoice[i], cubicMeters };
-        return { ...perv, invoice: newInvoice };
-    });
+
+
+    refCubicMeters.current.innerHTML = cubicMeters;
+    setInput(prev => ({ ...prev, cubicMeters }));
+
 }
 
+export  const handleCheckedMaskanMeli = (value, checkedMaskanMeli, setCheckedMaskanMeli, setInput) => {
+    let maskanMeli;
+    if (value == 'emam') {
+        checkedMaskanMeli == "emam" ? (setCheckedMaskanMeli(''), maskanMeli = '') : (setCheckedMaskanMeli('emam'), maskanMeli = 'مسکن ملی شهرک امام خمینی');
+    } else {
+        checkedMaskanMeli == "shahid" ? (setCheckedMaskanMeli(''), maskanMeli = '') : (setCheckedMaskanMeli('shahid'), maskanMeli = 'مسکن ملی شهرک شهید رییسی');
+    }
 
-export  const handleTotalPriceCalculation = (e, element, input, setInput, refTotalPrice) => {
+    setInput(pre => ({ ...pre, maskanMeli }));
+}
+
+export const handleTotalPriceCalculation = (e, element, input, setInput, refTotalPrice) => {
     let cubicMeters,
         totalPrice,
         { value } = e.target;
     value = value.replace(/,/g, '');
     value = Number(value);
-    
+
     if (element == 'weight') {
         cubicMeters = value / 2300;
         if (!Number.isInteger(cubicMeters)) {
@@ -177,7 +186,7 @@ export  const handleTotalPriceCalculation = (e, element, input, setInput, refTot
         let unitPrice = input.unitPrice;
         if (Number.isInteger(Number(unitPrice))) {
             totalPrice = unitPrice * cubicMeters;
-            setInput(perv => ( { ...perv, totalPrice }));
+            setInput(perv => ({ ...perv, totalPrice }));
             refTotalPrice.current.innerHTML = totalPrice.toLocaleString();
         }
 
@@ -189,81 +198,10 @@ export  const handleTotalPriceCalculation = (e, element, input, setInput, refTot
                 cubicMeters = cubicMeters.toFixed(2);
             }
             totalPrice = value * cubicMeters;
-            setInput(perv => ( { ...perv, totalPrice }));
+            setInput(perv => ({ ...perv, totalPrice }));
             refTotalPrice.current.innerHTML = totalPrice.toLocaleString();
         }
     }
 }
 
-export const handleAddNewInvoice = (e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice, date, input, setConcreteName, concretes, maskan, setMaskan, setCheckedValue, setCementStoreName, cementStores, setTime, unitPrice, fare, vahed, address, concretingPosition ) => {
-    e.preventDefault();
-    setIndexNewInvoice(invoice.length);
-    setInvoice([...invoice, sampleInvoice]);
-    setIsNewInvoice(true);
-    let date0 = handleSetDateForNewInvoice(date);
-    let concrete_id = handleSetConcreteForNewInvoice(input, invoice, setConcreteName, concretes);
-    let maskanMeli = handleSetMaskanMeliForNewInvoice(input, invoice, maskan, setMaskan, setCheckedValue);
-    let cementStore_id = handleSetCementStoreForNewInvoice(input, invoice, setCementStoreName, cementStores);
-    setInput(perv => {
-        let newInvoice = [...perv.invoice, { date:date0, time: '', weight: '', cubicMeters: '', concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
-
-        return { ...perv, invoice: newInvoice };
-    });
-    handleClearTime(setTime);
-    setIsChecked(true);
-}
-
- const handleClearTime = (setTime) => {
-    setTime({
-        second: '',
-        minute: '',
-        hour: ''
-    });
-}
-
- const handleSetDateForNewInvoice = (date) => {
-    let valDate = date.year + '-' + date.month + '-' + date.day;
-    return valDate;
-}
-
- const handleSetConcreteForNewInvoice = (input, invoice, setConcreteName, concretes) => {
-    let concrete_id = input.invoice[invoice.length - 1].concrete_id;
-    concrete_id && (setConcreteName(concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']));
-    return concrete_id;
-}
-
- const handleSetCementStoreForNewInvoice = (input, invoice, setCementStoreName, cementStores) => {
-    let cementStore_id = input.invoice[invoice.length - 1].cementStore_id;
-    cementStore_id && (setCementStoreName(cementStores.filter(cementStore => cementStore.value == cementStore_id)[0]['cementStoreName']));
-    return cementStore_id;
-}
-
- const handleSetMaskanMeliForNewInvoice = (input, invoice, maskan, setMaskan, setCheckedValue) => {
-    let maskanMeli = input.invoice[invoice.length - 1].maskanMeli;
-    const copyMaskan = [...maskan];
-    copyMaskan[maskan.length - 1] = maskanMeli;
-    setMaskan(copyMaskan);
-    setCheckedValue(maskanMeli);
-    return maskanMeli;
-}
-
-export const handleDelInvoice = (input, invoice, setInvoice, setInput) => {
-    const updatedInputInvoice = input.invoice.slice(0, -1);
-    const updatedInvoice = invoice.slice(0, -1);
-    setInvoice(updatedInvoice);
-    setInput({ ...input, invoice: updatedInputInvoice });
-}
-
-export const handleRemoveAllError = () => {
-    var elements = document.getElementsByClassName('element');
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].classList.remove('borderRedFB');
-    }
-
-    var elements = document.getElementsByClassName('elementError');
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].innerHTML = '';
-    }
-
-}
 

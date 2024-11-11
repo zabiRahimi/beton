@@ -7,20 +7,19 @@ import SearchCustomersSelect from "./searchSelectZabi/SearchCustomersSelect";
 import SearchMixersSelect from "./searchSelectZabi/SearchMixersSelect";
 import SearchDriversSelect from "./searchSelectZabi/SearchDriversSelect";
 import RouteService from "./RouteService";
-import useChangeForm from "../../../hooks/useChangeForm";
 import DataZabi from "../../../hooks/DateZabi";
 import SelectZabi from "../../../hooks/SelectZabi";
 import SelectZabi2 from "../../../hooks/SelectZabi2";
 import {
+    handleSetDate,
+    handleSetTime,
     clearInputError,
     htmlFor,
     formatNub,
     handleCheckedMaskanMeli,
     handleCubicMetersCalculation,
     handleTotalPriceCalculation,
-    handleAddNewInvoice,
-    handleDelInvoice,
-    handleRemoveAllError
+
 } from './Helper';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -38,7 +37,7 @@ const Edit = () => {
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     const container = useRef(null);
-    const end = useRef(false);
+    const loadingEnd = useRef(false);
     const form = useRef(null);
     const refTimeError = useRef(null);
     const refDateError = useRef(null);
@@ -76,11 +75,6 @@ const Edit = () => {
     const [driverId, setDriverId] = useState('');
     const [cementStoreId, setCementStoreId] = useState('');
     const [checkedMaskanMeli, setCheckedMaskanMeli] = useState('');
-
-    /**
-       * id to edit the model
-      */
-    const [id, setId] = useState(null);
     const [date, setDate] = useState({
         day: '',
         month: '',
@@ -110,7 +104,6 @@ const Edit = () => {
         address: '',
         concretingPosition: ''
     });
-    console.log(input.totalPrice);
 
     const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ invoiceId, setLoading, setConcreteSalesInvoice });
 
@@ -144,82 +137,6 @@ const Edit = () => {
         }
     }, [cementStoreId]);
 
-
-    const handleSetDate = (e, input) => {
-        let { value } = e.target,
-            valDate;
-        value = value.toString();
-        if (input == 'day') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = date.day;
-            }
-            valDate = date.year + '-' + date.month + '-' + value;
-            setInput(perv => ({ ...perv, date: valDate }));
-        } else if (input == 'month') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-            }
-            else {
-                e.target.value = date.month;
-            }
-            valDate = date.year + '-' + value + '-' + date.day;
-            setInput(perv => ({ ...perv, date: valDate }));
-        } else if (input = 'year') {
-            if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = date.year;
-            }
-            valDate = value + '-' + date.month + '-' + date.day;
-            setInput(perv => ({ ...perv, date: valDate }));
-        }
-    }
-
-    const handleSetTime = (e, i, input) => {
-        let { value } = e.target,
-            valTime;
-        value = value.toString();
-        if (input == 'second') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.second;
-            }
-            valTime = time.hour + ':' + time.minute + ':' + value;
-            setInput(perv => ({ ...perv, time: valTime }));
-        } else if (input == 'minute') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.minute;
-            }
-            valTime = time.hour + ':' + value + ':' + time.second;
-            setInput(perv => ({ ...perv, time: valTime }));
-        } else if (input = 'hour') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.hour;
-            }
-            valTime = value + ':' + time.minute + ':' + time.second;
-            setInput(perv => ({ ...perv, time: valTime }));
-        }
-    }
-
-    // const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ token, setLoading });
-
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers: concreteBuyers.datas });
 
     const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: mixers.datas });
@@ -244,7 +161,7 @@ const Edit = () => {
 
             refFare.current.value && (refFare.current.value = parseFloat(input.fare).toLocaleString());
         }
-    }, [concreteSalesInvoice, end.current]);
+    }, [concreteSalesInvoice, loadingEnd.current]);
 
     /**
      * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
@@ -252,8 +169,6 @@ const Edit = () => {
      * @param {آدی رکورد} id0 
      */
     const pasteData = (concreteSalesInvoice) => {
-        console.log(concreteSalesInvoice);
-
         let numberplate = concreteSalesInvoice.truck.numberplate.split("-");
         const { id, created_at, updated_at, ...rest } = concreteSalesInvoice;//نادیده گرفتن کلید های مشخص شده
 
@@ -346,76 +261,28 @@ const Edit = () => {
             setCheckedMaskanMeli('');
 
         }
-        end.current = true;
+        loadingEnd.current = true;
     }
 
-    const resetForm = () => {
-        setInvoice([sampleInvoice]);
-        setInput({
-            customer_id: '',
-            invoice: [{
-                date: '',
-                time: '',
-                weight: '',
-                cubicMeters: "",
-                concrete_id: '',
-                truck_id: '',
-                ownerId: '',
-                driver_id: '',
-                cementStore_id: '',
-                unitPrice: '',
-                totalPrice: '',
-                fare: '',
-                maskanMeli: '',
-                vahed: '',
-                address: '',
-                concretingPosition: ''
-            }],
-        });
-
-        setCustomerId('');
-        setConcreteId('');
-        setTruckId('');
-        setOwnerId('');
-        setDriverId('');
-        setCementStoreId('');
-        setCheckedMaskanMeli();
-
-        setTime({
-            second: '',
-            minute: '',
-            hour: ''
-        });
-
-        setDate({
-            day: '',
-            month: '',
-            year: ''
-        });
-
-        setUnitPrice('');
-        setFare('');
-
-        setCheckedValue('');
-        setMaskan(['']);
-
-        setVahed('');
-        setAddress('');
-        setConcretingPosition('');
-
-        refCustomer_id.current.updateData('انتخاب');
-    }
-
-    const { showAddForm, showCreatedRecord, showForm, flexDirection, disabledBtnShowForm, disabledBtnShowRecords, hideCreatedRecord, containerShowGeRef, hideShowForm } = useChangeForm({ resetForm });
-
-     /**
-     * ذخیره مقادیر ورودی‌های کاربر در استیت
-     * @param {*} e 
-     * @param {*} input 
-     */
-     const handleSaveValInput = (e, input) => {
+    /**
+    * ذخیره مقادیر ورودی‌های کاربر در استیت
+    * @param {*} e 
+    * @param {*} input 
+    */
+    const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-            setInput(prev => ({ ...prev, [input]: value }));
+        switch (input) {
+            case 'unitPrice':
+                value = value.replace(/,/g, '');
+                break;
+            case 'weight':
+                value = value.replace(/,/g, '');
+                break;
+            case 'fare':
+                value = value.replace(/,/g, '');
+                break;
+        }
+        setInput(prev => ({ ...prev, [input]: value }));
     }
 
     const handleSubmit = async (e) => {
@@ -433,7 +300,6 @@ const Edit = () => {
                 }
             }
         ).then((response) => {
-            console.log(response);
             MySwal.fire({
                 icon: "success",
                 title: "با موفقیت ویرایش شد",
@@ -477,32 +343,6 @@ const Edit = () => {
         setLoading(false)
     }
 
-    const handleCheckedMaskanMeli = (e, value) => {
-        let maskanMeli;
-        if (value == 'emam') {
-            checkedMaskanMeli == "emam" ? (setCheckedMaskanMeli(''), maskanMeli = '') : (setCheckedMaskanMeli('emam'), maskanMeli = 'مسکن ملی شهرک امام خمینی');
-        } else {
-            checkedMaskanMeli == "shahid" ? (setCheckedMaskanMeli(''), maskanMeli = '') : (setCheckedMaskanMeli('shahid'), maskanMeli = 'مسکن ملی شهرک شهید رییسی');
-        }
-
-        setInput(pre => ({ ...pre, maskanMeli }));
-    }
-
-    const handleCubicMetersCalculation = (e, i = null) => {
-        let { value } = e.target;
-        value = value.replace(/,/g, '');
-        let cubicMeters = value / 2300;
-        cubicMeters = Number(cubicMeters);
-        if (!Number.isInteger(cubicMeters)) {
-            cubicMeters = cubicMeters.toFixed(2);
-        }
-
-
-        refCubicMeters.current.innerHTML = cubicMeters;
-        setInput(prev => ({ ...prev, cubicMeters }));
-
-    }
-   
     return (
         <div ref={container}>
             <HeadPage
@@ -511,7 +351,7 @@ const Edit = () => {
                 displayBtnAdd={true}
                 displayBtnShow={true}
             />
-            <div className={`containerMainAS_Ge ${flexDirection}`}>
+            <div className='containerMainAS_Ge'>
                 <div className="continerAddGe containerAddCustomer">
                     <form className='formBeton' ref={form}>
                         <div className="sectionFB">
@@ -521,7 +361,7 @@ const Edit = () => {
                                     <div
                                         id="customer_id"
                                         className="element"
-                                        onClick={e => clearInputError(e, refCustomer_idError, refInvoice)}
+                                        onClick={e => clearInputError(e, refCustomer_idError)}
                                     >
                                         <SelectZabi2
                                             primaryLabel='انتخاب'
@@ -567,7 +407,7 @@ const Edit = () => {
                                                     placeholder="00"
                                                     id="hour"
                                                     value={time.second || ''}
-                                                    onInput={(e) => handleSetTime(e, 0, 'second')}
+                                                    onInput={(e) => handleSetTime(e, 'second', time, setTime, setInput)}
                                                     onFocus={(e) => clearInputError(e, refTimeError, true, 'time')}
 
                                                 />
@@ -577,7 +417,7 @@ const Edit = () => {
                                                     className="inputTextDateACus inputMonthTDACus element"
                                                     placeholder="00"
                                                     value={time.minute || ''}
-                                                    onInput={(e) => handleSetTime(e, 0, 'minute')}
+                                                    onInput={(e) => handleSetTime(e, 'minute', time, setTime, setInput)}
                                                     onFocus={(e) => clearInputError(e, refTimeError, true, 'time')}
 
                                                 />
@@ -587,7 +427,7 @@ const Edit = () => {
                                                     className="inputTextDateACus inputYearTDACus element"
                                                     placeholder="00"
                                                     value={time.hour || ''}
-                                                    onInput={(e) => { handleSetTime(e, 0, 'hour') }}
+                                                    onInput={(e) => { handleSetTime(e, 'hour', time, setTime, setInput) }}
                                                     onFocus={(e) => clearInputError(e, refTimeError, true, 'time')}
                                                 />
                                                 <i className="icofont-ui-rating starFB" />
@@ -597,7 +437,7 @@ const Edit = () => {
                                                 <select
                                                     className="element"
                                                     value={time.second}
-                                                    onChange={(e) => handleSetTime(e, 0, 'second')}
+                                                    onChange={(e) => handleSetTime(e, 'second', time, setTime, setInput)}
                                                     onClick={(e) => clearInputError(e, refTimeError, true, 'time')}
                                                 >
                                                     <option value=""> ثانیه </option>
@@ -606,7 +446,7 @@ const Edit = () => {
                                                 <select
                                                     className="element"
                                                     value={time.minute}
-                                                    onChange={(e) => handleSetTime(e, 0, 'minute')}
+                                                    onChange={(e) => handleSetTime(e, 'minute', time, setTime, setInput)}
                                                     onClick={(e) => clearInputError(e, refTimeError, true, 'time')}
                                                 >
                                                     <option value=""> دقیقه </option>
@@ -615,7 +455,7 @@ const Edit = () => {
                                                 <select
                                                     className="element"
                                                     value={time.hour}
-                                                    onChange={(e) => { handleSetTime(e, 0, 'hour') }}
+                                                    onChange={(e) => { handleSetTime(e, 'hour', time, setTime, setInput) }}
                                                     onClick={(e) => clearInputError(e, refTimeError, true, 'time')}
                                                 >
                                                     <option value=""> ساعت </option>
@@ -639,7 +479,7 @@ const Edit = () => {
                                                     placeholder="1"
                                                     id="day"
                                                     value={date.day || ''}
-                                                    onInput={(e) => handleSetDate(e, 0, 'day')}
+                                                    onInput={(e) => handleSetDate(e, 'day', date, setDate, setInput)}
                                                     onFocus={(e) => clearInputError(e, refDateError, true, 'date')}
                                                 />
                                                 <span>/</span>
@@ -648,7 +488,7 @@ const Edit = () => {
                                                     className="inputTextDateACus inputMonthTDACus element"
                                                     placeholder="1"
                                                     value={date.month || ''}
-                                                    onInput={(e) => handleSetDate(e, 0, 'month')}
+                                                    onInput={(e) => handleSetDate(e, 'month', date, setDate, setInput)}
                                                     onFocus={(e) => clearInputError(e, refDateError, true, 'date')}
                                                 />
                                                 <span>/</span>
@@ -657,7 +497,7 @@ const Edit = () => {
                                                     className="inputTextDateACus inputYearTDACus element"
                                                     placeholder="1300"
                                                     value={date.year || ''}
-                                                    onInput={(e) => { handleSetDate(e, 0, 'year') }}
+                                                    onInput={(e) => { handleSetDate(e, 'year', date, setDate, setInput) }}
                                                     onFocus={(e) => clearInputError(e, refDateError, true, 'date')}
                                                 />
                                                 <i className="icofont-ui-rating starFB" />
@@ -667,7 +507,7 @@ const Edit = () => {
                                                 <select
                                                     className="element"
                                                     value={date.day}
-                                                    onChange={(e) => handleSetDate(e, 0, 'day')}
+                                                    onChange={(e) => handleSetDate(e, 'day', date, setDate, setInput)}
                                                     onClick={(e) => clearInputError(e, refDateError, true, 'date')}
                                                 >
                                                     <option value="">روز</option>
@@ -676,7 +516,7 @@ const Edit = () => {
                                                 <select
                                                     className="element"
                                                     value={date.month}
-                                                    onChange={(e) => handleSetDate(e, 0, 'month')}
+                                                    onChange={(e) => handleSetDate(e, 'month', date, setDate, setInput)}
                                                     onClick={(e) => clearInputError(e, refDateError, true, 'date')}
 
                                                 >
@@ -686,7 +526,7 @@ const Edit = () => {
                                                 <select
                                                     className="element"
                                                     value={date.year}
-                                                    onChange={(e) => { handleSetDate(e, 0, 'year') }}
+                                                    onChange={(e) => { handleSetDate(e, 'year', date, setDate, setInput) }}
                                                     onClick={(e) => clearInputError(e, refDateError, true, 'date')}
                                                 >
                                                     <option value="">سال</option>
@@ -764,8 +604,8 @@ const Edit = () => {
                                             onInput={e => {
                                                 handleSaveValInput(e, 'weight', 0);
                                                 formatNub(refWeight.current);
-                                                handleCubicMetersCalculation(e);
-                                                handleTotalPriceCalculation(e,'weight', input, setInput, refTotalPrice);
+                                                handleCubicMetersCalculation(e, refCubicMeters, setInput);
+                                                handleTotalPriceCalculation(e, 'weight', input, setInput, refTotalPrice);
                                             }
                                             }
                                             onFocus={e => clearInputError(e, refWeightError)}
@@ -829,9 +669,7 @@ const Edit = () => {
                                         <div className="mainTotalPriceACSL_FB">
                                             <div className="totalPriceACSL_FB"
                                                 ref={refTotalPrice}
-                                            >
-                                             
-                                            </div>
+                                            > </div>
                                             <span className="spanTotalPriceACSL_FB">
                                                 تومان
                                             </span>
@@ -847,13 +685,18 @@ const Edit = () => {
                                         <div
                                             id='truck_id'
                                             className="element"
-                                            onClick={e => { clearInputError(e, refTruck_idError); setInvoiceIndexForMixer(0) }}
+                                            onClick={e => { clearInputError(e, refTruck_idError) }}
                                         >
-                                            <SelectZabi
+                                            <SelectZabi2
                                                 primaryLabel='انتخاب'
-                                                options={mixers}
+                                                options={mixers.options}
                                                 saveOption={setTruckId}
                                                 saveOption2={setOwnerId}
+                                                input={inputMixerSearch}
+                                                optionsSearched={optionsMixersSearched}
+                                                warning={mixerSearchWarning}
+                                                elementWarning={elementMixerSearchWarning}
+                                                clearSearch={handleClearAllSearchMixer}
                                                 ref={refTruck_id}
                                             />
                                         </div>
@@ -872,12 +715,17 @@ const Edit = () => {
                                         <div
                                             id='driver_id'
                                             className="element"
-                                            onClick={e => { setInvoiceIndexForDriver(0); clearInputError(e, refDriver_idError); }}
+                                            onClick={e => { clearInputError(e, refDriver_idError); }}
                                         >
-                                            <SelectZabi
+                                            <SelectZabi2
                                                 primaryLabel='انتخاب'
-                                                options={drivers}
+                                                options={drivers.options}
                                                 saveOption={setDriverId}
+                                                input={inputDriverSearch}
+                                                optionsSearched={optionsDriversSearched}
+                                                warning={driverSearchWarning}
+                                                elementWarning={elementDriverSearchWarning}
+                                                clearSearch={handleClearAllSearchDriver}
                                                 ref={refDriver_id}
                                             />
                                         </div>
@@ -931,8 +779,8 @@ const Edit = () => {
                                             id='emam'
                                             className="inputCheckboxFB  element pointerFB"
                                             onChange={e => {
-                                                handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeli(e, `emam`);
-                                                clearInputError(e, '', false, '', 0);
+                                                handleSaveValInput(e, 'maskanMeli', 0,); handleCheckedMaskanMeli(`emam`, checkedMaskanMeli, setCheckedMaskanMeli, setInput);
+                                                clearInputError(e, '', false, '', true, refVahedError.current, refAddressError.current);
                                             }}
                                             checked={checkedMaskanMeli == `emam`}
                                             ref={refCheckBaxEmam}
@@ -955,8 +803,8 @@ const Edit = () => {
                                             className="inputCheckboxFB  element pointerFB"
                                             value={refCheckedMaskanShahid && refCheckedMaskanShahid.current ? 'مسکن ملی شهرک شهید رییسی' : ''}
                                             onChange={e => {
-                                                handleSaveValInput(e, 'maskanMeli', 0, true); handleCheckedMaskanMeli(e, `shahid`);
-                                                clearInputError(e, '', false, '', 0);
+                                                handleSaveValInput(e, 'maskanMeli', 0, true); handleCheckedMaskanMeli(`shahid`, checkedMaskanMeli, setCheckedMaskanMeli, setInput);
+                                                clearInputError(e, '', false, '', true, refVahedError.current, refAddressError.current);
                                             }}
                                             checked={checkedMaskanMeli == `shahid`}
                                             ref={refCheckBaxShahid}
@@ -993,7 +841,6 @@ const Edit = () => {
                                             defaultValue={input.address}
                                             onInput={e => handleSaveValInput(e, 'address', 0)}
                                             onFocus={(e) => clearInputError(e, refAddressError)}
-
                                         />
                                     </div>
                                     <div
