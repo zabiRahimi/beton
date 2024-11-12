@@ -108,33 +108,23 @@ const Edit = () => {
     const { concreteBuyers, concretes, cementStores, mixers, drivers } = RouteService({ invoiceId, setLoading, setConcreteSalesInvoice });
 
     useEffect(() => {
-        if (customerId) {
-            setInput(prev => ({ ...prev, customer_id: customerId }));
-        }
+        customerId && setInput(prev => ({ ...prev, customer_id: customerId }));
     }, [customerId]);
 
     useEffect(() => {
-        if (concreteId) {
-            setInput(prev => ({ ...prev, concrete_id: concreteId }));
-        }
+        concreteId && setInput(prev => ({ ...prev, concrete_id: concreteId }));
     }, [concreteId]);
 
     useEffect(() => {
-        if (truckId) {
-            setInput(prev => ({ ...prev, truck_id: truckId, ownerId }));
-        }
+        truckId && setInput(prev => ({ ...prev, truck_id: truckId, ownerId }));
     }, [truckId]);
 
     useEffect(() => {
-        if (driverId) {
-            setInput(prev => ({ ...prev, driver_id: driverId }));
-        }
+        driverId && setInput(prev => ({ ...prev, driver_id: driverId }));
     }, [driverId]);
 
     useEffect(() => {
-        if (cementStoreId) {
-            setInput(prev => ({ ...prev, cementStore_id: cementStoreId }));
-        }
+        cementStoreId && setInput(prev => ({ ...prev, cementStore_id: cementStoreId }));
     }, [cementStoreId]);
 
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearch } = SearchCustomersSelect({ dataCustomers: concreteBuyers.datas });
@@ -144,125 +134,91 @@ const Edit = () => {
     const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers.datas });
 
     useEffect(() => {
-        if (concreteSalesInvoice) {
-            pasteData(concreteSalesInvoice);
-        }
+        concreteSalesInvoice && pasteData(concreteSalesInvoice);
     }, [concreteSalesInvoice])
-
-
 
     useEffect(() => {
         if (concreteSalesInvoice) {
             refUnitPrice.current.value && (refUnitPrice.current.value = parseFloat(input.unitPrice).toLocaleString());
-
             refWeight.current.value && (refWeight.current.value = parseFloat(input.weight).toLocaleString());
-
             refTotalPrice && (refTotalPrice.current.innerHTML = parseFloat(input.totalPrice).toLocaleString());
-
             refFare.current.value && (refFare.current.value = parseFloat(input.fare).toLocaleString());
         }
     }, [concreteSalesInvoice, loadingEnd.current]);
 
     /**
-     * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد میکند
-     * این متد اطلاعات هر فیلد را برای نمایش تنظیم می کند
-     * @param {آدی رکورد} id0 
-     */
+ * هنگامی که کاربر مبادرت به دیدن و یا ویرایش کردن یک رکورد می‌کند
+ * این متد اطلاعات هر فیلد را برای نمایش تنظیم می‌کند
+ * @param {آیدی رکورد} concreteSalesInvoice 
+ */
     const pasteData = (concreteSalesInvoice) => {
+        // جدا کردن شماره پلاک و اطلاعات مورد نیاز از رکورد
         let numberplate = concreteSalesInvoice.truck.numberplate.split("-");
-        const { id, created_at, updated_at, ...rest } = concreteSalesInvoice;//نادیده گرفتن کلید های مشخص شده
+        const {
+            id, created_at, updated_at,
+            customer, truck, driver, concrete, cement_store, ...rest
+        } = concreteSalesInvoice;
 
-        // کپی از شی برای انجام تغییرات
-        let datas = { ...rest };
+        // تنظیم ورودی‌های فرم
         setInput({
-            customer_id: datas.customer_id,
-            date: datas.date,
-            time: datas.time,
-            weight: datas.weight,
-            cubicMeters: datas.cubicMeters,
-            concrete_id: datas.concrete_id,
-            truck_id: datas.truck_id,
-            ownerId: datas.truck.customer.id,
-            driver_id: datas.driver_id,
-            cementStore_id: datas.cementStore_id,
-            unitPrice: datas.unitPrice,
-            totalPrice: datas.totalPrice,
-            fare: datas.fare,
-            maskanMeli: datas.maskanMeli,
-            vahed: datas.vahed,
-            address: datas.address,
-            concretingPosition: datas.concretingPosition
+            ...rest,
+            ownerId: truck.customer.id,
         });
-        refCustomer_id.current && refCustomer_id.current.updateData(datas.customer.name + ' ' + datas.customer.lastName);
-        refConcrete_id.current && refConcrete_id.current.updateData(<div className="concreteAptionSelectFB">
-            <span className="concreteLabelSelectFB">بتن
-            </span>
-            <span className="concreteSelectFB">
-                {datas.concrete.concreteName}
-            </span>
-        </div>);
 
-        refCementStore_id.current && refCementStore_id.current.updateData(datas.cement_store.silo);
-        refTruck_id.current && refTruck_id.current.updateData(<div className="mixerAptionSelectFB">
-            <span className="mixerNamberpalteSelectFB">
-                <div className="numberplateDiv">
-                    <span className="numberplateDivS1">{numberplate[0]}</span>
-                    <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
-                    <span className="numberplateDivS3">{numberplate[1]}</span>
-                    <span className="numberplateDivS4">{numberplate[2]}</span>
-                </div>
-            </span>
+        // به‌روزرسانی داده‌ها در فیلدهای ورودی
+        updateSelectData(refCustomer_id, `${customer.name} ${customer.lastName}`);
+        updateSelectData(refConcrete_id, (
+            <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">بتن</span>
+                <span className="concreteSelectFB">{concrete.concreteName}</span>
+            </div>
+        ));
+        updateSelectData(refCementStore_id, cement_store.silo);
+        updateSelectData(refTruck_id, (
+            <div className="mixerAptionSelectFB">
+                <span className="mixerNamberpalteSelectFB">
+                    <div className="numberplateDiv">
+                        <span className="numberplateDivS1">{numberplate[0]}</span>
+                        <span className="numberplateDivS2">{numberplate[3] === 'ا' ? 'الف' : numberplate[3]}</span>
+                        <span className="numberplateDivS3">{numberplate[1]}</span>
+                        <span className="numberplateDivS4">{numberplate[2]}</span>
+                    </div>
+                </span>
+                <span className="mixerOwnerSelectFB">{truck.customer.name} {truck.customer.lastName}</span>
+            </div>
+        ));
+        updateSelectData(refDriver_id, (
+            <div className="personnelAption_addPerS">
+                <span className="name_addPers">{driver.name} {driver.lastName}</span>
+                <span className="fther_addPers">{driver.father || ''}</span>
+            </div>
+        ));
 
-            <span className="mixerOwnerSelectFB">
-                {datas.truck.customer.name}
-                {' '}
-                {datas.truck.customer.lastName}
-            </span>
-
-        </div>);
-        refDriver_id.current && refDriver_id.current.updateData(<div className="personnelAption_addPerS">
-            <span className="name_addPers">{datas.driver.name}
-                {' '}
-                {datas.driver.lastName}</span>
-
-            <span className="fther_addPers">
-                {datas.driver.father || ''}
-            </span>
-
-        </div>);
-
+        // تنظیم تاریخ و زمان
         if (rest.date) {
-            let parts = rest.date.split("-");
-            setDate({
-                day: parts[2],
-                month: parts[1],
-                year: parts[0]
-            });
-
+            let [year, month, day] = rest.date.split("-");
+            setDate({ day, month, year });
         }
-
         if (rest.time) {
-            let parts = rest.time.split(":");
-            setTime({
-                second: parts[2],
-                minute: parts[1],
-                hour: parts[0]
-            })
+            let [hour, minute, second] = rest.time.split(":");
+            setTime({ hour, minute, second });
         }
 
-        if (datas.maskanMeli == 'مسکن ملی شهرک امام خمینی') {
-            setCheckedMaskanMeli('emam');
-        }
-        else if (datas.maskanMeli == 'مسکن ملی شهرک شهید رییسی') {
-            setCheckedMaskanMeli('shahid');
+        // تنظیم ماسکن ملی
+        setCheckedMaskanMeli(
+            rest.maskanMeli === 'مسکن ملی شهرک امام خمینی' ? 'emam' :
+                rest.maskanMeli === 'مسکن ملی شهرک شهید رییسی' ? 'shahid' :
+                    ''
+        );
 
-        }
-        else {
-            setCheckedMaskanMeli('');
-
-        }
         loadingEnd.current = true;
-    }
+    };
+
+    // تابع کمکی برای به‌روزرسانی داده‌ها در فیلدهای ورودی
+    const updateSelectData = (ref, value) => {
+        ref.current && ref.current.updateData(value);
+    };
+
 
     /**
     * ذخیره مقادیر ورودی‌های کاربر در استیت
@@ -271,77 +227,141 @@ const Edit = () => {
     */
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-        switch (input) {
-            case 'unitPrice':
-                value = value.replace(/,/g, '');
-                break;
-            case 'weight':
-                value = value.replace(/,/g, '');
-                break;
-            case 'fare':
-                value = value.replace(/,/g, '');
-                break;
+        // حذف جداکننده‌های هزارگان برای فیلدهای عددی
+        if (['unitPrice', 'weight', 'fare'].includes(input)) {
+            value = value.replace(/,/g, '');
         }
         setInput(prev => ({ ...prev, [input]: value }));
     }
+    
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true)
-        await axios.patch(
-            `/api/v1/concreteSalesInvoices/${invoiceId}
-            `,
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setLoading(true)
+    //     await axios.patch(
+    //         `/api/v1/concreteSalesInvoices/${invoiceId}
+    //         `,
+    //         { ...input },
+    //         {
+    //             headers:
+    //             {
+    //                 'X-CSRF-TOKEN': token,
+    //                 'Content-Type': 'application/json; charset=utf-8'
+    //             }
+    //         }
+    //     ).then((response) => {
+    //         MySwal.fire({
+    //             icon: "success",
+    //             title: "با موفقیت ویرایش شد",
+    //             confirmButtonText: "  متوجه شدم  ",
+    //             timer: 3000,
+    //             timerProgressBar: true,
+    //             customClass: {
+    //                 timerProgressBar: '--progressBarColorBlue',
+    //             },
+    //             didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
+    //         });
+
+    //     })
+    //         .catch(
+    //             error => {
+    //                 if (error.response && error.response.status == 422) {
+
+    //                     let id = Object.keys(error.response.data.errors)[0] + '';
+    //                     if (id != 'cubicMeters' && id != 'totalPrice' && id != 'ownerId') {
+    //                         const element = document.getElementById(id);
+    //                         let scrollPosition = window.scrollY || window.pageYOffset;
+
+    //                         const top = element.getBoundingClientRect().top + scrollPosition - 20;
+    //                         window.scrollTo({
+    //                             top: top,
+    //                             behavior: 'smooth'
+    //                         });
+    //                     }
+    //                     Object.entries(error.response.data.errors).map(([key, val]) => {
+    //                         if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
+    //                             document.getElementById(key + '').classList.add('borderRedFB');
+
+    //                             document.getElementById(key + '' + 'Error').innerHTML = val;
+    //                         }
+
+    //                     });
+    //                 }
+    //             }
+    //         )
+
+    //     setLoading(false)
+    // }
+
+/**
+ * ارسال فرم به سرور برای به‌روزرسانی فاکتور
+ * @param {*} e 
+ */
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+        const response = await axios.patch(
+            `/api/v1/concreteSalesInvoices/${invoiceId}`,
             { ...input },
             {
-                headers:
-                {
+                headers: {
                     'X-CSRF-TOKEN': token,
-                    'Content-Type': 'application/json; charset=utf-8'
-                }
-            }
-        ).then((response) => {
-            MySwal.fire({
-                icon: "success",
-                title: "با موفقیت ویرایش شد",
-                confirmButtonText: "  متوجه شدم  ",
-                timer: 3000,
-                timerProgressBar: true,
-                customClass: {
-                    timerProgressBar: '--progressBarColorBlue',
+                    'Content-Type': 'application/json; charset=utf-8',
                 },
-                didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
-            });
-
-        })
-            .catch(
-                error => {
-                    if (error.response && error.response.status == 422) {
-
-                        let id = Object.keys(error.response.data.errors)[0] + '';
-                        if (id != 'cubicMeters' && id != 'totalPrice' && id != 'ownerId') {
-                            const element = document.getElementById(id);
-                            let scrollPosition = window.scrollY || window.pageYOffset;
-
-                            const top = element.getBoundingClientRect().top + scrollPosition - 20;
-                            window.scrollTo({
-                                top: top,
-                                behavior: 'smooth'
-                            });
-                        }
-                        Object.entries(error.response.data.errors).map(([key, val]) => {
-                            if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
-                                document.getElementById(key + '').classList.add('borderRedFB');
-
-                                document.getElementById(key + '' + 'Error').innerHTML = val;
-                            }
-
-                        });
-                    }
-                }
-            )
-
-        setLoading(false)
+            }
+        );
+        MySwal.fire({
+            icon: "success",
+            title: "با موفقیت ویرایش شد",
+            confirmButtonText: "متوجه شدم",
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: {
+                timerProgressBar: '--progressBarColorBlue',
+            },
+            didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
+        });
+    } catch (error) {
+        if (error.response && error.response.status === 422) {
+            handleValidationErrors(error.response.data.errors);
+        }
+    } finally {
+        setLoading(false);
     }
+};
+
+/**
+ * مدیریت خطاهای اعتبارسنجی و پیمایش به محل خطا
+ * @param {Object} errors 
+ */
+const handleValidationErrors = (errors) => {
+    let firstErrorKey = Object.keys(errors)[0];
+    if (!['cubicMeters', 'totalPrice', 'ownerId'].includes(firstErrorKey)) {
+        scrollToElement(firstErrorKey);
+    }
+    Object.entries(errors).forEach(([key, val]) => {
+        if (!['cubicMeters', 'totalPrice', 'ownerId'].includes(key)) {
+            document.getElementById(key).classList.add('borderRedFB');
+            document.getElementById(`${key}Error`).innerHTML = val;
+        }
+    });
+};
+
+/**
+ * پیمایش به محل خطای اعتبارسنجی
+ * @param {string} id 
+ */
+const scrollToElement = (id) => {
+    const element = document.getElementById(id);
+    const scrollPosition = window.scrollY || window.pageYOffset;
+    const top = element.getBoundingClientRect().top + scrollPosition - 20;
+    window.scrollTo({
+        top: top,
+        behavior: 'smooth',
+    });
+};
+
 
     return (
         <div ref={container}>

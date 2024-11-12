@@ -1,82 +1,92 @@
+
+
 export const handleSetDate = (e, input, date, setDate, setInput) => {
     let { value } = e.target,
         valDate;
     value = value.toString();
-    if (input == 'day') {
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-            setDate(prev => ({ ...prev, [input]: value }));
-        } else {
-            e.target.value = date.day;
-        }
-        valDate = date.year + '-' + date.month + '-' + value;
-        setInput(perv => ({ ...perv, date: valDate }));
-    } else if (input == 'month') {
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-            setDate(prev => ({ ...prev, [input]: value }));
-        }
-        else {
-            e.target.value = date.month;
-        }
-        valDate = date.year + '-' + value + '-' + date.day;
-        setInput(perv => ({ ...perv, date: valDate }));
-    } else if (input = 'year') {
-        if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-            setDate(prev => ({ ...prev, [input]: value }));
-        } else {
-            e.target.value = date.year;
-        }
-        valDate = value + '-' + date.month + '-' + date.day;
-        setInput(perv => ({ ...perv, date: valDate }));
+    switch (input) {
+        case 'day':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 31)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = date.day;
+            }
+            valDate = `${date.year}-${date.month}-${value}`;
+            break;
+        case 'month':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 12)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = date.month;
+            }
+            valDate = `${date.year}-${value}-${date.day}`;
+            break;
+        case 'year':
+            if (value === '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = date.year;
+            }
+            valDate = `${value}-${date.month}-${date.day}`;
+            break;
+        default:
+            return;
     }
+    setInput(prev => ({ ...prev, date: valDate }));
 }
 
-export  const handleSetTime = (e, input, time, setTime, setInput) => {
+export const handleSetTime = (e, input, time, setTime, setInput) => {
     let { value } = e.target,
         valTime;
     value = value.toString();
-    if (input == 'second') {
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-            setTime(prev => ({ ...prev, [input]: value }));
-        } else {
-            e.target.value = time.second;
-        }
-        valTime = time.hour + ':' + time.minute + ':' + value;
-        setInput(perv => ({ ...perv, time: valTime }));
-    } else if (input == 'minute') {
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-            setTime(prev => ({ ...prev, [input]: value }));
-        } else {
-            e.target.value = time.minute;
-        }
-        valTime = time.hour + ':' + value + ':' + time.second;
-        setInput(perv => ({ ...perv, time: valTime }));
-    } else if (input = 'hour') {
-        (value != 0 && value.length == 1) && (value = '0' + value);
-        (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-        if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
-            setTime(prev => ({ ...prev, [input]: value }));
-        } else {
-            e.target.value = time.hour;
-        }
-        valTime = value + ':' + time.minute + ':' + time.second;
-        setInput(perv => ({ ...perv, time: valTime }));
+    switch (input) {
+        case 'second':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 60)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = time.second;
+            }
+            valTime = `${time.hour}:${time.minute}:${value}`;
+            break;
+        case 'minute':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 60)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = time.minute;
+            }
+            valTime = `${time.hour}:${value}:${time.second}`;
+            break;
+        case 'hour':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 24)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = time.hour;
+            }
+            valTime = `${value}:${time.minute}:${time.second}`;
+            break;
+        default:
+            return;
     }
+    setInput(prev => ({ ...prev, time: valTime }));
 }
+
 
 /**
 * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
 * @param {*} e 
 * @param {رف مربوط به تگ نمایش خطا} refErr 
 */
-export const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', maskan=false, refCurentVahed='', refCurentAddress='' ) => {
+export const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '', maskan = false, refCurentVahed = '', refCurentAddress = '') => {
 
     if (!dateAndTime) {
         e.target.classList.remove('borderRedFB');
@@ -91,20 +101,19 @@ export const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime
         const parentWithClass = e.target.closest('.borderRedFB');
         parentWithClass && parentWithClass.classList.remove('borderRedFB');
         if (maskan) {
-        const vahedElemnt = document.getElementById(`vahed`);
-        vahedElemnt.classList.remove('borderRedFB');
-        refCurentAddress.innerHTML = '';
+            const vahedElemnt = document.getElementById(`vahed`);
+            vahedElemnt.classList.remove('borderRedFB');
+            refCurentAddress.innerHTML = '';
 
-        const addressElemnt = document.getElementById(`address`);
-        addressElemnt.classList.remove('borderRedFB');
-        refCurentVahed.innerHTML = '';
+            const addressElemnt = document.getElementById(`address`);
+            addressElemnt.classList.remove('borderRedFB');
+            refCurentVahed.innerHTML = '';
         }
     } else {
         const element = document.getElementById(idDivDateAndTime);
         element.classList.remove('borderRedFB');
     }
-    refErr.current && (refErr.current.innerHTML = '')
-
+    refErr.current && (refErr.current.innerHTML = '');
 }
 
 /**
@@ -160,7 +169,7 @@ export const handleCubicMetersCalculation = (e, refCubicMeters, setInput) => {
 
 }
 
-export  const handleCheckedMaskanMeli = (value, checkedMaskanMeli, setCheckedMaskanMeli, setInput) => {
+export const handleCheckedMaskanMeli = (value, checkedMaskanMeli, setCheckedMaskanMeli, setInput) => {
     let maskanMeli;
     if (value == 'emam') {
         checkedMaskanMeli == "emam" ? (setCheckedMaskanMeli(''), maskanMeli = '') : (setCheckedMaskanMeli('emam'), maskanMeli = 'مسکن ملی شهرک امام خمینی');
