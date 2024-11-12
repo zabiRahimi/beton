@@ -7,6 +7,7 @@ use App\Http\Requests\GetConcreteSalesInvoiceRequest;
 use App\Http\Requests\StoreConcreteSalesInvoiceRequest;
 use App\Http\Requests\UpdateConcreteSalesInvoiceRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 use App\Models\CementStore;
 use App\Models\Concrete;
@@ -143,9 +144,18 @@ class ConcreteSalesInvoiceController extends Controller
 
     public function count()
     {
-        $count = ConcreteSalesInvoice::count();
+        // بررسی اینکه آیا مقدار در کش وجود دارد یا نه
+        $count = Cache::get('concreteSalesInvoice_count');
+
+        if ($count === null) {
+            // اگر مقدار در کش وجود نداشته باشد، آن را ذخیره می‌کنیم
+            $count = ConcreteSalesInvoice::count();
+            Cache::forever('concreteSalesInvoice_count', $count);
+        }
+
         return response()->json(['count' => $count], 200);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -305,18 +315,18 @@ class ConcreteSalesInvoiceController extends Controller
     private function sandDeduction(int $concreteId, int|float $cubicMeters)
     {
         $amount = $this->returnsSandUsed($concreteId, $cubicMeters);
-        $sandStore = SandStore::where('type',1)->first();
+        $sandStore = SandStore::where('type', 1)->first();
         $sandStore->amount -= $amount['amountSand'];
         $sandStore->save();
     }
 
-     /**
+    /**
      * مقدار  شن بادامی مصرف شده را کم می کند
      */
     private function gravelDeduction(int $concreteId, int|float $cubicMeters)
     {
         $amount = $this->returnsSandUsed($concreteId, $cubicMeters);
-        $sandStore = SandStore::where('type',2)->first();
+        $sandStore = SandStore::where('type', 2)->first();
         $sandStore->amount -= $amount['amountGravel'];
         $sandStore->save();
     }
