@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\ConcreteBuyerChanged;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use App\Events\ConcreteSalesInvoiceChanged;
+use App\Listeners\UpdateConcreteBuyersCache;
 use App\Listeners\UpdateConcreteSalesInvoiceCache;
 
 class EventServiceProvider extends ServiceProvider
@@ -23,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         ConcreteSalesInvoiceChanged::class => [
             UpdateConcreteSalesInvoiceCache::class,
         ],
+         ConcreteBuyerChanged::class => [ 
+            UpdateConcreteBuyersCache::class,
+         ],
     ];
 
     /**

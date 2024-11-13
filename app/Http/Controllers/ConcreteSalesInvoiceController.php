@@ -252,6 +252,8 @@ class ConcreteSalesInvoiceController extends Controller
 
     public function concreteBuyers()
     {
+
+        // Cache::forget('concreteSalesInvoice_concreteBuyers');
         $concreteBuyers = Cache::rememberForever('concreteSalesInvoice_concreteBuyers', function () {
             return Customer::concreteBuyers()->get();
         });

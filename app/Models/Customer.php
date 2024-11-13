@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ConcreteBuyerChanged;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -31,7 +32,13 @@ class Customer extends Model
     //     return $this->belongsToMany(CustomerType::class, 'customer_type_selecteds');
     // }
 
-    public function customerType():HasMany
+    protected $dispatchesEvents = [
+        'created' => ConcreteBuyerChanged::class,
+        'updated' => ConcreteBuyerChanged::class,
+        'deleted' => ConcreteBuyerChanged::class
+    ];
+    
+    public function customerType(): HasMany
     {
         return $this->hasMany(CustomerType::class);
     }
@@ -79,5 +86,4 @@ class Customer extends Model
             $query->where('code', 2);
         });
     }
-
 }
