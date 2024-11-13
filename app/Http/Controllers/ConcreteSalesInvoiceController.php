@@ -144,14 +144,20 @@ class ConcreteSalesInvoiceController extends Controller
 
     public function count()
     {
-        // بررسی اینکه آیا مقدار در کش وجود دارد یا نه
-        $count = Cache::get('concreteSalesInvoice_count');
+        // // بررسی اینکه آیا مقدار در کش وجود دارد یا نه
+        // $count = Cache::get('concreteSalesInvoice_count');
 
-        if ($count === null) {
-            // اگر مقدار در کش وجود نداشته باشد، آن را ذخیره می‌کنیم
-            $count = ConcreteSalesInvoice::count();
-            Cache::forever('concreteSalesInvoice_count', $count);
-        }
+        // if ($count === null) {
+        //     // اگر مقدار در کش وجود نداشته باشد، آن را ذخیره می‌کنیم
+        //     $count = ConcreteSalesInvoice::count();
+        //     Cache::forever('concreteSalesInvoice_count', $count);
+        // }
+        // در خط فرمان PHP
+        // Cache::forget('concreteSalesInvoice_count');
+
+        $count = Cache::rememberForever('concreteSalesInvoice_count', function () {
+            return ConcreteSalesInvoice::count();
+        });
 
         return response()->json(['count' => $count], 200);
     }
@@ -246,7 +252,12 @@ class ConcreteSalesInvoiceController extends Controller
 
     public function concreteBuyers()
     {
-        $concreteBuyers = Customer::concreteBuyers()->get();
+        $concreteBuyers = Cache::rememberForever('concreteSalesInvoice_concreteBuyers', function () {
+            return Customer::concreteBuyers()->get();
+        });
+
+        
+        // $concreteBuyers = Customer::concreteBuyers()->get();
         return response()->json(['concreteBuyers' => $concreteBuyers]);
     }
 
