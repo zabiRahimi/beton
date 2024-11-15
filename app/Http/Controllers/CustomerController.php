@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\BankInfo;
 use App\Models\CustomerType;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class CustomerController extends Controller
 {
@@ -91,6 +92,7 @@ class CustomerController extends Controller
             }
             // اضافه کردن رکوردهای ذخیره شده در دو جدول دیگر به متغییر زیر
             $customer->load('customerType', 'bankInfo');
+            $this->updateConcreteBuyersCache();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -144,6 +146,7 @@ class CustomerController extends Controller
             }
         }
         $customer->load('customerType', 'bankInfo');
+        $this->updateConcreteBuyersCache();
         return response()->json(['customer' => $customer], 200);
     }
 
@@ -154,4 +157,11 @@ class CustomerController extends Controller
     {
         //
     }
+
+     // متد برای به‌روزرسانی کش 
+     private function updateConcreteBuyersCache() {
+         // پاک کردن کش موجود 
+         Cache::forget('concreteSalesInvoice_concreteBuyers');
+          // به‌روزرسانی کش با مقدار جدید 
+          $concreteBuyers = Customer::concreteBuyers()->get(); Cache::forever('concreteSalesInvoice_concreteBuyers', $concreteBuyers);}
 }
