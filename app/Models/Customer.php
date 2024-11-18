@@ -32,11 +32,11 @@ class Customer extends Model
     //     return $this->belongsToMany(CustomerType::class, 'customer_type_selecteds');
     // }
 
-    protected $dispatchesEvents = [
-        'created' => ConcreteBuyerChanged::class,
-        'updated' => ConcreteBuyerChanged::class,
-        'deleted' => ConcreteBuyerChanged::class
-    ];
+    // protected $dispatchesEvents = [
+    //     'created' => ConcreteBuyerChanged::class,
+    //     'updated' => ConcreteBuyerChanged::class,
+    //     'deleted' => ConcreteBuyerChanged::class
+    // ];
     
     public function customerType(): HasMany
     {
@@ -68,9 +68,9 @@ class Customer extends Model
         return $this->hasMany(ConcreteSalesInvoice::class);
     }
 
-    public function sandInvoice(): HasMany
+    public function sandInvoice(): HasOne
     {
-        return $this->hasMany(SandInvoice::class);
+        return $this->hasOne(SandInvoice::class);
     }
 
     public function scopeConcreteBuyers($query)

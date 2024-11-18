@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Driver extends Model
 {
@@ -18,8 +18,8 @@ class Driver extends Model
         return $this->hasMany(ConcreteSalesInvoice::class);
     }
 
-    public function sandInvoice(): HasMany
+    public function sandInvoice(): HasOne
     {
-        return $this->hasMany(SandInvoice::class);
+        return $this->hasOne(SandInvoice::class);
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('buyerName', 50);
             $table->string('buyerLastName', 50);
             $table->string('factory', 50);
-            $table->string('amount', 25);
+            $table->string('amount', 25)->index();
             $table->text('description')->nullable();
             $table->timestamps();
         });

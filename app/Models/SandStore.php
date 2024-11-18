@@ -12,8 +12,4 @@ class SandStore extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function sandInvoice(): HasMany
-    {
-        return $this->hasMany(SandInvoice::class);
-    }
 }
