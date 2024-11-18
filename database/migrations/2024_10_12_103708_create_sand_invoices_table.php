@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('truck_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('driver_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sandStore_id')->constrained('sand_stores')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('referenceNumber', 30)->comment('شماره حواله');
+            $table->string('remittanceNumber', 30)->nullable()->comment('شماره حواله');
             $table->string('billNumber',30)->comment('شماره قبض');
             $table->string('time', 25);
             $table->date('date');
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('totalPrice', 10);
             $table->string('unitFare', 10);
             $table->string('totalFare', 10);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

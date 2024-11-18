@@ -25,7 +25,7 @@ const AddSandInvoice = () => {
     const factoryRef = useRef(null);
     const factoryError = useRef(null);
     const billNumberError = useRef(null);
-    const referenceNumberError = useRef(null);
+    const remittanceNumberError = useRef(null);
     const timeRef = useRef(null);
     const dateRef = useRef(null);
     const dateError = useRef(null);
@@ -93,7 +93,7 @@ const AddSandInvoice = () => {
 
     const [input, setInput] = useState({
         factroy: '',
-        referenceNumber: '',
+        remittanceNumber: '',
         billNumber: '',
         time: '',
         date: '',
@@ -379,7 +379,7 @@ const AddSandInvoice = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="billNumber"
-                                    defaultValue={input.referenceNumber}
+                                    defaultValue={input.remittanceNumber}
                                     onInput={e => handleSaveValInput(e, 'billNumber')}
                                     onFocus={e => clearInputError(e, billNumberError)}
                                 />
@@ -389,17 +389,17 @@ const AddSandInvoice = () => {
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label htmlFor="referenceNumber">شماره حواله</label>
+                                <label htmlFor="remittanceNumber">شماره حواله</label>
                                 <input
                                     type="text"
                                     className="inputTextFB element"
-                                    id="referenceNumber"
-                                    defaultValue={input.referenceNumber}
-                                    onInput={e => handleSaveValInput(e, 'referenceNumber')}
+                                    id="remittanceNumber"
+                                    defaultValue={input.remittanceNumber}
+                                    onInput={e => handleSaveValInput(e, 'remittanceNumber')}
                                     onFocus={e => clearInputError(e, lastNameErrorRef)}
                                 />
                             </div>
-                            <div className="errorContainerFB elementError" id="referenceNumberError" ref={referenceNumberError}> </div>
+                            <div className="errorContainerFB elementError" id="remittanceNumberError" ref={remittanceNumberError}> </div>
                         </div>
                         {/* </section> */}
                         {/* <section className="sectionFB"> */}

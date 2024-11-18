@@ -27,7 +27,7 @@ class StoreSandInvoiceRequest extends FormRequest
             'truck_id' => 'required|integer',
             'driver_id' => 'required|integer',
             'sandStore_id' => 'required|integer',
-            'referenceNumber' => 'nullable|string',
+            'remittanceNumber' => 'nullable|string',
             'billNumber' => 'required|string',
             'time' => 'required|time',
             'date' => 'required|date',
