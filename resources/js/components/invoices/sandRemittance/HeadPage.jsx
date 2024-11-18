@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ScaleLoader } from 'react-spinners';
-import Title from '../hooks/Title';
+import Title from '../../hooks/Title';
 
 
 const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {

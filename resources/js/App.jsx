@@ -35,6 +35,8 @@ import NavigateInvoices from "./components/invoices/NavigateInvoices";
 import AddConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/add/Add";
 import ShowConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/show/Show";
 import EditConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/edit/Edit";
+import SandRemittance from "./components/invoices/sandRemittance/SandRemittance";
+import AddSandRemittance from "./components/invoices/sandRemittance/add/Add";
 import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
 import AddWaterInvoice from "./components/invoices/water/AddWaterInvoice";
 import AddCementInvoice from "./components/invoices/cement/AddCementInvoice";
@@ -93,12 +95,21 @@ function App() {
                         <Route path="edit/:invoiceId" element={<EditConcreteSalesInvoice />} />
                     </Route>
 
+                    <Route path="sandRemittance" element={<SandRemittance />} >
+                        <Route index element={<Navigate to="add" replace />} />
+                        <Route path="add" element={<AddSandRemittance />} />
+                        {/* <Route path="editSandInvoice" element={<EditSandInvoice />} />
+                        <Route path="showSandInvoices" element={<ShowSandInvoices />} /> */}
+                    </Route>
+
                     <Route path="sand" element={<Sand />} >
                         <Route index element={<Navigate to="addSandInvoice" replace />} />
                         <Route path="addSandInvoice" element={<AddSandInvoice />} />
                         <Route path="editSandInvoice" element={<EditSandInvoice />} />
                         <Route path="showSandInvoices" element={<ShowSandInvoices />} />
                     </Route>
+
+                    
 
                     <Route path="cement/addCementInvoice" element={<AddCementInvoice />} />
 

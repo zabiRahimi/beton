@@ -21,10 +21,10 @@ const NavigateInvoices = () => {
                     <Link to="concreteSalesInvoice" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment  iLinksHome2  " />
-                            <i className="icofont-concrete-mixer iLinksHome3 " />
+                            <i className="icofont-concrete-mixer iLinksHome3 iLinksCementHome3 " />
                             <i className="icofont-plus Iplus" />
                         </div>
-                        <span>ایجاد فاکتور فروش بتن</span>
+                        <span>ثبت فاکتور فروش بتن</span>
                     </Link>
                 </section>
 
@@ -34,28 +34,37 @@ const NavigateInvoices = () => {
                     <Link to="cement/addCementInvoice" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment  iLinksHome2  " />
-                            <i className="icofont-oil-truck  iLinksHome3 " />
+                            <i className="icofont-oil-truck  iLinksHome3 iLinksCementHome3 " />
                             <i className="icofont-plus Iplus" />
                         </div>
-                        <span>ایجاد فاکتور خرید سیمان</span>
+                        <span>ثبت فاکتور تخلیه سیمان</span>
+                    </Link>
+
+                    <Link to="sandRemittance" className="linksHome --styleLessLink ">
+                        <div className="divIcofontLinksHome">
+                            <i className="icofont-attachment  iLinksHome2  " />
+                            <i className="icofont-law-document  iLinksHome3 iLinksSandHome3 " />
+                            <i className="icofont-plus Iplus" />
+                        </div>
+                        <span>ثبت حواله خرید شن‌وماسه</span>
                     </Link>
 
                     <Link to="sand" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment  iLinksHome2  " />
-                            <i className="icofont-articulated-truck iLinksHome3 " />
+                            <i className="icofont-articulated-truck iLinksHome3 iLinksSandHome3 " />
                             <i className="icofont-plus Iplus" />
                         </div>
-                        <span>ایجاد فاکتور خرید شن‌وماسه</span>
+                        <span>ثبت فاکتور تخلیه شن‌وماسه</span>
                     </Link>
 
                     <Link to="water/addWaterInvoice" className="linksHome --styleLessLink ">
                         <div className="divIcofontLinksHome">
                             <i className="icofont-attachment  iLinksHome2  " />
-                            <i className="icofont-truck-alt   iLinksHome3 " />
+                            <i className="icofont-truck-alt   iLinksHome3 iLinksWaterHome3 " />
                             <i className="icofont-plus Iplus" />
                         </div>
-                        <span>ایجاد فاکتور خرید آب</span>
+                        <span>ثبت فاکتور تخلیه آب</span>
                     </Link>
                 </section>
 
