@@ -742,7 +742,7 @@ const Add = () => {
                                                         <input
                                                             type="text"
                                                             className="inputTextDateACus inputDayTDACus element"
-                                                            placeholder="1"
+                                                            placeholder="01"
                                                             id="day"
                                                             defaultValue={date.day}
                                                             onInput={(e) => handleSetDate(e, i, 'day')}
@@ -753,7 +753,7 @@ const Add = () => {
                                                         <input
                                                             type="text"
                                                             className="inputTextDateACus inputMonthTDACus element"
-                                                            placeholder="1"
+                                                            placeholder="01"
                                                             defaultValue={date.month}
                                                             onInput={(e) => handleSetDate(e, i, 'month')}
                                                             onFocus={(e) => clearInputError(e, refInvoice[`dateError${i}`], refInvoice, true, `invoice.${i}.date`)}

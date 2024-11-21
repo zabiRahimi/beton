@@ -162,11 +162,8 @@ export const handleCubicMetersCalculation = (e, refCubicMeters, setInput) => {
     if (!Number.isInteger(cubicMeters)) {
         cubicMeters = cubicMeters.toFixed(2);
     }
-
-
     refCubicMeters.current.innerHTML = cubicMeters;
     setInput(prev => ({ ...prev, cubicMeters }));
-
 }
 
 export const handleCheckedMaskanMeli = (value, checkedMaskanMeli, setCheckedMaskanMeli, setInput) => {
@@ -176,7 +173,6 @@ export const handleCheckedMaskanMeli = (value, checkedMaskanMeli, setCheckedMask
     } else {
         checkedMaskanMeli == "shahid" ? (setCheckedMaskanMeli(''), maskanMeli = '') : (setCheckedMaskanMeli('shahid'), maskanMeli = 'مسکن ملی شهرک شهید رییسی');
     }
-
     setInput(pre => ({ ...pre, maskanMeli }));
 }
 
@@ -186,7 +182,6 @@ export const handleTotalPriceCalculation = (e, element, input, setInput, refTota
         { value } = e.target;
     value = value.replace(/,/g, '');
     value = Number(value);
-
     if (element == 'weight') {
         cubicMeters = value / 2300;
         if (!Number.isInteger(cubicMeters)) {
@@ -198,7 +193,6 @@ export const handleTotalPriceCalculation = (e, element, input, setInput, refTota
             setInput(perv => ({ ...perv, totalPrice }));
             refTotalPrice.current.innerHTML = totalPrice.toLocaleString();
         }
-
     } else if (element == 'unitPrice') {
         let weight = input.weight;
         if (weight && Number(weight)) {

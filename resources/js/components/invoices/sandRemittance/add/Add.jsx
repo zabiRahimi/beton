@@ -8,6 +8,7 @@ import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import SelectZabi2 from "../../../hooks/SelectZabi2";
 import HeadPage from '../HeadPage';
+import { handleSetDate, htmlFor, formatNub } from './Helper';
 const Add = () => {
     let navigate = useNavigate();
     const MySwal = withReactContent(Swal);
@@ -22,6 +23,15 @@ const Add = () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
+    const dayInputRef = useRef(null);
+    const daySelectRef = useRef(null);
+
+    const monthInputRef = useRef(null);
+    const monthSelectRef = useRef(null);
+
+    const yearInputRef = useRef(null);
+    const yearSelectRef = useRef(null);
+
     const factoryRef = useRef(null);
     const factoryError = useRef(null);
     const buyerNameError = useRef(null);
@@ -30,6 +40,7 @@ const Add = () => {
     const remittanceNumberError = useRef(null);
     const dateRef = useRef(null);
     const dateError = useRef(null);
+    const amountRef = useRef(null);
     const amountError = useRef(null);
     const [loading, setLoading] = useState(false);
     const factorys = [
@@ -81,11 +92,7 @@ const Add = () => {
         month: '',
         year: ''
     });
-    const [time, setTime] = useState({
-        second: '',
-        minute: '',
-        hour: ''
-    });
+
     const [sandStores, setSandStores] = useState([]);
     const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
 
@@ -98,137 +105,18 @@ const Add = () => {
         amount: '',
         description: ''
     });
+   
+    useEffect(() => {
+        factory && setInput(prev => ({ ...prev, factory }));
+    }, [factory]);
 
-    const handleSetDate = (e, input) => {
-        let { value } = e.target,
-            valDate;
-        value = value.toString();
-        if (input == 'day') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-
-            } else {
-                e.target.value = date.day;
-            }
-            valDate = date.year + '-' + date.month + '-' + value;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-
-        } else if (input == 'month') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-            }
-            else {
-                e.target.value = date.month;
-            }
-            valDate = date.year + '-' + value + '-' + date.day;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        } else if (input = 'year') {
-            if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-
-            } else {
-                e.target.value = date.year;
-            }
-            valDate = value + '-' + date.month + '-' + date.day;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        }
-    }
-
-    const handleSetTime = (e, input) => {
-        let { value } = e.target,
-            valTime;
-        value = value.toString();
-        if (input == 'second') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-
-            } else {
-
-                e.target.value = time.second;
-            }
-            valTime = time.hour + ':' + time.minute + ':' + value;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-
-        } else if (input == 'minute') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-
-
-            } else {
-                e.target.value = time.minute;
-            }
-
-            valTime = time.hour + ':' + value + ':' + time.second;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        } else if (input = 'hour') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-
-            } else {
-                e.target.value = time.hour;
-            }
-
-            valTime = value + ':' + time.minute + ':' + time.second;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        }
-    }
 
     const handleSaveValInput = (e, input) => {
+        let { value } = e.target;
+        if (input == 'amount') {
+            value = value.replace(/,/g, '');
+        }
+        setInput(prev => ({ ...prev, [input]: value }));
     }
 
     const clearInputError = (e, refErr, time = false, date = false) => {
@@ -242,6 +130,77 @@ const Add = () => {
     }
 
     const handleResetForm = () => {
+    }
+
+    const resetForm = (apply = true) => {
+        setInvoice([sampleInvoice]);
+        setInput({
+            customer_id: '',
+            invoice: [{
+                date: '',
+                time: '',
+                weight: '',
+                cubicMeters: "",
+                concrete_id: '',
+                truck_id: '',
+                ownerId: '',
+                driver_id: '',
+                cementStore_id: '',
+                unitPrice: '',
+                totalPrice: '',
+                fare: '',
+                maskanMeli: '',
+                vahed: '',
+                address: '',
+                concretingPosition: ''
+            }],
+        });
+
+        setCustomerId('');
+        setConcreteId('');
+        setTruckId('');
+        setOwnerId('');
+        setDriverId('');
+        setCementStoreId('');
+        setCheckedMaskanMeli();
+
+        setTime({
+            second: '',
+            minute: '',
+            hour: ''
+        });
+
+        setDate({
+            day: '',
+            month: '',
+            year: ''
+        });
+
+        setUnitPrice('');
+        setFare('');
+
+        setCheckedValue('');
+        setMaskan(['']);
+
+        setVahed('');
+        setAddress('');
+        setConcretingPosition('');
+
+        refInvoice[`cubicMeters0`].current.innerHTML = '0';
+
+        refInvoice[`totalPrice0`].current.innerHTML = '0';
+
+        refCustomer_id.current.updateData('انتخاب');
+        refInvoice[`concrete_id0`].current.updateData('انتخاب');
+        refInvoice[`cementStore_id0`].current.updateData('انتخاب');
+        refInvoice[`truck_id0`].current.updateData('انتخاب');
+        refInvoice[`driver_id0`].current.updateData('انتخاب');
+        handleRemoveAllError();
+
+        // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
+        if (apply) {
+            window.scrollTo({ top: 0 });
+        }
     }
 
     return (
@@ -321,11 +280,11 @@ const Add = () => {
                                 <label htmlFor="remittanceNumber">شماره حواله</label>
                                 <input
                                     type="text"
-                                    className="inputTextFB element"
+                                    className="inputTextFB ltrFB element"
                                     id="remittanceNumber"
                                     defaultValue={input.remittanceNumber}
                                     onInput={e => handleSaveValInput(e, 'remittanceNumber')}
-                                    onFocus={e => clearInputError(e, lastNameErrorRef)}
+                                    onFocus={e => clearInputError(e, remittanceNumberError)}
                                 />
                             </div>
                             <div className="errorContainerFB elementError" id="remittanceNumberError" ref={remittanceNumberError}> </div>
@@ -340,20 +299,22 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextDateACus inputDayTDACus element"
-                                            placeholder="1"
+                                            placeholder="01"
                                             id="day"
                                             defaultValue={date.day}
-                                            onInput={(e) => handleSetDate(e, 'day')}
+                                            onInput={(e) => handleSetDate(e, 'day', date, setDate, setInput, dayInputRef.current, daySelectRef.current)}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={dayInputRef}
                                         />
                                         <span>/</span>
                                         <input
                                             type="text"
                                             className="inputTextDateACus inputMonthTDACus element"
-                                            placeholder="1"
+                                            placeholder="01"
                                             defaultValue={date.month}
-                                            onInput={(e) => handleSetDate(e, 'month')}
+                                            onInput={(e) => handleSetDate(e, 'month', date, setDate, setInput, monthInputRef.current, monthSelectRef.current)}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={monthInputRef}
                                         />
                                         <span>/</span>
                                         <input
@@ -361,8 +322,9 @@ const Add = () => {
                                             className="inputTextDateACus inputYearTDACus element"
                                             placeholder="1300"
                                             defaultValue={date.year}
-                                            onInput={(e) => { handleSetDate(e, 'year') }}
+                                            onInput={(e) => { handleSetDate(e, 'year', date, setDate, setInput, yearInputRef.current, yearSelectRef.current) }}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={yearInputRef}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
@@ -371,8 +333,9 @@ const Add = () => {
                                         <select
                                             className="element"
                                             defaultValue={date.day}
-                                            onChange={(e) => handleSetDate(e, 'day')}
+                                            onChange={(e) => handleSetDate(e, 'day', date, setDate, setInput, dayInputRef.current, daySelectRef.current)}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={daySelectRef}
                                         >
                                             <option value="">روز</option>
                                             {optionDays}
@@ -380,8 +343,9 @@ const Add = () => {
                                         <select
                                             className="element"
                                             defaultValue={date.month}
-                                            onChange={(e) => handleSetDate(e, 'month')}
+                                            onChange={(e) => handleSetDate(e, 'month', date, setDate, setInput, monthInputRef.current, monthSelectRef.current)}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={monthSelectRef}
                                         >
                                             <option value="">ماه</option>
                                             {optionMonth}
@@ -389,8 +353,9 @@ const Add = () => {
                                         <select
                                             className="element"
                                             defaultValue={date.year}
-                                            onChange={(e) => { handleSetDate(e, 'year') }}
+                                            onChange={(e) => { handleSetDate(e, 'year', date, setDate, setInput, yearInputRef.current, yearSelectRef.current) }}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={yearSelectRef}
                                         >
                                             <option value="">سال</option>
                                             {optionShortYears}
@@ -403,6 +368,37 @@ const Add = () => {
 
                         <div className="containerInputFB">
                             <div className="divInputFB">
+                                <label htmlFor='amount'> مبلغ حواله </label>
+                                <input
+                                    type="text"
+                                    id='amount'
+                                    className="inputTextUnitFB ltrFB element"
+                                    onInput={e => {
+                                        handleSaveValInput(e, 'amount');
+                                        formatNub(amountRef.current);
+                                    }}
+                                    onFocus={e => clearInputError(e, amountError)}
+                                    ref={amountRef}
+
+                                />
+                                <span
+                                    className="unitFB"
+                                    onClick={() => htmlFor('amount')}
+                                >
+                                    تومان
+                                </span>
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div
+                                className="errorContainerFB elementError"
+                                id='amountError'
+                                ref={amountError}
+                            >
+                            </div>
+                        </div>
+
+                        {/* <div className="containerInputFB">
+                            <div className="divInputFB">
                                 <label htmlFor="amount">مبلغ حواله</label>
                                 <input
                                     type="text"
@@ -414,7 +410,7 @@ const Add = () => {
                                 <i className="icofont-ui-rating starFB" />
                             </div>
                             <div className="errorContainerFB elementError" id="amountError" ref={amountError}> </div>
-                        </div>
+                        </div> */}
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label>کارخانه  </label>

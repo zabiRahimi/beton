@@ -1,4 +1,50 @@
 
+export const handleSetDate = (e, input, date, setDate, setInput, currentInput, currentSelect) => {
+    let { value } = e.target,
+        valDate;
+    value = value.toString();
+    switch (input) {
+        case 'day':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 31)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+                currentInput.value = value;
+                currentSelect.value = value;
+            } else {
+                e.target.value = date.day;
+            }
+            valDate = `${date.year}-${date.month}-${value}`;
+            break;
+        case 'month':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 12)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+                currentInput.value = value;
+                currentSelect.value = value;
+            } else {
+                e.target.value = date.month;
+            }
+            valDate = `${date.year}-${value}-${date.day}`;
+            break;
+        case 'year':
+            if (value === '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+                setDate(prev => ({ ...prev, [input]: value }));
+                currentInput.value = value;
+                currentSelect.value = value;
+            } else {
+                e.target.value = date.year;
+            }
+            valDate = `${value}-${date.month}-${date.day}`;
+            break;
+        default:
+            return;
+    }
+    setInput(prev => ({ ...prev, date: valDate }));
+}
+
+
 /**
 * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
 * @param {*} e 
@@ -51,29 +97,10 @@ export const htmlFor = (id) => {
 * به صورت دهگان،صدگان و ...
 * @param {ref} ref 
 */
-export const formatNub = (input, i, refInvoice) => {
+export const formatNub = (refCurrent) => {
     let val,
         checkDthot,
-        resalt,
-        refCurrent;
-    switch (input) {
-        case 'weight':
-            resalt = refInvoice[`weight${i}`].current.value.replace(/[\s,]/g, "");
-            refCurrent = refInvoice[`weight${i}`].current;
-            break;
-        case 'unitPrice':
-            resalt = refInvoice[`unitPrice${i}`].current.value.replace(/[\s,]/g, "");
-            refCurrent = refInvoice[`unitPrice${i}`].current;
-            break;
-        case 'totalPrice':
-            resalt = refInvoice[`totalPrice${i}`].current.value.replace(/[\s,]/g, "");
-            refCurrent = refInvoice[`totalPrice${i}`].current;
-            break;
-        case 'fare':
-            resalt = refInvoice[`fare${i}`].current.value.replace(/[\s,]/g, "");
-            refCurrent = refInvoice[`fare${i}`].current;
-            break;
-    }
+        resalt = refCurrent.value.replace(/[\s,]/g, "");
     // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
     if (resalt.slice(-1) == '.') {
         checkDthot = true;
@@ -140,7 +167,6 @@ export const formatNub = (input, i, refInvoice) => {
 
 export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue, setMaskan, maskan) => {
     let checked;
-  console.log(e.target);
     const resetMaskan = () => {
       const copyMaskan = [...maskan];
       copyMaskan[i] = '';
