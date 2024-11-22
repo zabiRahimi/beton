@@ -119,204 +119,30 @@ export const formatNub = (refCurrent) => {
     }
 }
 
-// export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue, setMaskan, maskan) => {
-//     let checked;
-//     if (value == `emam${i}` && isChecked && checkedValue == 'مسکن ملی شهرک امام خمینی') {
-//         const copyMaskan = [...maskan];
-//         copyMaskan[i] = '';
-//         copyMaskan[maskan.length - 1] = '';
-//         setMaskan(copyMaskan);
-//         checked = false;
-//         const checkbox = e.target;
-//         checkbox.checked = !checkbox.checked;
-//         setCheckedValue('');
-//     } else if (value == `shahid${i}` && isChecked && checkedValue == 'مسکن ملی شهرک شهید رییسی') {
-//         const copyMaskan = [...maskan];
-//         copyMaskan[i] = '';
-//         copyMaskan[maskan.length - 1] = '';
-//         setMaskan(copyMaskan);
-//         checked = false;
-//         const checkbox = e.target;
-//         checkbox.checked = !checkbox.checked;
-//         setCheckedValue('');
-//     }
-//     else {
-//         if (value == `emam${i}`) {
-//             checked = refInvoice[`checkedMaskanEmam${i}`].current;
-//         } else if (value == `shahid${i}`) {
-//             checked = refInvoice[`checkedMaskanShahid${i}`].current;
-//         }
-
-//         if (value == `emam${i}`) {
-//             refInvoice[`checkedMaskanEmam${i}`].current = !checked;
-//             refInvoice[`checkedMaskanShahid${i}`].current = true;
-//         } else if (value == `shahid${i}`) {
-//             refInvoice[`checkedMaskanShahid${i}`].current = !checked;
-//             refInvoice[`checkedMaskanEmam${i}`].current = true;
-//         }
-//     }
-
-//     if (checked) {
-//         setCheckedMaskanMeli(value);
-
-//     } else {
-//         setCheckedMaskanMeli('');
-//     }
-//     setIsChecked(false)
-// }
-
-export const handleCheckedMaskanMeli = (e, value, i, refInvoice, isChecked, setIsChecked, setCheckedMaskanMeli, checkedValue, setCheckedValue, setMaskan, maskan) => {
-    let checked;
-    const resetMaskan = () => {
-      const copyMaskan = [...maskan];
-      copyMaskan[i] = '';
-      copyMaskan[maskan.length - 1] = '';
-      setMaskan(copyMaskan);
-      setCheckedValue('');
-    };
-  
-    const toggleCheckbox = (ref) => {
-        if (ref && ref.current) {
-            ref.current.checked = !ref.current.checked;
-          }
-    };
-  
-    if (value === `emam${i}` && isChecked && checkedValue === 'مسکن ملی شهرک امام خمینی') {
-      resetMaskan();
-      toggleCheckbox(e.target);
-    } else if (value === `shahid${i}` && isChecked && checkedValue === 'مسکن ملی شهرک شهید رییسی') {
-      resetMaskan();
-      toggleCheckbox(e.target);
-    } else {
-      checked = refInvoice[`checkedMaskan${value.charAt(0).toUpperCase() + value.slice(1, value.length - 1)}${i}`].current;
-      refInvoice[`checkedMaskanEmam${i}`].current = value === `emam${i}` ? !checked : true;
-      refInvoice[`checkedMaskanShahid${i}`].current = value === `shahid${i}` ? !checked : true;
-    }
-  
-    setCheckedMaskanMeli(checked ? value : '');
-    setIsChecked(false);
-  };
-  
-
-export  const handleCubicMetersCalculation = (e, refInvoice, setInput, i = null) => {
-    let { value } = e.target;
-    value = value.replace(/,/g, '');
-    let cubicMeters = value / 2300;
-    cubicMeters = Number(cubicMeters);
-    if (!Number.isInteger(cubicMeters)) {
-        cubicMeters = cubicMeters.toFixed(2);
-    }
-    refInvoice[`cubicMeters${i}`].current.innerHTML = cubicMeters;
-    setInput(perv => {
-        let newInvoice;
-        newInvoice = [...perv.invoice];
-        newInvoice[i] = { ...newInvoice[i], cubicMeters };
-        return { ...perv, invoice: newInvoice };
+export  const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply = true) => {
+    setInput({
+        buyerName: '',
+        buyerLastName: '',
+        buyerFather: '',
+        remittanceNumber: '',
+        date: '',
+        price: '',
+        factory: '',
+        description: ''
     });
-}
-
-
-export  const handleTotalPriceCalculation = (e, i, element, input, setInput, refInvoice) => {
-    let cubicMeters,
-        totalPrice,
-        { value } = e.target;
-    value = value.replace(/,/g, '');
-    value = Number(value);
-
-    if (element == 'weight') {
-        cubicMeters = value / 2300;
-        if (!Number.isInteger(cubicMeters)) {
-            cubicMeters = cubicMeters.toFixed(2);
-        }
-        let unitPrice = input.invoice[i].unitPrice;
-        if (Number.isInteger(Number(unitPrice))) {
-            totalPrice = unitPrice * cubicMeters;
-            setInput(perv => {
-                let newInvoice;
-                newInvoice = [...perv.invoice];
-                newInvoice[i] = { ...newInvoice[i], totalPrice };
-                return { ...perv, invoice: newInvoice };
-            });
-            refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-        }
-
-    } else if (element == 'unitPrice') {
-        let weight = input.invoice[i].weight;
-        if (weight && Number(weight)) {
-            cubicMeters = weight / 2300;
-            if (!Number.isInteger(cubicMeters)) {
-                cubicMeters = cubicMeters.toFixed(2);
-            }
-            totalPrice = value * cubicMeters;
-            setInput(perv => {
-                let newInvoice;
-                newInvoice = [...perv.invoice];
-                newInvoice[i] = { ...newInvoice[i], totalPrice };
-                return { ...perv, invoice: newInvoice };
-            });
-            refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
-        }
+    setDate({
+        day: '',
+        month: '',
+        year: ''
+    });
+    setFactory('');
+    factoryCurrent.updateData('انتخاب');
+    // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
+    if (apply) {
+        window.scrollTo({ top: 0 });
     }
 }
 
-export const handleAddNewInvoice = (e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice, date, input, setConcreteName, concretes, maskan, setMaskan, setCheckedValue, setCementStoreName, cementStores, setTime, unitPrice, fare, vahed, address, concretingPosition ) => {
-    e.preventDefault();
-    setIndexNewInvoice(invoice.length);
-    setInvoice([...invoice, sampleInvoice]);
-    setIsNewInvoice(true);
-    let date0 = handleSetDateForNewInvoice(date);
-    let concrete_id = handleSetConcreteForNewInvoice(input, invoice, setConcreteName, concretes);
-    let maskanMeli = handleSetMaskanMeliForNewInvoice(input, invoice, maskan, setMaskan, setCheckedValue);
-    let cementStore_id = handleSetCementStoreForNewInvoice(input, invoice, setCementStoreName, cementStores);
-    setInput(perv => {
-        let newInvoice = [...perv.invoice, { date:date0, time: '', weight: '', cubicMeters: '', concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
-
-        return { ...perv, invoice: newInvoice };
-    });
-    handleClearTime(setTime);
-    setIsChecked(true);
-}
-
- const handleClearTime = (setTime) => {
-    setTime({
-        second: '',
-        minute: '',
-        hour: ''
-    });
-}
-
- const handleSetDateForNewInvoice = (date) => {
-    let valDate = date.year + '-' + date.month + '-' + date.day;
-    return valDate;
-}
-
- const handleSetConcreteForNewInvoice = (input, invoice, setConcreteName, concretes) => {
-    let concrete_id = input.invoice[invoice.length - 1].concrete_id;
-    concrete_id && (setConcreteName(concretes.filter(concrete => concrete.value == concrete_id)[0]['concreteName']));
-    return concrete_id;
-}
-
- const handleSetCementStoreForNewInvoice = (input, invoice, setCementStoreName, cementStores) => {
-    let cementStore_id = input.invoice[invoice.length - 1].cementStore_id;
-    cementStore_id && (setCementStoreName(cementStores.filter(cementStore => cementStore.value == cementStore_id)[0]['cementStoreName']));
-    return cementStore_id;
-}
-
- const handleSetMaskanMeliForNewInvoice = (input, invoice, maskan, setMaskan, setCheckedValue) => {
-    let maskanMeli = input.invoice[invoice.length - 1].maskanMeli;
-    const copyMaskan = [...maskan];
-    copyMaskan[maskan.length - 1] = maskanMeli;
-    setMaskan(copyMaskan);
-    setCheckedValue(maskanMeli);
-    return maskanMeli;
-}
-
-export const handleDelInvoice = (input, invoice, setInvoice, setInput) => {
-    const updatedInputInvoice = input.invoice.slice(0, -1);
-    const updatedInvoice = invoice.slice(0, -1);
-    setInvoice(updatedInvoice);
-    setInput({ ...input, invoice: updatedInputInvoice });
-}
 
 export const handleRemoveAllError = () => {
     var elements = document.getElementsByClassName('element');

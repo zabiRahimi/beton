@@ -11,6 +11,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonnelSlipController;
 use App\Http\Controllers\SandInvoiceController;
+use App\Http\Controllers\SandRemittanceController;
 use App\Http\Controllers\SandStoreController;
 use App\Http\Controllers\TruckController;
 use App\Http\Controllers\WaterStoreController;
@@ -131,6 +132,7 @@ Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
     // Route::get('/getCSICementStores', 'getCSICementStores');
 
 });
+Route::resource('sandRemittances', SandRemittanceController::class);
 
 Route::resource('sandInvoices', SandInvoiceController::class);
 

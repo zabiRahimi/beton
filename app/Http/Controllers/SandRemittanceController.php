@@ -29,7 +29,11 @@ class SandRemittanceController extends Controller
      */
     public function store(StoreSandRemittanceRequest $request)
     {
-        //
+        $sandRemittance = new SandRemittance();
+        $sandRemittance->fill($request->validated());
+        $sandRemittance->save();
+
+        return response()->json(['sandRemittance' =>  $sandRemittance], 200);
     }
 
     /**
