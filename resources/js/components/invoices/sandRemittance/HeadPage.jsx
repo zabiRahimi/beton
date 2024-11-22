@@ -38,15 +38,15 @@ const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
             <div className="headPageGe">
                 {
                     displayBtnAdd &&
-                    <Link to="/invoices/concreteSalesInvoice" className="btnAddGe --styleLessLink ">
-                        ایجاد فاکتور
+                    <Link to="/invoices/sandRemittance" className="btnAddGe --styleLessLink ">
+                        ثبت حواله
                     </Link>
                 }
 
                 {
                     displayBtnShow &&
-                    <Link to="/invoices/concreteSalesInvoice/show" className="btnGetGe --styleLessLink ">
-                        مشاهده فاکتورها
+                    <Link to="/invoices/sandRemittance/show" className="btnGetGe --styleLessLink ">
+                        مشاهده حواله‌ها
                     </Link>
                 }
             </div>

@@ -37,6 +37,7 @@ import ShowConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice
 import EditConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/edit/Edit";
 import SandRemittance from "./components/invoices/sandRemittance/SandRemittance";
 import AddSandRemittance from "./components/invoices/sandRemittance/add/Add";
+import ShowSandRemittance from "./components/invoices/sandRemittance/show/Show";
 import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
 import AddWaterInvoice from "./components/invoices/water/AddWaterInvoice";
 import AddCementInvoice from "./components/invoices/cement/AddCementInvoice";
@@ -98,6 +99,8 @@ function App() {
                     <Route path="sandRemittance" element={<SandRemittance />} >
                         <Route index element={<Navigate to="add" replace />} />
                         <Route path="add" element={<AddSandRemittance />} />
+                        <Route path="show" element={<ShowSandRemittance />} />
+
                         {/* <Route path="editSandInvoice" element={<EditSandInvoice />} />
                         <Route path="showSandInvoices" element={<ShowSandInvoices />} /> */}
                     </Route>

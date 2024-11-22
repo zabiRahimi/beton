@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import HeadPage from '../HeadPage';
+import RouteService from "./RouteService";
 import { handleSetDate, htmlFor, formatNub, resetForm } from './Helper';
 const Add = () => {
     let navigate = useNavigate();
@@ -40,6 +41,7 @@ const Add = () => {
     const factoryRef = useRef(null);
     const factoryError = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [ticketNumber, setTicketNumber] = useState();
     const factorys = [
         {
             value: 'شهرداری ارسنجان',
@@ -104,6 +106,8 @@ const Add = () => {
         description: ''
     });
 
+    RouteService({ setLoading, setTicketNumber });
+
     useEffect(() => {
         factory && setInput(prev => ({ ...prev, factory }));
     }, [factory]);
@@ -139,7 +143,7 @@ const Add = () => {
             }
         ).then((response) => {
             const resutl = response.data.sandRemittance;
-            // setTicketNumber(ticketNumber + resutl.length);
+            setTicketNumber(ticketNumber + 1);
             form.current.reset();
             MySwal.fire({
                 icon: "success",
@@ -151,7 +155,7 @@ const Add = () => {
                     timerProgressBar: '--progressBarColorBlue',
                 },
 
-                didClose: () => resetForm(),
+                didClose: () => resetForm(setInput, setDate, setFactory, factoryRef.current),
             });
         })
             .catch(
@@ -200,8 +204,7 @@ const Add = () => {
                                 <label>شماره فاکتور </label>
                                 <div className="mainTicketNumberACSI_FB">
                                     <div className="ticketNumberACSI_FB">
-                                        {/* {ticketNumber + i} */}
-                                        1
+                                        {ticketNumber}
                                     </div>
                                 </div>
                             </div>

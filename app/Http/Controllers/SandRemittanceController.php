@@ -16,6 +16,12 @@ class SandRemittanceController extends Controller
         //
     }
 
+    public function count()
+    {
+        $count = SandRemittance::count();
+        return response()->json(['count' => $count], 200);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

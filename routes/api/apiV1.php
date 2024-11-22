@@ -133,6 +133,11 @@ Route::controller(ConcreteSalesInvoiceController::class)->group(function () {
 
 });
 Route::resource('sandRemittances', SandRemittanceController::class);
+Route::controller(SandRemittanceController::class)->group(function () {
+    
+    Route::get('/sandRemittance/count', 'count');
+   
+});
 
 Route::resource('sandInvoices', SandInvoiceController::class);
 
