@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import HeadPage from '../HeadPage';
-import AddCocreteSalesInvoiceSearch from '../add/AddConcreteSalesInvoiceSearch';
+import CocreteSalesInvoiceSearch from './ConcreteSalesInvoiceSearch';
 import RouteService from './RouteService';
 import Skeleton from 'react-loading-skeleton';
 // import { Pagination } from 'react-bootstrap';
@@ -182,7 +182,7 @@ const Show = () => {
             >
                 
                 <div className="divListShowGe">
-                    <AddCocreteSalesInvoiceSearch
+                    <CocreteSalesInvoiceSearch
                         getConcreteSalesInvoices={getConcreteSalesInvoices}
                         handelSetDataSearch={handelSetDataSearch}
                         concretes={concretes}

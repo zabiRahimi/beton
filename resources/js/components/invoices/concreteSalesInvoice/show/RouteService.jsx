@@ -18,6 +18,7 @@ const RouteService = ({ setLoading }) => {
       const datas = response.data.concretes;
       let options;
       if (datas.length == 0) {
+        options = notOption(' هنوز هیچ نوع بتنی ثبت نشده است، ابتدا نوع بتن را ثبت کنید ');
       } else {
         options = datas.map(data => ({
           value: data.id,
@@ -36,6 +37,17 @@ const RouteService = ({ setLoading }) => {
     setCallHandler(true);
     setLoading(false);
   };
+
+  const notOption = (message) => {
+    return [{
+      value: '',
+      html: (
+        <div className="notOptionsFB">
+          {message}
+        </div>
+      )
+    }];
+  }
 
   return { concretes }
 };

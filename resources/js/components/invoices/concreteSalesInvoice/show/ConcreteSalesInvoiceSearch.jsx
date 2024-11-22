@@ -6,7 +6,7 @@ import SelectZabi from '../../../hooks/SelectZabi';
 // import iran from "../../../assets/images/iran.png";
 
 
-const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataSearch, concretes, totalRecords }) => {
+const CocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataSearch, concretes, totalRecords }) => {
     const {
         checkDate
     } = DataZabi();
@@ -606,4 +606,4 @@ const AddCocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataS
     );
 };
 
-export default AddCocreteSalesInvoiceSearch;
+export default CocreteSalesInvoiceSearch;
