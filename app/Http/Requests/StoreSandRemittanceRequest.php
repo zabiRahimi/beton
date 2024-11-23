@@ -22,14 +22,16 @@ class StoreSandRemittanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'buyerName' => ['required', 'bail','string'],
-            'buyerLastName' => ['required','bail','string'],
-            'buyerFather' => ['nullable','bail','string'],
-            'remittanceNumber' => ['nullable','bail','string'],
-            'date' => ['required','bail','date'],
-            'price' => ['required','bail','numeric'],
-            'factory' => ['required','bail','string'],
-            'description' => ['nullable','string'],
+            'buyerName' => ['required', 'bail', 'string'],
+            'buyerLastName' => ['required', 'bail', 'string'],
+            'buyerFather' => ['nullable', 'bail', 'string'],
+            'remittanceNumber' => ['nullable', 'bail', 'string'],
+            'date' => ['required', 'bail', 'date'],
+            'price' => ['required', 'bail', 'numeric'],
+            'dischargedPrice' => ['nullable', 'bail', 'numeric'],
+            'isCompleted' => ['nullable', 'bail', 'boolean'],
+            'factory' => ['required', 'bail', 'string'],
+            'description' => ['nullable', 'string'],
         ];
     }
 
