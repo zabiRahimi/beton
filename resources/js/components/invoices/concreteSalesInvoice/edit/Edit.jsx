@@ -233,134 +233,75 @@ const Edit = () => {
         }
         setInput(prev => ({ ...prev, [input]: value }));
     }
-    
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     setLoading(true)
-    //     await axios.patch(
-    //         `/api/v1/concreteSalesInvoices/${invoiceId}
-    //         `,
-    //         { ...input },
-    //         {
-    //             headers:
-    //             {
-    //                 'X-CSRF-TOKEN': token,
-    //                 'Content-Type': 'application/json; charset=utf-8'
-    //             }
-    //         }
-    //     ).then((response) => {
-    //         MySwal.fire({
-    //             icon: "success",
-    //             title: "با موفقیت ویرایش شد",
-    //             confirmButtonText: "  متوجه شدم  ",
-    //             timer: 3000,
-    //             timerProgressBar: true,
-    //             customClass: {
-    //                 timerProgressBar: '--progressBarColorBlue',
-    //             },
-    //             didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
-    //         });
-
-    //     })
-    //         .catch(
-    //             error => {
-    //                 if (error.response && error.response.status == 422) {
-
-    //                     let id = Object.keys(error.response.data.errors)[0] + '';
-    //                     if (id != 'cubicMeters' && id != 'totalPrice' && id != 'ownerId') {
-    //                         const element = document.getElementById(id);
-    //                         let scrollPosition = window.scrollY || window.pageYOffset;
-
-    //                         const top = element.getBoundingClientRect().top + scrollPosition - 20;
-    //                         window.scrollTo({
-    //                             top: top,
-    //                             behavior: 'smooth'
-    //                         });
-    //                     }
-    //                     Object.entries(error.response.data.errors).map(([key, val]) => {
-    //                         if (!key.includes('cubicMeters') && !key.includes('totalPrice') && !key.includes('ownerId')) {
-    //                             document.getElementById(key + '').classList.add('borderRedFB');
-
-    //                             document.getElementById(key + '' + 'Error').innerHTML = val;
-    //                         }
-
-    //                     });
-    //                 }
-    //             }
-    //         )
-
-    //     setLoading(false)
-    // }
-
-/**
- * ارسال فرم به سرور برای به‌روزرسانی فاکتور
- * @param {*} e 
- */
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-        const response = await axios.patch(
-            `/api/v1/concreteSalesInvoices/${invoiceId}`,
-            { ...input },
-            {
-                headers: {
-                    'X-CSRF-TOKEN': token,
-                    'Content-Type': 'application/json; charset=utf-8',
+    /**
+     * ارسال فرم به سرور برای به‌روزرسانی فاکتور
+     * @param {*} e 
+     */
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const response = await axios.patch(
+                `/api/v1/concreteSalesInvoices/${invoiceId}`,
+                { ...input },
+                {
+                    headers: {
+                        'X-CSRF-TOKEN': token,
+                        'Content-Type': 'application/json; charset=utf-8',
+                    },
+                }
+            );
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ویرایش شد",
+                confirmButtonText: "متوجه شدم",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
                 },
+                didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
+            });
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                handleValidationErrors(error.response.data.errors);
             }
-        );
-        MySwal.fire({
-            icon: "success",
-            title: "با موفقیت ویرایش شد",
-            confirmButtonText: "متوجه شدم",
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: {
-                timerProgressBar: '--progressBarColorBlue',
-            },
-            didClose: () => window.scrollTo({ top: 60, behavior: 'smooth' }),
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    /**
+     * مدیریت خطاهای اعتبارسنجی و پیمایش به محل خطا
+     * @param {Object} errors 
+     */
+    const handleValidationErrors = (errors) => {
+        let firstErrorKey = Object.keys(errors)[0];
+        if (!['cubicMeters', 'totalPrice', 'ownerId'].includes(firstErrorKey)) {
+            scrollToElement(firstErrorKey);
+        }
+        Object.entries(errors).forEach(([key, val]) => {
+            if (!['cubicMeters', 'totalPrice', 'ownerId'].includes(key)) {
+                document.getElementById(key).classList.add('borderRedFB');
+                document.getElementById(`${key}Error`).innerHTML = val;
+            }
         });
-    } catch (error) {
-        if (error.response && error.response.status === 422) {
-            handleValidationErrors(error.response.data.errors);
-        }
-    } finally {
-        setLoading(false);
-    }
-};
+    };
 
-/**
- * مدیریت خطاهای اعتبارسنجی و پیمایش به محل خطا
- * @param {Object} errors 
- */
-const handleValidationErrors = (errors) => {
-    let firstErrorKey = Object.keys(errors)[0];
-    if (!['cubicMeters', 'totalPrice', 'ownerId'].includes(firstErrorKey)) {
-        scrollToElement(firstErrorKey);
-    }
-    Object.entries(errors).forEach(([key, val]) => {
-        if (!['cubicMeters', 'totalPrice', 'ownerId'].includes(key)) {
-            document.getElementById(key).classList.add('borderRedFB');
-            document.getElementById(`${key}Error`).innerHTML = val;
-        }
-    });
-};
-
-/**
- * پیمایش به محل خطای اعتبارسنجی
- * @param {string} id 
- */
-const scrollToElement = (id) => {
-    const element = document.getElementById(id);
-    const scrollPosition = window.scrollY || window.pageYOffset;
-    const top = element.getBoundingClientRect().top + scrollPosition - 20;
-    window.scrollTo({
-        top: top,
-        behavior: 'smooth',
-    });
-};
+    /**
+     * پیمایش به محل خطای اعتبارسنجی
+     * @param {string} id 
+     */
+    const scrollToElement = (id) => {
+        const element = document.getElementById(id);
+        const scrollPosition = window.scrollY || window.pageYOffset;
+        const top = element.getBoundingClientRect().top + scrollPosition - 20;
+        window.scrollTo({
+            top: top,
+            behavior: 'smooth',
+        });
+    };
 
 
     return (
