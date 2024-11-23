@@ -199,6 +199,7 @@ const Show = () => {
                         siblingCount={3}
                         onPageChange={page => { setCurrentPage(page); getSandRemittances(page) }}
                     /> */}
+
                 </div>
             </div>
         </div>
