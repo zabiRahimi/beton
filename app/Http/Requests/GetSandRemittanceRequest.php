@@ -24,6 +24,7 @@ class GetSandRemittanceRequest extends FormRequest
         return [
             'startDate'=> 'nullable|date',
             'endDate'=> 'nullable|date',
+            'date'=> 'nullable|date',
             'id'=> 'nullable|numeric',
             'buyerName' => ['nullable', 'bail', 'string'],
             'buyerLastName' => ['nullable', 'bail', 'string'],
@@ -40,6 +41,7 @@ class GetSandRemittanceRequest extends FormRequest
         return [
             'startDate.date' => 'تاریخ شروع جستجو را صحیح وارد کنید، چنانچه نمی‌خواهید تاریخ شروع را وارد کنید آن را کاملا پاک کنید',
             'endDate.date' => 'تاریخ پایان جستجو را صحیح وارد کنید، چنانچه نمی‌خواهید تاریخ پایان را وارد کنید آن را کاملا پاک کنید',
+            'date.date' => 'تاریخ حواله را صحیح و کامل وارد کنید',
             'id.numeric' => 'شناسه را به عدد وارد کنید',
             'buyerName.string' => 'نام خریدار را صحیح وارد کنید',
             'buyerLastName.string' => 'نام خانوادگی خریدار را صحیح وارد کنید',

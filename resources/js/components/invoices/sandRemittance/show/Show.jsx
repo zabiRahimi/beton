@@ -29,8 +29,9 @@ const Show = () => {
         }
     }, []);
     const [search, setSearch] = useState({
-        startDate: '',
+        startDate: '',//تاریخ ثبت حواله
         endDate: '',
+        date: '',//تاریخ خرید حواله
         id: '',
         buyerName:'',
         buyerLastName:'',
@@ -44,6 +45,7 @@ const Show = () => {
         page = 1,
         startDate = search.startDate,
         endDate = search.endDate,
+        date = search.date,
         id = search.id,
         buyerName = search.buyerName,
         buyerLastName = search.buyerLastName,
@@ -57,6 +59,7 @@ const Show = () => {
             params: {
                 startDate,
                 endDate,
+                date,
                 id,
                 buyerName,
                 buyerLastName,
