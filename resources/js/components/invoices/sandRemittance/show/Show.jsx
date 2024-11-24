@@ -129,7 +129,7 @@ const Show = () => {
                 <span className="ticketNumberACSI_Ge">{sandRemittances['id']}</span>
                 <span className="ticketNumberACSI_Ge">{sandRemittances['remittanceNumber']}</span>
                 <span className="customerACSI_Ge">{sandRemittances['buyerName']}{'  '}{sandRemittances['buyerLastName']} {'  '} <span>{sandRemittances['buyerFather']}</span> </span>
-                <span className="concreteACSI_Ge">{sandRemittances['price']}</span>
+                <span className="concreteACSI_Ge">{sandRemittances['price'].toLocaleString()}</span>
                 <span className="concreteACSI_Ge">{sandRemittances['remainingPrice']}</span>
                 
                

@@ -28,7 +28,7 @@ const Add = () => {
 
     const yearInputRef = useRef(null);
     const yearSelectRef = useRef(null);
-    
+
     const buyerNameError = useRef(null);
     const buyerLastNameError = useRef(null);
     const buyerFatherError = useRef(null);
@@ -102,6 +102,7 @@ const Add = () => {
         remittanceNumber: '',
         date: '',
         price: '',
+        remainingPrice: '',
         factory: '',
         description: ''
     });
@@ -117,8 +118,14 @@ const Add = () => {
         let { value } = e.target;
         if (input == 'price') {
             value = value.replace(/,/g, '');
+            /**
+             * چون قیمت اولیه مبلغ باقیمانده باید
+             * با مبلغ حواله برابر باشد اینجا مبلغ باقیمانده مقدار دهی میشود
+             */
+            setInput(prev => ({ ...prev, remainingPrice: value }));
         }
         setInput(prev => ({ ...prev, [input]: value }));
+
     }
 
     const clearInputError = (e, refErr, date = false, factory = false) => {
@@ -165,20 +172,18 @@ const Add = () => {
 
                         let id = Object.keys(error.response.data.errors)[0];
                         const element = document.getElementById(id);
-                        let scrollPosition = window.scrollY || window.pageYOffset;
-
-                        const top = element.getBoundingClientRect().top + scrollPosition - 20;
-                        window.scrollTo({
-                            top: top,
-                            behavior: 'smooth'
-                        });
+                        // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن 
+                        if (element) { 
+                            let scrollPosition = window.scrollY || window.pageYOffset;
+                             const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                              window.scrollTo({ top: top, behavior: 'smooth' }); 
+                            }
                         Object.entries(error.response.data.errors).map(([key, val]) => {
-
+                            //نادیده گرفتن خطای مربوط به remainingPrice
+                            if (key !== 'remainingPrice') {
                             document.getElementById(key).classList.add('borderRedFB');
-
                             document.getElementById(key + 'Error').innerHTML = val;
-
-
+                            }
                         });
                     }
                 }

@@ -127,6 +127,7 @@ export  const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply 
         remittanceNumber: '',
         date: '',
         price: '',
+        remainingPrice:'',
         factory: '',
         description: ''
     });
@@ -136,11 +137,13 @@ export  const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply 
         year: ''
     });
     setFactory('');
+    handleRemoveAllError();
     factoryCurrent.updateData('انتخاب');
     // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
     if (apply) {
         window.scrollTo({ top: 0 });
     }
+    
 }
 
 
