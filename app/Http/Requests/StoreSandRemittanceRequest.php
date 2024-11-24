@@ -28,7 +28,7 @@ class StoreSandRemittanceRequest extends FormRequest
             'remittanceNumber' => ['nullable', 'bail', 'string'],
             'date' => ['required', 'bail', 'date'],
             'price' => ['required', 'bail', 'numeric'],
-            'dischargedPrice' => ['nullable', 'bail', 'numeric'],
+            'remainingPrice' => ['nullable', 'bail', 'numeric'],
             'isCompleted' => ['nullable', 'bail', 'boolean'],
             'factory' => ['required', 'bail', 'string'],
             'description' => ['nullable', 'string'],
