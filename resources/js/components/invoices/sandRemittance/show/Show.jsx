@@ -121,16 +121,18 @@ const Show = () => {
         if (length == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
-        let value = sandRemittances.map((sandRemittances, i) => {
-            let date = sandRemittances['date'].split('-');
-            let isCompleted = sandRemittances['isCompleted']? 'مانده':'تمام';
+        let value = sandRemittances.map((sandRemittance, i) => {
+            let price = Number(sandRemittance['price']).toLocaleString();
+            let remainingPrice = Number(sandRemittance['remainingPrice']).toLocaleString();
+            let date = sandRemittance['date'].split('-');
+            let isCompleted = sandRemittance['isCompleted']? 'مانده':'تمام';
             return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">{i + 1}</span>
-                <span className="ticketNumberACSI_Ge">{sandRemittances['id']}</span>
-                <span className="ticketNumberACSI_Ge">{sandRemittances['remittanceNumber']}</span>
-                <span className="customerACSI_Ge">{sandRemittances['buyerName']}{'  '}{sandRemittances['buyerLastName']} {'  '} <span>{sandRemittances['buyerFather']}</span> </span>
-                <span className="concreteACSI_Ge">{sandRemittances['price'].toLocaleString()}</span>
-                <span className="concreteACSI_Ge">{sandRemittances['remainingPrice']}</span>
+                <span className="ticketNumberACSI_Ge">{sandRemittance['id']}</span>
+                <span className="ticketNumberACSI_Ge">{sandRemittance['remittanceNumber']}</span>
+                <span className="customerACSI_Ge">{sandRemittance['buyerName']}{'  '}{sandRemittance['buyerLastName']} {'  '} <span>{sandRemittance['buyerFather']}</span> </span>
+                <span className="concreteACSI_Ge">{price}</span>
+                <span className="concreteACSI_Ge">{remainingPrice}</span>
                 
                
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
