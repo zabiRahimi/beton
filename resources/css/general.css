@@ -332,8 +332,19 @@
 
 }
 
-.textAlignCenter {
+.remittanceNumber_Ge{
+    width: 13%;
     text-align: center;
+    color: #086d6b; 
+}
+
+.textAlignCenter,
+.textAlignCenter_Ge {
+    text-align: center;
+}
+
+.textAlignLeft_Ge {
+    text-align: left;
 }
 
 .customerHeadACSI_Ge,
@@ -349,6 +360,20 @@
 .customerACSI_Ge {
     padding-right: 10px;
 
+}
+.buyerName_Ge{
+    width: 21%;
+    display: flex;
+    justify-content: space-between;
+    color: #08356c;
+}
+.bueryFather_Ge{
+    font-size: 0.8rem;
+}
+
+
+.price_Ge{
+    width: 12%;
 }
 
 .concreteACSI_Ge {
@@ -387,7 +412,18 @@
     font-size: 0.8rem;
 }
 
+.isCompleted_Ge{
+    width: 7%;
+    text-align: center;
+}
 
+.true_Ge{
+    color: #006e00;
+}
+
+.false_Ge{
+    color: #ca0606;
+}
 
 .editHeadShowACSI_Ge,
 .delHeadShowACSI_Ge {

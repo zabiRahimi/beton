@@ -129,14 +129,14 @@ const Show = () => {
             return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">{i + 1}</span>
                 <span className="ticketNumberACSI_Ge">{sandRemittance['id']}</span>
-                <span className="ticketNumberACSI_Ge">{sandRemittance['remittanceNumber']}</span>
-                <span className="customerACSI_Ge">{sandRemittance['buyerName']}{'  '}{sandRemittance['buyerLastName']} {'  '} <span>{sandRemittance['buyerFather']}</span> </span>
-                <span className="concreteACSI_Ge">{price}</span>
-                <span className="concreteACSI_Ge">{remainingPrice}</span>
+                <span className="remittanceNumber_Ge">{sandRemittance['remittanceNumber']}</span>
+                <span className="customerACSI_Ge buyerName_Ge">{sandRemittance['buyerName']}{'  '}{sandRemittance['buyerLastName']} {'  '} <span className='bueryFather_Ge'>{sandRemittance['buyerFather']}</span> </span>
+                <span className="price_Ge textAlignCenter_Ge">{price}</span>
+                <span className="price_Ge textAlignCenter_Ge">{remainingPrice}</span>
                 
                
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
-                <span className="dateACSI_Ge">{isCompleted}</span>
+                <span className={`isCompleted_Ge ${sandRemittance['isCompleted']?'true_Ge':'false_Ge'}`}>{isCompleted}</span>
                 <div className="divEditACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" ویرایش "
@@ -179,12 +179,12 @@ const Show = () => {
                     <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                         <span className="rowNumShowACSI_Ge ">ردیف</span>
                         <span className="ticketNumberACSI_Ge ">شناسه</span>
-                        <span className="ticketNumberACSI_Ge ">شماره حواله</span>
-                        <span className="customerHeadACSI_Ge">خریدار</span>
-                        <span className="concreteACSI_Ge textAlignCenter"> مبلغ </span>
-                        <span className="concreteACSI_Ge textAlignCenter"> مبلغ مانده </span>
-                        <span className="dateACSI_Ge textAlignCenter">تاریخ خرید</span>
-                        <span className="driverHeadACSI_Ge">وضعیت</span>
+                        <span className="remittanceNumber_Ge ">شماره حواله</span>
+                        <span className="customerHeadACSI_Ge buyerName_Ge textAlignCenter_Ge">خریدار</span>
+                        <span className="price_Ge textAlignCenter_Ge"> مبلغ </span>
+                        <span className="price_Ge textAlignCenter_Ge"> مبلغ مانده </span>
+                        <span className="dateACSI_Ge textAlignCenter_Ge">تاریخ خرید</span>
+                        <span className="isCompleted_Ge">وضعیت</span>
                         <span className="editHeadShowACSI_Ge"> ویرایش  </span>
                         <span className="delHeadShowACSI_Ge"> حذف </span>
                     </div>
