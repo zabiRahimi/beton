@@ -121,27 +121,24 @@ const Show = () => {
         if (length == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
-        let value = sandRemittances.map((concreteSalesInvoice, i) => {
-            let numberplate = concreteSalesInvoice['truck'].numberplate.split('-');
-            let date = concreteSalesInvoice['date'].split('-');
+        let value = sandRemittances.map((sandRemittances, i) => {
+            let date = sandRemittances['date'].split('-');
+            let isCompleted = sandRemittances['isCompleted']? 'مانده':'تمام';
             return <div className="rowListShowACSI_Ge" key={i}>
-                <span className="rowNumShowACSI_Ge">{i + 1}</span>{/* ردیف */}
-                <span className="ticketNumberACSI_Ge">{concreteSalesInvoice['id']}</span>{/* قبض */}
-                <span className="customerACSI_Ge">{concreteSalesInvoice['customer'].name}{'  '}{concreteSalesInvoice['customer'].lastName}</span>{/* خریدار */}
-                <span className="concreteACSI_Ge">{concreteSalesInvoice['concrete'].concreteName}</span>{/* بتن */}
-                <span className="truckACSI_Ge"><div className="numberplateDiv">
-                    <span className="numberplateDivS1">{numberplate[0]}</span>
-                    <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
-                    <span className="numberplateDivS3">{numberplate[1]}</span>
-                    <span className="numberplateDivS4">{numberplate[2]}</span>
-                </div></span>{/* میکسر */}
-                <span className="driverACSI_Ge"> {concreteSalesInvoice['driver'].name}{'  '}{concreteSalesInvoice['driver'].lastName}</span>{/* راننده */}
-                <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>{/* تاریخ */}
-                <span className="timeACSI_Ge">{concreteSalesInvoice['time']}</span>{/* ساعت */}
+                <span className="rowNumShowACSI_Ge">{i + 1}</span>
+                <span className="ticketNumberACSI_Ge">{sandRemittances['id']}</span>
+                <span className="ticketNumberACSI_Ge">{sandRemittances['remittanceNumber']}</span>
+                <span className="customerACSI_Ge">{sandRemittances['buyerName']}{'  '}{sandRemittances['buyerLastName']} {'  '} <span>{sandRemittances['buyerFather']}</span> </span>
+                <span className="concreteACSI_Ge">{sandRemittances['price']}</span>
+                <span className="concreteACSI_Ge">{sandRemittances['remainingPrice']}</span>
+                
+               
+                <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
+                <span className="dateACSI_Ge">{isCompleted}</span>
                 <div className="divEditACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" ویرایش "
-                        to={`/invoices/concreteSalesInvoice/edit/${concreteSalesInvoice['id']}`}
+                        to={`/invoices/concreteSalesInvoice/edit/${sandRemittances['id']}`}
                     // onClick={() => { showEditForm(concreteSalesInvoice.id); handleRemoveErrorCustomer() }}
                     >
                         <i className="icofont-pencil iEditGe" />
@@ -179,15 +176,13 @@ const Show = () => {
 
                     <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                         <span className="rowNumShowACSI_Ge ">ردیف</span>
-                        <span className="ticketNumberACSI_Ge ">قبض</span>
+                        <span className="ticketNumberACSI_Ge ">شناسه</span>
+                        <span className="ticketNumberACSI_Ge ">شماره حواله</span>
                         <span className="customerHeadACSI_Ge">خریدار</span>
-                        <span className="concreteACSI_Ge textAlignCenter"> بتن</span>
-
-                        <span className="truckACSI_Ge textAlignCenter">میکسر</span>
-                        <span className="driverHeadACSI_Ge">راننده</span>
-                        <span className="dateACSI_Ge textAlignCenter">تاریخ</span>
-                        <span className="timeACSI_Ge textAlignCenter">ساعت</span>
-
+                        <span className="concreteACSI_Ge textAlignCenter"> مبلغ </span>
+                        <span className="concreteACSI_Ge textAlignCenter"> مبلغ مانده </span>
+                        <span className="dateACSI_Ge textAlignCenter">تاریخ خرید</span>
+                        <span className="driverHeadACSI_Ge">وضعیت</span>
                         <span className="editHeadShowACSI_Ge"> ویرایش  </span>
                         <span className="delHeadShowACSI_Ge"> حذف </span>
                     </div>

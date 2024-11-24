@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('remittanceNumber', 100)->nullable();
             $table->string('date')->index();
             $table->string('price', 25)->index();
-            $table->string('dischargedPrice', 25)->default(0);
+            $table->string('remainingPrice', 25)->default(0);
             $table->boolean('isCompleted')->default(true);
             $table->string('factory', 50);
             $table->text('description')->nullable();
