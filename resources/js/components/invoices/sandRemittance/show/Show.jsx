@@ -19,7 +19,6 @@ const Show = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
 
-    const { concretes } = RouteService({ setLoading });
 
     useEffect(() => {
         // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
@@ -133,8 +132,7 @@ const Show = () => {
                 <span className="customerACSI_Ge buyerName_Ge">{sandRemittance['buyerName']}{'  '}{sandRemittance['buyerLastName']} {'  '} <span className='bueryFather_Ge'>{sandRemittance['buyerFather']}</span> </span>
                 <span className="price_Ge textAlignCenter_Ge">{price}</span>
                 <span className="price_Ge textAlignCenter_Ge">{remainingPrice}</span>
-                
-               
+                <span className="factory_Ge">{sandRemittance['factory']}</span>
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
                 <span className={`isCompleted_Ge ${sandRemittance['isCompleted']?'true_Ge':'false_Ge'}`}>{isCompleted}</span>
                 <div className="divEditACSI_Ge">
@@ -169,12 +167,11 @@ const Show = () => {
             >
 
                 <div className="divListShowGe">
-                    {/* <SandRemittanceSearch
+                    <SandRemittanceSearch
                         getSandRemittances={getSandRemittances}
                         handelSetDataSearch={handelSetDataSearch}
-                        concretes={concretes}
                         totalRecords={totalRecords}
-                    /> */}
+                    />
 
                     <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                         <span className="rowNumShowACSI_Ge ">ردیف</span>
@@ -183,6 +180,7 @@ const Show = () => {
                         <span className="customerHeadACSI_Ge buyerName_Ge textAlignCenter_Ge">خریدار</span>
                         <span className="price_Ge textAlignCenter_Ge"> مبلغ </span>
                         <span className="price_Ge textAlignCenter_Ge"> مبلغ مانده </span>
+                        <span className="factory_Ge">کارخانه</span>
                         <span className="dateACSI_Ge textAlignCenter_Ge">تاریخ خرید</span>
                         <span className="isCompleted_Ge">وضعیت</span>
                         <span className="editHeadShowACSI_Ge"> ویرایش  </span>

@@ -373,7 +373,13 @@
 
 
 .price_Ge{
-    width: 12%;
+    width: 10%;
+    font-size: 0.8rem;
+}
+
+.factory_Ge{
+    width: 6%;
+    font-size: 0.8rem;
 }
 
 .concreteACSI_Ge {
@@ -415,6 +421,7 @@
 .isCompleted_Ge{
     width: 7%;
     text-align: center;
+    font-size: 0.8rem;
 }
 
 .true_Ge{
@@ -479,6 +486,10 @@
 
     .driverACSI_Ge {
         padding-right: 20px;
+    }
+
+    .price_Ge{
+        font-size: 0.95rem;
     }
 
     .dateACSI_Ge,

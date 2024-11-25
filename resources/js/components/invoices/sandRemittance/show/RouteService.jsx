@@ -37,7 +37,7 @@ const RouteService = ({ setLoading }) => {
     setLoading(false);
   };
 
-  return { concretes }
+  return null;
 };
 
 export default RouteService;
