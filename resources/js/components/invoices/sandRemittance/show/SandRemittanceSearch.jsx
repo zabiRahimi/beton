@@ -3,7 +3,6 @@ import React, { createRef, useEffect, useRef, useState } from 'react';
 import DataZabi from "../../../hooks/DateZabi";
 import moment from 'jalali-moment';
 import SelectZabi from '../../../hooks/SelectZabi';
-// import iran from "../../../assets/images/iran.png";
 
 
 const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch, totalRecords }) => {
@@ -11,8 +10,73 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
         checkDate
     } = DataZabi();
 
-    const isConcreteRef = useRef(false);
-    const [concreteRef, setConcreteRef] = useState();
+    const factoryRef = useRef(null);
+    const isCompletedRef = useRef(null);
+
+    const [factory, setFactory] = useState('');
+    const [isCompleted, setIsCompleted] = useState('');
+
+    const factorys = [
+        {
+            value: '',
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">
+                    همه
+                </span>
+            </div>
+        },
+        {
+            value: 'شهرداری ارسنجان',
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">
+                    شهرداری ارسنجان
+                </span>
+            </div>
+        },
+        {
+            value: 'ریگزار جمال‌آباد',
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">
+                    ریگزار جمال‌آباد
+                </span>
+            </div>
+        },
+        {
+            value: 'سایر',
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">
+                    سایر
+                </span>
+            </div>
+        }
+    ];
+
+    const isCompleteds = [
+        {
+            value: '',
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">
+                    همه
+                </span>
+            </div>
+        },
+        {
+            value: true,
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">
+                    مانده
+                </span>
+            </div>
+        },
+        {
+            value: false,
+            html: <div className="concreteAptionSelectFB">
+                <span className="concreteLabelSelectFB">
+                    تمام
+                </span>
+            </div>
+        }
+    ];
     const [showSearchFilds, setShowSearchFilds] = useState(true);
 
     const [date, setDate] = useState({
@@ -25,48 +89,39 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
             day: '',
             month: '',
             year: ''
+        },
+        date: {
+            day: '',
+            month: '',
+            year: ''
         }
     });
 
     const [input, setInput] = useState({
         startDate: '',
         endDate: '',
+        date: '',//تاریخ خرید حواله
         id: '',
-        concrete_id: '',
-        customer_id: '',
-        customerName: '',
-        customerLastName: '',
-        truck_id: '',
-        numberplate: '',
-        owner_id: '',
-        ownerName: '',
-        ownerLastName: '',
-        driver_id: '',
-        driverName: '',
-        driverLastName: '',
+        buyerName:'',
+        buyerLastName:'',
+        buyerFather:'',
+        remittanceNumber:'',
+        price:'',
+        isCompleted:'',
+        factory:''
     });
 
-    const [concreteId, setConcreteId] = useState('');
-    const [numberplateVal, setNumberplateVal] = useState({
-        left: '',
-        alphabet: '',
-        mid: '',
-        right: ''
-    });
     useEffect(() => {
-        if (!showSearchFilds) {
-            let concreteRef = createRef();
-            setConcreteRef(concreteRef);
-            isConcreteRef.current = true;
+        if (factory) {
+            setInput(prev => ({ ...prev, factory}));
         }
-    }, [showSearchFilds]);
+    }, [factory]);
 
     useEffect(() => {
-        if (concreteId) {
-            setInput(prev => ({ ...prev, concrete_id: concreteId }));
-
+        if (isCompleted) {
+            setInput(prev => ({ ...prev, isCompleted }));
         }
-    }, [concreteId]);
+    }, [isCompleted]);
 
     const handleShowSearchFilds = () => {
         setShowSearchFilds(perv => !perv);
@@ -86,41 +141,40 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
             if (!validDate) {
                 return;
             }
+
+            if (input.endDate != '') {
+                const validDate = checkDate(input.endDate, 'تاریخ پایان جستجو صحیح نیست');
+                if (!validDate) {
+                    return;
+                }
         }
         handelSetDataSearch({
             startDate: input.startDate,
             endDate: input.endDate,
+            date:input.date,
             id: input.id,
-            concrete_id: input.concrete_id,
-            customer_id: input.customer_id,
-            customerName: input.customerName,
-            customerLastName: input.customerLastName,
-            truck_id: input.truck_id,
-            numberplate: input.numberplate,
-            owner_id: input.owner_id,
-            ownerName: input.ownerName,
-            ownerLastName: input.ownerLastName,
-            driver_id: input.driver_id,
-            driverName: input.driverName,
-            driverLastName: input.driverLastName
+            buyerName:input.buyerName,
+            buyerLastName:input.buyerLastName,
+            buyerFather:input.buyerFather,
+            remittanceNumber:input.remittanceNumber,
+            price:input.price,
+            isCompleted:input.isCompleted,
+            factory:input.factory
+            
         });
         getSandRemittances(
             1,
             input.startDate,
             input.endDate,
+            input.date,
             input.id,
-            input.concrete_id,
-            input.customer_id,
-            input.customerName,
-            input.customerLastName,
-            input.truck_id,
-            input.numberplate,
-            input.owner_id,
-            input.ownerName,
-            input.ownerLastName,
-            input.driver_id,
-            input.driverName,
-            input.driverLastName,
+            input.buyerName,
+            input.buyerLastName,
+            input.buyerFather,
+            input.remittanceNumber,
+            input.price,
+            input.isCompleted,
+            input.factory,
         );
     }
 
@@ -186,8 +240,6 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
             setInput(prev => ({ ...prev, endDate: valDate }));
         }
     }
-
-  
 
     const handleClearSearch = async () => {
         setNumberplateVal({
@@ -259,13 +311,13 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
             <div className="headConcreteSIS_Se">
                 {showSearchFilds ?
                     <button className='searchBtnsCoSIS_Se showSearchBtnCoSIS_Se ' onClick={handleShowSearchFilds}>
-                        <i className='icofont-search-2 iSearchCoSIS_Se'/>
-                        <i className='icofont-check-alt '/>
+                        <i className='icofont-search-2 iSearchCoSIS_Se' />
+                        <i className='icofont-check-alt ' />
                     </button>
                     :
                     <button className='searchBtnsCoSIS_Se closeSearchBtnCoSIS_Se' onClick={() => { handleShowSearchFilds(); handleClearSearch() }}>
-                        <i className='icofont-search-2 iSearchCoSIS_Se'/>
-                        <i className='icofont-close-line iCloseLineSIS_Se'/>
+                        <i className='icofont-search-2 iSearchCoSIS_Se' />
+                        <i className='icofont-close-line iCloseLineSIS_Se' />
                     </button>
                 }
 
@@ -393,6 +445,8 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
                                 />
                             </div>
                         </div>
+                    </div>
+                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
                         <div className="idInvoiceConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> مبلغ حواله </span>
                             <input
@@ -403,18 +457,37 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
                                 onInput={e => handleSaveValInput(e, 'price')}
                             />
                         </div>
+                        <div className="typeConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se stringTypeConcreteSIS_Se"> کارخانه </span>
+                            <div className='divSelectTypeConcreteSIS_Se'>
+                                <SelectZabi
+                                    primaryLabel='انتخاب'
+                                    options={factorys}
+                                    saveOption={setFactory}
+                                    ref={factoryRef}
+                                />
+                            </div>
+
+                        </div>
+                        <div className="typeConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se stringTypeConcreteSIS_Se"> وضعیت </span>
+                            <div className='divSelectTypeConcreteSIS_Se'>
+                                <SelectZabi
+                                    primaryLabel='انتخاب'
+                                    options={isCompleteds}
+                                    saveOption={setIsCompleted}
+                                    ref={isCompletedRef}
+                                />
+                            </div>
+
+                        </div>
                     </div>
-                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
-                        {/* <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se"> شناسه خریدار </span>
-                            <input
-                                type="text"
-                                className="idBuerInputConcreteSIS_Se"
-                                placeholder='شناسه خریدار'
-                                value={input.customer_id || ''}
-                                onInput={e => handleSaveValInput(e, 'customer_id')}
-                            />
-                        </div> */}
+
+                    <div className="columnConcreteSIS_Se column4ConcreteSIS_Se"></div>
+                </div>
+                <div className="secondRowCocreteSIS_Se">
+                    <div className="columnConcreteSIS_Se column1ConcreteSIS_Se"></div>
+                    <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> نام خریدار </span>
                             <input
@@ -438,7 +511,7 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
                         </div>
 
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام‌ پدر'> نام‌خانوادگی خریدار </span>
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام‌ پدر'>  نام پدر </span>
                             <input
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
@@ -450,9 +523,7 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
                         </div>
 
                     </div>
-                    <div className="columnConcreteSIS_Se column4ConcreteSIS_Se"></div>
-                </div>
-                <div className="secondRowCocreteSIS_Se">
+                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se"></div>
                     <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">
                         <div className="divBtnDelSearch_Se">
                             <button

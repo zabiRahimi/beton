@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import DataZabi from "../../../hooks/DateZabi";
@@ -10,7 +9,6 @@ import HeadPage from '../HeadPage';
 import RouteService from "./RouteService";
 import { handleSetDate, htmlFor, formatNub, resetForm } from './Helper';
 const Add = () => {
-    let navigate = useNavigate();
     const MySwal = withReactContent(Swal);
     const {
         optionDays,
@@ -79,13 +77,6 @@ const Add = () => {
             html: <div className="sandAptionSelectFB">سایر</div>
         }
     ]);
-    const [typeSandSelected, setTypeSandSelected] = useState('');
-
-    const [dumpTruck, setDumpTruck] = useState([]);
-    const [dumpTruckSelected, setDumpTruckSelected] = useState('');
-    const [dumpTruckOwnerSelected, setDumpTruckOwnerSelected] = useState('');
-    const [driver, setDriver] = useState([]);
-    const [driverIdSelected, setDriverIdSelected] = useState('');
     const [date, setDate] = useState({
         day: '',
         month: '',
