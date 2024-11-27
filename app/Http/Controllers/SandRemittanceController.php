@@ -43,6 +43,7 @@ class SandRemittanceController extends Controller
 
 
             if ($request->filled('buyerName')) {
+                Log::info($request->buyerName);
                 $query->where('buyerName', 'like', "%$request->buyerName%");
             }
 

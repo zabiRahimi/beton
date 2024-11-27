@@ -1,4 +1,5 @@
 import { forwardRef, useImperativeHandle } from "react";
+import moment from 'moment-jalaali';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -109,43 +110,43 @@ const DateZabi = () => {
             handelSentError(message, 'فرمت تاریخ درست نمی‌باشد');
             return false;
         }
-       const resutl= validDate(message, parts[0], parts[1], parts[2]);
-       return resutl;
+        const resutl = validDate(message, parts[0], parts[1], parts[2]);
+        return resutl;
     }
 
     const validDate = (message, year, month, day) => {
-       
-        if (month=='01' || month=='02' || month=='03' || month=='04' || month=='05'|| month=='06') {
-            if (Number(day) <1 || Number(day) > 31) {
+
+        if (month == '01' || month == '02' || month == '03' || month == '04' || month == '05' || month == '06') {
+            if (Number(day) < 1 || Number(day) > 31) {
                 handelSentError(message, ` برج ${month} ، 31 روزه است نه بیشتر `);
                 return false;
-            } 
-        } else if (month=='07' || month=='08' || month=='09' || month=='10' || month=='11') {
-            if (Number(day) <1 || Number(day) > 30) {
+            }
+        } else if (month == '07' || month == '08' || month == '09' || month == '10' || month == '11') {
+            if (Number(day) < 1 || Number(day) > 30) {
                 handelSentError(message, ` برج ${month} ، 30 روزه است نه بیشتر `);
                 return false;
-            } 
-        }else if (month=='12') {
-           let checkCabise= cabises.some(cabise => cabise === Number(year));
-            if(!checkCabise){
-                if (Number(day) >29) {
+            }
+        } else if (month == '12') {
+            let checkCabise = cabises.some(cabise => cabise === Number(year));
+            if (!checkCabise) {
+                if (Number(day) > 29) {
                     handelSentError(message, ` در سال ${year} برج 12 نمی تواند 30 روزه باشد، چون این سال کبیسه نیست.`);
                     return false;
                 }
-            }else{
-                if (Number(day) >30) {
+            } else {
+                if (Number(day) > 30) {
                     handelSentError(message, ` برج ${month} هرگز نمی‌تواند 31 روزه باشد.`);
                     return false;
-                } 
-            }  
-        } else{
+                }
+            }
+        } else {
             handelSentError(message, `برج را صحیح وارد نکرده‌اید`);
-                    return false;
+            return false;
         }
-        
+
         if (Number(year) < 1300 || Number(year) > 1600) {
             handelSentError(message, `سال صحیح وارد نشده است، لطفا بازه سال مابین 1300 تا 1500 باشد، در غیر این صورت برنامه خطا صادر می‌کند`);
-                    return false;
+            return false;
         }
 
         return true;
@@ -161,6 +162,17 @@ const DateZabi = () => {
         });
     }
 
-    return { years, months, days, nameDays, hours, minutes, seconds, optionDays, optionMonth, optionYears, optionShortYears, optionHours, optionMinutes, optionSeconds, checkDate };
+
+
+    const convertToGregorian = (date) => {
+        // مثلا jalaliDate = '1403/08/06'
+        const gregorianDate = moment(date, 'jYYYY-jMM-jDD').format('YYYY-MM-DD');
+        return gregorianDate;
+    };
+
+   
+
+
+    return { years, months, days, nameDays, hours, minutes, seconds, optionDays, optionMonth, optionYears, optionShortYears, optionHours, optionMinutes, optionSeconds, checkDate, convertToGregorian };
 };
 export default DateZabi;

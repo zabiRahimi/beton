@@ -5,7 +5,8 @@ import SelectZabi from '../../../hooks/SelectZabi';
 
 const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRecords }) => {
     const {
-        checkDate
+        checkDate,
+        convertToGregorian
     } = DataZabi();
 
     const factoryRef = useRef(null);
@@ -146,8 +147,10 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
                 return;
             }
         }
+        //تبدیل به تاریخ میلادی
+       const startDate=convertToGregorian(input.startDate);
         handelSetDataSearch({
-            startDate: input.startDate,
+            startDate,
             endDate: input.endDate,
             date: input.date,
             id: input.id,
@@ -162,7 +165,7 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
         });
         getSandRemittances(
             1,
-            input.startDate,
+            startDate,
             input.endDate,
             input.date,
             input.id,
@@ -228,7 +231,7 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
             year = validateAndSetDate(value, 1, 1500, 'year', date0);
         }
 
-        valDate = (year == '' && month == '' && day == '') ? '' : `${year}/${month}/${day}`;
+        valDate = (year == '' && month == '' && day == '') ? '' : `${year}-${month}-${day}`;
         const dateKey = (date0 === 'date') ? 'date' : `${date0}Date`;
         setInput(prev => ({ ...prev, [dateKey]: valDate }));
     };  
