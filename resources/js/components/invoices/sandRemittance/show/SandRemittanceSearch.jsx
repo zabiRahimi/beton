@@ -1,11 +1,9 @@
 
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DataZabi from "../../../hooks/DateZabi";
-import moment from 'jalali-moment';
 import SelectZabi from '../../../hooks/SelectZabi';
 
-
-const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch, totalRecords }) => {
+const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRecords }) => {
     const {
         checkDate
     } = DataZabi();
@@ -102,18 +100,18 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
         endDate: '',
         date: '',//تاریخ خرید حواله
         id: '',
-        buyerName:'',
-        buyerLastName:'',
-        buyerFather:'',
-        remittanceNumber:'',
-        price:'',
-        isCompleted:'',
-        factory:''
+        buyerName: '',
+        buyerLastName: '',
+        buyerFather: '',
+        remittanceNumber: '',
+        price: '',
+        isCompleted: '',
+        factory: ''
     });
 
     useEffect(() => {
         if (factory) {
-            setInput(prev => ({ ...prev, factory}));
+            setInput(prev => ({ ...prev, factory }));
         }
     }, [factory]);
 
@@ -141,26 +139,26 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
             if (!validDate) {
                 return;
             }
-
-            if (input.endDate != '') {
-                const validDate = checkDate(input.endDate, 'تاریخ پایان جستجو صحیح نیست');
-                if (!validDate) {
-                    return;
-                }
+        }
+        if (input.date != '') {
+            const validDate = checkDate(input.date, 'تاریخ حواله صحیح نیست');
+            if (!validDate) {
+                return;
+            }
         }
         handelSetDataSearch({
             startDate: input.startDate,
             endDate: input.endDate,
-            date:input.date,
+            date: input.date,
             id: input.id,
-            buyerName:input.buyerName,
-            buyerLastName:input.buyerLastName,
-            buyerFather:input.buyerFather,
-            remittanceNumber:input.remittanceNumber,
-            price:input.price,
-            isCompleted:input.isCompleted,
-            factory:input.factory
-            
+            buyerName: input.buyerName,
+            buyerLastName: input.buyerLastName,
+            buyerFather: input.buyerFather,
+            remittanceNumber: input.remittanceNumber,
+            price: input.price,
+            isCompleted: input.isCompleted,
+            factory: input.factory
+
         });
         getSandRemittances(
             1,
@@ -183,72 +181,59 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
         setInput(prev => ({ ...prev, [input]: value }));
     }
 
+    const padValue = (val) => {
+        if (val != 0 && val.length == 1) {
+            val = '0' + val;
+        }
+        if (val.length >= 3 && val[0] === '0') {
+            val = val.slice(1);
+        }
+        return val;
+    };
+
+    const validateAndSetDate = (val, min, max, inputType, date0) => {
+        val = padValue(val);
+        if (val == '' || (Number(val) >= min && Number(val) <= max)) {
+            val == 0 ? val = '' : '';
+            setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [inputType]: val } }));
+        }
+        return val;
+    };
+
     const handleSetDate = (e, date0, input) => {
-        let { value } = e.target,
-            day,
-            month,
-            year,
-            valDate;
+        let { value } = e.target;
         value = value.toString();
-
-        if (date0 == 'start') {
-            day = date.start.day;
-            month = date.start.month;
-            year = date.start.year;
+        let selectedDate, day, month, year, valDate;
+        switch (date0) {
+            case 'start':
+                selectedDate = date.start;
+                break;
+            case 'end':
+                selectedDate = date.end;
+                break;
+            case 'date':
+                selectedDate = date.date;
+                break;
+        }
+        if (selectedDate) {
+            day = selectedDate.day;
+            month = selectedDate.month;
+            year = selectedDate.year;
+        }
+        if (input === 'day') {
+            day = validateAndSetDate(value, 0, 31, 'day', date0);
+        } else if (input === 'month') {
+            month = validateAndSetDate(value, 0, 12, 'month', date0);
         } else {
-            day = date.end.day;
-            month = date.end.month;
-            year = date.end.year;
+            year = validateAndSetDate(value, 1, 1500, 'year', date0);
         }
 
-        if (input == 'day') {
-            let { value } = e.target;
-            value = value.toString();
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-                value == 0 ? value = '' : '';
-                day = value
-                setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
-            }
-
-        } else if (input == 'month') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-                value == 0 ? value = '' : '';
-                month = value;
-                setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
-            }
-        } else {
-            if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-                value == 0 ? value = '' : '';
-                year = value;
-                setDate(prev => ({ ...prev, [date0]: { ...prev[date0], [input]: value } }));
-
-            }
-        }
-        if (year == '' && month == '' && day == '') {
-            valDate = '';
-        } else {
-            valDate = year + '/' + month + '/' + day;
-        }
-        if (date0 == 'start') {
-            setInput(prev => ({ ...prev, startDate: valDate }));
-        } else {
-            setInput(prev => ({ ...prev, endDate: valDate }));
-        }
-    }
+        valDate = (year == '' && month == '' && day == '') ? '' : `${year}/${month}/${day}`;
+        const dateKey = (date0 === 'date') ? 'date' : `${date0}Date`;
+        setInput(prev => ({ ...prev, [dateKey]: valDate }));
+    };  
 
     const handleClearSearch = async () => {
-        setNumberplateVal({
-            left: '',
-            alphabet: '',
-            mid: '',
-            right: ''
-        });
-
         setDate({
             start: {
                 day: '',
@@ -259,48 +244,43 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
                 day: '',
                 month: '',
                 year: ''
+            },
+            date: {
+                day: '',
+                month: '',
+                year: ''
             }
         });
 
         setInput({
             startDate: '',
             endDate: '',
+            date: '',//تاریخ خرید حواله
             id: '',
-            concrete_id: '',
-            customer_id: '',
-            customerName: '',
-            customerLastName: '',
-            truck_id: '',
-            numberplate: '',
-            owner_id: '',
-            ownerName: '',
-            ownerLastName: '',
-            driver_id: '',
-            driverName: '',
-            driverLastName: ''
+            buyerName: '',
+            buyerLastName: '',
+            buyerFather: '',
+            remittanceNumber: '',
+            price: '',
+            isCompleted: '',
+            factory: ''
         });
 
-        if (isConcreteRef && concreteRef.current) {
-            concreteRef.current.updateData('انتخاب');
-        }
-
+        factoryRef.current.updateData('انتخاب');
+        isCompletedRef.current.updateData('انتخاب');
 
         await handelSetDataSearch({
             startDate: '',
             endDate: '',
+            date: '',//تاریخ خرید حواله
             id: '',
-            concrete_id: '',
-            customer_id: '',
-            customerName: '',
-            customerLastName: '',
-            truck_id: '',
-            numberplate: '',
-            owner_id: '',
-            ownerName: '',
-            ownerLastName: '',
-            driver_id: '',
-            driverName: '',
-            driverLastName: ''
+            buyerName: '',
+            buyerLastName: '',
+            buyerFather: '',
+            remittanceNumber: '',
+            price: '',
+            isCompleted: '',
+            factory: ''
         });
 
         await getSandRemittances(1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
@@ -422,8 +402,8 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
                                     className="inputDate_Se dayDate_Se dayDateConcreteSIS_Se"
                                     id="dayUntilSearch"
                                     placeholder="روز"
-                                    value={date.end.day || ''}
-                                    onInput={e => handleSetDate(e, 'end', 'day')}
+                                    value={date.date.day || ''}
+                                    onInput={e => handleSetDate(e, 'date', 'day')}
                                 />
                                 <span className="slashDate_Se slashDateConcreteSIS_Se">/</span>
                                 <input
@@ -431,8 +411,8 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
                                     className="inputDate_Se monthDate_Se monthDateConcreteSIS_Se"
                                     id="monthUntilSearch"
                                     placeholder="ماه"
-                                    value={date.end.month || ''}
-                                    onInput={e => handleSetDate(e, 'end', 'month')}
+                                    value={date.date.month || ''}
+                                    onInput={e => handleSetDate(e, 'date', 'month')}
                                 />
                                 <span className="slashDate_Se slashDateConcreteSIS_Se">/</span>
                                 <input
@@ -440,8 +420,8 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
                                     className="inputDate_Se yearDate_Se yearDateConcreteSIS_Se"
                                     id="yearUntilSearch"
                                     placeholder="سال"
-                                    value={date.end.year || ''}
-                                    onInput={e => handleSetDate(e, 'end', 'year')}
+                                    value={date.date.year || ''}
+                                    onInput={e => handleSetDate(e, 'date', 'year')}
                                 />
                             </div>
                         </div>
@@ -548,6 +528,6 @@ const AddCocreteSalesInvoiceSearch = ({ getSandRemittances, handelSetDataSearch,
             </div>}
         </div>
     );
-};
+}
 
-export default AddCocreteSalesInvoiceSearch;
+export default SandRemittanceSearch;

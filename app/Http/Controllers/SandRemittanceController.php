@@ -6,6 +6,9 @@ use App\Http\Requests\GetSandRemittanceRequest;
 use App\Models\SandRemittance;
 use App\Http\Requests\StoreSandRemittanceRequest;
 use App\Http\Requests\UpdateSandRemittanceRequest;
+use Illuminate\Support\Facades\Log;
+
+
 
 class SandRemittanceController extends Controller
 {
@@ -22,17 +25,22 @@ class SandRemittanceController extends Controller
             $query->where('remittanceNumber', $request->remittanceNumber);
         } else {
 
-            if ($request->filled('startDate') && $request->filled('endDate')) {
-                $query->whereBetween('created_at', [$request->startDate, $request->endDate]);
-            } elseif ($request->filled('startDate')) {
-                $query->where('created_at', '>=', $request->startDate);
-            } elseif ($request->filled('endDate')) {
-                $query->where('created_at', '<=', $request->endDate);
+            if ($request->filled('date')) {
+                Log::info($request->date);
+
+                $query->where('date',  $request->date);
+            } else {
+                if ($request->filled('startDate') && $request->filled('endDate')) {
+                    $query->whereBetween('created_at', [$request->startDate, $request->endDate]);
+                } elseif ($request->filled('startDate')) {
+                Log::info($request->startDate);
+
+                    $query->where('created_at', '>=', $request->startDate);
+                } elseif ($request->filled('endDate')) {
+                    $query->where('created_at', '<=', $request->endDate);
+                }
             }
 
-            if ($request->filled('date')) {
-                $query->where('date',  $request->date);
-            }
 
             if ($request->filled('buyerName')) {
                 $query->where('buyerName', 'like', "%$request->buyerName%");

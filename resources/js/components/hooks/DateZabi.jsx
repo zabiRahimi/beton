@@ -7,8 +7,6 @@ const DateZabi = () => {
     let years = [],
         shortYears = [];
 
-
-
     const months = [
         "فروردین",
         "اردیبهشت",

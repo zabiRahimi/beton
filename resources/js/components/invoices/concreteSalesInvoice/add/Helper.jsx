@@ -189,7 +189,6 @@ export  const handleCubicMetersCalculation = (e, refInvoice, setInput, i = null)
     });
 }
 
-
 export  const handleTotalPriceCalculation = (e, i, element, input, setInput, refInvoice) => {
     let cubicMeters,
         totalPrice,
