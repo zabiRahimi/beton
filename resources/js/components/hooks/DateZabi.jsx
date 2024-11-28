@@ -165,7 +165,7 @@ const DateZabi = () => {
 
 
     const convertToGregorian = (date) => {
-        // مثلا jalaliDate = '1403/08/06'
+        if (!date) { return null }
         const gregorianDate = moment(date, 'jYYYY-jMM-jDD').format('YYYY-MM-DD');
         return gregorianDate;
     };

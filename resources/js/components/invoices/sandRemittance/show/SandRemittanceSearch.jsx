@@ -2,13 +2,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import DataZabi from "../../../hooks/DateZabi";
 import SelectZabi from '../../../hooks/SelectZabi';
+import { formatNub, htmlFor } from './Helper';
+
 
 const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRecords }) => {
     const {
         checkDate,
         convertToGregorian
     } = DataZabi();
-
+    const priceRef = useRef(null);
     const factoryRef = useRef(null);
     const isCompletedRef = useRef(null);
 
@@ -109,7 +111,7 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
         isCompleted: '',
         factory: ''
     });
-
+    console.log(input);
     useEffect(() => {
         if (factory) {
             setInput(prev => ({ ...prev, factory }));
@@ -148,10 +150,12 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
             }
         }
         //تبدیل به تاریخ میلادی
-       const startDate=convertToGregorian(input.startDate);
+           const startDate=convertToGregorian(input.startDate);
+           const endDate=convertToGregorian(input.endDate);
+        // const startDate = input.startDate;
         handelSetDataSearch({
             startDate,
-            endDate: input.endDate,
+            endDate,
             date: input.date,
             id: input.id,
             buyerName: input.buyerName,
@@ -166,7 +170,7 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
         getSandRemittances(
             1,
             startDate,
-            input.endDate,
+            endDate,
             input.date,
             input.id,
             input.buyerName,
@@ -234,7 +238,7 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
         valDate = (year == '' && month == '' && day == '') ? '' : `${year}-${month}-${day}`;
         const dateKey = (date0 === 'date') ? 'date' : `${date0}Date`;
         setInput(prev => ({ ...prev, [dateKey]: valDate }));
-    };  
+    };
 
     const handleClearSearch = async () => {
         setDate({
@@ -434,11 +438,18 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> مبلغ حواله </span>
                             <input
                                 type="text"
-                                className="idBuerInputConcreteSIS_Se"
+                                className=" priceSIS_Se ltrFB rtlPlaceholderFB"
+                                id='price'
                                 placeholder='مبلغ حواله'
-                                value={input.price || ''}
-                                onInput={e => handleSaveValInput(e, 'price')}
+                                onInput={e => { handleSaveValInput(e, 'price'); formatNub(priceRef.current); }}
+                                ref={priceRef}
                             />
+                            <span
+                                    className="unitFB"
+                                    onClick={() => htmlFor('price')}
+                                >
+                                    تومان
+                                </span>
                         </div>
                         <div className="typeConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se stringTypeConcreteSIS_Se"> کارخانه </span>
@@ -477,8 +488,8 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام خریدار'
-                                value={input.customerName || ''}
-                                onInput={e => handleSaveValInput(e, 'customerName')}
+                                value={input.buyerName || ''}
+                                onInput={e => handleSaveValInput(e, 'buyerName')}
                             />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
@@ -487,8 +498,8 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام خانوادگی خریدار'
-                                value={input.customerLastName || ''}
-                                onInput={e => handleSaveValInput(e, 'customerLastName')}
+                                value={input.buyerLastName || ''}
+                                onInput={e => handleSaveValInput(e, 'buyerLastName')}
 
                             />
                         </div>

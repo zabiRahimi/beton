@@ -496,7 +496,6 @@
     margin-left: 0;
 }
 
-.divInputsDateConcreteSIS_Se {}
 
 .slashDateConcreteSIS_Se {
     width: 5%;
@@ -504,14 +503,17 @@
 
 .dayDateConcreteSIS_Se {
     width: 29%;
+    max-width: 80px;
 }
 
 .monthDateConcreteSIS_Se {
     width: 29%;
+    max-width: 70px;
 }
 
 .yearDateConcreteSIS_Se {
     width: 32%;
+    max-width: 75.333px;
 }
 
 .typeConcreteSIS_Se {
@@ -549,6 +551,12 @@
     width: calc(100% - 70px);
     display: flex;
 
+}
+
+.idInvoiceConcreteSIS_Se input.priceSIS_Se{
+    width: calc(100% - 127px) !important;
+   border: 1px solid #a4a4a4;
+   border-left: none;
 }
 
 .idInvoiceConcreteSIS_Se input,
@@ -678,8 +686,16 @@
     .divSelectTypeConcreteSIS_Se,
     .idInvoiceConcreteSIS_Se input,
     .buerConcreteSIS_Se input,
-    .divNumberplateConcreteSIS_Se {
+    .divNumberplateConcreteSIS_Se,
+    .divInputsDateConcreteSIS_Se {
+        
         width: calc(100% - 90px);
+        max-width: 230px;
+    }
+
+    .idInvoiceConcreteSIS_Se input.priceSIS_Se{
+        width: calc(100% - 147px) !important;
+        max-width: 170px;
     }
 
 }

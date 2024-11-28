@@ -517,6 +517,11 @@
     direction: ltr;
 }
 
+.rtlPlaceholderFB::placeholder {
+    direction: rtl;
+    text-align: right;
+}
+
 /*  مربوط به کامپوننت ایجاد فیش حقوقی پرسنل، دکمه وضعیت بیمه   */
 
 

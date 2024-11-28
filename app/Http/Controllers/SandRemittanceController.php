@@ -26,7 +26,7 @@ class SandRemittanceController extends Controller
         } else {
 
             if ($request->filled('date')) {
-                Log::info($request->date);
+                // Log::info($request->date);
 
                 $query->where('date',  $request->date);
             } else {
@@ -43,7 +43,8 @@ class SandRemittanceController extends Controller
 
 
             if ($request->filled('buyerName')) {
-                Log::info($request->buyerName);
+                Log::info('buyerName: ' . $request->buyerName);
+
                 $query->where('buyerName', 'like', "%$request->buyerName%");
             }
 
