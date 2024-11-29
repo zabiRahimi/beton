@@ -150,7 +150,7 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
             factory: input.factory
 
         });
-        console.log(input.isCompleted);
+
         getSandRemittances(
             1,
             startDate,
@@ -256,7 +256,7 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
             buyerFather: '',
             remittanceNumber: '',
             price: '',
-            isCompleted: '',
+            isCompleted:true,
             factory: ''
         });
 
@@ -273,11 +273,11 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
             buyerFather: '',
             remittanceNumber: '',
             price: '',
-            isCompleted: '',
+            isCompleted: true,
             factory: ''
         });
 
-        await getSandRemittances(1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+        await getSandRemittances(1, '', '', '', '', '', '', '', '', '', true, '');
     }
 
     return (

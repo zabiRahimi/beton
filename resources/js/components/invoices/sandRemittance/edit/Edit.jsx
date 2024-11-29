@@ -1,51 +1,47 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import DataZabi from "../../../hooks/DateZabi";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
-import SelectZabi2 from "../../../hooks/SelectZabi2";
 import HeadPage from '../HeadPage';
-const Add = () => {
-    let navigate = useNavigate();
+import RouteService from "./RouteService";
+import { handleSetDate, htmlFor, formatNub, resetForm } from './Helper';
+const Edit = () => {
+    const { invoiceId } = useParams();
     const MySwal = withReactContent(Swal);
     const {
         optionDays,
         optionMonth,
         optionShortYears,
-        optionHours,
-        optionMinutes,
-        optionSeconds,
     } = DataZabi();
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
-    const factoryRef = useRef(null);
-    const factoryError = useRef(null);
-    const billNumberError = useRef(null);
+    const dayInputRef = useRef(null);
+    const daySelectRef = useRef(null);
+
+    const monthInputRef = useRef(null);
+    const monthSelectRef = useRef(null);
+
+    const yearInputRef = useRef(null);
+    const yearSelectRef = useRef(null);
+
+    const buyerNameError = useRef(null);
+    const buyerLastNameError = useRef(null);
+    const buyerFatherError = useRef(null);
     const remittanceNumberError = useRef(null);
-    const timeRef = useRef(null);
     const dateRef = useRef(null);
     const dateError = useRef(null);
-    const timeError = useRef(null);
-    const typeSandRef = useRef(null);
-    const typeSandError = useRef(null);
-    const weightError = useRef(null);
-    const unitPriceError = useRef(null);
-    const totalPriceError = useRef(null);
-    const dumpTruckRef = useRef(null);
-    const dumpTruckError = useRef(null);
-    const driverRef = useRef(null);
-    const driverError = useRef(null);
-    const unitFareError = useRef(null);
-    const totalFareError = useRef(null);
-    const sandStoreRef = useRef(null);
-    const sandStoreError = useRef(null);
-    const hasCalledGetSandSellers = useRef(false);
-    const hasCalledGetSandStores = useRef(false);
+    const priceRef = useRef(null);
+    const priceError = useRef(null);
+    const factoryDiv = useRef(null);
+    const factoryRef = useRef(null);
+    const factoryError = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [ticketNumber, setTicketNumber] = useState();
     const factorys = [
         {
             value: 'شهرداری ارسنجان',
@@ -83,23 +79,12 @@ const Add = () => {
             html: <div className="sandAptionSelectFB">سایر</div>
         }
     ]);
-    const [typeSandSelected, setTypeSandSelected] = useState('');
-
-    const [dumpTruck, setDumpTruck] = useState([]);
-    const [dumpTruckSelected, setDumpTruckSelected] = useState('');
-    const [dumpTruckOwnerSelected, setDumpTruckOwnerSelected] = useState('');
-    const [driver, setDriver] = useState([]);
-    const [driverIdSelected, setDriverIdSelected] = useState('');
     const [date, setDate] = useState({
         day: '',
         month: '',
         year: ''
     });
-    const [time, setTime] = useState({
-        second: '',
-        minute: '',
-        hour: ''
-    });
+
     const [sandStores, setSandStores] = useState([]);
     const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
 
@@ -107,163 +92,105 @@ const Add = () => {
         buyerName: '',
         buyerLastName: '',
         buyerFather: '',
-        factory: '',
+        remittanceNumber: '',
         date: '',
-        amount: '',
+        price: '',
+        remainingPrice: '',
+        factory: '',
         description: ''
     });
 
-    const handleSetDate = (e, input) => {
-        let { value } = e.target,
-            valDate;
-        value = value.toString();
-        if (input == 'day') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-                setDate(prev => ({ ...prev, [input]: value }));
+    RouteService({ setLoading, setTicketNumber });
 
-            } else {
-                e.target.value = date.day;
-            }
-            valDate = date.year + '-' + date.month + '-' + value;
+    useEffect(() => {
+        factory && setInput(prev => ({ ...prev, factory }));
+    }, [factory]);
 
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-
-        } else if (input == 'month') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-            }
-            else {
-                e.target.value = date.month;
-            }
-            valDate = date.year + '-' + value + '-' + date.day;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        } else if (input = 'year') {
-            if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-
-            } else {
-                e.target.value = date.year;
-            }
-            valDate = value + '-' + date.month + '-' + date.day;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        }
-    }
-
-    const handleSetTime = (e, input) => {
-        let { value } = e.target,
-            valTime;
-        value = value.toString();
-        if (input == 'second') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-
-            } else {
-
-                e.target.value = time.second;
-            }
-            valTime = time.hour + ':' + time.minute + ':' + value;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-
-        } else if (input == 'minute') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-
-
-            } else {
-                e.target.value = time.minute;
-            }
-
-            valTime = time.hour + ':' + value + ':' + time.second;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        } else if (input = 'hour') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-
-            } else {
-                e.target.value = time.hour;
-            }
-
-            valTime = value + ':' + time.minute + ':' + time.second;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        }
-    }
 
     const handleSaveValInput = (e, input) => {
+        let { value } = e.target;
+        if (input == 'price') {
+            value = value.replace(/,/g, '');
+            /**
+             * چون قیمت اولیه مبلغ باقیمانده باید
+             * با مبلغ حواله برابر باشد اینجا مبلغ باقیمانده مقدار دهی میشود
+             */
+            setInput(prev => ({ ...prev, remainingPrice: value }));
+        }
+        setInput(prev => ({ ...prev, [input]: value }));
+
     }
 
-    const clearInputError = (e, refErr, time = false, date = false) => {
+    const clearInputError = (e, refErr, date = false, factory = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '')
         date && dateRef.current.classList.remove('borderRedFB');
-        time && timeRef.current.classList.remove('borderRedFB');
+        factory && factoryDiv.current.classList.remove('borderRedFB');
     }
 
-    const handleSubmit = () => {
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        await axios.post(
+            '/api/v1/sandRemittances',
+            { ...input },
+            {
+                headers:
+                {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then((response) => {
+            const resutl = response.data.sandRemittance;
+            setTicketNumber(ticketNumber + 1);
+            form.current.reset();
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
 
-    const handleResetForm = () => {
+                didClose: () => resetForm(setInput, setDate, setFactory, factoryRef.current),
+            });
+        })
+            .catch(
+                error => {
+
+                    if (error.response && error.response.status == 422) {
+
+                        let id = Object.keys(error.response.data.errors)[0];
+                        const element = document.getElementById(id);
+                        // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن 
+                        if (element) { 
+                            let scrollPosition = window.scrollY || window.pageYOffset;
+                             const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                              window.scrollTo({ top: top, behavior: 'smooth' }); 
+                            }
+                        Object.entries(error.response.data.errors).map(([key, val]) => {
+                            //نادیده گرفتن خطای مربوط به remainingPrice
+                            if (key !== 'remainingPrice') {
+                            document.getElementById(key).classList.add('borderRedFB');
+                            document.getElementById(key + 'Error').innerHTML = val;
+                            }
+                        });
+                    }
+                }
+            )
+
+        setLoading(false);
     }
 
     return (
         <div>
             <HeadPage
                 loading={loading}
-                title='ثبت حواله خرید شن‌وماسه'
-                displayBtnAdd={false}
+                title='ویرایش حواله خرید شن‌وماسه'
+                displayBtnAdd={true}
                 displayBtnShow={true}
             />
 
@@ -275,8 +202,7 @@ const Add = () => {
                                 <label>شماره فاکتور </label>
                                 <div className="mainTicketNumberACSI_FB">
                                     <div className="ticketNumberACSI_FB">
-                                        {/* {ticketNumber + i} */}
-                                        1
+                                        {ticketNumber}
                                     </div>
                                 </div>
                             </div>
@@ -291,63 +217,59 @@ const Add = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="buyerName"
-                                    defaultValue={input.buyerName}
                                     onInput={e => handleSaveValInput(e, 'buyerName')}
-                                    onFocus={e => clearInputError(e, billNumberError)}
+                                    onFocus={e => clearInputError(e, buyerNameError)}
                                 />
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                            <div className="errorContainerFB elementError" id="buyerNameError" ref={buyerNameError}> </div>
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label htmlFor="billNumber">نام‌خانوادگی خریدار</label>
+                                <label htmlFor="buyerLastName">نام‌خانوادگی خریدار</label>
                                 <input
                                     type="text"
                                     className="inputTextFB element"
-                                    id="billNumber"
-                                    defaultValue={input.remittanceNumber}
-                                    onInput={e => handleSaveValInput(e, 'billNumber')}
-                                    onFocus={e => clearInputError(e, billNumberError)}
+                                    id="buyerLastName"
+                                    onInput={e => handleSaveValInput(e, 'buyerLastName')}
+                                    onFocus={e => clearInputError(e, buyerLastNameError)}
                                 />
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                            <div className="errorContainerFB elementError" id="buyerLastNameError" ref={buyerLastNameError}> </div>
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label htmlFor="billNumber">نام پدر</label>
+                                <label htmlFor="buyerFather">نام پدر</label>
                                 <input
                                     type="text"
                                     className="inputTextFB element"
-                                    id="billNumber"
-                                    defaultValue={input.remittanceNumber}
-                                    onInput={e => handleSaveValInput(e, 'billNumber')}
-                                    onFocus={e => clearInputError(e, billNumberError)}
+                                    id="buyerFather"
+                                    onInput={e => handleSaveValInput(e, 'buyerFather')}
+                                    onFocus={e => clearInputError(e, buyerFatherError)}
                                 />
-                                
+
                             </div>
-                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                            <div className="errorContainerFB elementError" id="buyerFatherError" ref={buyerFatherError}> </div>
                         </div>
                     </section>
 
                     <section className='sectionFB'>
-                    
+
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="remittanceNumber">شماره حواله</label>
                                 <input
                                     type="text"
-                                    className="inputTextFB element"
+                                    className="inputTextFB ltrFB element"
                                     id="remittanceNumber"
-                                    defaultValue={input.remittanceNumber}
                                     onInput={e => handleSaveValInput(e, 'remittanceNumber')}
-                                    onFocus={e => clearInputError(e, lastNameErrorRef)}
+                                    onFocus={e => clearInputError(e, remittanceNumberError)}
                                 />
                             </div>
                             <div className="errorContainerFB elementError" id="remittanceNumberError" ref={remittanceNumberError}> </div>
                         </div>
-                        
+
                         <div className="containerInputFB">
                             <div className="divInputFB ">
                                 <label htmlFor="day">تاریخ  </label>
@@ -357,20 +279,22 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextDateACus inputDayTDACus element"
-                                            placeholder="1"
+                                            placeholder="01"
                                             id="day"
                                             defaultValue={date.day}
-                                            onInput={(e) => handleSetDate(e, 'day')}
+                                            onInput={(e) => handleSetDate(e, 'day', date, setDate, setInput, dayInputRef.current, daySelectRef.current)}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={dayInputRef}
                                         />
                                         <span>/</span>
                                         <input
                                             type="text"
                                             className="inputTextDateACus inputMonthTDACus element"
-                                            placeholder="1"
+                                            placeholder="01"
                                             defaultValue={date.month}
-                                            onInput={(e) => handleSetDate(e, 'month')}
+                                            onInput={(e) => handleSetDate(e, 'month', date, setDate, setInput, monthInputRef.current, monthSelectRef.current)}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={monthInputRef}
                                         />
                                         <span>/</span>
                                         <input
@@ -378,8 +302,9 @@ const Add = () => {
                                             className="inputTextDateACus inputYearTDACus element"
                                             placeholder="1300"
                                             defaultValue={date.year}
-                                            onInput={(e) => { handleSetDate(e, 'year') }}
+                                            onInput={(e) => { handleSetDate(e, 'year', date, setDate, setInput, yearInputRef.current, yearSelectRef.current) }}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={yearInputRef}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
@@ -388,8 +313,9 @@ const Add = () => {
                                         <select
                                             className="element"
                                             defaultValue={date.day}
-                                            onChange={(e) => handleSetDate(e, 'day')}
+                                            onChange={(e) => handleSetDate(e, 'day', date, setDate, setInput, dayInputRef.current, daySelectRef.current)}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={daySelectRef}
                                         >
                                             <option value="">روز</option>
                                             {optionDays}
@@ -397,8 +323,9 @@ const Add = () => {
                                         <select
                                             className="element"
                                             defaultValue={date.month}
-                                            onChange={(e) => handleSetDate(e, 'month')}
+                                            onChange={(e) => handleSetDate(e, 'month', date, setDate, setInput, monthInputRef.current, monthSelectRef.current)}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={monthSelectRef}
                                         >
                                             <option value="">ماه</option>
                                             {optionMonth}
@@ -406,8 +333,9 @@ const Add = () => {
                                         <select
                                             className="element"
                                             defaultValue={date.year}
-                                            onChange={(e) => { handleSetDate(e, 'year') }}
+                                            onChange={(e) => { handleSetDate(e, 'year', date, setDate, setInput, yearInputRef.current, yearSelectRef.current) }}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            ref={yearSelectRef}
                                         >
                                             <option value="">سال</option>
                                             {optionShortYears}
@@ -417,29 +345,46 @@ const Add = () => {
                             </div>
                             <div className="errorContainerFB elementError" id='dateError' ref={dateError}> </div>
                         </div>
-                        
+
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label htmlFor="weight">مبلغ حواله</label>
+                                <label htmlFor='price'> مبلغ حواله </label>
                                 <input
                                     type="text"
-                                    className="inputTextFB element"
-                                    id="weight"
-                                    defaultValue={input.weight}
-                                    onInput={e => handleSaveValInput(e, 'weight')}
-                                    onFocus={e => clearInputError(e, weightError)}
+                                    id='price'
+                                    className="inputTextUnitFB ltrFB element"
+                                    onInput={e => {
+                                        handleSaveValInput(e, 'price');
+                                        formatNub(priceRef.current);
+                                    }}
+                                    onFocus={e => clearInputError(e, priceError)}
+                                    ref={priceRef}
+
                                 />
+                                <span
+                                    className="unitFB"
+                                    onClick={() => htmlFor('price')}
+                                >
+                                    تومان
+                                </span>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="weightError" ref={weightError}> </div>
+                            <div
+                                className="errorContainerFB elementError"
+                                id='priceError'
+                                ref={priceError}
+                            >
+                            </div>
                         </div>
+
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label>کارخانه  </label>
                                 <div
                                     id='factory'
                                     className="element"
-                                    onClick={e => { clearInputError(e, factoryError) }}
+                                    onClick={e => { clearInputError(e, factoryError, false, true) }}
+                                    ref={factoryDiv}
                                 >
                                     <SelectZabi
                                         primaryLabel='انتخاب'
@@ -449,22 +394,18 @@ const Add = () => {
                                     />
                                 </div>
                                 <i className="icofont-ui-rating starFB" />
-
                             </div>
                             <div className="errorContainerFB elementError" id='factoryError' ref={factoryError}> </div>
                         </div>
                     </section>
-                   
+
                     <section className="sectionFB">
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="description">توضیحات</label>
                                 <textarea
-
-                                    // className="textareaAddressACu"
                                     className="textareaFB element"
                                     id="description"
-                                    defaultValue={input.description}
                                     onInput={e => handleSaveValInput(e, 'description')}
                                 />
                             </div>
@@ -484,7 +425,7 @@ const Add = () => {
                             type="reset"
                             variant="warning"
                             className="btnDelFB"
-                            onClick={handleResetForm}
+                            onClick={() => resetForm(setInput, setDate, setFactory, factoryRef.current)}
                         >
                             پاک کن
                         </Button>
@@ -495,4 +436,4 @@ const Add = () => {
         </div>
     );
 }
-export default Add;
+export default Edit;

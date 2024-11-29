@@ -2,47 +2,41 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HeadPage from '../HeadPage';
 import SandRemittanceSearch from './SandRemittanceSearch';
-import RouteService from './RouteService';
 import Skeleton from 'react-loading-skeleton';
-// import { Pagination } from 'react-bootstrap';
 import Pagination from '../../../hooks/Pagination';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const Show = () => {
+    const MySwal = withReactContent(Swal);
     const [loading, setLoading] = useState(false);
-    const hasCalledGetConcreteSalesInvoices = useRef(false);
-    const containerShowGeRef = useRef(null);
-    const [sandRemittances, setConcreteSalesInvoices] = useState(null);
-    /**
-   * ############### states for paginate
-   */
+    const hasCalledGetSandRemittances = useRef(false);
+    const [sandRemittances, setSandRemittances] = useState(null);
     const [totalPage, setTotalPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
-
-
-    useEffect(() => {
-        // این شرط اطمینان می‌دهد که متد فقط یک بار اجرا شود
-        if (!hasCalledGetConcreteSalesInvoices.current) {
-            getSandRemittances();
-            hasCalledGetConcreteSalesInvoices.current = true;
-        }
-    }, []);
     const [search, setSearch] = useState({
         startDate: '',//تاریخ ثبت حواله
         endDate: '',
         date: '',//تاریخ خرید حواله
         id: '',
-        buyerName:'',
-        buyerLastName:'',
-        buyerFather:'',
-        remittanceNumber:'',
-        price:'',
-        isCompleted:'',
-        factory:''
+        buyerName: '',
+        buyerLastName: '',
+        buyerFather: '',
+        remittanceNumber: '',
+        price: '',
+        isCompleted: true,
+        factory: ''
     });
-    async function getSandRemittances(
-        page = 1,
-        startDate = search.startDate,
+
+    useEffect(() => {
+        if (!hasCalledGetSandRemittances.current) {
+            getSandRemittances();
+            hasCalledGetSandRemittances.current = true;
+        }
+    }, []);
+
+    async function getSandRemittances(page = 1, startDate = search.startDate,
         endDate = search.endDate,
         date = search.date,
         id = search.id,
@@ -53,53 +47,35 @@ const Show = () => {
         price = search.price,
         isCompleted = search.isCompleted,
         factory = search.factory) {
-        setLoading(true)
-        await axios.get(`/api/v1/sandRemittances?page=${page}`, {
-            params: {
-                startDate,
-                endDate,
-                date,
-                id,
-                buyerName,
-                buyerLastName,
-                buyerFather,
-                remittanceNumber,
-                price,
-                isCompleted,
-                factory
-            }
-        }).then((response) => {
-            const salesInvoices = response.data.sandRemittances;
-            setConcreteSalesInvoices(salesInvoices.data);
-            setTotalPage(salesInvoices.last_page);
-            setTotalRecords(salesInvoices.total);
-            // if (salesInvoices.current_page == 1) {
-            //     setTicketNumber(salesInvoices.data[0]['id'] + 1);
-            // }
-            window.scrollTo({
-                top: top,
-                behavior: 'smooth'
+
+        try {
+            setLoading(true);
+            const response = await axios.get(`/api/v1/sandRemittances`, {
+                params: { page, startDate, endDate, date, id, buyerName, buyerLastName, buyerFather, remittanceNumber, price, isCompleted, factory }
             });
-        }).catch(
-            error => {
-                if (error.response && error.response.status == 422) {
-                    const objErrors = error.response.data.errors;
-                    // دریافت اولین کلید آبجکت و سپس مقدار آن
-                    const firstKey = Object.keys(objErrors)[0];
-                    const firstValue = objErrors[firstKey];
-                    MySwal.fire({
-                        icon: "warning",
-                        title: "هشدار",
-                        html: `<div style="color: red;">${firstValue[0]}</div>`,
-                        confirmButtonText: "متوجه شدم!",
-                        confirmButtonColor: "#d33",
-                    });
-                }
+
+            const datas = response.data.sandRemittances;
+            setSandRemittances(datas.data);
+            setTotalPage(datas.last_page);
+            setTotalRecords(datas.total);
+            window.scrollTo({ top: top, behavior: 'smooth' });
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                const objErrors = error.response.data.errors;
+                const firstKey = Object.keys(objErrors)[0];
+                const firstValue = objErrors[firstKey][0];
+
+                MySwal.fire({
+                    icon: "warning",
+                    title: "هشدار",
+                    html: `<div style="color: red;">${firstValue}</div>`,
+                    confirmButtonText: "متوجه شدم!",
+                    confirmButtonColor: "#d33",
+                });
             }
-        )
-        setTimeout(() => {
-            setLoading(false)
-        }, 300);
+        } finally {
+            setLoading(false);
+        }
     }
 
     /**
@@ -124,7 +100,7 @@ const Show = () => {
             let price = Number(sandRemittance['price']).toLocaleString();
             let remainingPrice = Number(sandRemittance['remainingPrice']).toLocaleString();
             let date = sandRemittance['date'].split('-');
-            let isCompleted = sandRemittance['isCompleted']? 'مانده':'تمام';
+            let isCompleted = sandRemittance['isCompleted'] ? 'مانده' : 'تمام';
             return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">{i + 1}</span>
                 <span className="ticketNumberACSI_Ge">{sandRemittance['id']}</span>
@@ -134,12 +110,11 @@ const Show = () => {
                 <span className="price_Ge textAlignCenter_Ge">{remainingPrice}</span>
                 <span className="factory_Ge">{sandRemittance['factory']}</span>
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
-                <span className={`isCompleted_Ge ${sandRemittance['isCompleted']?'true_Ge':'false_Ge'}`}>{isCompleted}</span>
+                <span className={`isCompleted_Ge ${sandRemittance['isCompleted'] ? 'true_Ge' : 'false_Ge'}`}>{isCompleted}</span>
                 <div className="divEditACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" ویرایش "
-                        to={`/invoices/concreteSalesInvoice/edit/${sandRemittances['id']}`}
-                    // onClick={() => { showEditForm(concreteSalesInvoice.id); handleRemoveErrorCustomer() }}
+                        to={`/invoices/concreteSalesInvoice/edit/${sandRemittance['id']}`}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </Link>
@@ -162,10 +137,7 @@ const Show = () => {
                 displayBtnAdd={true}
                 displayBtnShow={false}
             />
-            <div className='containerShowGe containerShowCustomer'
-                ref={containerShowGeRef}
-            >
-
+            <div className='containerShowGe containerShowCustomer' >
                 <div className="divListShowGe">
                     <SandRemittanceSearch
                         getSandRemittances={getSandRemittances}
@@ -187,13 +159,13 @@ const Show = () => {
                         <span className="delHeadShowACSI_Ge"> حذف </span>
                     </div>
                     {sandRemittances ? returnSandRemittances() : <Skeleton height={40} count={12} />}
-                    {/* <Pagination
+                    <Pagination
                         className="pagination-bar"
                         currentPage={currentPage}
                         totalPage={totalPage}
                         siblingCount={3}
                         onPageChange={page => { setCurrentPage(page); getSandRemittances(page) }}
-                    /> */}
+                    />
 
                 </div>
             </div>

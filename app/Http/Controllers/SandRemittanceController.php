@@ -15,64 +15,105 @@ class SandRemittanceController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index(GetSandRemittanceRequest $request)
+    // {
+    //     $query = SandRemittance::query();
+
+    //     if ($request->filled('id')) {
+    //         $query->where('id', $request->id);
+    //     } elseif ($request->filled('remittanceNumber')) {
+    //         $query->where('remittanceNumber', $request->remittanceNumber);
+    //     } else {
+    //         if ($request->filled('date')) {
+    //             $query->where('date',  $request->date);
+    //         } else {
+    //             if ($request->filled('startDate') && $request->filled('endDate')) {
+    //                 $query->whereBetween('created_at', [$request->startDate, $request->endDate]);
+    //             } elseif ($request->filled('startDate')) {
+
+    //                 $query->where('created_at', '>=', $request->startDate);
+    //             } elseif ($request->filled('endDate')) {
+    //                 $query->where('created_at', '<=', $request->endDate);
+    //             }
+    //         }
+
+    //         if ($request->filled('buyerName')) {
+
+    //             $query->where('buyerName', 'like', "%$request->buyerName%");
+    //         }
+
+    //         if ($request->filled('buyerLastName')) {
+    //             $query->where('buyerLastName', 'like', "%$request->buyerLastName%");
+    //         }
+
+    //         if ($request->filled('buyerFather')) {
+    //             $query->where('buyerFather', 'like', "%$request->buyerFather%");
+    //         }
+
+    //         if ($request->filled('price')) {
+    //             $query->where('price', "$request->price");
+    //         }
+    //         if ($request->filled('isCompleted')) {
+
+    //             $query->where('isCompleted', "$request->isCompleted");
+    //         }
+
+    //         if ($request->filled('factory')) {
+    //             $query->where('factory', "$request->factory");
+    //         }
+    //     }
+
+    //     $sandRemittances = $query->orderByDesc('id')->paginate(50);
+
+    //     return response()->json(['sandRemittances' =>  $sandRemittances], 200);
+    // }
+
     public function index(GetSandRemittanceRequest $request)
-    {
-        $query = SandRemittance::query();
+{
+    $query = SandRemittance::query();
 
-        if ($request->filled('id')) {
-            $query->where('id', $request->id);
-        } elseif ($request->filled('remittanceNumber')) {
-            $query->where('remittanceNumber', $request->remittanceNumber);
-        } else {
+    if ($request->filled('id')) {
+        $query->where('id', $request->id);
+    } elseif ($request->filled('remittanceNumber')) {
+        $query->where('remittanceNumber', $request->remittanceNumber);
+    } else {
+        // شروط ساده
+        $conditions = [
+            'buyerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
+            'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
+            'buyerFather' => $request->buyerFather ? '%' . $request->buyerFather . '%' : null,
+            'price' => $request->price,
+            'isCompleted' => $request->isCompleted,
+            'factory' => $request->factory,
+        ];
 
-            if ($request->filled('date')) {
-                // Log::info($request->date);
-
-                $query->where('date',  $request->date);
-            } else {
-                if ($request->filled('startDate') && $request->filled('endDate')) {
-                    $query->whereBetween('created_at', [$request->startDate, $request->endDate]);
-                } elseif ($request->filled('startDate')) {
-                Log::info($request->startDate);
-
-                    $query->where('created_at', '>=', $request->startDate);
-                } elseif ($request->filled('endDate')) {
-                    $query->where('created_at', '<=', $request->endDate);
-                }
-            }
-
-
-            if ($request->filled('buyerName')) {
-                Log::info('buyerName: ' . $request->buyerName);
-
-                $query->where('buyerName', 'like', "%$request->buyerName%");
-            }
-
-            if ($request->filled('buyerLastName')) {
-                $query->where('buyerLastName', 'like', "%$request->buyerLastName%");
-            }
-
-            if ($request->filled('buyerFather')) {
-                $query->where('buyerFather', 'like', "%$request->buyerFather%");
-            }
-
-            if ($request->filled('price')) {
-                $query->where('price', "$request->price");
-            }
-
-            if ($request->filled('isCompleated')) {
-                $query->where('isCompleated', "$request->isCompleated");
-            }
-
-            if ($request->filled('factory')) {
-                $query->where('factory', "$request->factory");
+        foreach ($conditions as $key => $value) {
+            if ($request->filled($key)) {
+                $query->where($key, 'like', $value);
             }
         }
 
-        $sandRemittances = $query->orderByDesc('id')->paginate(50);
-
-        return response()->json(['sandRemittances' =>  $sandRemittances], 200);
+        // شرط تاریخ
+        if ($request->filled('date')) {
+            $query->where('date', $request->date);
+        } elseif ($request->filled('startDate') || $request->filled('endDate')) {
+            $query->when($request->filled('startDate') && $request->filled('endDate'), function ($q) use ($request) {
+                $q->whereBetween('created_at', [$request->startDate, $request->endDate]);
+            })
+            ->when($request->filled('startDate') && !$request->filled('endDate'), function ($q) use ($request) {
+                $q->where('created_at', '>=', $request->startDate);
+            })
+            ->when(!$request->filled('startDate') && $request->filled('endDate'), function ($q) use ($request) {
+                $q->where('created_at', '<=', $request->endDate);
+            });
+        }
     }
+
+    $sandRemittances = $query->orderByDesc('id')->paginate(50);
+
+    return response()->json(['sandRemittances' =>  $sandRemittances], 200);
+}
+
 
     public function count()
     {
