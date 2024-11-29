@@ -14,6 +14,15 @@ class GetSandRemittanceRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $isCompleted = $this->input('isCompleted');
+        // کد زیر رشته های 'true' و 'false' به مقدار بولی تغییر می دهد 
+        if ($isCompleted == 'true' || $isCompleted == 'false') {
+            $this->merge(['isCompleted' => filter_var($isCompleted, FILTER_VALIDATE_BOOLEAN),]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,18 +31,17 @@ class GetSandRemittanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'startDate'=> 'nullable|date',
-            'endDate'=> 'nullable|date',
-            'date'=> 'nullable|date',
-            'id'=> 'nullable|numeric',
-            'buyerName' => ['nullable', 'bail', 'string'],
-            'buyerLastName' => ['nullable', 'bail', 'string'],
-            'buyerFather' => ['nullable', 'bail', 'string'],
-            'remittanceNumber' => ['nullable', 'bail', 'string'],
-            'date' => ['nullable', 'bail', 'date'],
-            'price' => ['nullable', 'bail', 'numeric'],
-            'isCompleted' => ['nullable', 'bail', 'boolean'],
-            'factory' => ['nullable', 'bail', 'string'],
+            'startDate' => ['nullable', 'date'],
+            'endDate' => ['nullable', 'date'],
+            'date' => ['nullable', 'date'],
+            'id' => ['nullable', 'numeric'],
+            'buyerName' => ['nullable', 'string'],
+            'buyerLastName' => ['nullable', 'string'],
+            'buyerFather' => ['nullable', 'string'],
+            'remittanceNumber' => ['nullable', 'string'],
+            'price' => ['nullable', 'numeric'],
+            'isCompleted' => ['nullable', 'boolean'],
+            'factory' => ['nullable', 'string'],
         ];
     }
     public function messages(): array
