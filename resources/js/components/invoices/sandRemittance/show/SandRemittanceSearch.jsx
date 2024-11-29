@@ -4,7 +4,6 @@ import DataZabi from "../../../hooks/DateZabi";
 import SelectZabi from '../../../hooks/SelectZabi';
 import { formatNub, htmlFor } from './Helper';
 
-
 const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRecords }) => {
     const {
         checkDate,
@@ -108,51 +107,35 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
         buyerFather: '',
         remittanceNumber: '',
         price: '',
-        isCompleted: '',
+        isCompleted: true,
         factory: ''
     });
-    console.log(input);
     useEffect(() => {
-        if (factory) {
-            setInput(prev => ({ ...prev, factory }));
-        }
+        setInput(prev => ({ ...prev, factory }));
     }, [factory]);
 
     useEffect(() => {
-        if (isCompleted) {
-            setInput(prev => ({ ...prev, isCompleted }));
-        }
+        setInput(prev => ({ ...prev, isCompleted }));
     }, [isCompleted]);
 
     const handleShowSearchFilds = () => {
         setShowSearchFilds(perv => !perv);
     }
-
     const handleSearch = () => {
-
-        if (input.startDate != '') {
-            const validDate = checkDate(input.startDate, 'تاریخ ابتدای جستجو صحیح نیست');
-            if (!validDate) {
-                return;
-            }
-        }
-
-        if (input.endDate != '') {
-            const validDate = checkDate(input.endDate, 'تاریخ پایان جستجو صحیح نیست');
-            if (!validDate) {
-                return;
-            }
-        }
-        if (input.date != '') {
-            const validDate = checkDate(input.date, 'تاریخ حواله صحیح نیست');
-            if (!validDate) {
-                return;
+        const dateFields = ['startDate', 'endDate', 'date'];
+        const errorMessages = {
+            startDate: 'تاریخ ابتدای جستجو صحیح نیست',
+            endDate: 'تاریخ پایان جستجو صحیح نیست',
+            date: 'تاریخ حواله صحیح نیست'
+        };
+        for (const field of dateFields) {
+            if (input[field] !== '') {
+                const validDate = checkDate(input[field], errorMessages[field]); if (!validDate) { return; }
             }
         }
         //تبدیل به تاریخ میلادی
-           const startDate=convertToGregorian(input.startDate);
-           const endDate=convertToGregorian(input.endDate);
-        // const startDate = input.startDate;
+        const startDate = convertToGregorian(input.startDate);
+        const endDate = input.endDate && `${convertToGregorian(input.endDate)} 23:59:59`;
         handelSetDataSearch({
             startDate,
             endDate,
@@ -167,6 +150,7 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
             factory: input.factory
 
         });
+        console.log(input.isCompleted);
         getSandRemittances(
             1,
             startDate,
@@ -185,6 +169,9 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
+        if (input == 'price') {
+            value = value.replace(/,/g, '');
+        }
         setInput(prev => ({ ...prev, [input]: value }));
     }
 
@@ -445,11 +432,11 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
                                 ref={priceRef}
                             />
                             <span
-                                    className="unitFB"
-                                    onClick={() => htmlFor('price')}
-                                >
-                                    تومان
-                                </span>
+                                className="unitFB"
+                                onClick={() => htmlFor('price')}
+                            >
+                                تومان
+                            </span>
                         </div>
                         <div className="typeConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se stringTypeConcreteSIS_Se"> کارخانه </span>
@@ -515,7 +502,6 @@ const SandRemittanceSearch = ({ getSandRemittances, handelSetDataSearch, totalRe
 
                             />
                         </div>
-
                     </div>
                     <div className="columnConcreteSIS_Se column3ConcreteSIS_Se"></div>
                     <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">
