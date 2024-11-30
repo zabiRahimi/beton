@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import HeadPage from './HeadPage';
-const ShowSandInvoices = () => {
+import HeadPage from '../HeadPage';
+const Show = () => {
     const [loading, setLoading] = useState(false);
     return (
         <div className=''>
@@ -13,4 +13,4 @@ const ShowSandInvoices = () => {
         </div>
     )
 }
-export default ShowSandInvoices;
+export default Show;

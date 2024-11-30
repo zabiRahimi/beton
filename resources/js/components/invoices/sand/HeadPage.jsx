@@ -45,7 +45,7 @@ const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
 
                 {
                     displayBtnShow &&
-                    <Link to="/invoices/sand/showSandInvoices" className="btnGetGe --styleLessLink ">
+                    <Link to="/invoices/sand/show" className="btnGetGe --styleLessLink ">
                         مشاهده فاکتورها
                     </Link>
                 }

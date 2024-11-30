@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import HeadPage from './HeadPage';
-const EditSandInvoice = () => {
+import HeadPage from '../HeadPage';
+const Edit = () => {
     const [loading, setLoading] = useState(false);
     return (
         <div className=''>
@@ -13,4 +13,4 @@ const EditSandInvoice = () => {
         </div>
     )
 }
-export default EditSandInvoice;
+export default Edit;

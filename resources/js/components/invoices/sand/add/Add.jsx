@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import DataZabi from "../../hooks/DateZabi";
+import DataZabi from "../../../hooks/DateZabi";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import SelectZabi from "../../hooks/SelectZabi";
-import SelectZabi2 from "../../hooks/SelectZabi2";
-import HeadPage from './HeadPage';
-const AddSandInvoice = () => {
+import SelectZabi from "../../../hooks/SelectZabi";
+import SelectZabi2 from "../../../hooks/SelectZabi2";
+import HeadPage from '../HeadPage';
+const Add = () => {
     let navigate = useNavigate();
     const MySwal = withReactContent(Swal);
     const {
@@ -735,4 +735,4 @@ const AddSandInvoice = () => {
         </div>
     );
 }
-export default AddSandInvoice;
+export default Add;

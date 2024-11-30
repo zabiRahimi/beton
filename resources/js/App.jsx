@@ -41,17 +41,16 @@ import AddSandRemittance from "./components/invoices/sandRemittance/add/Add";
 import ShowSandRemittance from "./components/invoices/sandRemittance/show/Show";
 import EditSandRemittance from "./components/invoices/sandRemittance/edit/Edit";
 
-import AddSandInvoice from "./components/invoices/sand/AddSandInvoice";
+
 import AddWaterInvoice from "./components/invoices/water/AddWaterInvoice";
 import AddCementInvoice from "./components/invoices/cement/AddCementInvoice";
+
 import Sand from "./components/invoices/sand/Sand";
-import EditSandInvoice from "./components/invoices/sand/EditSandInvoice";
-import ShowSandInvoices from "./components/invoices/sand/ShowSandInvoices";
+import AddSandInvoice from "./components/invoices/sand/add/Add";
+import EditSandInvoice from "./components/invoices/sand/edit/Edit";
+import ShowSandInvoices from "./components/invoices/sand/show/Show";
+
 import ConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/ConcreteSalesInvoice";
-
-
-// import ReactDOM from "react-dom/client";
-// import Index from "./components/Index";
 
 function App() {
     // const userData = useUserContext();
@@ -110,10 +109,10 @@ function App() {
                     </Route>
 
                     <Route path="sand" element={<Sand />} >
-                        <Route index element={<Navigate to="addSandInvoice" replace />} />
-                        <Route path="addSandInvoice" element={<AddSandInvoice />} />
-                        <Route path="editSandInvoice" element={<EditSandInvoice />} />
-                        <Route path="showSandInvoices" element={<ShowSandInvoices />} />
+                        <Route index element={<Navigate to="add" replace />} />
+                        <Route path="add" element={<AddSandInvoice />} />
+                        <Route path="show" element={<ShowSandInvoices />} />
+                        <Route path="edit/:sandId" element={<EditSandInvoice />} />
                     </Route>
 
                     
