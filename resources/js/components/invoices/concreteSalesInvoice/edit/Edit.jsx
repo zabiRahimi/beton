@@ -204,7 +204,7 @@ const Edit = () => {
             setTime({ hour, minute, second });
         }
 
-        // تنظیم ماسکن ملی
+        // تنظیم مسکن ملی
         setCheckedMaskanMeli(
             rest.maskanMeli === 'مسکن ملی شهرک امام خمینی' ? 'emam' :
                 rest.maskanMeli === 'مسکن ملی شهرک شهید رییسی' ? 'shahid' :

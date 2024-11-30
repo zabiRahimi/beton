@@ -11,7 +11,7 @@ class UpdateSandRemittanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,30 @@ class UpdateSandRemittanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'buyerName' => ['required', 'string'],
+            'buyerLastName' => ['required', 'string'],
+            'buyerFather' => ['nullable', 'string'],
+            'remittanceNumber' => ['nullable', 'string'],
+            'date' => ['required', 'date'],
+            'price' => ['required', 'numeric'],
+            'remainingPrice' => ['nullable', 'numeric'],
+            'isCompleted' => ['nullable', 'boolean'],
+            'factory' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+        ];
+        
+    }
+    public function messages(): array
+    {
+        return [
+            'buyerName.required' => 'نام خریدار حواله را وارد کنید',
+            'buyerLastName.required' => 'نام خانوادگی خریدار حواله را وارد کنید',
+            'date.required' => 'تاریخ ثبت حواله را وارد کنید',
+            'remittanceNumber.string' => 'شماره حواله را صحیح وارد کنید',
+            'price.required' => 'مبلغ حواله را وارد کنید',
+            'price.numeric' => 'مبلغ حواله را به عدد و به تومان وارد کنید',
+            'factory.required' => 'کارخانه شن‌وماسه را انتخاب کنید',
+
         ];
     }
 }

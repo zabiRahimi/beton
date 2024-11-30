@@ -2,7 +2,7 @@ import axios from 'axios';
 import  { useEffect, useRef } from 'react';
 
 
-const RouteService = ({ setLoading, setTicketNumber }) => {
+const RouteService = ({ sandRemittanceId, setLoading, setSandRemittance }) => {
 
   const hasCalledFetchData = useRef(false);
   useEffect(() => {
@@ -13,17 +13,26 @@ const RouteService = ({ setLoading, setTicketNumber }) => {
   }, []);
 
 
-  const fetchData = async () => {
-
-     axios.get("/api/v1/sandRemittance/count").then((response) => {
-      const count = response.data.count;
-      setTicketNumber(count+1);
-    });
+  // const fetchData = async () => {
+  //   await axios.get(`/api/v1/sandRemittance/${sandRemittanceId}/edit`).then((response) => {
+  //     setSandRemittance(response.data);
+  //   });
 
   
-    setLoading(false);
+  //   setLoading(false);
+  // };
+  const fetchData = async () => {
+  
+    try {
+      const response = await axios.get(`/api/v1/sandRemittances/${sandRemittanceId}/edit`);
+      setSandRemittance(response.data);
+    } catch (error) {
+      console.error("Error fetching data for sandRemittance edit:", error);
+    } finally {
+      setLoading(false);
+    }
   };
-
+  
 
 };
 

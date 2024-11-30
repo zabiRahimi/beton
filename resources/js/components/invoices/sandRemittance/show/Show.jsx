@@ -114,7 +114,7 @@ const Show = () => {
                 <div className="divEditACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" ویرایش "
-                        to={`/invoices/concreteSalesInvoice/edit/${sandRemittance['id']}`}
+                        to={`/invoices/sandRemittance/edit/${sandRemittance['id']}`}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </Link>

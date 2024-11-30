@@ -1,5 +1,5 @@
 import axios from 'axios';
-import  { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 
 const RouteService = ({ setLoading, setTicketNumber }) => {
@@ -15,13 +15,15 @@ const RouteService = ({ setLoading, setTicketNumber }) => {
 
   const fetchData = async () => {
 
-     axios.get("/api/v1/sandRemittance/count").then((response) => {
-      const count = response.data.count;
-      setTicketNumber(count+1);
-    });
-
-  
-    setLoading(false);
+    try {
+      const response =  await axios.get("/api/v1/sandRemittance/count")
+        const count = response.data.count;
+        setTicketNumber(count + 1);
+    } catch (error) {
+      console.error("Error fetching data for sandRemittance count in component Add:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
 

@@ -8,9 +8,9 @@ import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import HeadPage from '../HeadPage';
 import RouteService from "./RouteService";
-import { handleSetDate, htmlFor, formatNub, resetForm } from './Helper';
+import { handleSetDate, clearInputError, htmlFor, formatNub, resetForm } from './Helper';
 const Edit = () => {
-    const { invoiceId } = useParams();
+    const { sandRemittanceId } = useParams();
     const MySwal = withReactContent(Swal);
     const {
         optionDays,
@@ -19,6 +19,7 @@ const Edit = () => {
     } = DataZabi();
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const loadingEnd = useRef(false);
     const form = useRef(null);
     const dayInputRef = useRef(null);
     const daySelectRef = useRef(null);
@@ -40,8 +41,8 @@ const Edit = () => {
     const factoryDiv = useRef(null);
     const factoryRef = useRef(null);
     const factoryError = useRef(null);
-    const [loading, setLoading] = useState(false);
-    const [ticketNumber, setTicketNumber] = useState();
+    const [loading, setLoading] = useState(true);
+    const [sandRemittance, setSandRemittance] = useState(null);
     const factorys = [
         {
             value: 'شهرداری ارسنجان',
@@ -57,36 +58,12 @@ const Edit = () => {
         }
     ];
     const [factory, setFactory] = useState('');
-    const [typeSand, setTypeSand] = useState([
-        {
-            value: 'ماسه شسته',
-            html: <div className="sandAptionSelectFB">ماسه شسته</div>
-        },
-        {
-            value: 'ماسه 06',
-            html: <div className="sandAptionSelectFB">ماسه 06</div>
-        },
-        {
-            value: 'شن بادامی',
-            html: <div className="sandAptionSelectFB">شن بادامی</div>
-        },
-        {
-            value: 'شن نخودی',
-            html: <div className="sandAptionSelectFB">شن نخودی</div>
-        },
-        {
-            value: 'سایر',
-            html: <div className="sandAptionSelectFB">سایر</div>
-        }
-    ]);
+    
     const [date, setDate] = useState({
         day: '',
         month: '',
         year: ''
     });
-
-    const [sandStores, setSandStores] = useState([]);
-    const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
 
     const [input, setInput] = useState({
         buyerName: '',
@@ -100,12 +77,39 @@ const Edit = () => {
         description: ''
     });
 
-    RouteService({ setLoading, setTicketNumber });
+    RouteService({sandRemittanceId, setLoading , setSandRemittance });
 
     useEffect(() => {
         factory && setInput(prev => ({ ...prev, factory }));
     }, [factory]);
 
+    useEffect(() => {
+        sandRemittance && pasteData(sandRemittance);
+    }, [sandRemittance]);
+
+    useEffect(() => {
+        if (sandRemittance) {
+            priceRef.current.value && (priceRef.current.value = parseFloat(input.price).toLocaleString());
+        }
+    }, [sandRemittance, loadingEnd.current, loading]);
+
+    const pasteData = (sandRemittance) => {
+        const { id, created_at, updated_at, ...remainingData } = sandRemittance;
+
+        // تنظیم ورودی‌های فرم
+        setInput({
+            ...remainingData,
+        });
+       
+        factoryRef.current && factoryRef.current.updateData(remainingData.factory);
+
+        // تنظیم تاریخ و زمان
+        if (remainingData.date) {
+            let [year, month, day] = remainingData.date.split("-");
+            setDate({ day, month, year });
+        }
+        loadingEnd.current = true;
+    };
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
@@ -120,70 +124,59 @@ const Edit = () => {
         setInput(prev => ({ ...prev, [input]: value }));
 
     }
-
-    const clearInputError = (e, refErr, date = false, factory = false) => {
-        e.target.classList.remove('borderRedFB');
-        refErr.current && (refErr.current.innerHTML = '')
-        date && dateRef.current.classList.remove('borderRedFB');
-        factory && factoryDiv.current.classList.remove('borderRedFB');
-    }
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        await axios.post(
-            '/api/v1/sandRemittances',
+      
+        try {
+          const response = await axios.patch(
+            `/api/v1/sandRemittances/${sandRemittanceId}`,
             { ...input },
             {
-                headers:
-                {
-                    'X-CSRF-TOKEN': token,
-                    'Content-Type': 'application/json; charset=utf-8'
-                }
+              headers: {
+                'X-CSRF-TOKEN': token,
+                'Content-Type': 'application/json; charset=utf-8'
+              }
             }
-        ).then((response) => {
-            const resutl = response.data.sandRemittance;
-            setTicketNumber(ticketNumber + 1);
-            form.current.reset();
-            MySwal.fire({
-                icon: "success",
-                title: "با موفقیت ثبت شد",
-                confirmButtonText: "  متوجه شدم  ",
-                timer: 3000,
-                timerProgressBar: true,
-                customClass: {
-                    timerProgressBar: '--progressBarColorBlue',
-                },
-
-                didClose: () => resetForm(setInput, setDate, setFactory, factoryRef.current),
+          );
+      
+          form.current.reset();
+          MySwal.fire({
+            icon: "success",
+            title: "با موفقیت ثبت شد",
+            confirmButtonText: "متوجه شدم",
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: {
+              timerProgressBar: '--progressBarColorBlue',
+            },
+          });
+        } catch (error) {
+          if (error.response && error.response.status == 422) {
+            let id = Object.keys(error.response.data.errors)[0];
+            const element = document.getElementById(id);
+      
+            // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن
+            if (element) {
+              let scrollPosition = window.scrollY || window.pageYOffset;
+              const top = element.getBoundingClientRect().top + scrollPosition - 20;
+              window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+      
+            Object.entries(error.response.data.errors).map(([key, val]) => {
+              // نادیده گرفتن خطای مربوط به remainingPrice
+              if (key !== 'remainingPrice') {
+                document.getElementById(key).classList.add('borderRedFB');
+                document.getElementById(key + 'Error').innerHTML = val;
+              }
             });
-        })
-            .catch(
-                error => {
-
-                    if (error.response && error.response.status == 422) {
-
-                        let id = Object.keys(error.response.data.errors)[0];
-                        const element = document.getElementById(id);
-                        // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن 
-                        if (element) { 
-                            let scrollPosition = window.scrollY || window.pageYOffset;
-                             const top = element.getBoundingClientRect().top + scrollPosition - 20;
-                              window.scrollTo({ top: top, behavior: 'smooth' }); 
-                            }
-                        Object.entries(error.response.data.errors).map(([key, val]) => {
-                            //نادیده گرفتن خطای مربوط به remainingPrice
-                            if (key !== 'remainingPrice') {
-                            document.getElementById(key).classList.add('borderRedFB');
-                            document.getElementById(key + 'Error').innerHTML = val;
-                            }
-                        });
-                    }
-                }
-            )
-
-        setLoading(false);
-    }
+          }
+        } finally {
+          setLoading(false);
+        }
+      };
+      
 
     return (
         <div>
@@ -202,7 +195,7 @@ const Edit = () => {
                                 <label>شماره فاکتور </label>
                                 <div className="mainTicketNumberACSI_FB">
                                     <div className="ticketNumberACSI_FB">
-                                        {ticketNumber}
+                                        {sandRemittanceId}
                                     </div>
                                 </div>
                             </div>
@@ -217,6 +210,7 @@ const Edit = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="buyerName"
+                                    value={input.buyerName||''}
                                     onInput={e => handleSaveValInput(e, 'buyerName')}
                                     onFocus={e => clearInputError(e, buyerNameError)}
                                 />
@@ -231,6 +225,7 @@ const Edit = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="buyerLastName"
+                                    value={input.buyerLastName||''}
                                     onInput={e => handleSaveValInput(e, 'buyerLastName')}
                                     onFocus={e => clearInputError(e, buyerLastNameError)}
                                 />
@@ -245,6 +240,7 @@ const Edit = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="buyerFather"
+                                    value={input.buyerFather||''}
                                     onInput={e => handleSaveValInput(e, 'buyerFather')}
                                     onFocus={e => clearInputError(e, buyerFatherError)}
                                 />
@@ -263,6 +259,7 @@ const Edit = () => {
                                     type="text"
                                     className="inputTextFB ltrFB element"
                                     id="remittanceNumber"
+                                    value={input.remittanceNumber||''}
                                     onInput={e => handleSaveValInput(e, 'remittanceNumber')}
                                     onFocus={e => clearInputError(e, remittanceNumberError)}
                                 />
@@ -312,7 +309,7 @@ const Edit = () => {
                                     <div className="divDownDateAcus" >
                                         <select
                                             className="element"
-                                            defaultValue={date.day}
+                                            value={date.day}
                                             onChange={(e) => handleSetDate(e, 'day', date, setDate, setInput, dayInputRef.current, daySelectRef.current)}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
                                             ref={daySelectRef}
@@ -322,7 +319,7 @@ const Edit = () => {
                                         </select>
                                         <select
                                             className="element"
-                                            defaultValue={date.month}
+                                            value={date.month}
                                             onChange={(e) => handleSetDate(e, 'month', date, setDate, setInput, monthInputRef.current, monthSelectRef.current)}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
                                             ref={monthSelectRef}
@@ -332,7 +329,7 @@ const Edit = () => {
                                         </select>
                                         <select
                                             className="element"
-                                            defaultValue={date.year}
+                                            value={date.year}
                                             onChange={(e) => { handleSetDate(e, 'year', date, setDate, setInput, yearInputRef.current, yearSelectRef.current) }}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
                                             ref={yearSelectRef}
@@ -352,6 +349,7 @@ const Edit = () => {
                                 <input
                                     type="text"
                                     id='price'
+                                    defaultValue={input.price}
                                     className="inputTextUnitFB ltrFB element"
                                     onInput={e => {
                                         handleSaveValInput(e, 'price');
@@ -406,6 +404,7 @@ const Edit = () => {
                                 <textarea
                                     className="textareaFB element"
                                     id="description"
+                                    value={input.description||''}
                                     onInput={e => handleSaveValInput(e, 'description')}
                                 />
                             </div>

@@ -154,7 +154,8 @@ class SandRemittanceController extends Controller
      */
     public function edit(SandRemittance $sandRemittance)
     {
-        //
+      
+        return response()->json($sandRemittance);
     }
 
     /**
@@ -162,7 +163,9 @@ class SandRemittanceController extends Controller
      */
     public function update(UpdateSandRemittanceRequest $request, SandRemittance $sandRemittance)
     {
-        //
+        $sandRemittance->update($request->all());
+
+        return response()->json(['sandRemittance'=>  $sandRemittance],200);
     }
 
     /**

@@ -50,35 +50,26 @@ export const handleSetDate = (e, input, date, setDate, setInput, currentInput, c
 * @param {*} e 
 * @param {رف مربوط به تگ نمایش خطا} refErr 
 */
-export const clearInputError = (e, refErr, refInvoice, dateAndTime = false, idDivDateAndTime = '', i = null) => {
-    if (i !== null && Number(i) >= 0) {
-        const addressElemnt = document.getElementById(`invoice.${i}.address`);
-        const vahedElemnt = document.getElementById(`invoice.${i}.vahed`);
+export const clearInputError = (e, refErr, dateAndTime = false, idDivDateAndTime = '',) => {
 
-        addressElemnt.classList.remove('borderRedFB');
-        refInvoice[`addressError${i}`].current.innerHTML = '';
-
-        vahedElemnt.classList.remove('borderRedFB');
-        refInvoice[`vahedError${i}`].current.innerHTML = '';
+    if (!dateAndTime) {
+        e.target.classList.remove('borderRedFB');
+        /**
+                 * دو خط کد زیر برای زمانی است‌ که کلاس مورد
+                 *  نظر بر روی پدر تگهااعمال شده‌است
+                 * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
+                 *  و سپس کلاس را از تگ پدر حذف 
+                 * می‌‌کند، این کدها معمولا برای کامپوننتی
+                 *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
+                */
+        const parentWithClass = e.target.closest('.borderRedFB');
+        parentWithClass && parentWithClass.classList.remove('borderRedFB');
+        
     } else {
-        if (!dateAndTime) {
-            e.target.classList.remove('borderRedFB');
-            /**
-                     * دو خط کد زیر برای زمانی است‌ که کلاس مورد
-                     *  نظر بر روی پدر تگهااعمال شده‌است
-                     * ابتدا پدری که حاوی کلاس است را پیدا می‌کند
-                     *  و سپس کلاس را از تگ پدر حذف 
-                     * می‌‌کند، این کدها معمولا برای کامپوننتی
-                     *  که سلکت سفارشی را ارائه می‌دهد کاربرد دارد
-                    */
-            const parentWithClass = e.target.closest('.borderRedFB');
-            parentWithClass && parentWithClass.classList.remove('borderRedFB');
-        } else {
-            const element = document.getElementById(idDivDateAndTime);
-            element.classList.remove('borderRedFB');
-        }
-        refErr.current && (refErr.current.innerHTML = '')
+        const element = document.getElementById(idDivDateAndTime);
+        element.classList.remove('borderRedFB');
     }
+    refErr.current && (refErr.current.innerHTML = '');
 }
 
 /**
