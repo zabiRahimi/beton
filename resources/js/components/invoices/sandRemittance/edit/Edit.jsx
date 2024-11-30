@@ -412,23 +412,15 @@ const Edit = () => {
                         </div>
 
                     </section>
-                    <section className="sectionFB divBtnsFB">
-                        <Button
-                            variant="success"
-                            className="btnSaveFB"
-                            onClick={handleSubmit}
-                        >
-                            ثبت
-                        </Button>
-                        <Button
-                            type="reset"
-                            variant="warning"
-                            className="btnDelFB"
-                            onClick={() => resetForm(setInput, setDate, setFactory, factoryRef.current)}
-                        >
-                            پاک کن
-                        </Button>
-                    </section>
+                    <div className='sectionFB divBtnsFB' >
+                            <Button
+                                variant="info"
+                                className="btnSaveFB"
+                                onClick={handleSubmit}
+                            >
+                                ویرایش
+                            </Button>
+                        </div>
                 </form>
             </div>
 
