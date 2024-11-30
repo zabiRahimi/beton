@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useRef } from 'react';
 
 
-const RouteService = ({ setLoading, setTicketNumber }) => {
+const RouteService = ({ setLoading, setTicketNumber, setRemittances, setDumpTrucks, setDrivers, setSandStores }) => {
 
   const hasCalledFetchData = useRef(false);
   useEffect(() => {

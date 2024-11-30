@@ -22,8 +22,8 @@ const Add = () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
-    const factoryRef = useRef(null);
-    const factoryError = useRef(null);
+    const remittanceIdRef = useRef(null);
+    const remittanceIdError = useRef(null);
     const billNumberError = useRef(null);
     const remittanceNumberError = useRef(null);
     const timeRef = useRef(null);
@@ -46,8 +46,8 @@ const Add = () => {
     const hasCalledGetSandSellers = useRef(false);
     const hasCalledGetSandStores = useRef(false);
     const [loading, setLoading] = useState(false);
-    const [factory, setFactory] = useState([]);
-    const [factorySelected, setFactorySelected] = useState('');
+    const [remittances, setFactory] = useState([]);
+    const [remittanceId, setRemittanceId] = useState('');
     const [typeSand, setTypeSand] = useState([
         {
             value: 'ماسه شسته',
@@ -111,75 +111,43 @@ const Add = () => {
 
     useEffect(() => {
         if (!hasCalledGetSandSellers.current) {
-            getSandSellers();
+            fetchData();
             hasCalledGetSandSellers.current = true;
         }
     }, []);
 
-    useEffect(() => {
-        if (!hasCalledGetSandStores.current) {
-            getSandStores();
-            hasCalledGetSandStores.current = true;
-        }
-    }, []);
+   
 
-    const getSandSellers = async() =>{
-        await axios.get("/api/v1/sandInvoice/getSandSellers").then((response) => {
-            let datas = response.data.sandSellers;
-            if (datas.length == 0) {
-                MySwal.fire({
-                    icon: "warning",
-                    title: "هشدار",
-                    text: `هنوز هیچ کارخانه‌ای (فروشنده شن‌وماسه) ثبت نشده است. لازم است ابتدا کارخانه را ثبت کنید.`,
-                    confirmButtonText: "  ثبت کارخانه   ",
-                    showCancelButton: true,
-                    cancelButtonText: "کنسل",
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    preConfirm: () => {
-                        navigate("/addCustomer");
-                    }
-                });
-            } else {
-                datas.map((data, i) => {
-                    setFactory(perv => ([...perv, {
-                        value: data.id,
-                        // cementStoreName: data.silo,
-                        html: <div className="factoryAptionSelectFB"> {data.name}  {data.lastName} </div>
-                    }]));
-                })
-            }
+    const fetchData = async() =>{
+        await axios.get("/api/v1/sandInvoice/fetchData").then((response) => {
+            let data = response.data;
+            console.log(data);
+            // if (datas.length == 0) {
+            //     MySwal.fire({
+            //         icon: "warning",
+            //         title: "هشدار",
+            //         text: `هنوز هیچ کارخانه‌ای (فروشنده شن‌وماسه) ثبت نشده است. لازم است ابتدا کارخانه را ثبت کنید.`,
+            //         confirmButtonText: "  ثبت کارخانه   ",
+            //         showCancelButton: true,
+            //         cancelButtonText: "کنسل",
+            //         confirmButtonColor: "#3085d6",
+            //         cancelButtonColor: "#d33",
+            //         preConfirm: () => {
+            //             navigate("/addCustomer");
+            //         }
+            //     });
+            // } else {
+            //     datas.map((data, i) => {
+            //         setFactory(perv => ([...perv, {
+            //             value: data.id,
+            //             // cementStoreName: data.silo,
+            //             html: <div className="factoryAptionSelectFB"> {data.name}  {data.lastName} </div>
+            //         }]));
+            //     })
+            // }
         });
     }
 
-    const getSandStores = async() =>{
-        await axios.get("/api/v1/sandInvoice/getSandStores").then((response) => {
-            let datas = response.data.sandStores;
-            if (datas.length == 0) {
-                MySwal.fire({
-                    icon: "warning",
-                    title: "هشدار",
-                    text: `هنوز هیچ سیلوی شن‌وماسه‌ای ثبت نشده است. لازم است ابتدا سیلو را ثبت کنید.`,
-                    confirmButtonText: "  ثبت سیلو   ",
-                    showCancelButton: true,
-                    cancelButtonText: "کنسل",
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    preConfirm: () => {
-                        navigate("/addSandStore");
-                    }
-                });
-            } else {
-                datas.map((data, i) => {
-                    setSandStores(perv => ([...perv, {
-                        value: data.id,
-                        // cementStoreName: data.silo,
-                        html: <div className="factoryAptionSelectFB"> {data.silo} </div>
-                    }]));
-                })
-            }
-        });
-    }
 
     const handleSetDate = (e, input) => {
         let { value } = e.target,
@@ -350,28 +318,9 @@ const Add = () => {
                             </div>
                             <div className="errorContainerFB elementError"> </div>
                         </div>
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label>کارخانه  </label>
-                                <div
-                                    id='factory'
-                                    className="element"
-                                    onClick={e => { clearInputError(e, factoryError) }}
-                                >
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={factory}
-                                        saveOption={setFactorySelected}
-                                        ref={factoryRef}
-                                    />
-                                </div>
-                                <i className="icofont-ui-rating starFB" />
-
-                            </div>
-                            <div className="errorContainerFB elementError" id='factoryError' ref={factoryError}> </div>
-                        </div>
-                        {/* </section> */}
-                        {/* <section className="sectionFB"> */}
+                       
+                         </section> 
+                         <section className="sectionFB"> 
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="billNumber">شماره قبض</label>
@@ -389,17 +338,23 @@ const Add = () => {
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label htmlFor="remittanceNumber">شماره حواله</label>
-                                <input
-                                    type="text"
-                                    className="inputTextFB element"
-                                    id="remittanceNumber"
-                                    defaultValue={input.remittanceNumber}
-                                    onInput={e => handleSaveValInput(e, 'remittanceNumber')}
-                                    onFocus={e => clearInputError(e, lastNameErrorRef)}
-                                />
+                                <label> حواله  </label>
+                                <div
+                                    id='remittanceId'
+                                    className="element"
+                                    onClick={e => { clearInputError(e, remittanceIdError) }}
+                                >
+                                    <SelectZabi
+                                        primaryLabel='انتخاب'
+                                        options={remittances}
+                                        saveOption={setRemittanceId}
+                                        ref={remittanceIdRef}
+                                    />
+                                </div>
+                                <i className="icofont-ui-rating starFB" />
+
                             </div>
-                            <div className="errorContainerFB elementError" id="remittanceNumberError" ref={remittanceNumberError}> </div>
+                            <div className="errorContainerFB elementError" id='remittanceIdError' ref={remittanceIdError}> </div>
                         </div>
                         {/* </section> */}
                         {/* <section className="sectionFB"> */}
@@ -635,7 +590,7 @@ const Add = () => {
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
                                         options={driver}
-                                        saveOption={setFactorySelected}
+                                        saveOption={setRemittanceId}
                                         ref={driverRef}
                                     />
                                 </div>

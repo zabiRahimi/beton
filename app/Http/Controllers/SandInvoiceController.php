@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GetSandInvoice;
+use App\Http\Requests\GetSandInvoiceRequest;
 use App\Models\SandInvoice;
 use App\Http\Requests\StoreSandInvoiceRequest;
 use App\Http\Requests\UpdateSandInvoiceRequest;
 use App\Models\Customer;
 use App\Models\Driver;
+use App\Models\SandRemittance;
 use App\Models\SandStore;
 use App\Models\Truck;
 
@@ -16,7 +17,7 @@ class SandInvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(GetSandInvoice $request)
+    public function index(GetSandInvoiceRequest $request)
     {
         $query = SandInvoice::query();
         if ($request->filled('id')) {
@@ -183,20 +184,37 @@ class SandInvoiceController extends Controller
         //
     }
 
-    public function getSandSellers()
+    public function fetchData()
     {
-        $sandSellers = Customer::sandSellers()->get();
-        return response()->json(['sandSellers' => $sandSellers]);
+        $sandRemittances = $this->sandRemittances();
+        $sandStores = $this->sandStores();
+        $dumpTrucks = $this->dumpTrucks();
+        $drivers = $this->drivers();
+    
+        return response()->json([
+            'sandRemittances' => $sandRemittances,
+            'sandStores' => $sandStores,
+            'dumpTrucks' => $dumpTrucks,
+            'drivers' => $drivers
+        ]);
+    }
+    
+    private function sandRemittances()
+    {
+        return SandRemittance::where('isCompleted', true)->get();
+    }
+    
+    private function sandStores() {
+        return SandStore::get();
+    }
+    
+    private function dumpTrucks() {
+        return Truck::dumpTrucks()->get();
     }
 
-   public function getSandStores() {
-    $sandStores = SandStore::get();
-    return response()->json(['sandStores' => $sandStores]);
+    private function drivers() {
+        return Driver::get();
     }
-
-    public function getDumpTrucks() {
-        $dumpTrucks = Truck::dumpTrucks()->get();
-        return response()->json(['dumpTrucks' => $dumpTrucks]);
-        }
+    
 
 }
