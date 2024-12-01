@@ -186,17 +186,23 @@ class SandInvoiceController extends Controller
 
     public function fetchData()
     {
+        $count = $this->count();
         $sandRemittances = $this->sandRemittances();
         $sandStores = $this->sandStores();
         $dumpTrucks = $this->dumpTrucks();
         $drivers = $this->drivers();
     
         return response()->json([
+            'count'=> $count,
             'sandRemittances' => $sandRemittances,
             'sandStores' => $sandStores,
             'dumpTrucks' => $dumpTrucks,
             'drivers' => $drivers
         ]);
+    }
+
+    private function count(){
+        return SandInvoice::count();
     }
     
     private function sandRemittances()

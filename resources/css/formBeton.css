@@ -562,7 +562,8 @@
 .concreteAptionSelectFB,
 .mixerAptionSelectFB,
 .factoryAptionSelectFB,
-.sandAptionSelectFB {
+.sandAptionSelectFB,
+.divRemittanceSelectFB {
     padding: 3px 8px 2px 15px;
     display: flex;
     justify-content: space-between;
@@ -571,7 +572,8 @@
 .mixerAptionSelectFB,
 .factoryAptionSelectFB,
 .sandAptionSelectFB,
-.notOptionsFB {
+.notOptionsFB,
+.divRemittanceSelectFB {
     width: 100%;
     padding: 3px 2px 3px 2px;
 }
@@ -600,13 +602,19 @@
     width: 110px;
 }
 
-.mixerOwnerSelectFB {
+.mixerOwnerSelectFB,
+.buyerSelectFB {
     width: calc(100% - 110px);
     padding-right: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.9rem;
+}
+.buyerSelectFB{
+    width: calc(100% - 78px);
+    font-size: 0.8rem;
+    background-color: red;
 }
 
 .mainTicketNumberACSI_FB {

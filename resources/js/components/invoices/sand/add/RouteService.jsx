@@ -16,9 +16,11 @@ const RouteService = ({ setLoading, setTicketNumber, setRemittances, setDumpTruc
   const fetchData = async () => {
 
     try {
-      const response =  await axios.get("/api/v1/sandRemittance/count")
-        const count = response.data.count;
-        setTicketNumber(count + 1);
+      const response = await axios.get("/api/v1/sandInvoice/fetchData")
+      const { count, sandRemittances, sandStores, dumpTrucks, drivers } = response.data;
+      setTicketNumber(count + 1);
+      createRemittanceOptions(sandRemittances);
+
     } catch (error) {
       console.error("Error fetching data for sandRemittance count in component Add:", error);
     } finally {
@@ -27,6 +29,27 @@ const RouteService = ({ setLoading, setTicketNumber, setRemittances, setDumpTruc
   };
 
 
-};
 
+
+  const createRemittanceOptions = (sandRemittances) => {
+    const options = sandRemittances.map(data => ({
+      value: data.id,
+      html: <div className=" divRemittanceSelectFB"
+      title={data.buyerName +' ' + data.buyerLastName + ' '+ data.remittanceNumber}
+      >
+        <span className="mixerOwnerSelectFB buyerSelectFB">
+          {data.buyerName}
+          {' '}
+          {data.buyerLastName}
+        </span>
+        <span className='remittanceNumberFB' title={data.remittanceNumber}>
+          {data.remittanceNumber}
+        </span>
+      </div>
+    }));
+    setRemittances(options);
+  }
+
+  return null;
+};
 export default RouteService;

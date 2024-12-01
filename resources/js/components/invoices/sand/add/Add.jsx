@@ -7,7 +7,9 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import SelectZabi2 from "../../../hooks/SelectZabi2";
+import RouteService from "./RouteService";
 import HeadPage from '../HeadPage';
+
 const Add = () => {
     let navigate = useNavigate();
     const MySwal = withReactContent(Swal);
@@ -45,8 +47,8 @@ const Add = () => {
     const sandStoreError = useRef(null);
     const hasCalledGetSandSellers = useRef(false);
     const hasCalledGetSandStores = useRef(false);
-    const [loading, setLoading] = useState(false);
-    const [remittances, setFactory] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [remittances, setRemittances] = useState([]);
     const [remittanceId, setRemittanceId] = useState('');
     const [typeSand, setTypeSand] = useState([
         {
@@ -71,6 +73,7 @@ const Add = () => {
         }
     ]);
     const [typeSandSelected, setTypeSandSelected] = useState('');
+    const [ticketNumber, setTicketNumber] = useState('');
 
     const [dumpTruck, setDumpTruck] = useState([]);
     const [dumpTruckSelected, setDumpTruckSelected] = useState('');
@@ -108,45 +111,39 @@ const Add = () => {
         totalFare: '',
         description:''
     });
+    RouteService({ setLoading, setTicketNumber, setRemittances });
 
-    useEffect(() => {
-        if (!hasCalledGetSandSellers.current) {
-            fetchData();
-            hasCalledGetSandSellers.current = true;
-        }
-    }, []);
+   console.log(remittances);
 
-   
-
-    const fetchData = async() =>{
-        await axios.get("/api/v1/sandInvoice/fetchData").then((response) => {
-            let data = response.data;
-            console.log(data);
-            // if (datas.length == 0) {
-            //     MySwal.fire({
-            //         icon: "warning",
-            //         title: "هشدار",
-            //         text: `هنوز هیچ کارخانه‌ای (فروشنده شن‌وماسه) ثبت نشده است. لازم است ابتدا کارخانه را ثبت کنید.`,
-            //         confirmButtonText: "  ثبت کارخانه   ",
-            //         showCancelButton: true,
-            //         cancelButtonText: "کنسل",
-            //         confirmButtonColor: "#3085d6",
-            //         cancelButtonColor: "#d33",
-            //         preConfirm: () => {
-            //             navigate("/addCustomer");
-            //         }
-            //     });
-            // } else {
-            //     datas.map((data, i) => {
-            //         setFactory(perv => ([...perv, {
-            //             value: data.id,
-            //             // cementStoreName: data.silo,
-            //             html: <div className="factoryAptionSelectFB"> {data.name}  {data.lastName} </div>
-            //         }]));
-            //     })
-            // }
-        });
-    }
+    // const fetchData = async() =>{
+    //     await axios.get("/api/v1/sandInvoice/fetchData").then((response) => {
+    //         let data = response.data;
+    //         console.log(data);
+    //         // if (datas.length == 0) {
+    //         //     MySwal.fire({
+    //         //         icon: "warning",
+    //         //         title: "هشدار",
+    //         //         text: `هنوز هیچ کارخانه‌ای (فروشنده شن‌وماسه) ثبت نشده است. لازم است ابتدا کارخانه را ثبت کنید.`,
+    //         //         confirmButtonText: "  ثبت کارخانه   ",
+    //         //         showCancelButton: true,
+    //         //         cancelButtonText: "کنسل",
+    //         //         confirmButtonColor: "#3085d6",
+    //         //         cancelButtonColor: "#d33",
+    //         //         preConfirm: () => {
+    //         //             navigate("/addCustomer");
+    //         //         }
+    //         //     });
+    //         // } else {
+    //         //     datas.map((data, i) => {
+    //         //         setFactory(perv => ([...perv, {
+    //         //             value: data.id,
+    //         //             // cementStoreName: data.silo,
+    //         //             html: <div className="factoryAptionSelectFB"> {data.name}  {data.lastName} </div>
+    //         //         }]));
+    //         //     })
+    //         // }
+    //     });
+    // }
 
 
     const handleSetDate = (e, input) => {
@@ -311,8 +308,7 @@ const Add = () => {
                                 <label>شماره فاکتور </label>
                                 <div className="mainTicketNumberACSI_FB">
                                     <div className="ticketNumberACSI_FB">
-                                        {/* {ticketNumber + i} */}
-                                        1
+                                        {ticketNumber} 
                                     </div>
                                 </div>
                             </div>
