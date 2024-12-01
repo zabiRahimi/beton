@@ -101,7 +101,7 @@
     border: 1px solid #8f8f9d;
 }
 
-.textareaFB{
+.textareaFB {
     height: 70px;
 }
 
@@ -575,7 +575,7 @@
 .notOptionsFB,
 .divRemittanceSelectFB {
     width: 100%;
-    padding: 3px 2px 3px 2px;
+    padding: 7px 2px;
 }
 
 .factoryAptionSelectFB,
@@ -584,7 +584,7 @@
     padding-right: 8px;
 }
 
-.notOptionsFB{
+.notOptionsFB {
     color: #ff0000;
 }
 
@@ -606,15 +606,25 @@
 .buyerSelectFB {
     width: calc(100% - 110px);
     padding-right: 4px;
+    
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.9rem;
 }
-.buyerSelectFB{
+
+.buyerSelectFB {
     width: calc(100% - 78px);
     font-size: 0.8rem;
-    background-color: red;
+}
+
+.remittanceNumberFB {
+    text-align: left;
+    direction: ltr;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.8rem;
 }
 
 .mainTicketNumberACSI_FB {
@@ -769,6 +779,12 @@
 
     .ticketNumberACSI_FB {
         font-size: 1.5rem;
+    }
+
+    .buyerSelectFB,
+    .remittanceNumberFB
+     {
+        font-size: 0.9rem;
     }
 
 }

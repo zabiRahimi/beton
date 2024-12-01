@@ -8,6 +8,8 @@ import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import SelectZabi2 from "../../../hooks/SelectZabi2";
 import RouteService from "./RouteService";
+import SearchMixersSelect from "../../searchSelectZabi/SearchMixersSelect";
+import SearchDriversSelect from "../../searchSelectZabi/SearchDriversSelect";
 import HeadPage from '../HeadPage';
 
 const Add = () => {
@@ -75,7 +77,7 @@ const Add = () => {
     const [typeSandSelected, setTypeSandSelected] = useState('');
     const [ticketNumber, setTicketNumber] = useState('');
 
-    const [dumpTruck, setDumpTruck] = useState([]);
+    const [dumpTrucks, setDumpTrucks] = useState([]);
     const [dumpTruckSelected, setDumpTruckSelected] = useState('');
     const [dumpTruckOwnerSelected, setDumpTruckOwnerSelected] = useState('');
     const [driver, setDriver] = useState([]);
@@ -109,12 +111,11 @@ const Add = () => {
         driverId: '',
         unitFare: '',
         totalFare: '',
-        description:''
+        description: ''
     });
-    RouteService({ setLoading, setTicketNumber, setRemittances });
-
-   console.log(remittances);
-
+    RouteService({ setLoading, setTicketNumber, setRemittances, setDumpTrucks });
+    console.log(dumpTrucks);
+    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: dumpTrucks });
     // const fetchData = async() =>{
     //     await axios.get("/api/v1/sandInvoice/fetchData").then((response) => {
     //         let data = response.data;
@@ -277,7 +278,7 @@ const Add = () => {
 
     const handleSaveValInput = (e, input) => {
     }
-    
+
     const clearInputError = (e, refErr, time = false, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '')
@@ -308,15 +309,15 @@ const Add = () => {
                                 <label>شماره فاکتور </label>
                                 <div className="mainTicketNumberACSI_FB">
                                     <div className="ticketNumberACSI_FB">
-                                        {ticketNumber} 
+                                        {ticketNumber}
                                     </div>
                                 </div>
                             </div>
                             <div className="errorContainerFB elementError"> </div>
                         </div>
-                       
-                         </section> 
-                         <section className="sectionFB"> 
+
+                    </section>
+                    <section className="sectionFB">
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="billNumber">شماره قبض</label>
@@ -564,9 +565,14 @@ const Add = () => {
                                 >
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
-                                        options={dumpTruck}
+                                        options={dumpTrucks}
                                         saveOption={setDumpTruckSelected}
                                         saveOption2={setDumpTruckOwnerSelected}
+                                        input={inputMixerSearch}
+                                        optionsSearched={optionsMixersSearched}
+                                        warning={mixerSearchWarning}
+                                        elementWarning={elementMixerSearchWarning}
+                                        clearSearch={handleClearAllSearchMixer}
                                         ref={dumpTruckRef}
                                     />
                                 </div>
@@ -627,7 +633,7 @@ const Add = () => {
                         </div>
                     </section>
                     <section className="sectionFB">
-                    <div className="containerInputFB">
+                        <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label>سیلوی تخلیه  </label>
                                 <div
@@ -651,8 +657,8 @@ const Add = () => {
                             <div className="divInputFB">
                                 <label htmlFor="description">توضیحات</label>
                                 <textarea
-                                           
-                                            // className="textareaAddressACu"
+
+                                    // className="textareaAddressACu"
                                     className="textareaFB element"
                                     id="description"
                                     defaultValue={input.description}
@@ -661,7 +667,7 @@ const Add = () => {
                             </div>
                             <div className="errorContainerFB elementError"> </div>
                         </div>
-                       
+
                     </section>
                     <section className="sectionFB divBtnsFB">
                         <Button
