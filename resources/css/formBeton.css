@@ -563,7 +563,8 @@
 .mixerAptionSelectFB,
 .factoryAptionSelectFB,
 .sandAptionSelectFB,
-.divRemittanceSelectFB {
+.divRemittanceSelectFB,
+.divSiloSeletcFB {
     padding: 3px 8px 2px 15px;
     display: flex;
     justify-content: space-between;
@@ -573,7 +574,8 @@
 .factoryAptionSelectFB,
 .sandAptionSelectFB,
 .notOptionsFB,
-.divRemittanceSelectFB {
+.divRemittanceSelectFB,
+.divSiloSeletcFB {
     width: 100%;
     padding: 7px 2px;
 }
@@ -606,7 +608,7 @@
 .buyerSelectFB {
     width: calc(100% - 110px);
     padding-right: 4px;
-    
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -625,6 +627,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.8rem;
+}
+
+.siloSeletctFB {
+    padding-right: 4px;
+    font-size: 0.9rem;
 }
 
 .mainTicketNumberACSI_FB {
@@ -782,8 +789,7 @@
     }
 
     .buyerSelectFB,
-    .remittanceNumberFB
-     {
+    .remittanceNumberFB {
         font-size: 0.9rem;
     }
 

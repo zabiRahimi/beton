@@ -50,7 +50,7 @@ const Add = () => {
     const hasCalledGetSandSellers = useRef(false);
     const hasCalledGetSandStores = useRef(false);
     const [loading, setLoading] = useState(true);
-    const [remittances, setRemittances] = useState([]);
+    const [remittanceOptions, setRemittanceOptions] = useState([]);
     const [remittanceId, setRemittanceId] = useState('');
     const [typeSand, setTypeSand] = useState([
         {
@@ -77,10 +77,14 @@ const Add = () => {
     const [typeSandSelected, setTypeSandSelected] = useState('');
     const [ticketNumber, setTicketNumber] = useState('');
 
-    const [dumpTrucks, setDumpTrucks] = useState([]);
+    const [dumpTrucks, setDumpTrucks] = useState('');
+    const [dumpTruckOptions, setDumpTruckOptions] = useState([]);
+    const [drivers, setDrivers] = useState('');
+    const [driverOptions, setDriverOptions] = useState([])
+    const [sandStoreOptions, setSandStoreOptions]= useState([]);
+
     const [dumpTruckSelected, setDumpTruckSelected] = useState('');
     const [dumpTruckOwnerSelected, setDumpTruckOwnerSelected] = useState('');
-    const [driver, setDriver] = useState([]);
     const [driverIdSelected, setDriverIdSelected] = useState('');
     const [date, setDate] = useState({
         day: '',
@@ -94,7 +98,6 @@ const Add = () => {
     });
     const [sandStores, setSandStores] = useState([]);
     const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
-
 
     const [input, setInput] = useState({
         factroy: '',
@@ -113,9 +116,11 @@ const Add = () => {
         totalFare: '',
         description: ''
     });
-    RouteService({ setLoading, setTicketNumber, setRemittances, setDumpTrucks });
-    console.log(dumpTrucks);
+    RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
+    
     const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: dumpTrucks });
+
+    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
     // const fetchData = async() =>{
     //     await axios.get("/api/v1/sandInvoice/fetchData").then((response) => {
     //         let data = response.data;
@@ -343,7 +348,7 @@ const Add = () => {
                                 >
                                     <SelectZabi
                                         primaryLabel='انتخاب'
-                                        options={remittances}
+                                        options={remittanceOptions}
                                         saveOption={setRemittanceId}
                                         ref={remittanceIdRef}
                                     />
@@ -565,7 +570,7 @@ const Add = () => {
                                 >
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
-                                        options={dumpTrucks}
+                                        options={dumpTruckOptions}
                                         saveOption={setDumpTruckSelected}
                                         saveOption2={setDumpTruckOwnerSelected}
                                         input={inputMixerSearch}
@@ -591,8 +596,13 @@ const Add = () => {
                                 >
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
-                                        options={driver}
+                                        options={driverOptions}
                                         saveOption={setRemittanceId}
+                                        input={inputDriverSearch}
+                                        optionsSearched={optionsDriversSearched}
+                                        warning={driverSearchWarning}
+                                        elementWarning={elementDriverSearchWarning}
+                                        clearSearch={handleClearAllSearchDriver}
                                         ref={driverRef}
                                     />
                                 </div>
@@ -643,7 +653,7 @@ const Add = () => {
                                 >
                                     <SelectZabi
                                         primaryLabel='انتخاب'
-                                        options={sandStores}
+                                        options={sandStoreOptions}
                                         saveOption={setSandStoreIdSelected}
                                         ref={sandStoreRef}
                                     />

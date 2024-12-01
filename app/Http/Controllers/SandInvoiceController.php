@@ -188,16 +188,16 @@ class SandInvoiceController extends Controller
     {
         $count = $this->count();
         $sandRemittances = $this->sandRemittances();
-        $sandStores = $this->sandStores();
         $dumpTrucks = $this->dumpTrucks();
         $drivers = $this->drivers();
+        $sandStores = $this->sandStores();
     
         return response()->json([
             'count'=> $count,
             'sandRemittances' => $sandRemittances,
-            'sandStores' => $sandStores,
             'dumpTrucks' => $dumpTrucks,
-            'drivers' => $drivers
+            'drivers' => $drivers,
+            'sandStores' => $sandStores
         ]);
     }
 
@@ -210,16 +210,16 @@ class SandInvoiceController extends Controller
         return SandRemittance::where('isCompleted', true)->get();
     }
     
-    private function sandStores() {
-        return SandStore::get();
-    }
-    
     private function dumpTrucks() {
         return Truck::dumpTrucks()->get();
     }
 
     private function drivers() {
         return Driver::get();
+    }
+
+    private function sandStores() {
+        return SandStore::get();
     }
     
 
