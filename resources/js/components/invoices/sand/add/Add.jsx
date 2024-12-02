@@ -158,8 +158,8 @@ const Add = () => {
     }, [remittanceId]);
 
     useEffect(() => {
-        truck_id && setInput(prev => ({ ...prev, truck_id:truckId }));
-    }, [truck_id]);
+        dumpTruckId && setInput(prev => ({ ...prev, truck_id:dumpTruckId }));
+    }, [dumpTruckId]);
 
     useEffect(() => {
         dumpTruckOwnerId && setInput(prev => ({ ...prev, dumpTruckOwner_id:dumpTruckOwnerId }));
