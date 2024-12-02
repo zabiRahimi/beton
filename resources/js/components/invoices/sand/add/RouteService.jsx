@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useEffect, useRef } from 'react';
 
-
 const RouteService = ({
   setLoading,
   setTicketNumber,
@@ -124,7 +123,6 @@ const RouteService = ({
     if (sandStores.length > 0) {
        options = sandStores.map(data => ({
         value: data.id,
-        cementStoreName: data.silo,
         html: <div className=" divSiloSeletcFB">
           <span className=" siloSeletctFB">
             {data.silo}

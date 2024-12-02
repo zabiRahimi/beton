@@ -29,7 +29,6 @@ const Add = () => {
     const remittanceIdRef = useRef(null);
     const remittanceIdError = useRef(null);
     const billNumberError = useRef(null);
-    const remittanceNumberError = useRef(null);
     const timeRef = useRef(null);
     const dateRef = useRef(null);
     const dateError = useRef(null);
@@ -83,6 +82,9 @@ const Add = () => {
     const [driverOptions, setDriverOptions] = useState([])
     const [sandStoreOptions, setSandStoreOptions]= useState([]);
 
+    const [dumpTruckId, setDumpTruckId] = useState('');
+    const [dumpTruckOwnerId, setDumpTruckOwnerId] = useState('');
+
     const [dumpTruckSelected, setDumpTruckSelected] = useState('');
     const [dumpTruckOwnerSelected, setDumpTruckOwnerSelected] = useState('');
     const [driverIdSelected, setDriverIdSelected] = useState('');
@@ -101,7 +103,7 @@ const Add = () => {
 
     const [input, setInput] = useState({
         factroy: '',
-        remittanceNumber: '',
+        sandRemittance_id: '',
         billNumber: '',
         time: '',
         date: '',
@@ -109,11 +111,12 @@ const Add = () => {
         weight: '',
         unitPrice: '',
         totalPrice: '',
-        dumpTruckOwner: '',
-        dumpTruck: '',
-        driverId: '',
+        truck_id: '',
+        dumpTruckOwner_id: '',
+        driver_Id: '',
         unitFare: '',
         totalFare: '',
+        sandStore_id:'',
         description: ''
     });
     RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
@@ -150,7 +153,26 @@ const Add = () => {
     //         // }
     //     });
     // }
+    useEffect(() => {
+        remittanceId && setInput(prev => ({ ...prev, sandRemittance_id:remittanceId }));
+    }, [remittanceId]);
 
+    useEffect(() => {
+        truck_id && setInput(prev => ({ ...prev, truck_id:truckId }));
+    }, [truck_id]);
+
+    useEffect(() => {
+        dumpTruckOwnerId && setInput(prev => ({ ...prev, dumpTruckOwner_id:dumpTruckOwnerId }));
+    }, [dumpTruckOwnerId]);
+
+    useEffect(() => {
+        driverId && setInput(prev => ({ ...prev, driver_id:driverId }));
+    }, [driverId]);
+
+    useEffect(() => {
+        driverId && setInput(prev => ({ ...prev, driver_id:driverId }));
+    }, [driverId]);
+    
 
     const handleSetDate = (e, input) => {
         let { value } = e.target,
@@ -582,7 +604,6 @@ const Add = () => {
                                     />
                                 </div>
                                 <i className="icofont-ui-rating starFB" />
-
                             </div>
                             <div className="errorContainerFB elementError" id='dumpTruckError' ref={dumpTruckError}> </div>
                         </div>
@@ -607,7 +628,6 @@ const Add = () => {
                                     />
                                 </div>
                                 <i className="icofont-ui-rating starFB" />
-
                             </div>
                             <div className="errorContainerFB elementError" id='driverError' ref={driverError}> </div>
                         </div>
