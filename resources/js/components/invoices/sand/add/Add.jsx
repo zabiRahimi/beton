@@ -11,6 +11,7 @@ import RouteService from "./RouteService";
 import SearchMixersSelect from "../../searchSelectZabi/SearchMixersSelect";
 import SearchDriversSelect from "../../searchSelectZabi/SearchDriversSelect";
 import HeadPage from '../HeadPage';
+import { handleSetTime, handleSetDate, htmlFor, formatNub } from './Helper';
 
 const Add = () => {
     let navigate = useNavigate();
@@ -35,13 +36,16 @@ const Add = () => {
     const timeError = useRef(null);
     const typeSandRef = useRef(null);
     const typeSandError = useRef(null);
+    const weightRef = useRef(null);
     const weightError = useRef(null);
+    const unitPriceRef = useRef(null);
     const unitPriceError = useRef(null);
     const totalPriceError = useRef(null);
     const dumpTruckRef = useRef(null);
     const dumpTruckError = useRef(null);
     const driverRef = useRef(null);
     const driverError = useRef(null);
+    const unitFareRef = useRef(null);
     const unitFareError = useRef(null);
     const totalFareError = useRef(null);
     const sandStoreRef = useRef(null);
@@ -80,14 +84,15 @@ const Add = () => {
     const [dumpTruckOptions, setDumpTruckOptions] = useState([]);
     const [drivers, setDrivers] = useState('');
     const [driverOptions, setDriverOptions] = useState([])
-    const [sandStoreOptions, setSandStoreOptions]= useState([]);
+    const [sandStoreOptions, setSandStoreOptions] = useState([]);
+    const [sandStoreId, setSandStoreId] = useState('');
 
     const [dumpTruckId, setDumpTruckId] = useState('');
     const [dumpTruckOwnerId, setDumpTruckOwnerId] = useState('');
 
     const [dumpTruckSelected, setDumpTruckSelected] = useState('');
     const [dumpTruckOwnerSelected, setDumpTruckOwnerSelected] = useState('');
-    const [driverIdSelected, setDriverIdSelected] = useState('');
+    const [driverId, setDrvierId] = useState('');
     const [date, setDate] = useState({
         day: '',
         month: '',
@@ -102,7 +107,6 @@ const Add = () => {
     const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
 
     const [input, setInput] = useState({
-        factroy: '',
         sandRemittance_id: '',
         billNumber: '',
         time: '',
@@ -113,14 +117,14 @@ const Add = () => {
         totalPrice: '',
         truck_id: '',
         dumpTruckOwner_id: '',
-        driver_Id: '',
+        driver_id: '',
         unitFare: '',
         totalFare: '',
-        sandStore_id:'',
+        sandStore_id: '',
         description: ''
     });
     RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
-    
+
     const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: dumpTrucks });
 
     const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
@@ -154,156 +158,99 @@ const Add = () => {
     //     });
     // }
     useEffect(() => {
-        remittanceId && setInput(prev => ({ ...prev, sandRemittance_id:remittanceId }));
+        remittanceId && setInput(prev => ({ ...prev, sandRemittance_id: remittanceId }));
     }, [remittanceId]);
 
     useEffect(() => {
-        dumpTruckId && setInput(prev => ({ ...prev, truck_id:dumpTruckId }));
+        typeSandSelected && setInput(prev => ({ ...prev, tyepSand: typeSandSelected }));
+    }, [typeSandSelected]);
+
+    useEffect(() => {
+        dumpTruckId && setInput(prev => ({ ...prev, truck_id: dumpTruckId }));
     }, [dumpTruckId]);
 
     useEffect(() => {
-        dumpTruckOwnerId && setInput(prev => ({ ...prev, dumpTruckOwner_id:dumpTruckOwnerId }));
+        dumpTruckOwnerId && setInput(prev => ({ ...prev, dumpTruckOwner_id: dumpTruckOwnerId }));
     }, [dumpTruckOwnerId]);
 
     useEffect(() => {
-        driverId && setInput(prev => ({ ...prev, driver_id:driverId }));
+        driverId && setInput(prev => ({ ...prev, driver_id: driverId }));
     }, [driverId]);
+
 
     useEffect(() => {
-        driverId && setInput(prev => ({ ...prev, driver_id:driverId }));
-    }, [driverId]);
-    
+        sandStoreId && setInput(prev => ({ ...prev, sandStore_id: sandStoreId }));
+    }, [sandStoreId]);
+    console.log(input);
 
-    const handleSetDate = (e, input) => {
-        let { value } = e.target,
-            valDate;
-        value = value.toString();
-        if (input == 'day') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-                setDate(prev => ({ ...prev, [input]: value }));
+    // const handleSetDate = (e, input) => {
+    //     let { value } = e.target,
+    //         valDate;
+    //     value = value.toString();
+    //     if (input == 'day') {
+    //         (value != 0 && value.length == 1) && (value = '0' + value);
+    //         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+    //         if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
+    //             setDate(prev => ({ ...prev, [input]: value }));
 
-            } else {
-                e.target.value = date.day;
-            }
-            valDate = date.year + '-' + date.month + '-' + value;
+    //         } else {
+    //             e.target.value = date.day;
+    //         }
+    //         valDate = date.year + '-' + date.month + '-' + value;
 
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-
-        } else if (input == 'month') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-            }
-            else {
-                e.target.value = date.month;
-            }
-            valDate = date.year + '-' + value + '-' + date.day;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        } else if (input = 'year') {
-            if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-                setDate(prev => ({ ...prev, [input]: value }));
-
-            } else {
-                e.target.value = date.year;
-            }
-            valDate = value + '-' + date.month + '-' + date.day;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        }
-    }
-
-    const handleSetTime = (e, input) => {
-        let { value } = e.target,
-            valTime;
-        value = value.toString();
-        if (input == 'second') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-
-            } else {
-
-                e.target.value = time.second;
-            }
-            valTime = time.hour + ':' + time.minute + ':' + value;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
+    //         // setInput(perv => {
+    //         //     let newInvoice;
+    //         //     newInvoice = [...perv.invoice];
+    //         //     newInvoice[i] = { ...newInvoice[i], date: valDate };
+    //         //     return { ...perv, invoice: newInvoice };
+    //         // });
 
 
-        } else if (input == 'minute') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+    //     } else if (input == 'month') {
+    //         (value != 0 && value.length == 1) && (value = '0' + value);
+    //         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
+    //         if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
+    //             setDate(prev => ({ ...prev, [input]: value }));
+    //         }
+    //         else {
+    //             e.target.value = date.month;
+    //         }
+    //         valDate = date.year + '-' + value + '-' + date.day;
 
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
+    //         // setInput(perv => {
+    //         //     let newInvoice;
+    //         //     newInvoice = [...perv.invoice];
+    //         //     newInvoice[i] = { ...newInvoice[i], date: valDate };
+    //         //     return { ...perv, invoice: newInvoice };
+    //         // });
+
+    //     } else if (input = 'year') {
+    //         if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
+    //             setDate(prev => ({ ...prev, [input]: value }));
+
+    //         } else {
+    //             e.target.value = date.year;
+    //         }
+    //         valDate = value + '-' + date.month + '-' + date.day;
+
+    //         // setInput(perv => {
+    //         //     let newInvoice;
+    //         //     newInvoice = [...perv.invoice];
+    //         //     newInvoice[i] = { ...newInvoice[i], date: valDate };
+    //         //     return { ...perv, invoice: newInvoice };
+    //         // });
+
+    //     }
+    // }
 
 
-            } else {
-                e.target.value = time.minute;
-            }
-
-            valTime = time.hour + ':' + value + ':' + time.second;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        } else if (input = 'hour') {
-            (value != 0 && value.length == 1) && (value = '0' + value);
-            (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-
-            if (value == '' || (Number(value) >= 0 && Number(value) <= 24)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-
-            } else {
-                e.target.value = time.hour;
-            }
-
-            valTime = value + ':' + time.minute + ':' + time.second;
-
-            // setInput(perv => {
-            //     let newInvoice;
-            //     newInvoice = [...perv.invoice];
-            //     newInvoice[i] = { ...newInvoice[i], time: valTime };
-            //     return { ...perv, invoice: newInvoice };
-            // });
-
-        }
-    }
 
     const handleSaveValInput = (e, input) => {
+        let { value } = e.target;
+        if (['weight', 'unitPrice', 'unitFare'].includes(input)) {
+            value = value.replace(/,/g, '');
+        }
+        setInput(prev => ({ ...prev, [input]: value }));
     }
 
     const clearInputError = (e, refErr, time = false, date = false) => {
@@ -352,7 +299,7 @@ const Add = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="billNumber"
-                                    defaultValue={input.remittanceNumber}
+                                    defaultValue={input.billNumber}
                                     onInput={e => handleSaveValInput(e, 'billNumber')}
                                     onFocus={e => clearInputError(e, billNumberError)}
                                 />
@@ -392,7 +339,8 @@ const Add = () => {
                                             type="text"
                                             className="inputTextDateACus inputDayTDACus element"
                                             placeholder="00"
-                                            onInput={(e) => handleSetTime(e, 'second')}
+                                            value={time.second || ''}
+                                            onInput={(e) => handleSetTime(e, 'second', time, setTime, setInput)}
                                             onFocus={(e) => clearInputError(e, timeError, true)}
                                         />
                                         <span>:</span>
@@ -400,7 +348,8 @@ const Add = () => {
                                             type="text"
                                             className="inputTextDateACus inputMonthTDACus element"
                                             placeholder="00"
-                                            onInput={(e) => handleSetTime(e, 'minute')}
+                                            value={time.minute || ''}
+                                            onInput={(e) => handleSetTime(e, 'minute', time, setTime, setInput)}
                                             onFocus={(e) => clearInputError(e, timeError, true)}
                                         />
                                         <span>:</span>
@@ -408,7 +357,8 @@ const Add = () => {
                                             type="text"
                                             className="inputTextDateACus inputYearTDACus element"
                                             placeholder="00"
-                                            onInput={(e) => { handleSetTime(e, 'hour') }}
+                                            value={time.hour || ''}
+                                            onInput={(e) => { handleSetTime(e, 'hour', time, setTime, setInput) }}
                                             onFocus={(e) => clearInputError(e, timeError, true)}
                                         />
                                         <i className="icofont-ui-rating starFB" />
@@ -417,7 +367,8 @@ const Add = () => {
                                     <div className="divDownDateAcus" >
                                         <select
                                             className="element"
-                                            onChange={(e) => handleSetTime(e, 'second')}
+                                            value={time.second || ''}
+                                            onChange={(e) => handleSetTime(e, 'second', time, setTime, setInput)}
                                             onClick={(e) => clearInputError(e, timeError, true)}
                                         >
                                             <option value=""> ثانیه </option>
@@ -425,7 +376,8 @@ const Add = () => {
                                         </select>
                                         <select
                                             className="element"
-                                            onChange={(e) => handleSetTime(e, 'minute')}
+                                            value={time.minute || ''}
+                                            onChange={(e) => handleSetTime(e, 'minute', time, setTime, setInput)}
                                             onClick={(e) => clearInputError(e, timeError, true)}
                                         >
                                             <option value=""> دقیقه </option>
@@ -433,7 +385,8 @@ const Add = () => {
                                         </select>
                                         <select
                                             className="element"
-                                            onChange={(e) => { handleSetTime(e, 'hour') }}
+                                            value={time.hour || ''}
+                                            onChange={(e) => { handleSetTime(e, 'hour', time, setTime, setInput) }}
                                             onClick={(e) => clearInputError(e, timeError, true)}
                                         >
                                             <option value=""> ساعت </option>
@@ -455,8 +408,8 @@ const Add = () => {
                                             className="inputTextDateACus inputDayTDACus element"
                                             placeholder="1"
                                             id="day"
-                                            defaultValue={date.day}
-                                            onInput={(e) => handleSetDate(e, 'day')}
+                                            value={date.day || ''}
+                                            onInput={(e) => handleSetDate(e, 'day', date, setDate, setInput)}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
                                         />
                                         <span>/</span>
@@ -464,8 +417,8 @@ const Add = () => {
                                             type="text"
                                             className="inputTextDateACus inputMonthTDACus element"
                                             placeholder="1"
-                                            defaultValue={date.month}
-                                            onInput={(e) => handleSetDate(e, 'month')}
+                                            value={date.month || ''}
+                                            onInput={(e) => handleSetDate(e, 'month', date, setDate, setInput)}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
                                         />
                                         <span>/</span>
@@ -473,8 +426,8 @@ const Add = () => {
                                             type="text"
                                             className="inputTextDateACus inputYearTDACus element"
                                             placeholder="1300"
-                                            defaultValue={date.year}
-                                            onInput={(e) => { handleSetDate(e, 'year') }}
+                                            value={date.year || ''}
+                                            onInput={(e) => { handleSetDate(e, 'year', date, setDate, setInput) }}
                                             onFocus={(e) => clearInputError(e, dateError, false, true)}
                                         />
                                         <i className="icofont-ui-rating starFB" />
@@ -483,8 +436,8 @@ const Add = () => {
                                     <div className="divDownDateAcus" >
                                         <select
                                             className="element"
-                                            defaultValue={date.day}
-                                            onChange={(e) => handleSetDate(e, 'day')}
+                                            value={date.day || ''}
+                                            onChange={(e) => handleSetDate(e, 'day', date, setDate, setInput)}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
                                         >
                                             <option value="">روز</option>
@@ -492,8 +445,8 @@ const Add = () => {
                                         </select>
                                         <select
                                             className="element"
-                                            defaultValue={date.month}
-                                            onChange={(e) => handleSetDate(e, 'month')}
+                                            value={date.month || ''}
+                                            onChange={(e) => handleSetDate(e, 'month', date, setDate, setInput)}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
                                         >
                                             <option value="">ماه</option>
@@ -501,8 +454,8 @@ const Add = () => {
                                         </select>
                                         <select
                                             className="element"
-                                            defaultValue={date.year}
-                                            onChange={(e) => { handleSetDate(e, 'year') }}
+                                            value={date.year || ''}
+                                            onChange={(e) => { handleSetDate(e, 'year', date, setDate, setInput) }}
                                             onClick={(e) => clearInputError(e, dateError, false, true)}
                                         >
                                             <option value="">سال</option>
@@ -540,12 +493,22 @@ const Add = () => {
                                 <label htmlFor="weight">وزن بار</label>
                                 <input
                                     type="text"
-                                    className="inputTextFB element"
+                                    className="inputTextUnitFB element"
                                     id="weight"
                                     defaultValue={input.weight}
-                                    onInput={e => handleSaveValInput(e, 'weight')}
+                                    onInput={e => {
+                                        handleSaveValInput(e, 'weight');
+                                        formatNub(weightRef.current);
+                                    }}
                                     onFocus={e => clearInputError(e, weightError)}
+                                    ref={weightRef}
                                 />
+                                <span
+                                    className="unitFB"
+                                    onClick={() => htmlFor('weight')}
+                                >
+                                    کیلوگرم
+                                </span>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
                             <div className="errorContainerFB elementError" id="weightError" ref={weightError}> </div>
@@ -555,12 +518,21 @@ const Add = () => {
                                 <label htmlFor="unitPrice">قیمت واحد</label>
                                 <input
                                     type="text"
-                                    className="inputTextFB element"
+                                    className="inputTextUnitFB ltrFB element"
                                     id="unitPrice"
-                                    defaultValue={input.unitPrice}
-                                    onInput={e => handleSaveValInput(e, 'unitPrice')}
+                                    onInput={e => {
+                                        handleSaveValInput(e, 'unitPrice');
+                                        formatNub(weightRef.current);
+                                    }}
                                     onFocus={e => clearInputError(e, unitPriceError)}
+                                    ref={unitPriceRef}
                                 />
+                                <span
+                                    className="unitFB"
+                                    onClick={() => htmlFor('unitPrice')}
+                                >
+                                    تومان
+                                </span>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
                             <div className="errorContainerFB elementError" id="unitPriceError" ref={unitPriceError}> </div>
@@ -593,8 +565,8 @@ const Add = () => {
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
                                         options={dumpTruckOptions}
-                                        saveOption={setDumpTruckSelected}
-                                        saveOption2={setDumpTruckOwnerSelected}
+                                        saveOption={setDumpTruckId}
+                                        saveOption2={setDumpTruckOwnerId}
                                         input={inputMixerSearch}
                                         optionsSearched={optionsMixersSearched}
                                         warning={mixerSearchWarning}
@@ -618,7 +590,7 @@ const Add = () => {
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
                                         options={driverOptions}
-                                        saveOption={setRemittanceId}
+                                        saveOption={setDrvierId}
                                         input={inputDriverSearch}
                                         optionsSearched={optionsDriversSearched}
                                         warning={driverSearchWarning}
@@ -636,11 +608,12 @@ const Add = () => {
                                 <label htmlFor="unitFare">کرایه هر تن</label>
                                 <input
                                     type="text"
-                                    className="inputTextFB element"
+                                    className="inputTextUnitFB element"
                                     id="unitFare"
                                     defaultValue={input.unitPrice}
                                     onInput={e => handleSaveValInput(e, 'unitPrice')}
                                     onFocus={e => clearInputError(e, unitPriceError)}
+                                    ref={unitFareRef}
                                 />
                                 <i className="icofont-ui-rating starFB" />
                             </div>
@@ -674,7 +647,7 @@ const Add = () => {
                                     <SelectZabi
                                         primaryLabel='انتخاب'
                                         options={sandStoreOptions}
-                                        saveOption={setSandStoreIdSelected}
+                                        saveOption={setSandStoreId}
                                         ref={sandStoreRef}
                                     />
                                 </div>

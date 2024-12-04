@@ -1,5 +1,5 @@
 
-export const handleSetDate = (e, input, date, setDate, setInput, currentInput, currentSelect) => {
+export const handleSetDate = (e, input, date, setDate, setInput) => {
     let { value } = e.target,
         valDate;
     value = value.toString();
@@ -9,8 +9,7 @@ export const handleSetDate = (e, input, date, setDate, setInput, currentInput, c
             value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
             if (value === '' || (Number(value) >= 0 && Number(value) <= 31)) {
                 setDate(prev => ({ ...prev, [input]: value }));
-                currentInput.value = value;
-                currentSelect.value = value;
+               
             } else {
                 e.target.value = date.day;
             }
@@ -21,8 +20,7 @@ export const handleSetDate = (e, input, date, setDate, setInput, currentInput, c
             value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
             if (value === '' || (Number(value) >= 0 && Number(value) <= 12)) {
                 setDate(prev => ({ ...prev, [input]: value }));
-                currentInput.value = value;
-                currentSelect.value = value;
+                
             } else {
                 e.target.value = date.month;
             }
@@ -31,8 +29,7 @@ export const handleSetDate = (e, input, date, setDate, setInput, currentInput, c
         case 'year':
             if (value === '' || (Number(value) >= 1 && Number(value) <= 1500)) {
                 setDate(prev => ({ ...prev, [input]: value }));
-                currentInput.value = value;
-                currentSelect.value = value;
+                
             } else {
                 e.target.value = date.year;
             }
@@ -44,6 +41,46 @@ export const handleSetDate = (e, input, date, setDate, setInput, currentInput, c
     setInput(prev => ({ ...prev, date: valDate }));
 }
 
+export const handleSetTime = (e, input, time, setTime, setInput) => {
+    let { value } = e.target,
+        valTime;
+    value = value.toString();
+    switch (input) {
+        case 'second':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 60)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = time.second;
+            }
+            valTime = `${time.hour}:${time.minute}:${value}`;
+            break;
+        case 'minute':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 60)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = time.minute;
+            }
+            valTime = `${time.hour}:${value}:${time.second}`;
+            break;
+        case 'hour':
+            value = (value != 0 && value.length === 1) ? '0' + value : value;
+            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
+            if (value === '' || (Number(value) >= 0 && Number(value) <= 24)) {
+                setTime(prev => ({ ...prev, [input]: value }));
+            } else {
+                e.target.value = time.hour;
+            }
+            valTime = `${value}:${time.minute}:${time.second}`;
+            break;
+        default:
+            return;
+    }
+    setInput(prev => ({ ...prev, time: valTime }));
+}
 
 /**
 * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
