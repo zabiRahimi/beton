@@ -197,3 +197,46 @@ export const handleRemoveAllError = () => {
 
 }
 
+export  const handleTotalPriceCalculation = (e, i, element, input, setInput, refInvoice) => {
+    let cubicMeters,
+        totalPrice,
+        { value } = e.target;
+    value = value.replace(/,/g, '');
+    value = Number(value);
+
+    if (element == 'weight') {
+        cubicMeters = value / 2300;
+        if (!Number.isInteger(cubicMeters)) {
+            cubicMeters = cubicMeters.toFixed(2);
+        }
+        let unitPrice = input.invoice[i].unitPrice;
+        if (Number.isInteger(Number(unitPrice))) {
+            totalPrice = unitPrice * cubicMeters;
+            setInput(perv => {
+                let newInvoice;
+                newInvoice = [...perv.invoice];
+                newInvoice[i] = { ...newInvoice[i], totalPrice };
+                return { ...perv, invoice: newInvoice };
+            });
+            refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+        }
+
+    } else if (element == 'unitPrice') {
+        let weight = input.invoice[i].weight;
+        if (weight && Number(weight)) {
+            cubicMeters = weight / 2300;
+            if (!Number.isInteger(cubicMeters)) {
+                cubicMeters = cubicMeters.toFixed(2);
+            }
+            totalPrice = value * cubicMeters;
+            setInput(perv => {
+                let newInvoice;
+                newInvoice = [...perv.invoice];
+                newInvoice[i] = { ...newInvoice[i], totalPrice };
+                return { ...perv, invoice: newInvoice };
+            });
+            refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+        }
+    }
+}
+
