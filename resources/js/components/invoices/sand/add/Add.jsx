@@ -47,7 +47,8 @@ const Add = () => {
     const driverError = useRef(null);
     const unitFareRef = useRef(null);
     const unitFareError = useRef(null);
-    const totalFareError = useRef(null);
+    // const totalFareError = useRef(null);
+    const totalFarRef = useRef(null);
     const sandStoreRef = useRef(null);
     const sandStoreError = useRef(null);
     const hasCalledGetSandSellers = useRef(false);
@@ -182,69 +183,6 @@ const Add = () => {
         sandStoreId && setInput(prev => ({ ...prev, sandStore_id: sandStoreId }));
     }, [sandStoreId]);
     console.log(input);
-
-    // const handleSetDate = (e, input) => {
-    //     let { value } = e.target,
-    //         valDate;
-    //     value = value.toString();
-    //     if (input == 'day') {
-    //         (value != 0 && value.length == 1) && (value = '0' + value);
-    //         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-    //         if (value == '' || (Number(value) >= 0 && Number(value) <= 31)) {
-    //             setDate(prev => ({ ...prev, [input]: value }));
-
-    //         } else {
-    //             e.target.value = date.day;
-    //         }
-    //         valDate = date.year + '-' + date.month + '-' + value;
-
-    //         // setInput(perv => {
-    //         //     let newInvoice;
-    //         //     newInvoice = [...perv.invoice];
-    //         //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-    //         //     return { ...perv, invoice: newInvoice };
-    //         // });
-
-
-    //     } else if (input == 'month') {
-    //         (value != 0 && value.length == 1) && (value = '0' + value);
-    //         (value.length >= 3 && value[0] === '0') && (value = value.slice(1));
-    //         if (value == '' || (Number(value) >= 0 && Number(value) <= 12)) {
-    //             setDate(prev => ({ ...prev, [input]: value }));
-    //         }
-    //         else {
-    //             e.target.value = date.month;
-    //         }
-    //         valDate = date.year + '-' + value + '-' + date.day;
-
-    //         // setInput(perv => {
-    //         //     let newInvoice;
-    //         //     newInvoice = [...perv.invoice];
-    //         //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-    //         //     return { ...perv, invoice: newInvoice };
-    //         // });
-
-    //     } else if (input = 'year') {
-    //         if (value == '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-    //             setDate(prev => ({ ...prev, [input]: value }));
-
-    //         } else {
-    //             e.target.value = date.year;
-    //         }
-    //         valDate = value + '-' + date.month + '-' + date.day;
-
-    //         // setInput(perv => {
-    //         //     let newInvoice;
-    //         //     newInvoice = [...perv.invoice];
-    //         //     newInvoice[i] = { ...newInvoice[i], date: valDate };
-    //         //     return { ...perv, invoice: newInvoice };
-    //         // });
-
-    //     }
-    // }
-
-
-
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
         if (['weight', 'unitPrice', 'unitFare'].includes(input)) {
@@ -493,9 +431,8 @@ const Add = () => {
                                 <label htmlFor="weight">وزن بار</label>
                                 <input
                                     type="text"
-                                    className="inputTextUnitFB element"
+                                    className="inputTextUnitFB ltrFB element"
                                     id="weight"
-                                    defaultValue={input.weight}
                                     onInput={e => {
                                         handleSaveValInput(e, 'weight');
                                         formatNub(weightRef.current);
@@ -522,7 +459,7 @@ const Add = () => {
                                     id="unitPrice"
                                     onInput={e => {
                                         handleSaveValInput(e, 'unitPrice');
-                                        formatNub(weightRef.current);
+                                        formatNub(unitPriceRef.current);
                                     }}
                                     onFocus={e => clearInputError(e, unitPriceError)}
                                     ref={unitPriceRef}
@@ -608,18 +545,40 @@ const Add = () => {
                                 <label htmlFor="unitFare">کرایه هر تن</label>
                                 <input
                                     type="text"
-                                    className="inputTextUnitFB element"
+                                    className="inputTextUnitFB ltrFB element"
                                     id="unitFare"
-                                    defaultValue={input.unitPrice}
-                                    onInput={e => handleSaveValInput(e, 'unitPrice')}
+                                    onInput={e => {
+                                        handleSaveValInput(e, 'unitPrice');
+                                        formatNub(unitFareRef.current);
+                                }}
                                     onFocus={e => clearInputError(e, unitPriceError)}
                                     ref={unitFareRef}
                                 />
+                                <span
+                                    className="unitFB"
+                                    onClick={() => htmlFor('unitFare')}
+                                >
+                                    تومان
+                                </span>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
                             <div className="errorContainerFB elementError" id="billNumberError" ref={unitPriceError}> </div>
                         </div>
+
                         <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label> کل کرایه </label>
+                                <div className="mainTotalPriceACSL_FB">
+                                    <div className="totalPriceACSL_FB"
+                                        ref={totalFarRef}
+                                    >0</div>
+                                    <span className="spanTotalPriceACSL_FB">
+                                        تومان
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="totalFare">کل کرایه</label>
                                 <input
@@ -633,7 +592,7 @@ const Add = () => {
                                 <i className="icofont-ui-rating starFB" />
                             </div>
                             <div className="errorContainerFB elementError" id="totalFareError" ref={totalFareError}> </div>
-                        </div>
+                        </div> */}
                     </section>
                     <section className="sectionFB">
                         <div className="containerInputFB">
