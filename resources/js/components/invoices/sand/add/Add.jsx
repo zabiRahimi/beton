@@ -11,7 +11,7 @@ import RouteService from "./RouteService";
 import SearchMixersSelect from "../../searchSelectZabi/SearchMixersSelect";
 import SearchDriversSelect from "../../searchSelectZabi/SearchDriversSelect";
 import HeadPage from '../HeadPage';
-import { handleSetTime, handleSetDate, htmlFor, formatNub } from './Helper';
+import { handleSetTime, handleSetDate, htmlFor, formatNub, handleTotalPriceCalculation } from './Helper';
 
 const Add = () => {
     let navigate = useNavigate();
@@ -48,6 +48,7 @@ const Add = () => {
     const unitFareRef = useRef(null);
     const unitFareError = useRef(null);
     // const totalFareError = useRef(null);
+    const totalPriceRef = useRef(null);
     const totalFarRef = useRef(null);
     const sandStoreRef = useRef(null);
     const sandStoreError = useRef(null);
@@ -436,6 +437,7 @@ const Add = () => {
                                     onInput={e => {
                                         handleSaveValInput(e, 'weight');
                                         formatNub(weightRef.current);
+                                        handleTotalPriceCalculation(e, 'weight', input, setInput, weight.current)
                                     }}
                                     onFocus={e => clearInputError(e, weightError)}
                                     ref={weightRef}
@@ -474,7 +476,22 @@ const Add = () => {
                             </div>
                             <div className="errorContainerFB elementError" id="unitPriceError" ref={unitPriceError}> </div>
                         </div>
+
+                        
                         <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label> قیمت کل </label>
+                                <div className="mainTotalPriceACSL_FB">
+                                    <div className="totalPriceACSL_FB"
+                                        ref={totalPriceRef}
+                                    >0</div>
+                                    <span className="spanTotalPriceACSL_FB">
+                                        تومان
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="totalPrice">قیمت کل</label>
                                 <input
@@ -488,7 +505,7 @@ const Add = () => {
                                 <i className="icofont-ui-rating starFB" />
                             </div>
                             <div className="errorContainerFB elementError" id="totalPriceError" ref={totalPriceError}> </div>
-                        </div>
+                        </div> */}
                     </section>
                     <section className="sectionFB">
                         <div className="containerInputFB">

@@ -9,7 +9,7 @@ export const handleSetDate = (e, input, date, setDate, setInput) => {
             value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
             if (value === '' || (Number(value) >= 0 && Number(value) <= 31)) {
                 setDate(prev => ({ ...prev, [input]: value }));
-               
+
             } else {
                 e.target.value = date.day;
             }
@@ -20,7 +20,7 @@ export const handleSetDate = (e, input, date, setDate, setInput) => {
             value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
             if (value === '' || (Number(value) >= 0 && Number(value) <= 12)) {
                 setDate(prev => ({ ...prev, [input]: value }));
-                
+
             } else {
                 e.target.value = date.month;
             }
@@ -29,7 +29,7 @@ export const handleSetDate = (e, input, date, setDate, setInput) => {
         case 'year':
             if (value === '' || (Number(value) >= 1 && Number(value) <= 1500)) {
                 setDate(prev => ({ ...prev, [input]: value }));
-                
+
             } else {
                 e.target.value = date.year;
             }
@@ -156,7 +156,7 @@ export const formatNub = (refCurrent) => {
     }
 }
 
-export  const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply = true) => {
+export const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply = true) => {
     setInput({
         buyerName: '',
         buyerLastName: '',
@@ -164,7 +164,7 @@ export  const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply 
         remittanceNumber: '',
         date: '',
         price: '',
-        remainingPrice:'',
+        remainingPrice: '',
         factory: '',
         description: ''
     });
@@ -180,7 +180,7 @@ export  const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply 
     if (apply) {
         window.scrollTo({ top: 0 });
     }
-    
+
 }
 
 
@@ -197,46 +197,24 @@ export const handleRemoveAllError = () => {
 
 }
 
-export  const handleTotalPriceCalculation = (e, i, element, input, setInput, refInvoice) => {
-    let cubicMeters,
-        totalPrice,
+export const handleTotalPriceCalculation = (e, element, input, setInput, refCurrent) => {
+    let totalPrice,
         { value } = e.target;
     value = value.replace(/,/g, '');
     value = Number(value);
 
     if (element == 'weight') {
-        cubicMeters = value / 2300;
-        if (!Number.isInteger(cubicMeters)) {
-            cubicMeters = cubicMeters.toFixed(2);
-        }
-        let unitPrice = input.invoice[i].unitPrice;
+        let unitPrice = input.unitPrice;
         if (Number.isInteger(Number(unitPrice))) {
-            totalPrice = unitPrice * cubicMeters;
-            setInput(perv => {
-                let newInvoice;
-                newInvoice = [...perv.invoice];
-                newInvoice[i] = { ...newInvoice[i], totalPrice };
-                return { ...perv, invoice: newInvoice };
-            });
-            refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+            totalPrice = unitPrice * value;
         }
-
-    } else if (element == 'unitPrice') {
-        let weight = input.invoice[i].weight;
+    } else {
+        let weight = input.weight;
         if (weight && Number(weight)) {
-            cubicMeters = weight / 2300;
-            if (!Number.isInteger(cubicMeters)) {
-                cubicMeters = cubicMeters.toFixed(2);
-            }
-            totalPrice = value * cubicMeters;
-            setInput(perv => {
-                let newInvoice;
-                newInvoice = [...perv.invoice];
-                newInvoice[i] = { ...newInvoice[i], totalPrice };
-                return { ...perv, invoice: newInvoice };
-            });
-            refInvoice[`totalPrice${i}`].current.innerHTML = totalPrice.toLocaleString();
+            totalPrice =weight* value  ;
         }
     }
+    setInput(perv => ({...perv, totalPrice}));
+    refCurrent.innerHTML = totalPrice.toLocaleString();
 }
 
