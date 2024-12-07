@@ -11,7 +11,15 @@ import RouteService from "./RouteService";
 import SearchMixersSelect from "../../searchSelectZabi/SearchMixersSelect";
 import SearchDriversSelect from "../../searchSelectZabi/SearchDriversSelect";
 import HeadPage from '../HeadPage';
-import { handleSetTime, handleSetDate, htmlFor, formatNub, handleTotalPriceCalculation } from './Helper';
+import {
+    handleSetTime,
+    handleSetDate,
+    htmlFor,
+    formatNub,
+    resetForm,
+    handleTotalPriceCalculation,
+    handleTotalFareCalculation
+} from './Helper';
 
 const Add = () => {
     let navigate = useNavigate();
@@ -49,7 +57,7 @@ const Add = () => {
     const unitFareError = useRef(null);
     // const totalFareError = useRef(null);
     const totalPriceRef = useRef(null);
-    const totalFarRef = useRef(null);
+    const totalFareRef = useRef(null);
     const sandStoreRef = useRef(null);
     const sandStoreError = useRef(null);
     const hasCalledGetSandSellers = useRef(false);
@@ -133,7 +141,7 @@ const Add = () => {
     // const fetchData = async() =>{
     //     await axios.get("/api/v1/sandInvoice/fetchData").then((response) => {
     //         let data = response.data;
-    //         console.log(data);
+
     //         // if (datas.length == 0) {
     //         //     MySwal.fire({
     //         //         icon: "warning",
@@ -199,8 +207,61 @@ const Add = () => {
         time && timeRef.current.classList.remove('borderRedFB');
     }
 
-    const handleSubmit = () => {
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const response = await axios.post(
+                '/api/v1/sands',
+                { ...input },
+                {
+                    headers:
+                    {
+                        'X-CSRF-TOKEN': token,
+                        'Content-Type': 'application/json; charset=utf-8'
+                    }
+                }
+            );
+
+            setTicketNumber(ticketNumber + 1);
+            form.current.reset();
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "  متوجه شدم  ",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
+
+                didClose: () => resetForm(setInput, setDate, setFactory, factoryRef.current),
+            });
+        } catch (error) {
+            if (error.response && error.response.status == 422) {
+                let id = Object.keys(error.response.data.errors)[0];
+                const element = document.getElementById(id);
+
+                // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن
+                if (element) {
+                    let scrollPosition = window.scrollY || window.pageYOffset;
+                    const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                }
+
+                Object.entries(error.response.data.errors).map(([key, val]) => {
+                    // نادیده گرفتن خطای مربوط به remainingPrice
+                    if (key !== 'remainingPrice') {
+                        document.getElementById(key).classList.add('borderRedFB');
+                        document.getElementById(key + 'Error').innerHTML = val;
+                    }
+                });
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleResetForm = () => {
     }
@@ -437,7 +498,8 @@ const Add = () => {
                                     onInput={e => {
                                         handleSaveValInput(e, 'weight');
                                         formatNub(weightRef.current);
-                                        handleTotalPriceCalculation(e, 'weight', input, setInput, weight.current)
+                                        handleTotalPriceCalculation(e, 'weight', input, setInput, totalPriceRef.current);
+                                        handleTotalFareCalculation(e, 'weight', input, setInput, totalFareRef.current)
                                     }}
                                     onFocus={e => clearInputError(e, weightError)}
                                     ref={weightRef}
@@ -462,6 +524,7 @@ const Add = () => {
                                     onInput={e => {
                                         handleSaveValInput(e, 'unitPrice');
                                         formatNub(unitPriceRef.current);
+                                        handleTotalPriceCalculation(e, 'unitPrice', input, setInput, totalPriceRef.current)
                                     }}
                                     onFocus={e => clearInputError(e, unitPriceError)}
                                     ref={unitPriceRef}
@@ -477,7 +540,7 @@ const Add = () => {
                             <div className="errorContainerFB elementError" id="unitPriceError" ref={unitPriceError}> </div>
                         </div>
 
-                        
+
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label> قیمت کل </label>
@@ -565,9 +628,10 @@ const Add = () => {
                                     className="inputTextUnitFB ltrFB element"
                                     id="unitFare"
                                     onInput={e => {
-                                        handleSaveValInput(e, 'unitPrice');
+                                        handleSaveValInput(e, 'unitFare');
                                         formatNub(unitFareRef.current);
-                                }}
+                                        handleTotalFareCalculation(e, 'unitFare', input, setInput, totalFareRef.current)
+                                    }}
                                     onFocus={e => clearInputError(e, unitPriceError)}
                                     ref={unitFareRef}
                                 />
@@ -587,7 +651,7 @@ const Add = () => {
                                 <label> کل کرایه </label>
                                 <div className="mainTotalPriceACSL_FB">
                                     <div className="totalPriceACSL_FB"
-                                        ref={totalFarRef}
+                                        ref={totalFareRef}
                                     >0</div>
                                     <span className="spanTotalPriceACSL_FB">
                                         تومان

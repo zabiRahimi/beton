@@ -116,7 +116,6 @@ const Add = () => {
                 }
             }
         ).then((response) => {
-            const resutl = response.data.sandRemittance;
             setTicketNumber(ticketNumber + 1);
             form.current.reset();
             MySwal.fire({
