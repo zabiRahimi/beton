@@ -213,7 +213,7 @@ const Add = () => {
 
         try {
             const response = await axios.post(
-                '/api/v1/sands',
+                '/api/v1/sandInvoices',
                 { ...input },
                 {
                     headers:
