@@ -23,15 +23,29 @@ REM راه‌اندازی XAMPP در پس‌زمینه
 echo Starting XAMPP...
 %NIRCMD% exec hide cmd /c "cd C:\xampp && xampp_start.exe"
 
-REM توقف برای اطمینان از راه‌اندازی کامل سرویس‌ها
-timeout /t 10
+REM انتظار برای راه‌اندازی کامل XAMPP
+:wait_for_xampp
+timeout /t 1
+tasklist /FI "IMAGENAME eq httpd.exe" 2>NUL | find /I "httpd.exe" >NUL
+if "%ERRORLEVEL%"=="0" goto xampp_started
+goto wait_for_xampp
+
+:xampp_started
+echo XAMPP راه‌اندازی شد.
 
 REM اجرای دستور yarn dev در پس‌زمینه
 echo Starting React development server...
 %NIRCMD% exec hide cmd /c "cd C:\xampp\htdocs\beton && yarn dev"
 
-REM توقف برای اطمینان از راه‌اندازی کامل سرور توسعه ری‌اکت
-timeout /t 10
+REM انتظار برای راه‌اندازی کامل yarn dev
+:wait_for_yarn
+timeout /t 1
+tasklist /FI "IMAGENAME eq node.exe" 2>NUL | find /I "node.exe" >NUL
+if "%ERRORLEVEL%"=="0" goto yarn_started
+goto wait_for_yarn
+
+:yarn_started
+echo سرور توسعه React راه‌اندازی شد.
 
 REM راه‌اندازی سرور لاراول در پس‌زمینه
 echo Starting Laravel server...
@@ -39,14 +53,14 @@ start cmd /k %NIRCMD% exec hide cmd /c "cd C:\xampp\htdocs\beton && php artisan 
 
 REM باز کردن مرورگر فایرفاکس و اجرای برنامه
 start firefox http://localhost:8000
-
-REM نظارت بر مرورگر
+timeout /t 10
+REM نظارت بر تب مرورگر خاص 
 :loop
-tasklist /FI "IMAGENAME eq firefox.exe" 2>NUL | find /I /N "firefox.exe">NUL
-if "%ERRORLEVEL%"=="0" (
-    timeout /t 5
-    goto loop
-)
+for /f "tokens=1 delims=" %%i in (
+    'wmic process where "name='firefox.exe'" get commandline /format:csv ^| find /i "بتن بنا"'
+    ) do ( timeout /t 5 goto loop )
+
+:end
 
 REM توقف XAMPP
 %NIRCMD% exec hide cmd /c "cd C:\xampp && xampp_stop.exe"
