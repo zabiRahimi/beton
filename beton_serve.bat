@@ -1,207 +1,66 @@
-
-
 @echo off
-REM مسیر فایل موقت
-set TEMPFILE=C:\xampp\htdocs\beton\program_running.tmp
-
-REM بررسی وجود فایل موقت
-if exist "%TEMPFILE%" (
-    echo برنامه در حال اجرا است.
+REM Check if NirCmd exists
+where nircmd.exe > NUL 2>&1
+IF "%ERRORLEVEL%"=="1" (
+    echo NirCmd not found. Please make sure nircmd.exe is in the System32 directory.
     exit
 )
+echo NirCmd is installed and ready to use.
 
-REM ایجاد فایل موقت
-echo در حال اجرا > "%TEMPFILE%"
+REM Check if tab with title 'Concrete Builder' exists
+powershell -Command "Get-Process | Where-Object { $_.MainWindowTitle -like '*بتن بنا*' } > processes.txt"
+findstr "بتن بنا" processes.txt
+IF "%ERRORLEVEL%"=="1" (
+    echo 'Concrete Builder' tab is not found. Starting services...
 
-REM باز کردن صفحه انتظار در مرورگر پیش‌فرض
-start "" "C:\xampp\htdocs\beton\loading.html"
+    REM Start XAMPP
+    echo Starting XAMPP...
+    nircmd.exe exec hide "C:\xampp\xampp_start.exe"
+    timeout /t 10
 
-REM مسیر نسبی NirCmd
-set NIRCMD=%~dp0\nircmd.exe
+    REM Start yarn dev
+    echo Starting yarn dev...
+    start "" cmd /c "cd C:\xampp\htdocs\beton && yarn dev"
+    timeout /t 10
 
-REM راه‌اندازی XAMPP در پس‌زمینه
-echo Starting XAMPP...
-%NIRCMD% exec hide cmd /c "cd C:\xampp && xampp_start.exe"
+    REM Start Laravel server
+    echo Starting Laravel server...
+    start "" cmd /c "cd C:\xampp\htdocs\beton && php -S localhost:8000 -t public"
+    timeout /t 15
 
-REM انتظار برای راه‌اندازی کامل XAMPP
-:wait_for_xampp
-timeout /t 1
-tasklist /FI "IMAGENAME eq httpd.exe" 2>NUL | find /I "httpd.exe" >NUL
-if "%ERRORLEVEL%"=="0" goto xampp_started
-goto wait_for_xampp
+    REM Open browser and run the project
+    echo Opening browser...
+    start firefox http://localhost:8000
+    timeout /t 15
 
-:xampp_started
-echo XAMPP راه‌اندازی شد.
+    REM Monitor browser tab with title 'Concrete Builder'
+    :loop
+    powershell -Command "Get-Process | Where-Object { $_.MainWindowTitle -like '*بتن بنا*' } > processes.txt"
+    findstr "بتن بنا" processes.txt
+    timeout /t 10
+    IF "%ERRORLEVEL%"=="1" (
+        echo 'Concrete Builder' tab is closed.
+        goto end
+    )
 
-REM اجرای دستور yarn dev در پس‌زمینه
-echo Starting React development server...
-%NIRCMD% exec hide cmd /c "cd C:\xampp\htdocs\beton && yarn dev"
-
-REM انتظار برای راه‌اندازی کامل yarn dev
-:wait_for_yarn
-timeout /t 1
-tasklist /FI "IMAGENAME eq node.exe" 2>NUL | find /I "node.exe" >NUL
-if "%ERRORLEVEL%"=="0" goto yarn_started
-goto wait_for_yarn
-
-:yarn_started
-echo سرور توسعه React راه‌اندازی شد.
-
-REM راه‌اندازی سرور لاراول در پس‌زمینه
-echo Starting Laravel server...
-start cmd /k %NIRCMD% exec hide cmd /c "cd C:\xampp\htdocs\beton && php artisan serve"
-
-REM باز کردن مرورگر فایرفاکس و اجرای برنامه
-start firefox http://localhost:8000
-timeout /t 10
-REM نظارت بر تب مرورگر خاص 
-:loop
-for /f "tokens=1 delims=" %%i in (
-    'wmic process where "name='firefox.exe'" get commandline /format:csv ^| find /i "بتن بنا"'
-    ) do ( timeout /t 5 goto loop )
+    timeout /t 25
+    goto loop
+)
 
 :end
+REM Stop XAMPP
+echo Stopping XAMPP...
+nircmd.exe exec hide "C:\xampp\xampp_stop.exe"
 
-REM توقف XAMPP
-%NIRCMD% exec hide cmd /c "cd C:\xampp && xampp_stop.exe"
-
-REM توقف yarn dev
+REM Stop yarn dev
+echo Stopping yarn dev...
 taskkill /IM node.exe /F
 
-REM حذف فایل موقت
-del "%TEMPFILE%"
+REM Stop Laravel server
+echo Stopping Laravel server...
+taskkill /IM php.exe /F
 
-echo برنامه متوقف شد.
+del processes.txt
+
+echo Program stopped.
 exit
-
-
-@REM @echo off
-@REM REM مسیر فایل موقت
-@REM set TEMPFILE=C:\xampp\htdocs\beton\program_running.tmp
-
-@REM REM بررسی وجود فایل موقت
-@REM if exist "%TEMPFILE%" (
-@REM     echo برنامه در حال اجرا است.
-@REM     exit
-@REM )
-
-@REM REM ایجاد فایل موقت
-@REM echo در حال اجرا > "%TEMPFILE%"
-
-@REM REM باز کردن صفحه انتظار در مرورگر پیش‌فرض
-@REM start "" "C:\xampp\htdocs\beton\loading.html"
-
-@REM REM مسیر نسبی NirCmd
-@REM set NIRCMD=%~dp0\nircmd.exe
-
-@REM REM راه‌اندازی XAMPP در پس‌زمینه
-@REM echo Starting XAMPP...
-@REM %NIRCMD% exec hide cmd /c "cd C:\xampp && xampp_start.exe"
-
-@REM REM توقف برای اطمینان از راه‌اندازی کامل سرویس‌ها
-@REM timeout /t 10
-
-@REM REM اجرای دستور yarn dev در پس‌زمینه
-@REM echo Starting React development server...
-@REM %NIRCMD% exec hide cmd /c "cd C:\xampp\htdocs\beton && yarn dev"
-
-@REM REM توقف برای اطمینان از راه‌اندازی کامل سرور توسعه ری‌اکت
-@REM timeout /t 10
-
-@REM REM راه‌اندازی سرور لاراول در پس‌زمینه
-@REM echo Starting Laravel server...
-@REM %NIRCMD% exec hide cmd /c "cd C:\xampp\htdocs\beton && php artisan serve"
-
-@REM REM باز کردن مرورگر فایرفاکس و اجرای برنامه
-@REM start firefox http://localhost:8000
-
-@REM REM توقف برنامه تا وقتی که مرورگر باز است
-@REM echo در انتظار بستن مرورگر...
-@REM pause
-
-@REM REM حذف فایل موقت
-@REM del "%TEMPFILE%"
-
-
-@REM @echo off
-@REM REM باز کردن صفحه انتظار در مرورگر پیش‌فرض
-@REM start "" "C:\xampp\htdocs\beton\loading.html"
-
-@REM REM مسیر نسبی NirCmd
-@REM set NIRCMD=%~dp0\nircmd.exe
-
-@REM REM راه‌اندازی XAMPP در پس‌زمینه
-@REM echo Starting XAMPP...
-@REM %NIRCMD% exec hide cmd /c "cd C:\xampp && xampp_start.exe"
-
-@REM REM توقف برای اطمینان از راه‌اندازی کامل سرویس‌ها
-@REM timeout /t 10
-
-@REM REM اجرای دستور yarn dev در پس‌زمینه
-@REM echo Starting React development server...
-@REM %NIRCMD% exec hide cmd /c "cd C:\xampp\htdocs\beton && yarn dev"
-
-@REM REM توقف برای اطمینان از راه‌اندازی کامل سرور توسعه ری‌اکت
-@REM timeout /t 10
-
-@REM REM راه‌اندازی سرور لاراول در پس‌زمینه
-@REM echo Starting Laravel server...
-@REM %NIRCMD% exec hide cmd /c "cd C:\xampp\htdocs\beton && php artisan serve"
-
-@REM REM باز کردن مرورگر فایرفاکس و اجرای برنامه
-@REM start firefox http://localhost:8000
-
-@REM pause
-
-
-@REM @echo off
-@REM REM باز کردن صفحه انتظار در مرورگر پیش‌فرض 
-@REM start "" "C:\xampp\htdocs\beton\loadingStart.html"
-
-@REM REM راه‌اندازی XAMPP
-@REM echo Starting XAMPP...
-@REM start cmd /c "cd C:\xampp && xampp_start.exe"
-
-@REM REM توقف برای اطمینان از راه‌اندازی کامل سرویس‌ها
-@REM timeout /t 5
-
-@REM REM تغییر مسیر به دایرکتوری پروژه ری‌اکت و اجرای دستور yarn dev
-@REM echo Starting React development server...
-@REM start "React Server" cmd /k "cd C:\xampp\htdocs\beton && yarn dev"
-
-@REM REM توقف برای اطمینان از راه‌اندازی کامل سرور توسعه ری‌اکت
-@REM timeout /t 5
-
-@REM REM تغییر مسیر به دایرکتوری پروژه لاراول و راه‌اندازی سرور لاراول
-@REM echo Starting Laravel server...
-@REM start "Laravel Server" cmd /k "cd C:\xampp\htdocs\beton && php artisan serve"
-
-@REM REM باز کردن مرورگر فایرفاکس و اجرای برنامه
-@REM start firefox http://localhost:8000
-
-@REM pause
-
-
-
-@REM REM راه‌اندازی XAMPP
-@REM echo Starting XAMPP...
-@REM start cmd /c "cd C:\xampp && xampp_start.exe"
-
-@REM REM توقف برای اطمینان از راه‌اندازی کامل سرویس‌ها
-@REM timeout /t 10
-
-@REM REM تغییر مسیر به دایرکتوری پروژه ری‌اکت و اجرای دستور yarn dev
-@REM echo Starting React development server...
-@REM start cmd /k "cd C:\xampp\htdocs\beton && yarn dev"
-
-@REM REM توقف برای اطمینان از راه‌اندازی کامل سرور توسعه ری‌اکت
-@REM timeout /t 10
-
-@REM REM تغییر مسیر به دایرکتوری پروژه لاراول و راه‌اندازی سرور لاراول
-@REM echo Starting Laravel server...
-@REM start cmd /k "cd C:\xampp\htdocs\beton && php artisan serve"
-
-@REM REM باز کردن مرورگر فایرفاکس و اجرای برنامه
-@REM start firefox http://localhost:8000
-
-@REM pause
