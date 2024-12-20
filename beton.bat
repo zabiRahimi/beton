@@ -1,74 +1,105 @@
-@echo off
-echo Starting batch script...
+::[Bat To Exe Converter]
+::
+::YAwzoRdxOk+EWAjk
+::fBw5plQjdCyDJEGF+VIgFBNASAuBL1e4A6ET5tT56v6IrAMUV+1f
+::YAwzuBVtJxjWCl3EqQJhSA==
+::ZR4luwNxJguZRRnVphFQ
+::Yhs/ulQjdF+5
+::cxAkpRVqdFKZSzk=
+::cBs/ulQjdF+5
+::ZR41oxFsdFKZSDk=
+::eBoioBt6dFKZSDk=
+::cRo6pxp7LAbNWATEpCI=
+::egkzugNsPRvcWATEpCI=
+::dAsiuh18IRvcCxnZtBJQ
+::cRYluBh/LU+EWAnk
+::YxY4rhs+aU+JeA==
+::cxY6rQJ7JhzQF1fEqQJQ
+::ZQ05rAF9IBncCkqN+0xwdVs0
+::ZQ05rAF9IAHYFVzEqQJQ
+::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
+::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
+::cRolqwZ3JBvQF1fEqQJQ
+::dhA7uBVwLU+EWDk=
+::YQ03rBFzNR3SWATElA==
+::dhAmsQZ3MwfNWATElA==
+::ZQ0/vhVqMQ3MEVWAtB9wSA==
+::Zg8zqx1/OA3MEVWAtB9wSA==
+::dhA7pRFwIByZRRnk
+::Zh4grVQjdCyDJEGF+VIgFBNASAuBL1e4A6ET5tT56v6IrAMYTOdf
+::YB416Ek+ZG8=
+::
+::
+::978f952a14a936cc963da21a135fa983
 
-REM Hide the console window
-nircmd.exe win hide ititle "Command Prompt"
+@echo off
 
 REM Check if NirCmd exists
 where nircmd.exe > NUL 2>&1
 IF "%ERRORLEVEL%"=="1" (
-    echo NirCmd not found. Please make sure nircmd.exe is in the System32 directory.
     exit
 )
-echo NirCmd is installed and ready to use.
-
-REM Start services if the Chrome app window does not exist
-tasklist /FI "IMAGENAME eq chrome.exe" | find /I "chrome.exe" >NUL
-IF "%ERRORLEVEL%"=="0" goto monitor
-echo 'Concrete Builder' app window is not found. Starting services...
 
 REM Start XAMPP
-echo Starting XAMPP...
-nircmd.exe exec hide "C:\xampp\xampp_start.exe"
+start /min cmd /c "C:\xampp\xampp_start.exe"
 
-timeout /t 5
+REM Wait for XAMPP to start
+:waitXAMPP
+tasklist /FI "IMAGENAME eq httpd.exe" | find /I "httpd.exe" >NUL
+IF "%ERRORLEVEL%"=="0" (
+    goto startYarn
+)
+timeout /t 1
+goto waitXAMPP
 
+:startYarn
 REM Start yarn dev
-echo Starting yarn dev...
 nircmd.exe exec hide cmd /c "cd C:\xampp\htdocs\beton && yarn dev"
 
-timeout /t 5
+REM Wait for the development server to start
+:waitYarn
+tasklist | find /I "node.exe" > NUL
+IF "%ERRORLEVEL%"=="0" (
+    goto startLaravel
+)
+timeout /t 1
+goto waitYarn
 
-REM Wait for user input before starting Laravel server
-pause
-echo Starting Laravel server...
+:startLaravel
+REM Start Laravel server
 nircmd.exe exec hide cmd /c "cd C:\xampp\htdocs\beton && php -S localhost:8000 -t public"
-timeout /t 5
 
-REM Wait for user input before opening Chrome
-pause
-echo Opening browser in app mode with custom icon...
-nircmd.exe exec hide chrome.exe --app=http://localhost:8000 --start-fullscreen
+REM Wait for the Laravel server to start
+:waitLaravel
+tasklist | find /I "php.exe" > NUL
+IF "%ERRORLEVEL%"=="0" (
+    goto openChrome
+)
+timeout /t 1
+goto waitLaravel
 
-REM Change window icon using NirCmd
-echo Changing window icon...
-nircmd.exe win seticon title "بتن بنا" "%~dp0beton.ico"
+:openChrome
+REM Open main application in Chrome app mode maximized
+start chrome.exe --app=http://localhost:8000 --start-maximized
+
+REM Bring Chrome window to the front
+timeout /t 2
+nircmd.exe win max ititle "بتن بنا"
 
 :monitor
 REM Monitor Chrome app window
-echo Monitoring Chrome app window...
 :loop
 tasklist /FI "IMAGENAME eq chrome.exe" | find /I "chrome.exe" >NUL
 IF "%ERRORLEVEL%"=="1" (
-    echo 'Concrete Builder' app window is closed.
     goto end
 )
-
-timeout /t 6
+timeout /t 2
 goto loop
 
 :end
-REM Stop XAMPP
-echo Stopping XAMPP...
-nircmd.exe exec hide "C:\xampp\xampp_stop.exe"
-
-REM Stop yarn dev
-echo Stopping yarn dev...
+REM Stop services
+"C:\xampp\xampp_stop.exe"
 taskkill /IM node.exe /F
-
-REM Stop Laravel server
-echo Stopping Laravel server...
 taskkill /IM php.exe /F
 
-echo Program stopped.
 exit
