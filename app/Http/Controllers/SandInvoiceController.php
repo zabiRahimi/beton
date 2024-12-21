@@ -8,6 +8,7 @@ use App\Http\Requests\StoreSandInvoiceRequest;
 use App\Http\Requests\UpdateSandInvoiceRequest;
 use App\Models\Customer;
 use App\Models\Driver;
+use App\Models\Financial;
 use App\Models\SandRemittance;
 use App\Models\SandStore;
 use App\Models\Truck;
@@ -151,6 +152,9 @@ class SandInvoiceController extends Controller
     {
         try {
             DB::beginTransaction();
+            $dumpTruckOwner_id=$request->validated()['dumpTruckOwner_id'];
+            $totalFare=$request->validated()['totalFare'];
+
             $sandInvoice = new SandInvoice();
             $sandInvoice->fill($request->validated());
             $sandInvoice->save();
@@ -158,16 +162,16 @@ class SandInvoiceController extends Controller
             
             
 
-                $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
-                $this->sandDeduction($key['concrete_id'], $key['cubicMeters']);
-                $this->GravelDeduction($key['concrete_id'], $key['cubicMeters']);
-                $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
-                $this->mixerOwnerSalary($key['ownerId'], $key['fare']);
-                $this->customerDebt($customer_id, $key['totalPrice']);
+                // $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
+                // $this->sandDeduction($key['concrete_id'], $key['cubicMeters']);
+                // $this->GravelDeduction($key['concrete_id'], $key['cubicMeters']);
+                // $this->waterDeduction($key['concrete_id'], $key['cubicMeters']);
+                $this->dumpTruckOwnerSalary($dumpTruckOwner_id, $totalFare);
+                // $this->customerDebt($customer_id, $key['totalPrice']);
 
                 
 
-        return response()->json(['sandInvoice' =>  $sandInvoice], 200);
+       
                
             
             DB::commit();
@@ -177,7 +181,7 @@ class SandInvoiceController extends Controller
             throw $th;
         }
 
-        return response()->json(['concreteSalesInvoice' =>  $allResult], 200);
+        return response()->json(['sandInvoice' =>  $sandInvoice], 200);
     }
 
     /**
@@ -249,6 +253,69 @@ class SandInvoiceController extends Controller
     private function sandStores() {
         return SandStore::get();
     }
+
+    /**
+     * کرایه میکسر را به حساب مالک اضافه می کند
+     */
+    private function dumpTruckOwnerSalary(int $dumpTruckOwner_id, int $totalFare)
+    {
+        Financial::updateOrCreate(
+            ['customer_id' => $dumpTruckOwner_id],
+            ['creditor' => DB::raw('creditor + ' . $totalFare)]
+        );
+    }
+
+      /**
+     * #########
+     * ###################### update dumpTruck owner account
+     * #########
+     */
+
+     private function updateDumpTruckOwnerAccount(int $dumpTruckOwner_id, int $totalFare, int $preOwnerId, int $preFare)
+     {
+         if ($dumpTruckOwner_id == $preOwnerId && $totalFare == $preFare) {
+             # هیچ تغییری در تعویض کامیون و کرایه بار ایجاد نشده
+             # بر همین اساس هیچ عملیاتی صورت نمی‌گیرد
+         } elseif ($dumpTruckOwner_id == $preOwnerId) {
+             $this->updateSameDumpTruckOwnerSalary($dumpTruckOwner_id, $totalFare, $preFare);
+         } else {
+             $this->updateDifferentDumpTruckOwnerSalary($dumpTruckOwner_id, $totalFare, $preOwnerId, $preFare);
+         }
+     }
+ 
+     private function updateSameDumpTruckOwnerSalary(int $dumpTruckOwner_id, int $totalFare, int $preFare)
+     {
+         $financial = Financial::where('customer_id', $dumpTruckOwner_id)->first();
+         $financial->creditor -= $preFare;
+         $financial->creditor += $totalFare;
+         $financial->save();
+     }
+ 
+     /**
+      * هنگامی که سیلو تغییر کرده باشد، ابتدا مقدار سیمانی که قبلا از سیلوی قبلی کم
+      * شده بود به همان سیلو اضافه می شود و سپس مقدار سیمان مصرف شده جدید از سیلوی 
+      * فعلی کم می شود
+      */
+     private function updateDifferentDumpTruckOwnerSalary(int $dumpTruckOwner_id, int $totalFare, int $preOwnerId, int $preFare)
+     {
+         $this->decreaseDumpTruckOwnerSalary($preOwnerId, $preFare);
+         $this->increaseDumpTruckOwnerSalary($dumpTruckOwner_id,  $totalFare);
+     }
+ 
+     private function decreaseDumpTruckOwnerSalary(int $preOwnerId, int $preFare)
+     {
+ 
+         $financial = Financial::where('customer_id', $preOwnerId)->first();
+         $financial->creditor -= $preFare;
+         $financial->save();
+     }
+ 
+     private function increaseDumpTruckOwnerSalary(int $dumpTruckOwner_id, int $totalFare)
+     {
+         $financial = Financial::where('customer_id', $dumpTruckOwner_id)->first();
+         $financial->creditor += $totalFare;
+         $financial->save();
+     }
     
 
 }
