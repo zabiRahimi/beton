@@ -35,8 +35,8 @@ const Add = () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
-    const remittanceIdRef = useRef(null);
-    const remittanceIdError = useRef(null);
+    const sandRemittance_idRef = useRef(null);
+    const sandRemittance_idError = useRef(null);
     const billNumberError = useRef(null);
     const timeRef = useRef(null);
     const dateRef = useRef(null);
@@ -50,21 +50,21 @@ const Add = () => {
     const unitPriceError = useRef(null);
     const totalPriceError = useRef(null);
     const dumpTruckRef = useRef(null);
-    const dumpTruckError = useRef(null);
+    const truck_idError = useRef(null);
     const driverRef = useRef(null);
-    const driverError = useRef(null);
+    const driver_idError = useRef(null);
     const unitFareRef = useRef(null);
     const unitFareError = useRef(null);
     // const totalFareError = useRef(null);
     const totalPriceRef = useRef(null);
     const totalFareRef = useRef(null);
     const sandStoreRef = useRef(null);
-    const sandStoreError = useRef(null);
+    const sandStore_idError = useRef(null);
     const hasCalledGetSandSellers = useRef(false);
     const hasCalledGetSandStores = useRef(false);
     const [loading, setLoading] = useState(true);
     const [remittanceOptions, setRemittanceOptions] = useState([]);
-    const [remittanceId, setRemittanceId] = useState('');
+    const [sandRemittance_id, setSandRemittance_id] = useState('');
     const [typeSand, setTypeSand] = useState([
         {
             value: 'ماسه شسته',
@@ -88,6 +88,7 @@ const Add = () => {
         }
     ]);
     const [typeSandSelected, setTypeSandSelected] = useState('');
+    // console.log(typeSandSelected);
     const [ticketNumber, setTicketNumber] = useState('');
 
     const [dumpTrucks, setDumpTrucks] = useState('');
@@ -117,11 +118,11 @@ const Add = () => {
     const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
 
     const [input, setInput] = useState({
-        sandRemittance_id: '',
         billNumber: '',
+        sandRemittance_id: '',
         time: '',
         date: '',
-        tyepSand: '',
+        typeSand: '',
         weight: '',
         unitPrice: '',
         totalPrice: '',
@@ -133,6 +134,8 @@ const Add = () => {
         sandStore_id: '',
         description: ''
     });
+    console.log(input);
+
     RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
 
     const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: dumpTrucks });
@@ -168,11 +171,11 @@ const Add = () => {
     //     });
     // }
     useEffect(() => {
-        remittanceId && setInput(prev => ({ ...prev, sandRemittance_id: remittanceId }));
-    }, [remittanceId]);
+        sandRemittance_id && setInput(prev => ({ ...prev, sandRemittance_id }));
+    }, [sandRemittance_id]);
 
     useEffect(() => {
-        typeSandSelected && setInput(prev => ({ ...prev, tyepSand: typeSandSelected }));
+        typeSandSelected && setInput(prev => ({ ...prev, typeSand: typeSandSelected }));
     }, [typeSandSelected]);
 
     useEffect(() => {
@@ -187,11 +190,10 @@ const Add = () => {
         driverId && setInput(prev => ({ ...prev, driver_id: driverId }));
     }, [driverId]);
 
-
     useEffect(() => {
         sandStoreId && setInput(prev => ({ ...prev, sandStore_id: sandStoreId }));
     }, [sandStoreId]);
-    console.log(input);
+
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
         if (['weight', 'unitPrice', 'unitFare'].includes(input)) {
@@ -202,7 +204,9 @@ const Add = () => {
 
     const clearInputError = (e, refErr, time = false, date = false) => {
         e.target.classList.remove('borderRedFB');
-        refErr.current && (refErr.current.innerHTML = '')
+        refErr.current && (refErr.current.innerHTML = '');
+        const parentWithClass = e.target.closest('.borderRedFB');
+        parentWithClass && parentWithClass.classList.remove('borderRedFB');
         date && dateRef.current.classList.remove('borderRedFB');
         time && timeRef.current.classList.remove('borderRedFB');
     }
@@ -210,7 +214,6 @@ const Add = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-
         try {
             const response = await axios.post(
                 '/api/v1/sandInvoices',
@@ -241,6 +244,7 @@ const Add = () => {
         } catch (error) {
             if (error.response && error.response.status == 422) {
                 let id = Object.keys(error.response.data.errors)[0];
+
                 const element = document.getElementById(id);
 
                 // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن
@@ -252,7 +256,7 @@ const Add = () => {
 
                 Object.entries(error.response.data.errors).map(([key, val]) => {
                     // نادیده گرفتن خطای مربوط به remainingPrice
-                    if (key !== 'remainingPrice') {
+                    if (key !== 'totalPrice' && key !== 'dumpTruckOwner_id' && key !== 'totalFare') {
                         document.getElementById(key).classList.add('borderRedFB');
                         document.getElementById(key + 'Error').innerHTML = val;
                     }
@@ -289,7 +293,6 @@ const Add = () => {
                             </div>
                             <div className="errorContainerFB elementError"> </div>
                         </div>
-
                     </section>
                     <section className="sectionFB">
                         <div className="containerInputFB">
@@ -299,7 +302,7 @@ const Add = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="billNumber"
-                                    defaultValue={input.billNumber}
+                                    // defaultValue={input.billNumber}
                                     onInput={e => handleSaveValInput(e, 'billNumber')}
                                     onFocus={e => clearInputError(e, billNumberError)}
                                 />
@@ -311,21 +314,21 @@ const Add = () => {
                             <div className="divInputFB">
                                 <label> حواله  </label>
                                 <div
-                                    id='remittanceId'
+                                    id='sandRemittance_id'
                                     className="element"
-                                    onClick={e => { clearInputError(e, remittanceIdError) }}
+                                    onClick={e => { clearInputError(e, sandRemittance_idError) }}
                                 >
                                     <SelectZabi
                                         primaryLabel='انتخاب'
                                         options={remittanceOptions}
-                                        saveOption={setRemittanceId}
-                                        ref={remittanceIdRef}
+                                        saveOption={setSandRemittance_id}
+                                        ref={sandRemittance_idRef}
                                     />
                                 </div>
                                 <i className="icofont-ui-rating starFB" />
 
                             </div>
-                            <div className="errorContainerFB elementError" id='remittanceIdError' ref={remittanceIdError}> </div>
+                            <div className="errorContainerFB elementError" id='sandRemittance_idError' ref={sandRemittance_idError}> </div>
                         </div>
                         {/* </section> */}
                         {/* <section className="sectionFB"> */}
@@ -575,9 +578,9 @@ const Add = () => {
                             <div className="divInputFB">
                                 <label>کمپرسی و مالک  </label>
                                 <div
-                                    id='dumpTruck'
+                                    id='truck_id'
                                     className="element"
-                                    onClick={e => { clearInputError(e, dumpTruckError) }}
+                                    onClick={e => { clearInputError(e, truck_idError) }}
                                 >
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
@@ -594,15 +597,15 @@ const Add = () => {
                                 </div>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id='dumpTruckError' ref={dumpTruckError}> </div>
+                            <div className="errorContainerFB elementError" id='truck_idError' ref={truck_idError}> </div>
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label>راننده  </label>
                                 <div
-                                    id='driver'
+                                    id='driver_id'
                                     className="element"
-                                    onClick={e => { clearInputError(e, driverError) }}
+                                    onClick={e => { clearInputError(e, driver_idError) }}
                                 >
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
@@ -618,7 +621,7 @@ const Add = () => {
                                 </div>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id='driverError' ref={driverError}> </div>
+                            <div className="errorContainerFB elementError" id='driver_idError' ref={driver_idError}> </div>
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
@@ -632,7 +635,7 @@ const Add = () => {
                                         formatNub(unitFareRef.current);
                                         handleTotalFareCalculation(e, 'unitFare', input, setInput, totalFareRef.current)
                                     }}
-                                    onFocus={e => clearInputError(e, unitPriceError)}
+                                    onFocus={e => clearInputError(e, unitFareError)}
                                     ref={unitFareRef}
                                 />
                                 <span
@@ -643,7 +646,7 @@ const Add = () => {
                                 </span>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="billNumberError" ref={unitPriceError}> </div>
+                            <div className="errorContainerFB elementError" id="unitFareError" ref={unitFareError}> </div>
                         </div>
 
                         <div className="containerInputFB">
@@ -680,9 +683,9 @@ const Add = () => {
                             <div className="divInputFB">
                                 <label>سیلوی تخلیه  </label>
                                 <div
-                                    id='sandStore'
+                                    id='sandStore_id'
                                     className="element"
-                                    onClick={e => { clearInputError(e, sandStoreError) }}
+                                    onClick={e => { clearInputError(e, sandStore_idError) }}
                                 >
                                     <SelectZabi
                                         primaryLabel='انتخاب'
@@ -694,7 +697,7 @@ const Add = () => {
                                 <i className="icofont-ui-rating starFB" />
 
                             </div>
-                            <div className="errorContainerFB elementError" id='sandStoreError' ref={sandStoreError}> </div>
+                            <div className="errorContainerFB elementError" id='sandStore_idError' ref={sandStore_idError}> </div>
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">

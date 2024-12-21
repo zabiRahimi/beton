@@ -151,10 +151,12 @@ class SandInvoiceController extends Controller
     {
         try {
             DB::beginTransaction();
-            $customer_id = $request->validated()['customer_id'];
+            $sandInvoice = new SandInvoice();
+            $sandInvoice->fill($request->validated());
+            $sandInvoice->save();
 
-            $allResult = [];
-            foreach ($request->validated()['invoice'] as $key) {
+            
+            
 
                 $this->cementDeduction($key['cementStore_id'], $key['concrete_id'], $key['cubicMeters']);
                 $this->sandDeduction($key['concrete_id'], $key['cubicMeters']);
@@ -163,13 +165,11 @@ class SandInvoiceController extends Controller
                 $this->mixerOwnerSalary($key['ownerId'], $key['fare']);
                 $this->customerDebt($customer_id, $key['totalPrice']);
 
-                $concreteSalesInvoice = new SandInvoice;
-                $concreteSalesInvoice->customer_id =  $customer_id;
-                $concreteSalesInvoice->fill($key);
-                $concreteSalesInvoice->save();
+                
 
-                $allResult[] = $concreteSalesInvoice->load('customer', 'concrete', 'cementStore', 'truck.customer', 'driver');
-            }
+        return response()->json(['sandInvoice' =>  $sandInvoice], 200);
+               
+            
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();
