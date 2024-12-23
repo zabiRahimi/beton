@@ -153,6 +153,6 @@ export const handleRemoveAllError = () => {
 
 
 export const handleOptionRadioChange = (e, setSelectedOptionRadio) => { 
-    setSelectedOptionRadio(e.target.value); 
+    setSelectedOptionRadio(e.target.value ==1?'مانده':'تمام'); 
 };
 

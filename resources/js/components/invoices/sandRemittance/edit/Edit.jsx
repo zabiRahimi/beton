@@ -438,7 +438,7 @@ const Edit = () => {
                                     <label className='radioLabel_FB trueLabel_FB'>
                                         <input
                                             type="radio"
-                                            value="1"
+                                            value="0"
                                             checked={selectedOptionRadio === 'تمام'}
                                             onChange={e =>handleOptionRadioChange(e, setSelectedOptionRadio)}
                                         />
