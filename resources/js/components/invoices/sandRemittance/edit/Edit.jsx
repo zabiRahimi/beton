@@ -8,7 +8,7 @@ import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import HeadPage from '../HeadPage';
 import RouteService from "./RouteService";
-import { handleSetDate, clearInputError, htmlFor, formatNub, resetForm } from './Helper';
+import { handleSetDate, clearInputError, htmlFor, formatNub, resetForm, handleOptionRadioChange } from './Helper';
 const Edit = () => {
     const { sandRemittanceId } = useParams();
     const MySwal = withReactContent(Swal);
@@ -41,6 +41,7 @@ const Edit = () => {
     const factoryDiv = useRef(null);
     const factoryRef = useRef(null);
     const factoryError = useRef(null);
+    const remainingPriceRef = useRef(null);
     const [loading, setLoading] = useState(true);
     const [sandRemittance, setSandRemittance] = useState(null);
     const factorys = [
@@ -58,13 +59,13 @@ const Edit = () => {
         }
     ];
     const [factory, setFactory] = useState('');
-    
+
     const [date, setDate] = useState({
         day: '',
         month: '',
         year: ''
     });
-
+    const [selectedOptionRadio, setSelectedOptionRadio] = useState('');
     const [input, setInput] = useState({
         buyerName: '',
         buyerLastName: '',
@@ -77,7 +78,7 @@ const Edit = () => {
         description: ''
     });
 
-    RouteService({sandRemittanceId, setLoading , setSandRemittance });
+    RouteService({ sandRemittanceId, setLoading, setSandRemittance });
 
     useEffect(() => {
         factory && setInput(prev => ({ ...prev, factory }));
@@ -100,8 +101,17 @@ const Edit = () => {
         setInput({
             ...remainingData,
         });
-       
+
         factoryRef.current && factoryRef.current.updateData(remainingData.factory);
+        if (remainingPriceRef.current && remainingData.remainingPrice !== undefined) {
+            const remainingPrice = Number(remainingData.remainingPrice);
+            remainingPriceRef.current.innerHTML = remainingPrice.toLocaleString();
+        }
+
+        setSelectedOptionRadio(remainingData.isCompleted ? 'مانده' : 'تمام');
+
+
+
 
         // تنظیم تاریخ و زمان
         if (remainingData.date) {
@@ -124,59 +134,60 @@ const Edit = () => {
         setInput(prev => ({ ...prev, [input]: value }));
 
     }
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-      
+
         try {
-          const response = await axios.patch(
-            `/api/v1/sandRemittances/${sandRemittanceId}`,
-            { ...input },
-            {
-              headers: {
-                'X-CSRF-TOKEN': token,
-                'Content-Type': 'application/json; charset=utf-8'
-              }
-            }
-          );
-      
-          form.current.reset();
-          MySwal.fire({
-            icon: "success",
-            title: "با موفقیت ثبت شد",
-            confirmButtonText: "متوجه شدم",
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: {
-              timerProgressBar: '--progressBarColorBlue',
-            },
-          });
-        } catch (error) {
-          if (error.response && error.response.status == 422) {
-            let id = Object.keys(error.response.data.errors)[0];
-            const element = document.getElementById(id);
-      
-            // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن
-            if (element) {
-              let scrollPosition = window.scrollY || window.pageYOffset;
-              const top = element.getBoundingClientRect().top + scrollPosition - 20;
-              window.scrollTo({ top: top, behavior: 'smooth' });
-            }
-      
-            Object.entries(error.response.data.errors).map(([key, val]) => {
-              // نادیده گرفتن خطای مربوط به remainingPrice
-              if (key !== 'remainingPrice') {
-                document.getElementById(key).classList.add('borderRedFB');
-                document.getElementById(key + 'Error').innerHTML = val;
-              }
+            const response = await axios.patch(
+                `/api/v1/sandRemittances/${sandRemittanceId}`,
+                { ...input },
+                {
+                    headers: {
+                        'X-CSRF-TOKEN': token,
+                        'Content-Type': 'application/json; charset=utf-8'
+                    }
+                }
+            );
+
+            form.current.reset();
+            MySwal.fire({
+                icon: "success",
+                title: "با موفقیت ثبت شد",
+                confirmButtonText: "متوجه شدم",
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: '--progressBarColorBlue',
+                },
             });
-          }
+        } catch (error) {
+            if (error.response && error.response.status == 422) {
+                let id = Object.keys(error.response.data.errors)[0];
+                const element = document.getElementById(id);
+
+                // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن
+                if (element) {
+                    let scrollPosition = window.scrollY || window.pageYOffset;
+                    const top = element.getBoundingClientRect().top + scrollPosition - 20;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                }
+
+                Object.entries(error.response.data.errors).map(([key, val]) => {
+                    // نادیده گرفتن خطای مربوط به remainingPrice
+                    if (key !== 'remainingPrice') {
+                        document.getElementById(key).classList.add('borderRedFB');
+                        document.getElementById(key + 'Error').innerHTML = val;
+                    }
+                });
+            }
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
-      };
-      
+    };
+
+    
 
     return (
         <div>
@@ -210,7 +221,7 @@ const Edit = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="buyerName"
-                                    value={input.buyerName||''}
+                                    value={input.buyerName || ''}
                                     onInput={e => handleSaveValInput(e, 'buyerName')}
                                     onFocus={e => clearInputError(e, buyerNameError)}
                                 />
@@ -225,7 +236,7 @@ const Edit = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="buyerLastName"
-                                    value={input.buyerLastName||''}
+                                    value={input.buyerLastName || ''}
                                     onInput={e => handleSaveValInput(e, 'buyerLastName')}
                                     onFocus={e => clearInputError(e, buyerLastNameError)}
                                 />
@@ -240,7 +251,7 @@ const Edit = () => {
                                     type="text"
                                     className="inputTextFB element"
                                     id="buyerFather"
-                                    value={input.buyerFather||''}
+                                    value={input.buyerFather || ''}
                                     onInput={e => handleSaveValInput(e, 'buyerFather')}
                                     onFocus={e => clearInputError(e, buyerFatherError)}
                                 />
@@ -259,7 +270,7 @@ const Edit = () => {
                                     type="text"
                                     className="inputTextFB ltrFB element"
                                     id="remittanceNumber"
-                                    value={input.remittanceNumber||''}
+                                    value={input.remittanceNumber || ''}
                                     onInput={e => handleSaveValInput(e, 'remittanceNumber')}
                                     onFocus={e => clearInputError(e, remittanceNumberError)}
                                 />
@@ -395,6 +406,47 @@ const Edit = () => {
                             </div>
                             <div className="errorContainerFB elementError" id='factoryError' ref={factoryError}> </div>
                         </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label> مبلغ مانده </label>
+                                <div className="mainTotalPriceACSL_FB">
+                                    <div className="totalPriceACSL_FB"
+                                        ref={remainingPriceRef}
+                                    >{ }</div>
+                                    <span className="spanTotalPriceACSL_FB">
+                                        تومان
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label> وضعیت حواله </label>
+                                <div className="radioDiv_FB">
+                                    <label className='radioLabel_FB trueLabel_FB'>
+                                        <input
+                                            type="radio"
+                                            value="1"
+                                            checked={selectedOptionRadio === 'مانده'}
+                                            onChange={e =>handleOptionRadioChange(e, setSelectedOptionRadio)}
+                                        />
+                                        مانده
+                                    </label>
+
+                                    <label className='radioLabel_FB trueLabel_FB'>
+                                        <input
+                                            type="radio"
+                                            value="1"
+                                            checked={selectedOptionRadio === 'تمام'}
+                                            onChange={e =>handleOptionRadioChange(e, setSelectedOptionRadio)}
+                                        />
+                                        تمام
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </section>
 
                     <section className="sectionFB">
@@ -404,7 +456,7 @@ const Edit = () => {
                                 <textarea
                                     className="textareaFB element"
                                     id="description"
-                                    value={input.description||''}
+                                    value={input.description || ''}
                                     onInput={e => handleSaveValInput(e, 'description')}
                                 />
                             </div>
@@ -413,14 +465,14 @@ const Edit = () => {
 
                     </section>
                     <div className='sectionFB divBtnsFB' >
-                            <Button
-                                variant="info"
-                                className="btnSaveFB"
-                                onClick={handleSubmit}
-                            >
-                                ویرایش
-                            </Button>
-                        </div>
+                        <Button
+                            variant="info"
+                            className="btnSaveFB"
+                            onClick={handleSubmit}
+                        >
+                            ویرایش
+                        </Button>
+                    </div>
                 </form>
             </div>
 

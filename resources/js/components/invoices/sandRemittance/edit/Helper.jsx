@@ -151,3 +151,8 @@ export const handleRemoveAllError = () => {
 
 }
 
+
+export const handleOptionRadioChange = (e, setSelectedOptionRadio) => { 
+    setSelectedOptionRadio(e.target.value); 
+};
+
