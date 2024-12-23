@@ -187,7 +187,7 @@ const Edit = () => {
         }
     };
 
-    
+
 
     return (
         <div>
@@ -424,25 +424,33 @@ const Edit = () => {
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label> وضعیت حواله </label>
-                                <div className="radioDiv_FB">
-                                    <label className='radioLabel_FB trueLabel_FB'>
+                                <div className="divRadioFB">
+                                    <label>
                                         <input
                                             type="radio"
+                                            className='radioTrue_FB'
                                             value="1"
                                             checked={selectedOptionRadio === 'مانده'}
-                                            onChange={e =>handleOptionRadioChange(e, setSelectedOptionRadio)}
+                                            onChange={e =>{
+                                                handleOptionRadioChange(e, setSelectedOptionRadio);
+                                                handleSaveValInput(e, 'isCompleted');
+                                                
+                                            } }
                                         />
-                                        مانده
+                                        <span className="trueLabel_FB">مانده</span>
                                     </label>
 
-                                    <label className='radioLabel_FB trueLabel_FB'>
+                                    <label className=''>
                                         <input
                                             type="radio"
                                             value="0"
                                             checked={selectedOptionRadio === 'تمام'}
-                                            onChange={e =>handleOptionRadioChange(e, setSelectedOptionRadio)}
+                                            onChange={e =>{
+                                                handleOptionRadioChange(e, setSelectedOptionRadio);
+                                                handleSaveValInput(e, 'isCompleted');
+                                            } }
                                         />
-                                        تمام
+                                        <span className="falseLabel_FB">تمام</span>
                                     </label>
                                 </div>
                             </div>

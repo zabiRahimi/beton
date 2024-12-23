@@ -522,19 +522,23 @@
     text-align: right;
 }
 
+.radioTrue_FB{
+    color: #006700;
+    border-color: #006700;
+}
 /*  مربوط به کامپوننت ایجاد فیش حقوقی پرسنل، دکمه وضعیت بیمه   */
 
 
-.hasRadioInsuAPS_FB {
+.hasRadioInsuAPS_FB,
+.trueLabel_FB {
     padding-right: 10px;
     color: #006700;
 }
 
-.notHasRadioInsuAPS_FB {
+.notHasRadioInsuAPS_FB,
+.falseLabel_FB {
     padding-right: 10px;
-
     color: #c30101;
-
 }
 
 /*         مربوط به صفحه ایجاد فاکتور فروش بتن    */
