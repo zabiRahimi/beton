@@ -22,115 +22,108 @@ class SandInvoiceController extends Controller
     public function index(GetSandInvoiceRequest $request)
     {
         $query = SandInvoice::query();
+        $querySandRemittance = SandRemittance::query();
+        $queryDumpTruck= Truck::query();
         if ($request->filled('id')) {
             $query->where('id', $request->id);
+        } elseif ($request->filled('remittanceNumber')) {
+            $querySandRemittance->where('remittanceNumber', $request->remittanceNumber);
+            $sandRemittanceId = $querySandRemittance->pluck('id');
+            $query->where('sandRemittance_id', $sandRemittanceId);
+        } elseif ($request->filled('sandRemittanceId')) {
+
+            $query->whereIn('sandRemittance_id', $request->sandRemittanceId);
+        }elseif ($request->filled('dumpTruckId')) {
+
+            $query->whereIn('truck_id', $request->dumpTruckId);
         } else {
-            if ($request->filled('startDate') && $request->filled('endDate')) {
-                $query->whereBetween('date', [$request->startDate, $request->endDate]);
-            } elseif ($request->filled('startDate')) {
-                $query->where('date', '>=', $request->startDate);
-            } elseif ($request->filled('endDate')) {
-                $query->where('date', '<=', $request->endDate);
-            }
 
-            if ($request->filled('concrete_id')) {
-                $query->where('concrete_id',  $request->concrete_id);
-            }
+            if (
+                $request->filled('buyerName') ||
+                $request->filled('buyerLastName') ||
+                $request->filled('sadnRemittancePrice')||
+                $request->filled('isCompleted')||
+                $request->filled('factory')
+            ) {
 
-            if ($request->filled('customer_id')) {
-                $query->where('customer_id',  $request->customer_id);
-            }
+                // شروط ساده
+                $conditions = [
+                    'buyerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
+                    'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
+                    'price' => $request->sadnRemittancePrice,
+                    'isCompleted' => $request->isCompleted,
+                    'factory' => $request->factory,
+                ];
 
-            if ($request->filled('customerName') || $request->filled('customerLastName')) {
-
-                $query2 = Customer::query();
-                if ($request->filled('customerName')) {
-                    $query2->where('name', 'LIKE', "%{$request->customerName}%");
+                foreach ($conditions as $key => $value) {
+                    if ($request->filled($key)) {
+                        $querySandRemittance->where($key, 'like', $value);
+                    }
                 }
 
-                if ($request->filled('customerLastName')) {
-                    $query2->where('lastName', 'LIKE',  "%{$request->customerLastName}%");
-                }
-                $customerIds = $query2->pluck('id');
-                $query->whereIn('customer_id', $customerIds);
+                // if ($request->filled('customerName')) {
+                //     $query2->where('name', 'LIKE', "%{$request->customerName}%");
+                // }
+
+                // if ($request->filled('customerLastName')) {
+                //     $query2->where('lastName', 'LIKE',  "%{$request->customerLastName}%");
+                // }
+                $sandRemittanceIds = $querySandRemittance->pluck('id');
+                $query->whereIn('sandRemittance_id', $sandRemittanceIds);
             }
 
-            if ($request->filled('owner_id')) {
-                $queryTruck = Truck::query();
-                $queryTruck->where('truckType',  'میکسر')
-                    ->where('customer_id',  $request->owner_id);
+            
+            if (
+                $request->filled('buyerName') ||
+                $request->filled('buyerLastName') ||
+                $request->filled('sadnRemittancePrice')||
+                $request->filled('isCompleted')||
+                $request->filled('factory')
+            ) {
 
-                $truckIds = $queryTruck->pluck('id');
-                $query->whereIn('truck_id', $truckIds);
+                // شروط ساده
+                $conditions = [
+                    'buyerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
+                    'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
+                    'price' => $request->sadnRemittancePrice,
+                    'isCompleted' => $request->isCompleted,
+                    'factory' => $request->factory,
+                ];
+
+                foreach ($conditions as $key => $value) {
+                    if ($request->filled($key)) {
+                        $querySandRemittance->where($key, 'like', $value);
+                    }
+                }
+
+                // if ($request->filled('customerName')) {
+                //     $query2->where('name', 'LIKE', "%{$request->customerName}%");
+                // }
+
+                // if ($request->filled('customerLastName')) {
+                //     $query2->where('lastName', 'LIKE',  "%{$request->customerLastName}%");
+                // }
+                $sandRemittanceIds = $querySandRemittance->pluck('id');
+                $query->whereIn('sandRemittance_id', $sandRemittanceIds);
             }
 
-            if ($request->filled('ownerName') || $request->filled('ownerLastName')) {
+            if($request->filled('typeSand')){
+                $query->where('typeSand', $request->typeSand);
+            }
 
-                $queryCustomer = Customer::query();
-                if ($request->filled('ownerName')) {
-                    $queryCustomer->where('name', 'LIKE', "%{$request->ownerName}%");
-                }
-
-                if ($request->filled('ownerLastName')) {
-                    $queryCustomer->where('lastName', 'LIKE',  "%{$request->ownerLastName}%");
-                }
-
-                $ownerIds = $queryCustomer->with('customerType')
-                    ->whereHas('customerType', function ($queryCustomer) {
-                        $queryCustomer->where('code', 5);
+            // شرط تاریخ
+            if ($request->filled('date')) {
+                $query->where('date', $request->date);
+            } elseif ($request->filled('startDate') || $request->filled('endDate')) {
+                $query->when($request->filled('startDate') && $request->filled('endDate'), function ($q) use ($request) {
+                    $q->whereBetween('created_at', [$request->startDate, $request->endDate]);
+                })
+                    ->when($request->filled('startDate') && !$request->filled('endDate'), function ($q) use ($request) {
+                        $q->where('created_at', '>=', $request->startDate);
                     })
-                    ->pluck('id');
-                $queryTruckIds = Truck::whereIn('customer_id', $ownerIds)->pluck('id');
-
-                $query->whereIn('truck_id', $queryTruckIds);
-            }
-
-            if ($request->filled('truck_id')) {
-
-                $query->where('truck_id', $request->truck_id);
-            }
-
-            if ($request->filled('numberplate')) {
-                $queryTruck = Truck::query();
-                $queryTruck->where('truckType',  'میکسر');
-                $parts = explode('-', $request->numberplate); // جدا کردن رشته بر اساس '-'
-                if (!empty($parts[0])) {
-                    $queryTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 1), "-", -1) LIKE ?', ["%{$parts[0]}%"]);
-                }
-
-                if (!empty($parts[1])) {
-                    $queryTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 2), "-", -1) LIKE ?', ["%{$parts[1]}%"]);
-                }
-                if (!empty($parts[2])) {
-                    $queryTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 3), "-", -1)  LIKE ?', ["%{$parts[2]}%"]);
-                }
-
-                if (!empty($parts[3])) {
-                    $queryTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 4), "-", -1)  LIKE ?', ["%{$parts[3]}%"]);
-                }
-                $truckIds = $queryTruck->pluck('id');
-                $query->whereIn('truck_id', $truckIds);
-            }
-
-            if ($request->filled('driver_id')) {
-
-                $query->where('driver_id', $request->driver_id);
-            }
-
-            if ($request->filled('driverName') || $request->filled('driverLastName')) {
-
-                $queryDriver = Driver::query();
-                if ($request->filled('driverName')) {
-                    $queryDriver->where('name', 'LIKE', "%{$request->driverName}%");
-                }
-
-                if ($request->filled('driverLastName')) {
-                    $queryDriver->where('lastName', 'LIKE',  "%{$request->driverLastName}%");
-                }
-
-                $driverIds = $queryDriver->pluck('id');
-
-                $query->whereIn('driver_id', $driverIds);
+                    ->when(!$request->filled('startDate') && $request->filled('endDate'), function ($q) use ($request) {
+                        $q->where('created_at', '<=', $request->endDate);
+                    });
             }
         }
 
