@@ -424,6 +424,11 @@
     font-size: 0.8rem;
 }
 
+.dumpTruckOwner_Ge{
+    width: 19%;
+    background-color: yellow;
+}
+
 .true_Ge{
     color: #006e00;
 }
