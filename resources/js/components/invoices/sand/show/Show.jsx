@@ -17,8 +17,16 @@ const Show = () => {
     const [search, setSearch] = useState({
         startDate: '',//تاریخ ثبت حواله
         endDate: '',
-        date: '',//تاریخ خرید حواله
+        date: '',//تاریخ بارگیری
         id: '',
+        sandRemittanceId,
+        sandRemittanceBuyerName,
+        sandRemittanceBuyerLastName,
+        sandRemittancePrice,
+        dumpTruckId,
+        dumpTruckOwnerId,
+        dumpTruckOwnerName,
+        dumpTruckOwnerLastName,
         buyerName: '',
         buyerLastName: '',
         buyerFather: '',
@@ -35,7 +43,9 @@ const Show = () => {
         }
     }, []);
 
-    async function getSandInvoices(page = 1, startDate = search.startDate,
+    async function getSandInvoices(
+        page = 1,
+        startDate = search.startDate,
         endDate = search.endDate,
         date = search.date,
         id = search.id,
@@ -136,7 +146,7 @@ const Show = () => {
                 displayBtnAdd={true}
                 displayBtnShow={false}
             />
-             <div className='containerShowGe containerShowCustomer' >
+            <div className='containerShowGe containerShowCustomer' >
                 <div className="divListShowGe">
                     {/* <sandInvoicesearch
                         getSandInvoices={getSandInvoices}
