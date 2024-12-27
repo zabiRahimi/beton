@@ -42,6 +42,7 @@ const Edit = () => {
     const factoryRef = useRef(null);
     const factoryError = useRef(null);
     const remainingPriceRef = useRef(null);
+    const remainingPriceError = useRef(null);
     const [loading, setLoading] = useState(true);
     const [sandRemittance, setSandRemittance] = useState(null);
     const factorys = [
@@ -75,9 +76,10 @@ const Edit = () => {
         price: '',
         remainingPrice: '',
         factory: '',
+        isCompleted: '',
         description: ''
     });
-
+    console.log(input);
     RouteService({ sandRemittanceId, setLoading, setSandRemittance });
 
     useEffect(() => {
@@ -91,6 +93,12 @@ const Edit = () => {
     useEffect(() => {
         if (sandRemittance) {
             priceRef.current.value && (priceRef.current.value = parseFloat(input.price).toLocaleString());
+        }
+    }, [sandRemittance, loadingEnd.current, loading]);
+
+    useEffect(() => {
+        if (sandRemittance) {
+            remainingPriceRef.current.value && (remainingPriceRef.current.value = parseFloat(input.remainingPrice).toLocaleString());
         }
     }, [sandRemittance, loadingEnd.current, loading]);
 
@@ -123,17 +131,86 @@ const Edit = () => {
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-        if (input == 'price') {
+        if (input == 'price' || input == 'remainingPrice') {
             value = value.replace(/,/g, '');
-            /**
-             * چون قیمت اولیه مبلغ باقیمانده باید
-             * با مبلغ حواله برابر باشد اینجا مبلغ باقیمانده مقدار دهی میشود
-             */
-            setInput(prev => ({ ...prev, remainingPrice: value }));
+            if (input == 'price') {
+                remainingPriceRef.current.classList.add('borderRedFB');
+                remainingPriceError.current.innerHTML = 'هنگام ویرایش مبلغ حواله، لازم است مبلغ مانده را نیز اصلاح کنید.';
+            }
+
+        }
+        if (input == 'isCompleted') {
+            let message;
+            if (value == 0) {
+                message = 'آیا مطمعن هستید؟ \n چنانچه گزینه "تمام" را انتخاب کنید، مقدار باقیمانده حواله صفر می‌شود،  !! \n چنانچه از این کار مطمعن بودید به صورت خودکار مقدار مانده در توضیحات ثبت می‌شود.'
+            } else {
+                message = 'آیا مطمعن هستید؟ در این صورت باید مقدار مانده را اصلاح کنید';
+            }
+
+            swalForSaveValInput(message, value, input);
+            return;
         }
         setInput(prev => ({ ...prev, [input]: value }));
 
     }
+
+    // const swalForSaveValInput = (message, value, input0) => {
+    //     console.log(message);
+    //     MySwal.fire({
+    //         icon: "warning",
+    //         title: "<span style='color:red'>هشدار</span>",
+    //         text:message,
+    //         confirmButtonText: " بله ",
+    //         showCancelButton: true,
+    //         cancelButtonText: " خیر ",
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         preConfirm: () => {
+    //             if (value==0) {
+    //                 const NewDescription = `\n توجه: چون کاربر به صورت دستی گزینه 'تمام' را انتخاب کرده مقدار مانده قبلی حواله در زیر درج شده است \n ${Number(input.remainingPrice).toLocaleString()}`;
+    //             const description = input.description + NewDescription;
+    //             remainingPriceRef.current.innerHTML=0;
+    //             setInput(prev => ({ ...prev,remainingPrice:0, [input0]: value, description })); 
+    //             }else{
+    //                 setInput(prev => ({ ...prev, [input0]: value })); 
+    //             }
+
+    //         }
+    //     });
+    // }
+
+    const swalForSaveValInput = (message, value, input0) => {
+        MySwal.fire({
+            icon: "warning",
+            title: "<span style='color:red'>هشدار</span>",
+            text: message,
+            confirmButtonText: " مطمعن هستم! ",
+            showCancelButton: true,
+            cancelButtonText: " خیر ",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (value == 0) {
+                    const NewDescription = `\n توجه: چون کاربر به صورت دستی گزینه 'تمام' را انتخاب کرده مقدار مانده قبلی حواله در زیر درج شده است \n ${Number(input.remainingPrice).toLocaleString()}`;
+                    const description = input.description + NewDescription;
+                    remainingPriceRef.current.innerHTML = 0;
+                    setInput(prev => ({ ...prev, remainingPrice: 0, [input0]: value, description }));
+                } else {
+                    setInput(prev => ({ ...prev, [input0]: value }));
+                }
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                if (value == 0) {
+                    setSelectedOptionRadio('مانده');
+
+                } else {
+                    setSelectedOptionRadio('تمام');
+
+                }
+            }
+        });
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -175,11 +252,10 @@ const Edit = () => {
                 }
 
                 Object.entries(error.response.data.errors).map(([key, val]) => {
-                    // نادیده گرفتن خطای مربوط به remainingPrice
-                    if (key !== 'remainingPrice') {
-                        document.getElementById(key).classList.add('borderRedFB');
-                        document.getElementById(key + 'Error').innerHTML = val;
-                    }
+
+                    document.getElementById(key).classList.add('borderRedFB');
+                    document.getElementById(key + 'Error').innerHTML = val;
+
                 });
             }
         } finally {
@@ -409,6 +485,37 @@ const Edit = () => {
 
                         <div className="containerInputFB">
                             <div className="divInputFB">
+                                <label htmlFor='remainingPrice'> مبلغ مانده </label>
+                                <input
+                                    type="text"
+                                    id='remainingPrice'
+                                    defaultValue={input.remainingPrice}
+                                    className="inputTextUnitFB ltrFB element"
+                                    onInput={e => {
+                                        handleSaveValInput(e, 'remainingPrice');
+                                        formatNub(remainingPriceRef.current);
+                                    }}
+                                    onFocus={e => clearInputError(e, remainingPriceError)}
+                                    ref={remainingPriceRef}
+
+                                />
+                                <span
+                                    className="unitFB"
+                                    onClick={() => htmlFor('price')}
+                                >
+                                    تومان
+                                </span>
+                            </div>
+                            <div
+                                className="errorContainerFB elementError"
+                                id='remainingPriceError'
+                                ref={remainingPriceError}
+                            >
+                            </div>
+                        </div>
+
+                        {/* <div className="containerInputFB">
+                            <div className="divInputFB">
                                 <label> مبلغ مانده </label>
                                 <div className="mainTotalPriceACSL_FB">
                                     <div className="totalPriceACSL_FB"
@@ -419,7 +526,7 @@ const Edit = () => {
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="containerInputFB">
                             <div className="divInputFB">
@@ -431,11 +538,11 @@ const Edit = () => {
                                             className='radioTrue_FB'
                                             value="1"
                                             checked={selectedOptionRadio === 'مانده'}
-                                            onChange={e =>{
+                                            onChange={e => {
                                                 handleOptionRadioChange(e, setSelectedOptionRadio);
                                                 handleSaveValInput(e, 'isCompleted');
-                                                
-                                            } }
+
+                                            }}
                                         />
                                         <span className="trueLabel_FB">مانده</span>
                                     </label>
@@ -445,10 +552,10 @@ const Edit = () => {
                                             type="radio"
                                             value="0"
                                             checked={selectedOptionRadio === 'تمام'}
-                                            onChange={e =>{
+                                            onChange={e => {
                                                 handleOptionRadioChange(e, setSelectedOptionRadio);
                                                 handleSaveValInput(e, 'isCompleted');
-                                            } }
+                                            }}
                                         />
                                         <span className="falseLabel_FB">تمام</span>
                                     </label>

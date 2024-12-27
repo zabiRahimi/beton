@@ -44,6 +44,7 @@ class UpdateSandRemittanceRequest extends FormRequest
             'remittanceNumber.string' => 'شماره حواله را صحیح وارد کنید',
             'price.required' => 'مبلغ حواله را وارد کنید',
             'price.numeric' => 'مبلغ حواله را به عدد و به تومان وارد کنید',
+            'remainingPrice.numeric' => 'مبلغ مانده را به عدد و به تومان وارد کنید',
             'factory.required' => 'کارخانه شن‌وماسه را انتخاب کنید',
 
         ];
