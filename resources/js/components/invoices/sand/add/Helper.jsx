@@ -156,7 +156,24 @@ export const formatNub = (refCurrent) => {
     }
 }
 
-export const resetForm = (setInput, setDate, setTime, setFactory, factoryCurrent, apply = true) => {
+export const resetForm = (
+    setInput,
+    setDate,
+    setTime,
+    setSandRemittance_id,
+    sandRemittance_idCurrent,
+    setTypeSandSelected,
+    typeSandCurrent,
+    totalPriceCurrent,
+    setDumpTruckId,
+    setDumpTruckOwnerId,
+    dumpTruckCurrent,
+    setDrvierId,
+    driverCurrent,
+    totalFareCurrent,
+    setSandStoreId,
+    sandStoreCurrent,
+    apply = true) => {
     setInput({
         billNumber: '',
         sandRemittance_id: '',
@@ -179,15 +196,26 @@ export const resetForm = (setInput, setDate, setTime, setFactory, factoryCurrent
         month: '',
         year: ''
     });
-     setTime({
+    setTime({
         second: '',
         minute: '',
         hour: ''
     });
+    setSandRemittance_id('');
+    setTypeSandSelected('');
+    setDumpTruckId('');
+    setDumpTruckOwnerId('');
+    setDrvierId('');
+    setSandStoreId('');
 
-    setFactory('');
     handleRemoveAllError();
-    factoryCurrent.updateData('انتخاب');
+    sandRemittance_idCurrent.updateData('انتخاب');
+    typeSandCurrent.updateData('انتخاب');
+    totalPriceCurrent.innerHTML=0;
+    dumpTruckCurrent.updateData('انتخاب');
+    driverCurrent.updateData('انتخاب');
+    totalFareCurrent.innerHTML=0;
+    sandStoreCurrent.updateData('انتخاب');
     // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
     if (apply) {
         window.scrollTo({ top: 0 });
@@ -236,7 +264,7 @@ export const handleTotalPriceCalculation = (e, element, input, setInput, refCurr
 
 
 export const handleTotalFareCalculation = (e, element, input, setInput, refCurrent) => {
-    let totalFare=0,
+    let totalFare = 0,
         { value } = e.target;
     value = value.replace(/,/g, '');
     value = Number(value);
@@ -244,17 +272,17 @@ export const handleTotalFareCalculation = (e, element, input, setInput, refCurre
         // تبدیل قیمت هرتن به کیلو
         let unitFare = input.unitFare;
         if (Number.isInteger(Number(unitFare))) {
-            totalFare = (unitFare/1000) * value;
+            totalFare = (unitFare / 1000) * value;
         }
     } else {
         // تبدیل وزن بار به تناژ
-        let weight = input.weight/1000;
+        let weight = input.weight / 1000;
         if (weight && Number(weight)) {
             totalFare = weight * value;
         }
     }
     totalFare = Math.round(totalFare);
-    
+
     setInput(perv => ({ ...perv, totalFare }));
     refCurrent.innerHTML = totalFare.toLocaleString();
 }

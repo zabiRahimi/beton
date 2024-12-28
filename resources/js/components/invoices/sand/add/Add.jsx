@@ -87,7 +87,7 @@ const Add = () => {
     //         html: <div className="sandAptionSelectFB">سایر</div>
     //     }
     // ]);
-    const typeSand =[
+    const typeSand = [
         {
             value: 'ماسه شسته',
             html: <div className="sandAptionSelectFB">ماسه شسته</div>
@@ -162,35 +162,7 @@ const Add = () => {
     const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: dumpTrucks });
 
     const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
-    // const fetchData = async() =>{
-    //     await axios.get("/api/v1/sandInvoice/fetchData").then((response) => {
-    //         let data = response.data;
 
-    //         // if (datas.length == 0) {
-    //         //     MySwal.fire({
-    //         //         icon: "warning",
-    //         //         title: "هشدار",
-    //         //         text: `هنوز هیچ کارخانه‌ای (فروشنده شن‌وماسه) ثبت نشده است. لازم است ابتدا کارخانه را ثبت کنید.`,
-    //         //         confirmButtonText: "  ثبت کارخانه   ",
-    //         //         showCancelButton: true,
-    //         //         cancelButtonText: "کنسل",
-    //         //         confirmButtonColor: "#3085d6",
-    //         //         cancelButtonColor: "#d33",
-    //         //         preConfirm: () => {
-    //         //             navigate("/addCustomer");
-    //         //         }
-    //         //     });
-    //         // } else {
-    //         //     datas.map((data, i) => {
-    //         //         setFactory(perv => ([...perv, {
-    //         //             value: data.id,
-    //         //             // cementStoreName: data.silo,
-    //         //             html: <div className="factoryAptionSelectFB"> {data.name}  {data.lastName} </div>
-    //         //         }]));
-    //         //     })
-    //         // }
-    //     });
-    // }
     useEffect(() => {
         sandRemittance_id && setInput(prev => ({ ...prev, sandRemittance_id }));
     }, [sandRemittance_id]);
@@ -222,7 +194,7 @@ const Add = () => {
         }
         setInput(prev => ({ ...prev, [input]: value }));
     }
-
+console.log(input);
     const clearInputError = (e, refErr, time = false, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
@@ -260,7 +232,24 @@ const Add = () => {
                     timerProgressBar: '--progressBarColorBlue',
                 },
 
-                didClose: () => resetForm(setInput, setDate, setFactory, factoryRef.current),
+                didClose: () => resetForm(
+                    setInput,
+                    setDate,
+                    setTime,
+                    setSandRemittance_id,
+                    sandRemittance_idRef.current,
+                    setTypeSandSelected,
+                    typeSandRef.current,
+                    totalPriceRef.current,
+                    setDumpTruckId,
+                    setDumpTruckOwnerId,
+                    dumpTruckRef.current,
+                    setDrvierId,
+                    driverRef.current,
+                    totalFareRef.current,
+                    setSandStoreId,
+                    sandStoreRef.current,
+                ),
             });
         } catch (error) {
             if (error.response && error.response.status == 422) {
@@ -746,7 +735,24 @@ const Add = () => {
                             type="reset"
                             variant="warning"
                             className="btnDelFB"
-                            onClick={() => resetForm(setInput, setDate, setTime, setFactory, factoryRef.current)}
+                            onClick={() => resetForm(
+                                setInput,
+                                setDate,
+                                setTime,
+                                setSandRemittance_id,
+                                sandRemittance_idRef.current,
+                                setTypeSandSelected,
+                                typeSandRef.current,
+                                totalPriceRef.current,
+                                setDumpTruckId,
+                                setDumpTruckOwnerId,
+                                dumpTruckRef.current,
+                                setDrvierId,
+                                driverRef.current,
+                                totalFareRef.current,
+                                setSandStoreId,
+                                sandStoreRef.current,
+                            )}
 
                         >
                             پاک کن
