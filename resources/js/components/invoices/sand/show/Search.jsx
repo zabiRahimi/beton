@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import DataZabi from "../../../hooks/DateZabi";
 import SelectZabi from '../../../hooks/SelectZabi';
+import RouteService from "./RouteService";
+
 import { formatNub, htmlFor } from './Helper';
 
 const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
@@ -9,9 +11,22 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         checkDate,
         convertToGregorian
     } = DataZabi();
+    const sandStoreRef = useRef(null);
     const priceRef = useRef(null);
     const factoryRef = useRef(null);
     const isCompletedRef = useRef(null);
+
+    const [remittanceOptions, setRemittanceOptions] = useState([]);
+
+    const [dumpTrucks, setDumpTrucks] = useState('');
+    const [dumpTruckOptions, setDumpTruckOptions] = useState([]);
+    const [dumpTruckId, setDumpTruckId] = useState('');
+    const [dumpTruckOwnerId, setDumpTruckOwnerId] = useState('');
+
+    const [drivers, setDrivers] = useState('');
+    const [driverOptions, setDriverOptions] = useState([]);
+    const [driverId, setDrvierId] = useState('');
+
     const [typeSand, setTypeSand] = useState([
         {
             value: 'ماسه شسته',
@@ -35,6 +50,8 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         }
     ]);
     const [typeSandSelected, setTypeSandSelected] = useState('');
+    const [sandStoreOptions, setSandStoreOptions] = useState([]);
+    const [sandStoreId, setSandStoreId] = useState('');
     const [factory, setFactory] = useState('');
 
     const factorys = [
@@ -116,6 +133,9 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         sandStore: '',
         factory: ''
     });
+
+    RouteService({  setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
+
     useEffect(() => {
         setInput(prev => ({ ...prev, factory }));
     }, [factory]);
@@ -451,6 +471,17 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
                                     options={factorys}
                                     saveOption={setFactory}
                                     ref={factoryRef}
+                                />
+                            </div>
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='سیلوی تخلیه'> سیلوی تخلیه </span>
+                            <div className='divSelectTypeConcreteSIS_Se'>
+                                <SelectZabi
+                                    primaryLabel='انتخاب'
+                                    options={sandStores}
+                                    saveOption={setSandStoreId}
+                                    ref={sandStoreRef}
                                 />
                             </div>
                         </div>

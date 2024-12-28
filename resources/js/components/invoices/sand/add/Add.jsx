@@ -116,15 +116,13 @@ const Add = () => {
     const [dumpTrucks, setDumpTrucks] = useState('');
     const [dumpTruckOptions, setDumpTruckOptions] = useState([]);
     const [drivers, setDrivers] = useState('');
-    const [driverOptions, setDriverOptions] = useState([])
+    const [driverOptions, setDriverOptions] = useState([]);
     const [sandStoreOptions, setSandStoreOptions] = useState([]);
     const [sandStoreId, setSandStoreId] = useState('');
 
     const [dumpTruckId, setDumpTruckId] = useState('');
     const [dumpTruckOwnerId, setDumpTruckOwnerId] = useState('');
-
-    const [dumpTruckSelected, setDumpTruckSelected] = useState('');
-    const [dumpTruckOwnerSelected, setDumpTruckOwnerSelected] = useState('');
+    
     const [driverId, setDrvierId] = useState('');
     const [date, setDate] = useState({
         day: '',
