@@ -65,7 +65,29 @@ const Add = () => {
     const [loading, setLoading] = useState(true);
     const [remittanceOptions, setRemittanceOptions] = useState([]);
     const [sandRemittance_id, setSandRemittance_id] = useState('');
-    const [typeSand, setTypeSand] = useState([
+    // const [typeSand, setTypeSand] = useState([
+    //     {
+    //         value: 'ماسه شسته',
+    //         html: <div className="sandAptionSelectFB">ماسه شسته</div>
+    //     },
+    //     {
+    //         value: 'ماسه 06',
+    //         html: <div className="sandAptionSelectFB">ماسه 06</div>
+    //     },
+    //     {
+    //         value: 'شن بادامی',
+    //         html: <div className="sandAptionSelectFB">شن بادامی</div>
+    //     },
+    //     {
+    //         value: 'شن نخودی',
+    //         html: <div className="sandAptionSelectFB">شن نخودی</div>
+    //     },
+    //     {
+    //         value: 'سایر',
+    //         html: <div className="sandAptionSelectFB">سایر</div>
+    //     }
+    // ]);
+    const typeSand =[
         {
             value: 'ماسه شسته',
             html: <div className="sandAptionSelectFB">ماسه شسته</div>
@@ -86,7 +108,7 @@ const Add = () => {
             value: 'سایر',
             html: <div className="sandAptionSelectFB">سایر</div>
         }
-    ]);
+    ];
     const [typeSandSelected, setTypeSandSelected] = useState('');
     // console.log(typeSandSelected);
     const [ticketNumber, setTicketNumber] = useState('');
@@ -134,7 +156,6 @@ const Add = () => {
         sandStore_id: '',
         description: ''
     });
-    console.log(input);
 
     RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
 
@@ -267,8 +288,6 @@ const Add = () => {
         }
     };
 
-    const handleResetForm = () => {
-    }
 
     return (
         <div>
@@ -727,7 +746,8 @@ const Add = () => {
                             type="reset"
                             variant="warning"
                             className="btnDelFB"
-                            onClick={handleResetForm}
+                            onClick={() => resetForm(setInput, setDate, setTime, setFactory, factoryRef.current)}
+
                         >
                             پاک کن
                         </Button>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HeadPage from '../HeadPage';
-// import sandInvoicesearch from './sandInvoicesearch';
+import Search from './Search';
 import Skeleton from 'react-loading-skeleton';
 import Pagination from '../../../hooks/Pagination';
 import Swal from 'sweetalert2';
@@ -19,20 +19,22 @@ const Show = () => {
         endDate: '',
         date: '',//تاریخ بارگیری
         id: '',
-        sandRemittanceId,
-        sandRemittanceBuyerName,
-        sandRemittanceBuyerLastName,
-        sandRemittancePrice,
-        dumpTruckId,
-        dumpTruckOwnerId,
-        dumpTruckOwnerName,
-        dumpTruckOwnerLastName,
-        buyerName: '',
-        buyerLastName: '',
-        buyerFather: '',
-        remittanceNumber: '',
-        price: '',
-        isCompleted: true,
+        billNumber: '',
+        sandRemittanceId: '',
+        sandRemittanceNumber: '',
+        sandRemittanceBuyerName: '',
+        sandRemittanceBuyerLastName: '',
+        sandRemittancePrice: '',
+        dumpTruckId: '',
+        dumpTruckOwnerId: '',
+        dumpTruckOwnerName: '',
+        dumpTruckOwnerLastName: '',
+        driverId: '',
+        driverName: '',
+        driverLastName: '',
+        sandType: '',
+        sandStoreId: '',
+        sandStore: '',
         factory: ''
     });
 
@@ -49,18 +51,51 @@ const Show = () => {
         endDate = search.endDate,
         date = search.date,
         id = search.id,
-        buyerName = search.buyerName,
-        buyerLastName = search.buyerLastName,
-        buyerFather = search.buyerFather,
-        remittanceNumber = search.remittanceNumber,
-        price = search.price,
-        isCompleted = search.isCompleted,
+        billNumber = search.billNumber,
+        sandRemittanceId = search.sandRemittanceId,
+        sandRemittanceNumber = search.sandRemittanceNumber,
+        sandRemittanceBuyerName = search.sandRemittanceBuyerName,
+        sandRemittanceBuyerLastName = search.sandRemittanceBuyerLastName,
+        sandRemittancePrice = search.sandRemittancePrice,
+        dumpTruckId = search.dumpTruckId,
+        dumpTruckOwnerId = search.dumpTruckOwnerId,
+        dumpTruckOwnerName = search.dumpTruckOwnerName,
+        dumpTruckOwnerLastName = search.dumpTruckOwnerLastName,
+        driverId = search.driverId,
+        driverName = search.driverName,
+        driverLastName = search.driverLastName,
+        sandType = search.sandType,
+        sandStoreId = search.sandStoreId,
+        sandStore = search.sandStore,
         factory = search.factory) {
 
         try {
             setLoading(true);
             const response = await axios.get(`/api/v1/sandInvoices`, {
-                params: { page, startDate, endDate, date, id, buyerName, buyerLastName, buyerFather, remittanceNumber, price, isCompleted, factory }
+                params: {
+                    page,
+                    startDate,
+                    endDate,
+                    date,
+                    id,
+                    billNumber,
+                    sandRemittanceId,
+                    sandRemittanceNumber,
+                    sandRemittanceBuyerName,
+                    sandRemittanceBuyerLastName,
+                    sandRemittancePrice,
+                    dumpTruckId,
+                    dumpTruckOwnerId,
+                    dumpTruckOwnerName,
+                    dumpTruckOwnerLastName,
+                    driverId,
+                    driverName,
+                    driverLastName,
+                    sandType,
+                    sandStoreId,
+                    sandStore,
+                    factory
+                }
             });
 
             const datas = response.data.sandInvoices;
@@ -148,11 +183,11 @@ const Show = () => {
             />
             <div className='containerShowGe containerShowCustomer' >
                 <div className="divListShowGe">
-                    {/* <sandInvoicesearch
+                    <Search
                         getSandInvoices={getSandInvoices}
                         handelSetDataSearch={handelSetDataSearch}
                         totalRecords={totalRecords}
-                    /> */}
+                    />
 
                     <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                         <span className="rowNumShowACSI_Ge ">ردیف</span>

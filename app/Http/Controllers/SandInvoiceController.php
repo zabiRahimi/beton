@@ -8,6 +8,7 @@ use App\Models\SandInvoice;
 use App\Http\Requests\StoreSandInvoiceRequest;
 use App\Http\Requests\UpdateSandInvoiceRequest;
 use App\Models\Customer;
+use App\Models\CustomerType;
 use App\Models\Driver;
 use App\Models\Financial;
 use App\Models\SandRemittance;
@@ -24,19 +25,26 @@ class SandInvoiceController extends Controller
         $query = SandInvoice::query();
         $querySandRemittance = SandRemittance::query();
         $queryDumpTruck= Truck::query();
+        $queryDumpTruckOwner = Customer::whereHas('customerType', function ($query) {
+            $query->where('code', 8);
+        });
+        
+        $queryDriver= Driver::query();
         if ($request->filled('id')) {
             $query->where('id', $request->id);
-        } elseif ($request->filled('remittanceNumber')) {
-            $querySandRemittance->where('remittanceNumber', $request->remittanceNumber);
-            $sandRemittanceId = $querySandRemittance->pluck('id');
-            $query->where('sandRemittance_id', $sandRemittanceId);
-        } elseif ($request->filled('sandRemittanceId')) {
-
-            $query->whereIn('sandRemittance_id', $request->sandRemittanceId);
-        }elseif ($request->filled('dumpTruckId')) {
+        } elseif ($request->filled('dumpTruckId')) {
 
             $query->whereIn('truck_id', $request->dumpTruckId);
         } else {
+
+             if ($request->filled('sandRemittanceId')) {
+                $query->where('sandRemittance_id', $request->sandRemittanceId);
+            }
+            elseif ($request->filled('remittanceNumber')) {
+                $querySandRemittance->where('remittanceNumber', $request->remittanceNumber);
+                $sandRemittanceId = $querySandRemittance->pluck('id');
+                $query->where('sandRemittance_id', $sandRemittanceId);
+            }
 
             if (
                 $request->filled('buyerName') ||

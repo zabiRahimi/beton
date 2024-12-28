@@ -156,16 +156,22 @@ export const formatNub = (refCurrent) => {
     }
 }
 
-export const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply = true) => {
+export const resetForm = (setInput, setDate, setTime, setFactory, factoryCurrent, apply = true) => {
     setInput({
-        buyerName: '',
-        buyerLastName: '',
-        buyerFather: '',
-        remittanceNumber: '',
+        billNumber: '',
+        sandRemittance_id: '',
+        time: '',
         date: '',
-        price: '',
-        remainingPrice: '',
-        factory: '',
+        typeSand: '',
+        weight: '',
+        unitPrice: '',
+        totalPrice: '',
+        truck_id: '',
+        dumpTruckOwner_id: '',
+        driver_id: '',
+        unitFare: '',
+        totalFare: '',
+        sandStore_id: '',
         description: ''
     });
     setDate({
@@ -173,6 +179,12 @@ export const resetForm = (setInput, setDate, setFactory, factoryCurrent, apply =
         month: '',
         year: ''
     });
+     setTime({
+        second: '',
+        minute: '',
+        hour: ''
+    });
+
     setFactory('');
     handleRemoveAllError();
     factoryCurrent.updateData('انتخاب');
