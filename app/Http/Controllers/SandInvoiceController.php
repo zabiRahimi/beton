@@ -240,6 +240,21 @@ class SandInvoiceController extends Controller
         ]);
     }
 
+    /**
+     * برای کامپوننت Search که در کامپوننت Show به کار گرفته شده است
+     */
+    public function fetchDataForSearch() {
+        $dumpTrucks = $this->dumpTrucks();
+        $drivers = $this->drivers();
+        $sandStores = $this->sandStores();
+
+        return response()->json([
+            'dumpTrucks' => $dumpTrucks,
+            'drivers' => $drivers,
+            'sandStores' => $sandStores
+        ]); 
+    }
+
     private function count()
     {
         return SandInvoice::count();

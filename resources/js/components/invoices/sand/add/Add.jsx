@@ -65,28 +65,7 @@ const Add = () => {
     const [loading, setLoading] = useState(true);
     const [remittanceOptions, setRemittanceOptions] = useState([]);
     const [sandRemittance_id, setSandRemittance_id] = useState('');
-    // const [typeSand, setTypeSand] = useState([
-    //     {
-    //         value: 'ماسه شسته',
-    //         html: <div className="sandAptionSelectFB">ماسه شسته</div>
-    //     },
-    //     {
-    //         value: 'ماسه 06',
-    //         html: <div className="sandAptionSelectFB">ماسه 06</div>
-    //     },
-    //     {
-    //         value: 'شن بادامی',
-    //         html: <div className="sandAptionSelectFB">شن بادامی</div>
-    //     },
-    //     {
-    //         value: 'شن نخودی',
-    //         html: <div className="sandAptionSelectFB">شن نخودی</div>
-    //     },
-    //     {
-    //         value: 'سایر',
-    //         html: <div className="sandAptionSelectFB">سایر</div>
-    //     }
-    // ]);
+    
     const typeSand = [
         {
             value: 'ماسه شسته',

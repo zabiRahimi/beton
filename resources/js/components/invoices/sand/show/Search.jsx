@@ -11,11 +11,13 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         checkDate,
         convertToGregorian
     } = DataZabi();
+    const typeSandRef = useRef(null);
     const sandStoreRef = useRef(null);
     const priceRef = useRef(null);
     const factoryRef = useRef(null);
     const isCompletedRef = useRef(null);
 
+    const [loading, setLoading] = useState(false);
     const [remittanceOptions, setRemittanceOptions] = useState([]);
 
     const [dumpTrucks, setDumpTrucks] = useState('');
@@ -27,7 +29,14 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
     const [driverOptions, setDriverOptions] = useState([]);
     const [driverId, setDrvierId] = useState('');
 
-    const [typeSand, setTypeSand] = useState([
+    const [numberplateVal, setNumberplateVal] = useState({
+        left: '',
+        alphabet: '',
+        mid: '',
+        right: ''
+    });
+
+    const typeSands = [
         {
             value: 'ماسه شسته',
             html: <div className="sandAptionSelectFB">ماسه شسته</div>
@@ -48,8 +57,9 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
             value: 'سایر',
             html: <div className="sandAptionSelectFB">سایر</div>
         }
-    ]);
-    const [typeSandSelected, setTypeSandSelected] = useState('');
+    ];
+    const [typeSand, setTypeSand] = useState('');
+
     const [sandStoreOptions, setSandStoreOptions] = useState([]);
     const [sandStoreId, setSandStoreId] = useState('');
     const [factory, setFactory] = useState('');
@@ -89,7 +99,6 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         }
     ];
 
-
     const [showSearchFilds, setShowSearchFilds] = useState(true);
 
     const [date, setDate] = useState({
@@ -116,35 +125,42 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         date: '',//تاریخ بارگیری
         id: '',
         billNumber: '',
+        sandType: '',
+        sandStoreId: '',
+        dumpTruckOwnerId: '',
+        dumpTruckOwnerName: '',
+        dumpTruckOwnerLastName: '',
+        dumpTruckId: '',
+        numberplate: '',
+        driverId: '',
+        driverName: '',
+        driverLastName: '',
         sandRemittanceId: '',
         sandRemittanceNumber: '',
         sandRemittanceBuyerName: '',
         sandRemittanceBuyerLastName: '',
         sandRemittancePrice: '',
-        dumpTruckId: '',
-        dumpTruckOwnerId: '',
-        dumpTruckOwnerName: '',
-        dumpTruckOwnerLastName: '',
-        driverId: '',
-        driverName: '',
-        driverLastName: '',
-        sandType: '',
-        sandStoreId: '',
-        sandStore: '',
         factory: ''
     });
-
-    RouteService({  setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
+console.log(input);
+    RouteService({ setLoading, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
 
     useEffect(() => {
         setInput(prev => ({ ...prev, factory }));
     }, [factory]);
 
+    useEffect(() => {
+        setInput(prev => ({ ...prev, typeSand }));
+    }, [typeSand]);
 
+    useEffect(() => {
+        setInput(prev => ({ ...prev, sandStoreId }));
+    }, [sandStoreId]);
 
     const handleShowSearchFilds = () => {
         setShowSearchFilds(perv => !perv);
     }
+
     const handleSearch = () => {
         const dateFields = ['startDate', 'endDate', 'date'];
         const errorMessages = {
@@ -166,21 +182,21 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
             date: input.date,
             id: input.id,
             billNumber: input.billNumber,
+            sandType: input.sandType,
+            sandStoreId: input.sandStoreId,
+            dumpTruckOwnerId: input.dumpTruckOwnerId,
+            dumpTruckOwnerName: input.dumpTruckOwnerName,
+            dumpTruckOwnerLastName: input.dumpTruckOwnerLastName,
+            dumpTruckId: input.dumpTruckId,
+            numberplate:input.numberplate,
+            driverId: input.driverId,
+            driverName: input.driverName,
+            driverLastName: input.driverLastName,
             sandRemittanceId: input.sandRemittanceId,
             sandRemittanceNumber: input.sandRemittanceNumber,
             sandRemittanceBuyerName: input.sandRemittanceBuyerName,
             sandRemittanceBuyerLastName: input.sandRemittanceBuyerLastName,
             sandRemittancePrice: input.sandRemittancePrice,
-            dumpTruckId: input.dumpTruckId,
-            dumpTruckOwnerId: input.dumpTruckOwnerId,
-            dumpTruckOwnerName: input.dumpTruckOwnerName,
-            dumpTruckOwnerLastName: input.dumpTruckOwnerLastName,
-            driverId: input.driverId,
-            driverName: input.driverName,
-            driverLastName: input.driverLastName,
-            sandType: input.sandType,
-            sandStoreId: input.sandStoreId,
-            sandStore: input.sandStore,
             factory: input.factory
 
         });
@@ -192,27 +208,28 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
             input.date,//تاریخ بارگیری
             input.id,
             input.billNumber,
+            input.sandType,
+            input.sandStoreId,
+            input.dumpTruckOwnerId,
+            input.dumpTruckOwnerName,
+            input.dumpTruckOwnerLastName,
+            input.dumpTruckId,
+            input.numberplate,
+            input.driverId,
+            input.driverName,
+            input.driverLastName,
             input.sandRemittanceId,
             input.sandRemittanceNumber,
             input.sandRemittanceBuyerName,
             input.sandRemittanceBuyerLastName,
             input.sandRemittancePrice,
-            input.dumpTruckId,
-            input.dumpTruckOwnerId,
-            input.dumpTruckOwnerName,
-            input.dumpTruckOwnerLastName,
-            input.driverId,
-            input.driverName,
-            input.driverLastName,
-            input.sandType,
-            input.sandStoreId,
             input.factory
         );
     }
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-        if (input == 'price') {
+        if (input == 'sandRemittancePrice') {
             value = value.replace(/,/g, '');
         }
         setInput(prev => ({ ...prev, [input]: value }));
@@ -289,38 +306,69 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
             }
         });
 
+        setNumberplateVal({
+            left: '',
+            alphabet: '',
+            mid: '',
+            right: ''
+        });
+
         setInput({
             startDate: '',
             endDate: '',
-            date: '',//تاریخ خرید حواله
+            date: '',
             id: '',
-            buyerName: '',
-            buyerLastName: '',
-            buyerFather: '',
-            remittanceNumber: '',
-            price: '',
-            isCompleted: true,
+            billNumber: '',
+            sandRemittanceId: '',
+            sandRemittanceNumber: '',
+            sandRemittanceBuyerName: '',
+            sandRemittanceBuyerLastName: '',
+            sandRemittancePrice: '',
+            dumpTruckId: '',
+            dumpTruckOwnerId: '',
+            dumpTruckOwnerName: '',
+            dumpTruckOwnerLastName: '',
+            driverId: '',
+            driverName: '',
+            driverLastName: '',
+            sandType: '',
+            sandStoreId: '',
             factory: ''
         });
 
+        typeSandRef.current.updateData('انتخاب');
+        sandStoreRef.current.updateData('انتخاب');
         factoryRef.current.updateData('انتخاب');
-        isCompletedRef.current.updateData('انتخاب');
 
         await handelSetDataSearch({
-            startDate: '',
-            endDate: '',
-            date: '',//تاریخ خرید حواله
-            id: '',
-            buyerName: '',
-            buyerLastName: '',
-            buyerFather: '',
-            remittanceNumber: '',
-            price: '',
-            isCompleted: true,
-            factory: ''
+
         });
 
-        await getSandInvoices(1, '', '', '', '', '', '', '', '', '', true, '');
+        await getSandInvoices(1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+    }
+
+    const handleSetNumberplate = (e, input) => {
+        const { value } = e.target;
+        let numberplate;
+        setNumberplateVal(prev => ({ ...prev, [input]: value }));
+        if (input == 'left' && (value || numberplateVal.alphabet || numberplateVal.mid || numberplateVal.right)) {
+            numberplate = value + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+            setInput(prev => ({ ...prev, numberplate }));
+
+        } else if (input == 'alphabet' && (value || numberplateVal.left || numberplateVal.mid || numberplateVal.right)) {
+            numberplate = numberplateVal.left + '-' + numberplateVal.mid + '-' + numberplateVal.right + '-' + value;
+            setInput(prev => ({ ...prev, numberplate }));
+
+        } else if (input == 'mid' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.right)) {
+            numberplate = numberplateVal.left + '-' + value + '-' + numberplateVal.right + '-' + numberplateVal.alphabet;
+            setInput(prev => ({ ...prev, numberplate }));
+
+        } else if (input == 'right' && (value || numberplateVal.left || numberplateVal.alphabet || numberplateVal.mid)) {
+            numberplate = numberplateVal.left + '-' + numberplateVal.mid + '-' + value + '-' + numberplateVal.alphabet;
+            setInput(prev => ({ ...prev, numberplate }));
+        } else {
+            setInput(prev => ({ ...prev, numberplate: '' }));
+        }
     }
 
     return (
@@ -468,9 +516,9 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
                             <div className='divSelectTypeConcreteSIS_Se'>
                                 <SelectZabi
                                     primaryLabel='انتخاب'
-                                    options={factorys}
-                                    saveOption={setFactory}
-                                    ref={factoryRef}
+                                    options={typeSands}
+                                    saveOption={setTypeSand}
+                                    ref={typeSandRef}
                                 />
                             </div>
                         </div>
@@ -479,7 +527,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
                             <div className='divSelectTypeConcreteSIS_Se'>
                                 <SelectZabi
                                     primaryLabel='انتخاب'
-                                    options={sandStores}
+                                    options={sandStoreOptions}
                                     saveOption={setSandStoreId}
                                     ref={sandStoreRef}
                                 />
@@ -487,66 +535,137 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
                         </div>
                     </div>
                     <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
-                        <div className="idInvoiceConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se"> شماره حواله </span>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='شناسه‌مالک کمپرسی'> شناسه‌مالک کمپرسی </span>
                             <input
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
-                                placeholder='شماره حواله'
-                                value={input.remittanceNumber || ''}
-                                onInput={e => handleSaveValInput(e, 'remittanceNumber')}
+                                placeholder='شناسه مالک کمپرسی'
+                                value={input.dumpTruckOwnerId || ''}
+                                onInput={e => handleSaveValInput(e, 'dumpTruckOwnerId')}
                             />
                         </div>
-                        <div className="idInvoiceConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se"> مبلغ حواله </span>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام مالک کمپرسی'> نام‌‌مالک کمپرسی </span>
                             <input
                                 type="text"
-                                className=" priceSIS_Se ltrFB rtlPlaceholderFB"
-                                id='price'
-                                placeholder='مبلغ حواله'
-                                onInput={e => { handleSaveValInput(e, 'price'); formatNub(priceRef.current); }}
-                                ref={priceRef}
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام مالک کمپرسی'
+                                value={input.ownerName || ''}
+                                onInput={e => handleSaveValInput(e, 'ownerName')}
                             />
-                            <span
-                                className="unitFB"
-                                onClick={() => htmlFor('price')}
-                            >
-                                تومان
-                            </span>
                         </div>
-                        <div className="typeConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se stringTypeConcreteSIS_Se"> کارخانه </span>
-                            <div className='divSelectTypeConcreteSIS_Se'>
-                                <SelectZabi
-                                    primaryLabel='انتخاب'
-                                    options={factorys}
-                                    saveOption={setFactory}
-                                    ref={factoryRef}
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام‌خانوادگی مالک کمپرسی'> نام‌خانوادگی مالک </span>
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام خانوادگی مالک کمپرسی'
+                                value={input.ownerLastName || ''}
+                                onInput={e => handleSaveValInput(e, 'ownerLastName')}
+                            />
+                        </div>
+
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='شناسه کمپرسی'> شناسه کمپرسی </span>
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='شناسه کمپرسی'
+                                value={input.truck_id || ''}
+                                onInput={e => handleSaveValInput(e, 'truck_id')}
+                            />
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se"> پلاک </span>
+                            <div className="divNumberplateConcreteSIS_Se">
+                                <input
+                                    type="text"
+                                    name=""
+                                    id=""
+                                    className="text2NumberplateConcreteSIS_Se"
+                                    placeholder="00"
+                                    maxLength="2"
+                                    value={numberplateVal.left || ''}
+                                    onInput={e => handleSetNumberplate(e, 'left')}
                                 />
+
+                                <select
+                                    className="selectChNumberplateConcreteSIS_Se"
+                                    value={numberplateVal.alphabet}
+                                    onChange={e => handleSetNumberplate(e, 'alphabet')}
+                                >
+                                    <option value=""> حرف </option>
+                                    <option value="ا"> الف </option>
+                                    <option value="ب"> ب </option>
+                                    <option value="پ"> پ </option>
+                                    <option value="ت"> ت </option>
+                                    <option value="ث"> ث </option>
+                                    <option value="ج"> ج </option>
+                                    <option value="چ"> چ </option>
+                                    <option value="ح"> ح </option>
+                                    <option value="خ"> خ </option>
+                                    <option value="د"> د </option>
+                                    <option value="ذ"> ذ </option>
+                                    <option value="ر"> ر </option>
+                                    <option value="ز"> ز </option>
+                                    <option value="ژ"> ژ </option>
+                                    <option value="س"> س </option>
+                                    <option value="ش"> ش </option>
+                                    <option value="ص"> ص </option>
+                                    <option value="ض"> ض </option>
+                                    <option value="ط"> ط </option>
+                                    <option value="ظ"> ظ </option>
+                                    <option value="ع"> ع </option>
+                                    <option value="غ"> غ </option>
+                                    <option value="ف"> ف </option>
+                                    <option value="ق"> ق </option>
+                                    <option value="ک"> ک </option>
+                                    <option value="گ"> گ </option>
+                                    <option value="ل"> ل </option>
+                                    <option value="م"> م </option>
+                                    <option value="ن"> ن </option>
+                                    <option value="و"> و </option>
+                                    <option value="ه"> ه </option>
+                                    <option value="ی"> ی </option>
+                                </select>
+
+                                <input
+                                    type="text"
+                                    name=""
+                                    id=""
+                                    className="text3NumberplateConcreteSIS_Se"
+                                    placeholder="000"
+                                    maxLength="3"
+                                    value={numberplateVal.mid || ''}
+                                    onInput={e => handleSetNumberplate(e, 'mid')}
+                                />
+                                <input
+                                    type="text"
+                                    className="textSerialNumberplateConcreteSIS_Se"
+                                    placeholder="00"
+                                    maxLength="2"
+                                    value={numberplateVal.right || ''}
+                                    onInput={e => handleSetNumberplate(e, 'right')}
+                                />
+
                             </div>
 
                         </div>
-                        {/* <div className="typeConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se stringTypeConcreteSIS_Se"> وضعیت </span>
-                            <div className='divSelectTypeConcreteSIS_Se'>
-
-                            </div>
-
-                        </div> */}
                     </div>
 
                     <div className="columnConcreteSIS_Se column4ConcreteSIS_Se"></div>
                 </div>
                 <div className="secondRowCocreteSIS_Se">
                     <div className="columnConcreteSIS_Se column1ConcreteSIS_Se">
-                    <div className="idInvoiceConcreteSIS_Se">
+                        <div className="idInvoiceConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se" title='شناسه حواله'> شناسه حواله </span>
                             <input
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شناسه حواله'
-                                value={input.id || ''}
-                                onInput={e => handleSaveValInput(e, 'id')}
+                                value={input.sandRemittanceId || ''}
+                                onInput={e => handleSaveValInput(e, 'sandRemittanceId')}
                             />
                         </div>
 
@@ -573,14 +692,14 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
                         </div>
                     </div>
                     <div className="columnConcreteSIS_Se column2ConcreteSIS_Se">
-                    <div className="idInvoiceConcreteSIS_Se">
+                        <div className="idInvoiceConcreteSIS_Se">
                             <span className="stringFromDate_Se stringConcreteSIS_Se"> شماره حواله </span>
                             <input
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شماره حواله'
-                                value={input.remittanceNumber || ''}
-                                onInput={e => handleSaveValInput(e, 'remittanceNumber')}
+                                value={input.sandRemittanceNumber || ''}
+                                onInput={e => handleSaveValInput(e, 'sandRemittanceNumber')}
                             />
                         </div>
                         <div className="idInvoiceConcreteSIS_Se">
@@ -590,7 +709,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
                                 className=" priceSIS_Se ltrFB rtlPlaceholderFB"
                                 id='price'
                                 placeholder='مبلغ حواله'
-                                onInput={e => { handleSaveValInput(e, 'price'); formatNub(priceRef.current); }}
+                                onInput={e => { handleSaveValInput(e, 'sandRemittancePrice'); formatNub(priceRef.current); }}
                                 ref={priceRef}
                             />
                             <span
@@ -612,29 +731,39 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
                             </div>
 
                         </div>
-                        {/* <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se"> نام خریدار </span>
+                    </div>
+                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se">
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='شناسه‌ راننده'> شناسه‌ راننده </span>
                             <input
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
-                                placeholder='نام خریدار'
-                                value={input.buyerName || ''}
-                                onInput={e => handleSaveValInput(e, 'buyerName')}
+                                placeholder='شناسه راننده'
+                                value={input.driverId || ''}
+                                onInput={e => handleSaveValInput(e, 'driverId')}
                             />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
-                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام‌خانوادگی خریدار'> نام‌خانوادگی خریدار </span>
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام راننده'> نام‌‌ راننده </span>
                             <input
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
-                                placeholder='نام خانوادگی خریدار'
-                                value={input.buyerLastName || ''}
-                                onInput={e => handleSaveValInput(e, 'buyerLastName')}
-
+                                placeholder='نام راننده'
+                                value={input.driverName || ''}
+                                onInput={e => handleSaveValInput(e, 'driverName')}
                             />
-                        </div> */}
+                        </div>
+                        <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
+                            <span className="stringFromDate_Se stringConcreteSIS_Se" title='نام‌خانوادگی راننده'> نام‌خانوادگی راننده </span>
+                            <input
+                                type="text"
+                                className="idBuerInputConcreteSIS_Se"
+                                placeholder='نام خانوادگی راننده'
+                                value={input.driverLastName || ''}
+                                onInput={e => handleSaveValInput(e, 'driverLastName')}
+                            />
+                        </div>
                     </div>
-                    <div className="columnConcreteSIS_Se column3ConcreteSIS_Se"></div>
                     <div className="columnConcreteSIS_Se column4ConcreteSIS_Se">
                         <div className="divBtnDelSearch_Se">
                             <button

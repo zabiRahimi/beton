@@ -137,6 +137,8 @@ Route::controller(SandInvoiceController::class)->group(function () {
     // Route::post('/addSandInvoice', 'store');
     // Route::get('/getSandInvoices', 'index');
     Route::get('/sandInvoice/fetchData', 'fetchData');
+    Route::get('/sandInvoice/fetchDataForSearch', 'fetchDataForSearch');
+    
     // Route::get('/sandInvoice/getSandSellers', 'getSandSellers');
     // Route::get('/sandInvoice/getSandStores', 'getSandStores');
     // Route::get('/getCSIConcretes', 'getCSIConcretes');

@@ -7,7 +7,6 @@ export const formatNub = (refCurrent) => {
     let val,
         checkDthot,
         resalt = refCurrent.value.replace(/[\s,]/g, "");
-    console.log(resalt);
     // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
     if (resalt.slice(-1) == '.') {
         checkDthot = true;
@@ -22,7 +21,6 @@ export const formatNub = (refCurrent) => {
          * علامت را به آخر رشته اضافه می کند
         */
         val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
-        console.log(val);
         refCurrent.value = val;
     }
 }

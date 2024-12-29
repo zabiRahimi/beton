@@ -5,7 +5,6 @@ import moment from 'jalali-moment';
 import SelectZabi from '../../../hooks/SelectZabi';
 // import iran from "../../../assets/images/iran.png";
 
-
 const CocreteSalesInvoiceSearch = ({ getConcreteSalesInvoices, handelSetDataSearch, concretes, totalRecords }) => {
     const {
         checkDate
