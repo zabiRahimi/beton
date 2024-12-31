@@ -10,7 +10,7 @@ const Show = () => {
     const MySwal = withReactContent(Swal);
     const [loading, setLoading] = useState(false);
     const hasCalledgetSandInvoices = useRef(false);
-    const [sandInvoices, setsandInvoices] = useState(null);
+    const [sandInvoices, setSandInvoices] = useState(null);
     const [totalPage, setTotalPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
@@ -26,7 +26,7 @@ const Show = () => {
         dumpTruckOwnerName: '',
         dumpTruckOwnerLastName: '',
         dumpTruckId: '',
-        numberplate:'',
+        numberplate: '',
         driverId: '',
         driverName: '',
         driverLastName: '',
@@ -58,7 +58,7 @@ const Show = () => {
         dumpTruckOwnerName = search.dumpTruckOwnerName,
         dumpTruckOwnerLastName = search.dumpTruckOwnerLastName,
         dumpTruckId = search.dumpTruckId,
-        numberplate= search.numberplate,
+        numberplate = search.numberplate,
         driverId = search.driverId,
         driverName = search.driverName,
         driverLastName = search.driverLastName,
@@ -100,7 +100,7 @@ const Show = () => {
 
             const data = response.data.sandInvoices;
             console.log(data);
-            setsandInvoices(data.data);
+            setSandInvoices(data.data);
             setTotalPage(data.last_page);
             setTotalRecords(data.total);
             window.scrollTo({ top: top, behavior: 'smooth' });
@@ -144,18 +144,25 @@ const Show = () => {
         let value = sandInvoices.map((sandInvoice, i) => {
             let price = Number(sandInvoice['price']).toLocaleString();
             let remainingPrice = Number(sandInvoice['remainingPrice']).toLocaleString();
+            let sandRemittance = sandInvoice['sand_remittance'];
             let date = sandInvoice['date'].split('-');
-            let isCompleted = sandInvoice['isCompleted'] ? 'مانده' : 'تمام';
+          
             return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">{i + 1}</span>
                 <span className="ticketNumberACSI_Ge">{sandInvoice['id']}</span>
-                <span className="remittanceNumber_Ge">{sandInvoice['remittanceNumber']}</span>
-                <span className="customerACSI_Ge buyerName_Ge">{sandInvoice['buyerName']}{'  '}{sandInvoice['buyerLastName']} {'  '} <span className='bueryFather_Ge'>{sandInvoice['buyerFather']}</span> </span>
-                <span className="price_Ge textAlignCenter_Ge">{price}</span>
+                <span className="remittanceNumber_Ge">{sandInvoice['billNumber']}</span>
+                <span className="customerACSI_Ge buyerName_Ge">
+                    {sandRemittance['buyerName']}{'  '}{sandRemittance['buyerLastName']} {'  '}
+                    <span className='bueryFather_Ge'>{sandRemittance['remittanceNumber']}</span>
+                </span>
+                <span className="dumpTruckOwner_Ge textAlignCenter_Ge">
+                    <span className='dumpTruckOwnerName_Ge'></span>
+                    <span className='dumpTruckNumberplate_Ge'></span>
+                </span>
                 <span className="price_Ge textAlignCenter_Ge">{remainingPrice}</span>
                 <span className="factory_Ge">{sandInvoice['factory']}</span>
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
-                <span className={`isCompleted_Ge ${sandInvoice['isCompleted'] ? 'true_Ge' : 'false_Ge'}`}>{isCompleted}</span>
+                
                 <div className="divEditACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" ویرایش "
