@@ -11,7 +11,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         checkDate,
         convertToGregorian
     } = DataZabi();
-    const typeSandRef = useRef(null);
+    const sandTypeRef = useRef(null);
     const sandStoreRef = useRef(null);
     const priceRef = useRef(null);
     const factoryRef = useRef(null);
@@ -36,7 +36,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         right: ''
     });
 
-    const typeSands = [
+    const sandTypes = [
         {
             value: 'ماسه شسته',
             html: <div className="sandAptionSelectFB">ماسه شسته</div>
@@ -58,7 +58,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
             html: <div className="sandAptionSelectFB">سایر</div>
         }
     ];
-    const [typeSand, setTypeSand] = useState('');
+    const [sandType, setsandType] = useState('');
 
     const [sandStoreOptions, setSandStoreOptions] = useState([]);
     const [sandStoreId, setSandStoreId] = useState('');
@@ -150,8 +150,8 @@ console.log(input);
     }, [factory]);
 
     useEffect(() => {
-        setInput(prev => ({ ...prev, typeSand }));
-    }, [typeSand]);
+        setInput(prev => ({ ...prev, sandType }));
+    }, [sandType]);
 
     useEffect(() => {
         setInput(prev => ({ ...prev, sandStoreId }));
@@ -336,7 +336,7 @@ console.log(input);
             factory: ''
         });
 
-        typeSandRef.current.updateData('انتخاب');
+        sandTypeRef.current.updateData('انتخاب');
         sandStoreRef.current.updateData('انتخاب');
         factoryRef.current.updateData('انتخاب');
 
@@ -516,9 +516,9 @@ console.log(input);
                             <div className='divSelectTypeConcreteSIS_Se'>
                                 <SelectZabi
                                     primaryLabel='انتخاب'
-                                    options={typeSands}
-                                    saveOption={setTypeSand}
-                                    ref={typeSandRef}
+                                    options={sandTypes}
+                                    saveOption={setsandType}
+                                    ref={sandTypeRef}
                                 />
                             </div>
                         </div>
@@ -551,8 +551,8 @@ console.log(input);
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام مالک کمپرسی'
-                                value={input.ownerName || ''}
-                                onInput={e => handleSaveValInput(e, 'ownerName')}
+                                value={input.dumpTruckOwnerName || ''}
+                                onInput={e => handleSaveValInput(e, 'dumpTruckOwnerName')}
                             />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">
@@ -561,8 +561,8 @@ console.log(input);
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='نام خانوادگی مالک کمپرسی'
-                                value={input.ownerLastName || ''}
-                                onInput={e => handleSaveValInput(e, 'ownerLastName')}
+                                value={input.dumpTruckOwnerLastName || ''}
+                                onInput={e => handleSaveValInput(e, 'dumpTruckOwnerLastName')}
                             />
                         </div>
 
@@ -572,8 +572,8 @@ console.log(input);
                                 type="text"
                                 className="idBuerInputConcreteSIS_Se"
                                 placeholder='شناسه کمپرسی'
-                                value={input.truck_id || ''}
-                                onInput={e => handleSaveValInput(e, 'truck_id')}
+                                value={input.dumpTruckId || ''}
+                                onInput={e => handleSaveValInput(e, 'dumpTruckId')}
                             />
                         </div>
                         <div className="buerConcreteSIS_Se idBuerConcreteSIS_Se">

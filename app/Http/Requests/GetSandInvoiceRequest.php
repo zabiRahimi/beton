@@ -22,7 +22,27 @@ class GetSandInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'startDate'=> ['nullable','date'],
+            'endDate'=> ['nullable','date'],
+            'date' => ['nullable', 'date'],
+            'id'=> ['nullable','numeric'],
+            'billNumber'=>['nullable','numeric'],
+            'sandType'=>['nullable','string'],
+            'sandStoreId'=>['nullable','numeric'],
+            'dumpTruckOwnerId'=>['nullable',''],
+            'dumpTruckOwnerName'=>['nullable','string'],
+            'dumpTruckOwnerLastName'=>['nullable','string'],
+            'dumpTruckId'=>['nullable','numeric'],
+            'numberplate'=>['nullable','string'],
+            'driverId'=>['nullable','numeric'],
+            'driverName'=>['nullable','string'],
+            'driverLastName'=>['nullable','string'],
+            'sandRemittanceId'=>['nullable','numeric'],
+            'sandRemittanceNumber'=>['nullable','string'],
+            'sandRemittanceBuyerName'=>['nullable','string'],
+            'sandRemittanceBuyerLastName'=>['nullable','string'],
+            'sandRemittancePrice'=>['nullable','numeric'],
+            'factory'=>['nullable','string'],
         ];
     }
     public function messages(): array
@@ -31,9 +51,8 @@ class GetSandInvoiceRequest extends FormRequest
             'startDate.date' => 'تاریخ شروع جستجو را صحیح وارد کنید، چنانچه نمی‌خواهید تاریخ شروع را وارد کنید آن را کاملا پاک کنید',
             'endDate.date' => 'تاریخ پایان جستجو را صحیح وارد کنید، چنانچه نمی‌خواهید تاریخ پایان را وارد کنید آن را کاملا پاک کنید',
             'id.numeric' => 'شناسه را به عدد وارد کنید',
-            'types.*.numeric' => 'نوع مشتری را انتخاب کنید',
-            'name.string' => 'نام مشتری را صحیح وارد کنید',
-            'lastName.string' => 'نام خانوادگی مشتری را صحیح وارد کنید',
+            'date.date' => 'تاریخ حواله را صحیح و کامل وارد کنید',
+            
         ];
     }
 }
