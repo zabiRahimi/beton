@@ -135,8 +135,8 @@ class SandInvoiceController extends Controller
             }
         }
 
-        $concreteSalesInvoices = $query->orderByDesc('id')->with(['customer', 'concrete', 'cementStore', 'truck.customer', 'driver'])->paginate(50);
-        return response()->json(['concreteSalesInvoices' => $concreteSalesInvoices], 200);
+        $sandInvoices = $query->orderByDesc('id')->with([ 'truck.customer', 'sandRemittance'])->paginate(50);
+        return response()->json(['sandInvoices' => $sandInvoices], 200);
     }
 
     /**

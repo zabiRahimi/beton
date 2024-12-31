@@ -98,10 +98,11 @@ const Show = () => {
                 }
             });
 
-            const datas = response.data.sandInvoices;
-            setsandInvoices(datas.data);
-            setTotalPage(datas.last_page);
-            setTotalRecords(datas.total);
+            const data = response.data.sandInvoices;
+            console.log(data);
+            setsandInvoices(data.data);
+            setTotalPage(data.last_page);
+            setTotalRecords(data.total);
             window.scrollTo({ top: top, behavior: 'smooth' });
         } catch (error) {
             if (error.response && error.response.status === 422) {
