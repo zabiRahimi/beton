@@ -162,8 +162,8 @@ export const resetForm = (
     setTime,
     setSandRemittance_id,
     sandRemittance_idCurrent,
-    setTypeSandSelected,
-    typeSandCurrent,
+    setSandTypeSelected,
+    sandTypeCurrent,
     totalPriceCurrent,
     setDumpTruckId,
     setDumpTruckOwnerId,
@@ -179,7 +179,7 @@ export const resetForm = (
         sandRemittance_id: '',
         time: '',
         date: '',
-        typeSand: '',
+        sandType: '',
         weight: '',
         unitPrice: '',
         totalPrice: '',
@@ -202,7 +202,7 @@ export const resetForm = (
         hour: ''
     });
     setSandRemittance_id('');
-    setTypeSandSelected('');
+    setSandTypeSelected('');
     setDumpTruckId('');
     setDumpTruckOwnerId('');
     setDrvierId('');
@@ -210,7 +210,7 @@ export const resetForm = (
 
     handleRemoveAllError();
     sandRemittance_idCurrent.updateData('انتخاب');
-    typeSandCurrent.updateData('انتخاب');
+    sandTypeCurrent.updateData('انتخاب');
     totalPriceCurrent.innerHTML=0;
     dumpTruckCurrent.updateData('انتخاب');
     driverCurrent.updateData('انتخاب');

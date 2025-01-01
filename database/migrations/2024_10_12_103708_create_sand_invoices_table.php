@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('billNumber',30)->comment('شماره قبض');
             $table->string('time', 25);
             $table->date('date');
-            $table->string('typeSand', 36);
+            $table->string('setSandTypeSelected', 36);
             $table->string('weight', 5);
             $table->string('unitPrice', 10);
             $table->string('totalPrice', 10);

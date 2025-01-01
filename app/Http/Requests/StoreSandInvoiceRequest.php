@@ -26,7 +26,7 @@ class StoreSandInvoiceRequest extends FormRequest
             'sandRemittance_id' => ['required', 'numeric'],
             'time' => ['required', 'time'],
             'date' => ['required', 'date'],
-            'typeSand' => ['required', 'string'],
+            'sandType' => ['required', 'string'],
             'weight' => ['required', 'bail', 'numeric', 'digits_between:1,5'],
             'unitPrice' => ['required', 'bail', 'numeric', 'digits_between:1,7'],
             'totalPrice' => ['required', 'bail', 'numeric', 'digits_between:1,10'],
@@ -53,7 +53,7 @@ class StoreSandInvoiceRequest extends FormRequest
             'time.required' => 'ساعت ثبت قبض را وارد کنید',
             'date.required' => 'تاریخ ثبت قبض را وارد کنید',
 
-            'typeSand.required' => 'نوع شن‌وماسه بارگیری شده را وارد کنید',
+            'sandType.required' => 'نوع شن‌وماسه بارگیری شده را وارد کنید',
 
             'weight.required' => 'وزن بار را به کیلوگرم وارد کنید',
             'weight.numeric' => 'وزن بار را به عدد وارد کنید',

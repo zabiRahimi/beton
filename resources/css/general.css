@@ -426,6 +426,24 @@
 
 .dumpTruckOwner_Ge{
     width: 19%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dumpTruckNumberplate_Ge{
+    width: 100%;
+    height: 20px;
+    padding: 0 5px;
+    display: flex;
+    justify-content: center;
+}
+.dumpTruckOwnerName_Ge{
+    font-size: 0.9rem;
+}
+.dumpTruckNumberplate_Ge .numberplateDiv {
+    width: 80%;
+    height: 20px;
+    font-size: 0.8rem;
 }
 
 .true_Ge{

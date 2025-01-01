@@ -42,8 +42,8 @@ const Add = () => {
     const dateRef = useRef(null);
     const dateError = useRef(null);
     const timeError = useRef(null);
-    const typeSandRef = useRef(null);
-    const typeSandError = useRef(null);
+    const sandTypeRef = useRef(null);
+    const sandTypeError = useRef(null);
     const weightRef = useRef(null);
     const weightError = useRef(null);
     const unitPriceRef = useRef(null);
@@ -66,7 +66,7 @@ const Add = () => {
     const [remittanceOptions, setRemittanceOptions] = useState([]);
     const [sandRemittance_id, setSandRemittance_id] = useState('');
     
-    const typeSand = [
+    const sandType = [
         {
             value: 'ماسه شسته',
             html: <div className="sandAptionSelectFB">ماسه شسته</div>
@@ -88,8 +88,8 @@ const Add = () => {
             html: <div className="sandAptionSelectFB">سایر</div>
         }
     ];
-    const [typeSandSelected, setTypeSandSelected] = useState('');
-    // console.log(typeSandSelected);
+    const [sandTypeSelected, setSandTypeSelected] = useState('');
+    // console.log(sandTypeSelected);
     const [ticketNumber, setTicketNumber] = useState('');
 
     const [dumpTrucks, setDumpTrucks] = useState('');
@@ -121,7 +121,7 @@ const Add = () => {
         sandRemittance_id: '',
         time: '',
         date: '',
-        typeSand: '',
+        sandType: '',
         weight: '',
         unitPrice: '',
         totalPrice: '',
@@ -145,8 +145,8 @@ const Add = () => {
     }, [sandRemittance_id]);
 
     useEffect(() => {
-        typeSandSelected && setInput(prev => ({ ...prev, typeSand: typeSandSelected }));
-    }, [typeSandSelected]);
+        sandTypeSelected && setInput(prev => ({ ...prev, sandType: sandTypeSelected }));
+    }, [sandTypeSelected]);
 
     useEffect(() => {
         dumpTruckId && setInput(prev => ({ ...prev, truck_id: dumpTruckId }));
@@ -215,8 +215,8 @@ console.log(input);
                     setTime,
                     setSandRemittance_id,
                     sandRemittance_idRef.current,
-                    setTypeSandSelected,
-                    typeSandRef.current,
+                    setSandTypeSelected,
+                    sandTypeRef.current,
                     totalPriceRef.current,
                     setDumpTruckId,
                     setDumpTruckOwnerId,
@@ -460,21 +460,21 @@ console.log(input);
                             <div className="divInputFB">
                                 <label> نوع‌ شن‌وماسه </label>
                                 <div
-                                    id='typeSand'
+                                    id='sandType'
                                     className="element"
-                                    onClick={e => { clearInputError(e, typeSandError) }}
+                                    onClick={e => { clearInputError(e, sandTypeError) }}
                                 >
                                     <SelectZabi
                                         primaryLabel='انتخاب'
-                                        options={typeSand}
-                                        saveOption={setTypeSandSelected}
-                                        ref={typeSandRef}
+                                        options={sandType}
+                                        saveOption={setSandTypeSelected}
+                                        ref={sandTypeRef}
                                     />
                                 </div>
                                 <i className="icofont-ui-rating starFB" />
 
                             </div>
-                            <div className="errorContainerFB elementError" id='typeSandError' ref={typeSandError}> </div>
+                            <div className="errorContainerFB elementError" id='sandTypeError' ref={sandTypeError}> </div>
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
@@ -718,8 +718,8 @@ console.log(input);
                                 setTime,
                                 setSandRemittance_id,
                                 sandRemittance_idRef.current,
-                                setTypeSandSelected,
-                                typeSandRef.current,
+                                setSandTypeSelected,
+                                sandTypeRef.current,
                                 totalPriceRef.current,
                                 setDumpTruckId,
                                 setDumpTruckOwnerId,

@@ -145,8 +145,11 @@ const Show = () => {
             let price = Number(sandInvoice['price']).toLocaleString();
             let remainingPrice = Number(sandInvoice['remainingPrice']).toLocaleString();
             let sandRemittance = sandInvoice['sand_remittance'];
+            let dumpTruck = sandInvoice['truck'];
             let date = sandInvoice['date'].split('-');
-          
+            let numberplate=dumpTruck.numberplate.split('-');
+            let dumpTruckOwner= dumpTruck.customer;
+
             return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">{i + 1}</span>
                 <span className="ticketNumberACSI_Ge">{sandInvoice['id']}</span>
@@ -156,13 +159,20 @@ const Show = () => {
                     <span className='bueryFather_Ge'>{sandRemittance['remittanceNumber']}</span>
                 </span>
                 <span className="dumpTruckOwner_Ge textAlignCenter_Ge">
-                    <span className='dumpTruckOwnerName_Ge'></span>
-                    <span className='dumpTruckNumberplate_Ge'></span>
+                    <span className='dumpTruckOwnerName_Ge'>{dumpTruckOwner['name']}{'  '}{dumpTruckOwner['lastName']}</span>
+                    <span className='dumpTruckNumberplate_Ge'>
+                        <div className="numberplateDiv">
+                            <span className="numberplateDivS1">{numberplate[0]}</span>
+                            <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
+                            <span className="numberplateDivS3">{numberplate[1]}</span>
+                            <span className="numberplateDivS4">{numberplate[2]}</span>
+                        </div>
+                    </span>
                 </span>
-                <span className="price_Ge textAlignCenter_Ge">{remainingPrice}</span>
-                <span className="factory_Ge">{sandInvoice['factory']}</span>
-                <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
+                <span className="sandType_Ge textAlignCenter_Ge">{sandInvoice['sandType']}</span>
                 
+                <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
+
                 <div className="divEditACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" ویرایش "
@@ -203,7 +213,7 @@ const Show = () => {
                         <span className="remittanceNumber_Ge ">شماره قبض</span>
                         <span className="customerHeadACSI_Ge buyerName_Ge textAlignCenter_Ge">حواله</span>
                         <span className="dumpTruckOwner_Ge textAlignCenter_Ge"> کمپرسی </span>
-                        <span className="price_Ge textAlignCenter_Ge"> شن‌‌‌وماسه </span>
+                        <span className="sandType_Ge textAlignCenter_Ge"> شن‌‌‌وماسه </span>
                         <span className="dateACSI_Ge textAlignCenter_Ge">تاریخ </span>
                         <span className="editHeadShowACSI_Ge"> ویرایش  </span>
                         <span className="delHeadShowACSI_Ge"> حذف </span>
