@@ -142,7 +142,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         sandRemittancePrice: '',
         factory: ''
     });
-    
+
     RouteService({ setLoading, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
 
     useEffect(() => {
@@ -188,7 +188,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
             dumpTruckOwnerName: input.dumpTruckOwnerName,
             dumpTruckOwnerLastName: input.dumpTruckOwnerLastName,
             dumpTruckId: input.dumpTruckId,
-            numberplate:input.numberplate,
+            numberplate: input.numberplate,
             driverId: input.driverId,
             driverName: input.driverName,
             driverLastName: input.driverLastName,
@@ -336,6 +336,9 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
             factory: ''
         });
 
+        setsandType('');
+        setSandStoreId('');
+        setFactory('');
         sandTypeRef.current.updateData('انتخاب');
         sandStoreRef.current.updateData('انتخاب');
         factoryRef.current.updateData('انتخاب');

@@ -24,12 +24,12 @@ class SandInvoiceController extends Controller
     {
         $query = SandInvoice::query();
         $querySandRemittance = SandRemittance::query();
-        $queryDumpTruck= Truck::query();
+        $queryDumpTruck = Truck::query();
         $queryDumpTruckOwner = Customer::whereHas('customerType', function ($query) {
             $query->where('code', 8);
         });
-        
-        $queryDriver= Driver::query();
+
+        $queryDriver = Driver::query();
         if ($request->filled('id')) {
             $query->where('id', $request->id);
         } elseif ($request->filled('billNumber')) {
@@ -37,10 +37,46 @@ class SandInvoiceController extends Controller
             $query->where('billNumber', $request->billNumber);
         } else {
 
-             if ($request->filled('sandRemittanceId')) {
-                $query->where('sandRemittance_id', $request->sandRemittanceId);
+            if ($request->filled('dumpTruckOwnerId')) {
+                $query->where('dumpTruckOwner_id', $request->dumpTruckOwnerId);
+            } elseif($request->filled('dumpTruckOwnerName')||$request->filled('dumpTruckOwnerLastName')) {
+
+                if (
+                    $request->filled('dumpTruckOwnerName')
+                ) {
+                    $queryDumpTruckOwner->where('name', 'LIKE', "%{$request->dumpTruckOwnerName}%");
+                }
+
+                if (
+                    $request->filled('dumpTruckOwnerLastName')
+                ) {
+                    $queryDumpTruckOwner->where('lastName', 'LIKE', "%{$request->dumpTruckOwnerLastName}%");
+                }
+
+                $queryDumpTruckOwnerId = $queryDumpTruckOwner? $queryDumpTruckOwner->pluck('id'):0;
+                $query->where('dumpTruckOwner_id', $queryDumpTruckOwnerId);
             }
-            elseif ($request->filled('remittanceNumber')) {
+
+            // if (
+            //     $request->filled('dumpTruckOwnerName') ||
+            //     $request->filled('dumpTruckOwnerLastName')
+            // ) {
+            //     $queryDumpTruckOwner->where('name', 'LIKE', "%{$request->dumpTruckOwnerName}%");
+            //     $conditions = [
+            //         'dumpTruckOwnerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
+            //         'dumpTruckOwnerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
+            //     ];
+
+            //     foreach ($conditions as $key => $value) {
+            //         if ($request->filled($key)) {
+            //             $querySandRemittance->where($key, 'like', $value);
+            //         }
+            //     }
+            // }
+
+            if ($request->filled('sandRemittanceId')) {
+                $query->where('sandRemittance_id', $request->sandRemittanceId);
+            } elseif ($request->filled('remittanceNumber')) {
                 $querySandRemittance->where('remittanceNumber', $request->remittanceNumber);
                 $sandRemittanceId = $querySandRemittance->pluck('id');
                 $query->where('sandRemittance_id', $sandRemittanceId);
@@ -49,8 +85,8 @@ class SandInvoiceController extends Controller
             if (
                 $request->filled('buyerName') ||
                 $request->filled('buyerLastName') ||
-                $request->filled('sadnRemittancePrice')||
-                $request->filled('isCompleted')||
+                $request->filled('sadnRemittancePrice') ||
+                $request->filled('isCompleted') ||
                 $request->filled('factory')
             ) {
 
@@ -80,12 +116,12 @@ class SandInvoiceController extends Controller
                 $query->whereIn('sandRemittance_id', $sandRemittanceIds);
             }
 
-            
+
             if (
                 $request->filled('buyerName') ||
                 $request->filled('buyerLastName') ||
-                $request->filled('sadnRemittancePrice')||
-                $request->filled('isCompleted')||
+                $request->filled('sadnRemittancePrice') ||
+                $request->filled('isCompleted') ||
                 $request->filled('factory')
             ) {
 
@@ -115,8 +151,12 @@ class SandInvoiceController extends Controller
                 $query->whereIn('sandRemittance_id', $sandRemittanceIds);
             }
 
-            if($request->filled('sandType')){
+            if ($request->filled('sandType')) {
                 $query->where('sandType', $request->sandType);
+            }
+
+            if ($request->filled('sandStoreId')) {
+                $query->where('sandStore_id', $request->sandStoreId);
             }
 
             // شرط تاریخ
@@ -135,7 +175,7 @@ class SandInvoiceController extends Controller
             }
         }
 
-        $sandInvoices = $query->orderByDesc('id')->with([ 'truck.customer', 'sandRemittance'])->paginate(50);
+        $sandInvoices = $query->orderByDesc('id')->with(['truck.customer', 'sandRemittance'])->paginate(50);
         return response()->json(['sandInvoices' => $sandInvoices], 200);
     }
 
@@ -243,7 +283,8 @@ class SandInvoiceController extends Controller
     /**
      * برای کامپوننت Search که در کامپوننت Show به کار گرفته شده است
      */
-    public function fetchDataForSearch() {
+    public function fetchDataForSearch()
+    {
         $dumpTrucks = $this->dumpTrucks();
         $drivers = $this->drivers();
         $sandStores = $this->sandStores();
@@ -252,7 +293,7 @@ class SandInvoiceController extends Controller
             'dumpTrucks' => $dumpTrucks,
             'drivers' => $drivers,
             'sandStores' => $sandStores
-        ]); 
+        ]);
     }
 
     private function count()
