@@ -39,7 +39,7 @@ class SandInvoiceController extends Controller
 
             if ($request->filled('dumpTruckOwnerId')) {
                 $query->where('dumpTruckOwner_id', $request->dumpTruckOwnerId);
-            } elseif($request->filled('dumpTruckOwnerName')||$request->filled('dumpTruckOwnerLastName')) {
+            } elseif ($request->filled('dumpTruckOwnerName') || $request->filled('dumpTruckOwnerLastName')) {
 
                 if (
                     $request->filled('dumpTruckOwnerName')
@@ -52,9 +52,9 @@ class SandInvoiceController extends Controller
                 ) {
                     $queryDumpTruckOwner->where('lastName', 'LIKE', "%{$request->dumpTruckOwnerLastName}%");
                 }
-
-                $queryDumpTruckOwnerId = $queryDumpTruckOwner? $queryDumpTruckOwner->pluck('id'):0;
-                $query->where('dumpTruckOwner_id', $queryDumpTruckOwnerId);
+              
+                $queryDumpTruckOwnerIds = $queryDumpTruckOwner->pluck('id')->toArray();
+                $query->whereIn('dumpTruckOwner_id', $queryDumpTruckOwnerIds);
             }
 
             // if (
