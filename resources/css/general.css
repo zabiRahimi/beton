@@ -446,6 +446,13 @@
     font-size: 0.8rem;
 }
 
+.sandType_Ge {
+    width: 11%;
+}
+.sandType2_Ge{
+    font-size: 0.9rem;
+}
+
 .true_Ge{
     color: #006e00;
 }

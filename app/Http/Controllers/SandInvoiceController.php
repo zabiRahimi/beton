@@ -32,9 +32,9 @@ class SandInvoiceController extends Controller
         $queryDriver= Driver::query();
         if ($request->filled('id')) {
             $query->where('id', $request->id);
-        } elseif ($request->filled('dumpTruckId')) {
+        } elseif ($request->filled('billNumber')) {
 
-            $query->whereIn('truck_id', $request->dumpTruckId);
+            $query->where('billNumber', $request->billNumber);
         } else {
 
              if ($request->filled('sandRemittanceId')) {
@@ -115,8 +115,8 @@ class SandInvoiceController extends Controller
                 $query->whereIn('sandRemittance_id', $sandRemittanceIds);
             }
 
-            if($request->filled('typeSand')){
-                $query->where('typeSand', $request->typeSand);
+            if($request->filled('sandType')){
+                $query->where('sandType', $request->sandType);
             }
 
             // شرط تاریخ

@@ -99,7 +99,6 @@ const Show = () => {
             });
 
             const data = response.data.sandInvoices;
-            console.log(data);
             setSandInvoices(data.data);
             setTotalPage(data.last_page);
             setTotalRecords(data.total);
@@ -169,7 +168,7 @@ const Show = () => {
                         </div>
                     </span>
                 </span>
-                <span className="sandType_Ge textAlignCenter_Ge">{sandInvoice['sandType']}</span>
+                <span className="sandType_Ge sandType2_Ge textAlignCenter_Ge">{sandInvoice['sandType']}</span>
                 
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
 

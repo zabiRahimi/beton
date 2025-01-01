@@ -142,7 +142,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         sandRemittancePrice: '',
         factory: ''
     });
-console.log(input);
+    
     RouteService({ setLoading, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
 
     useEffect(() => {
