@@ -88,43 +88,76 @@ class SandInvoiceController extends Controller
             } elseif ($request->filled('sandRemittanceNumber')) {
                 $querySandRemittance->where('remittanceNumber', $request->sandRemittanceNumber);
                 $sandRemittanceId = $querySandRemittance->pluck('id');
-                Log::info('sandRemittanceId');
-                Log::info($sandRemittanceId);
+                
 
                 $query->wherein('sandRemittance_id', $sandRemittanceId);
             } elseif (
-                $request->filled('buyerName') ||
-                $request->filled('buyerLastName') ||
-                $request->filled('sadnRemittancePrice') ||
-                $request->filled('isCompleted') ||
+                $request->filled('sandRemittanceBuyerName') ||
+                $request->filled('sandRemittanceBuyerLastName') ||
+                $request->filled('sandRemittancePrice') ||
                 $request->filled('factory')
             ) {
-
+                Log::info('sandRemittanceName');
+                
                 // شروط ساده
                 $conditions = [
-                    'buyerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
-                    'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
-                    'price' => $request->sadnRemittancePrice,
-                    'isCompleted' => $request->isCompleted,
-                    'factory' => $request->factory,
+                    'buyerName' => $request->filled('sandRemittanceBuyerName') ? '%' . $request->input('sandRemittanceBuyerName') . '%' : null,
+                    'buyerLastName' => $request->filled('sandRemittanceBuyerLastName') ? '%' . $request->input('sandRemittanceBuyerLastName') . '%' : null,
+                    'price' => $request->input('sandRemittancePrice'),
+                    'factory' => $request->input('factory'),
                 ];
-
+            
+                Log::info('Conditions:', $conditions);
+                
                 foreach ($conditions as $key => $value) {
-                    if ($request->filled($key)) {
-                        $querySandRemittance->where($key, 'like', $value);
+                    if ($value !== null) {
+                        if ($key != 'price') {
+                            $querySandRemittance->where($key, 'like', $value);
+                        } else {
+                            $querySandRemittance->where($key, $value);
+                        }
                     }
                 }
-
-                // if ($request->filled('customerName')) {
-                //     $query2->where('name', 'LIKE', "%{$request->customerName}%");
-                // }
-
-                // if ($request->filled('customerLastName')) {
-                //     $query2->where('lastName', 'LIKE',  "%{$request->customerLastName}%");
-                // }
+            
                 $sandRemittanceIds = $querySandRemittance->pluck('id');
+                Log::info('Sand Remittance IDs:', $sandRemittanceIds->toArray());
+                
                 $query->whereIn('sandRemittance_id', $sandRemittanceIds);
             }
+            
+            
+            // if (
+            //     $request->filled('sandRemittanceBuyerName') ||
+            //     $request->filled('sandRemittanceBuyerLastName') ||
+            //     $request->filled('sandRemittancePrice') ||
+            //     $request->filled('factory')
+            // ) {
+            //     Log::info('sandRemittanceName');
+            //     // شروط ساده
+            //     $conditions = [
+            //         'buyerName' => $request->sandRemittanceBuyerName ? '%' . $request->sandRemittanceBuyerName . '%' : null,
+            //         'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
+            //         'remainingPrice' => $request->sadnRemittancePrice,
+            //         'factory' => $request->factory,
+            //     ];
+                
+                
+            //     foreach ($conditions as $key => $value) {
+            //         if ($request->filled($key)) {
+            //             if ($key !='remainingPrice') {
+            //                 $querySandRemittance->where($key, 'like', $value);
+            //             } else {
+            //                 // $querySandRemittance->where($key, $value);
+
+            //             }
+                        
+            //         }
+            //     }
+
+            //     $sandRemittanceIds = $querySandRemittance->pluck('id');
+            //     Log::info($sandRemittanceIds);
+            //     $query->whereIn('sandRemittance_id', $sandRemittanceIds);
+            // }
 
             if ($request->filled('sandType')) {
                 $query->where('sandType', $request->sandType);
