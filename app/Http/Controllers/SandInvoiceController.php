@@ -57,6 +57,30 @@ class SandInvoiceController extends Controller
                 $query->whereIn('dumpTruckOwner_id', $queryDumpTruckOwnerIds);
             }
 
+            if ($request->filled('dumpTruckId')) {
+                $query->where('truck_id', $request->dumpTruckId);
+            } elseif ($request->filled('numberplate')) {
+                $queryDumpTruck->where('truckType',  'کمپرسی');
+                $parts = explode('-', $request->numberplate); // جدا کردن رشته بر اساس '-'
+                if (!empty($parts[0])) {
+                    $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 1), "-", -1) LIKE ?', ["%{$parts[0]}%"]);
+                }
+
+                if (!empty($parts[1])) {
+                    $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 2), "-", -1) LIKE ?', ["%{$parts[1]}%"]);
+                }
+                if (!empty($parts[2])) {
+                    $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 3), "-", -1)  LIKE ?', ["%{$parts[2]}%"]);
+                }
+
+                if (!empty($parts[3])) {
+                    $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 4), "-", -1)  LIKE ?', ["%{$parts[3]}%"]);
+                }
+              
+                $queryDumpTruckIds = $queryDumpTruck->pluck('id')->toArray();
+                $query->whereIn('dumpTruckOwner_id', $queryDumpTruckIds);
+            }
+
             // if (
             //     $request->filled('dumpTruckOwnerName') ||
             //     $request->filled('dumpTruckOwnerLastName')
