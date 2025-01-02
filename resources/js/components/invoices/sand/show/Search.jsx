@@ -15,9 +15,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
     const sandStoreRef = useRef(null);
     const priceRef = useRef(null);
     const factoryRef = useRef(null);
-    const isCompletedRef = useRef(null);
-
-    const [loading, setLoading] = useState(false);
+    
     const [remittanceOptions, setRemittanceOptions] = useState([]);
 
     const [dumpTrucks, setDumpTrucks] = useState('');
@@ -37,6 +35,10 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
     });
 
     const sandTypes = [
+        {
+            value: '',
+            html: <div className="sandAptionSelectFB">همه</div>
+        },
         {
             value: 'ماسه شسته',
             html: <div className="sandAptionSelectFB">ماسه شسته</div>
@@ -143,7 +145,7 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         factory: ''
     });
 
-    RouteService({ setLoading, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
+    RouteService({  setSandStoreOptions });
 
     useEffect(() => {
         setInput(prev => ({ ...prev, factory }));
