@@ -145,6 +145,8 @@ const Search = ({ getSandInvoices, handelSetDataSearch, totalRecords }) => {
         factory: ''
     });
 
+    console.log(input.numberplate);
+
     RouteService({  setSandStoreOptions });
 
     useEffect(() => {
