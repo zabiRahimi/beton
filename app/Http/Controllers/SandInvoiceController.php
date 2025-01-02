@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
+ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\GetSandInvoiceRequest;
 use App\Models\SandInvoice;
@@ -77,71 +79,20 @@ class SandInvoiceController extends Controller
                     $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 4), "-", -1)  LIKE ?', ["%{$parts[3]}%"]);
                 }
               
-                $queryDumpTruckIds = $queryDumpTruck->pluck('id')->toArray();
-                $query->whereIn('dumpTruckOwner_id', $queryDumpTruckIds);
+                $queryDumpTruckIds = $queryDumpTruck->pluck('id');
+                $query->whereIn('truck_id', $queryDumpTruckIds);
             }
-
-            // if (
-            //     $request->filled('dumpTruckOwnerName') ||
-            //     $request->filled('dumpTruckOwnerLastName')
-            // ) {
-            //     $queryDumpTruckOwner->where('name', 'LIKE', "%{$request->dumpTruckOwnerName}%");
-            //     $conditions = [
-            //         'dumpTruckOwnerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
-            //         'dumpTruckOwnerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
-            //     ];
-
-            //     foreach ($conditions as $key => $value) {
-            //         if ($request->filled($key)) {
-            //             $querySandRemittance->where($key, 'like', $value);
-            //         }
-            //     }
-            // }
 
             if ($request->filled('sandRemittanceId')) {
                 $query->where('sandRemittance_id', $request->sandRemittanceId);
-            } elseif ($request->filled('remittanceNumber')) {
-                $querySandRemittance->where('remittanceNumber', $request->remittanceNumber);
+            } elseif ($request->filled('sandRemittanceNumber')) {
+                $querySandRemittance->where('remittanceNumber', $request->sandRemittanceNumber);
                 $sandRemittanceId = $querySandRemittance->pluck('id');
-                $query->where('sandRemittance_id', $sandRemittanceId);
-            }
+                Log::info('sandRemittanceId');
+                Log::info($sandRemittanceId);
 
-            if (
-                $request->filled('buyerName') ||
-                $request->filled('buyerLastName') ||
-                $request->filled('sadnRemittancePrice') ||
-                $request->filled('isCompleted') ||
-                $request->filled('factory')
-            ) {
-
-                // شروط ساده
-                $conditions = [
-                    'buyerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
-                    'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
-                    'price' => $request->sadnRemittancePrice,
-                    'isCompleted' => $request->isCompleted,
-                    'factory' => $request->factory,
-                ];
-
-                foreach ($conditions as $key => $value) {
-                    if ($request->filled($key)) {
-                        $querySandRemittance->where($key, 'like', $value);
-                    }
-                }
-
-                // if ($request->filled('customerName')) {
-                //     $query2->where('name', 'LIKE', "%{$request->customerName}%");
-                // }
-
-                // if ($request->filled('customerLastName')) {
-                //     $query2->where('lastName', 'LIKE',  "%{$request->customerLastName}%");
-                // }
-                $sandRemittanceIds = $querySandRemittance->pluck('id');
-                $query->whereIn('sandRemittance_id', $sandRemittanceIds);
-            }
-
-
-            if (
+                $query->wherein('sandRemittance_id', $sandRemittanceId);
+            } elseif (
                 $request->filled('buyerName') ||
                 $request->filled('buyerLastName') ||
                 $request->filled('sadnRemittancePrice') ||
