@@ -68,6 +68,31 @@ const NavigateInvoices = () => {
                     </Link>
                 </section>
 
+                <div className="borderDivHome"></div>
+
+                <section className="categoryLinksHome">
+                    <Link to="proformaInvoice" className="linksHome --styleLessLink ">
+                        <div className="divIcofontLinksHome">
+                            <i className="icofont-attachment  iLinksHome2  " />
+                            <i className="icofont-papers  iLinksHome3 iLinksProformaInvoiceHome3 " />
+                            <i className="icofont-plus Iplus" />
+                        </div>
+                        <span>ثبت پیش فاکتور فروش </span>
+                    </Link>
+
+                    <Link to="salesInvoice" className="linksHome --styleLessLink ">
+                        <div className="divIcofontLinksHome">
+                            <i className="icofont-attachment  iLinksHome2  " />
+                            <i className="icofont-page  iLinksHome3 iLinksSalesInvoiceHome3 " />
+                            <i className="icofont-plus Iplus" />
+                        </div>
+                        <span>ثبت فاکتور فروش</span>
+                    </Link>
+
+                    
+
+                    
+                </section>
 
             </div>
         </>

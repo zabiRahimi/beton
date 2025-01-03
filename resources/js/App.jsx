@@ -50,6 +50,16 @@ import AddSandInvoice from "./components/invoices/sand/add/Add";
 import EditSandInvoice from "./components/invoices/sand/edit/Edit";
 import ShowSandInvoices from "./components/invoices/sand/show/Show";
 
+import ProformalInvoice from "./components/invoices/proformalInvoice/ProformalInvoice";
+import AddProformalInvoice from "./components/invoices/proformalInvoice/add/Add";
+import EditProformalInvoice from "./components/invoices/proformalInvoice/edit/Edit";
+import ShowProformalInvoices from "./components/invoices/proformalInvoice/show/Show";
+
+import SalesInvoice from "./components/invoices/salesInvoice/SalesInvoice";
+import AddSalesInvoice from "./components/invoices/salesInvoice/add/Add";
+import EditSalesInvoice from "./components/invoices/salesInvoice/edit/Edit";
+import ShowSalesInvoices from "./components/invoices/salesInvoice/show/Show";
+
 import ConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/ConcreteSalesInvoice";
 
 function App() {
@@ -113,6 +123,20 @@ function App() {
                         <Route path="add" element={<AddSandInvoice />} />
                         <Route path="show" element={<ShowSandInvoices />} />
                         <Route path="edit/:sandId" element={<EditSandInvoice />} />
+                    </Route>
+
+                    <Route path="proformalInvoice" element={<ProformalInvoice />} >
+                        <Route index element={<Navigate to="add" replace />} />
+                        <Route path="add" element={<AddProformalInvoice />} />
+                        <Route path="show" element={<ShowProformalInvoices />} />
+                        <Route path="edit/:proformalInvoiceId" element={<EditProformalInvoice />} />
+                    </Route>
+
+                    <Route path="salesInvoice" element={<Sales />} >
+                        <Route index element={<Navigate to="add" replace />} />
+                        <Route path="add" element={<AddSalesInvoice />} />
+                        <Route path="show" element={<ShowSalesInvoices />} />
+                        <Route path="edit/:salesInvoiceId" element={<EditSalesInvoice />} />
                     </Route>
 
                     
