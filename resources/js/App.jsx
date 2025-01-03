@@ -50,10 +50,10 @@ import AddSandInvoice from "./components/invoices/sand/add/Add";
 import EditSandInvoice from "./components/invoices/sand/edit/Edit";
 import ShowSandInvoices from "./components/invoices/sand/show/Show";
 
-import ProformalInvoice from "./components/invoices/proformalInvoice/ProformalInvoice";
-import AddProformalInvoice from "./components/invoices/proformalInvoice/add/Add";
-import EditProformalInvoice from "./components/invoices/proformalInvoice/edit/Edit";
-import ShowProformalInvoices from "./components/invoices/proformalInvoice/show/Show";
+import ProformaInvoice from "./components/invoices/proformaInvoice/ProformaInvoice";
+import AddProformaInvoice from "./components/invoices/proformaInvoice/add/Add";
+import EditProformaInvoice from "./components/invoices/proformaInvoice/edit/Edit";
+import ShowProformaInvoices from "./components/invoices/proformaInvoice/show/Show";
 
 import SalesInvoice from "./components/invoices/salesInvoice/SalesInvoice";
 import AddSalesInvoice from "./components/invoices/salesInvoice/add/Add";
@@ -125,21 +125,19 @@ function App() {
                         <Route path="edit/:sandId" element={<EditSandInvoice />} />
                     </Route>
 
-                    <Route path="proformalInvoice" element={<ProformalInvoice />} >
+                    <Route path="proformaInvoice" element={<ProformaInvoice />} >
                         <Route index element={<Navigate to="add" replace />} />
-                        <Route path="add" element={<AddProformalInvoice />} />
-                        <Route path="show" element={<ShowProformalInvoices />} />
-                        <Route path="edit/:proformalInvoiceId" element={<EditProformalInvoice />} />
+                        <Route path="add" element={<AddProformaInvoice />} />
+                        <Route path="show" element={<ShowProformaInvoices />} />
+                        <Route path="edit/:proformaInvoiceId" element={<EditProformaInvoice />} />
                     </Route>
 
-                    <Route path="salesInvoice" element={<Sales />} >
+                    <Route path="salesInvoice" element={<SalesInvoice />} >
                         <Route index element={<Navigate to="add" replace />} />
                         <Route path="add" element={<AddSalesInvoice />} />
                         <Route path="show" element={<ShowSalesInvoices />} />
                         <Route path="edit/:salesInvoiceId" element={<EditSalesInvoice />} />
                     </Route>
-
-                    
 
                     <Route path="cement/addCementInvoice" element={<AddCementInvoice />} />
 

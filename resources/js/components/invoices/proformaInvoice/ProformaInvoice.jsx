@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-const ProformalInvoice = ()=>{
+const ProformaInvoice = ()=>{
     return (
         <>
        <Outlet />
@@ -8,4 +8,4 @@ const ProformalInvoice = ()=>{
     )
 }
 
-export default ProformalInvoice;
+export default ProformaInvoice;
