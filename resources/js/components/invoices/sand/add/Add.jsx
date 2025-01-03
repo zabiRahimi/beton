@@ -89,7 +89,6 @@ const Add = () => {
         }
     ];
     const [sandTypeSelected, setSandTypeSelected] = useState('');
-    // console.log(sandTypeSelected);
     const [ticketNumber, setTicketNumber] = useState('');
 
     const [dumpTrucks, setDumpTrucks] = useState('');
@@ -171,7 +170,7 @@ const Add = () => {
         }
         setInput(prev => ({ ...prev, [input]: value }));
     }
-console.log(input);
+    
     const clearInputError = (e, refErr, time = false, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');

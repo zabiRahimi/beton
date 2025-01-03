@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
+ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\GetSandInvoiceRequest;
 use App\Models\SandInvoice;
@@ -57,99 +59,105 @@ class SandInvoiceController extends Controller
                 $query->whereIn('dumpTruckOwner_id', $queryDumpTruckOwnerIds);
             }
 
-            // if (
-            //     $request->filled('dumpTruckOwnerName') ||
-            //     $request->filled('dumpTruckOwnerLastName')
-            // ) {
-            //     $queryDumpTruckOwner->where('name', 'LIKE', "%{$request->dumpTruckOwnerName}%");
-            //     $conditions = [
-            //         'dumpTruckOwnerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
-            //         'dumpTruckOwnerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
-            //     ];
+            if ($request->filled('dumpTruckId')) {
+                $query->where('truck_id', $request->dumpTruckId);
+            } elseif ($request->filled('numberplate')) {
+                $queryDumpTruck->where('truckType',  'کمپرسی');
+                $parts = explode('-', $request->numberplate); // جدا کردن رشته بر اساس '-'
+                if (!empty($parts[0])) {
+                    $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 1), "-", -1) LIKE ?', ["%{$parts[0]}%"]);
+                }
 
-            //     foreach ($conditions as $key => $value) {
-            //         if ($request->filled($key)) {
-            //             $querySandRemittance->where($key, 'like', $value);
-            //         }
-            //     }
-            // }
+                if (!empty($parts[1])) {
+                    $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 2), "-", -1) LIKE ?', ["%{$parts[1]}%"]);
+                }
+                if (!empty($parts[2])) {
+                    $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 3), "-", -1)  LIKE ?', ["%{$parts[2]}%"]);
+                }
+
+                if (!empty($parts[3])) {
+                    $queryDumpTruck->whereRaw('SUBSTRING_INDEX(SUBSTRING_INDEX(numberplate, "-", 4), "-", -1)  LIKE ?', ["%{$parts[3]}%"]);
+                }
+              
+                $queryDumpTruckIds = $queryDumpTruck->pluck('id');
+                $query->whereIn('truck_id', $queryDumpTruckIds);
+            }
 
             if ($request->filled('sandRemittanceId')) {
                 $query->where('sandRemittance_id', $request->sandRemittanceId);
-            } elseif ($request->filled('remittanceNumber')) {
-                $querySandRemittance->where('remittanceNumber', $request->remittanceNumber);
+            } elseif ($request->filled('sandRemittanceNumber')) {
+                $querySandRemittance->where('remittanceNumber', $request->sandRemittanceNumber);
                 $sandRemittanceId = $querySandRemittance->pluck('id');
-                $query->where('sandRemittance_id', $sandRemittanceId);
-            }
+                
 
-            if (
-                $request->filled('buyerName') ||
-                $request->filled('buyerLastName') ||
-                $request->filled('sadnRemittancePrice') ||
-                $request->filled('isCompleted') ||
+                $query->wherein('sandRemittance_id', $sandRemittanceId);
+            } elseif (
+                $request->filled('sandRemittanceBuyerName') ||
+                $request->filled('sandRemittanceBuyerLastName') ||
+                $request->filled('sandRemittancePrice') ||
                 $request->filled('factory')
             ) {
-
+                Log::info('sandRemittanceName');
+                
                 // شروط ساده
                 $conditions = [
-                    'buyerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
-                    'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
-                    'price' => $request->sadnRemittancePrice,
-                    'isCompleted' => $request->isCompleted,
-                    'factory' => $request->factory,
+                    'buyerName' => $request->filled('sandRemittanceBuyerName') ? '%' . $request->input('sandRemittanceBuyerName') . '%' : null,
+                    'buyerLastName' => $request->filled('sandRemittanceBuyerLastName') ? '%' . $request->input('sandRemittanceBuyerLastName') . '%' : null,
+                    'price' => $request->input('sandRemittancePrice'),
+                    'factory' => $request->input('factory'),
                 ];
-
+            
+                Log::info('Conditions:', $conditions);
+                
                 foreach ($conditions as $key => $value) {
-                    if ($request->filled($key)) {
-                        $querySandRemittance->where($key, 'like', $value);
+                    if ($value !== null) {
+                        if ($key != 'price') {
+                            $querySandRemittance->where($key, 'like', $value);
+                        } else {
+                            $querySandRemittance->where($key, $value);
+                        }
                     }
                 }
-
-                // if ($request->filled('customerName')) {
-                //     $query2->where('name', 'LIKE', "%{$request->customerName}%");
-                // }
-
-                // if ($request->filled('customerLastName')) {
-                //     $query2->where('lastName', 'LIKE',  "%{$request->customerLastName}%");
-                // }
+            
                 $sandRemittanceIds = $querySandRemittance->pluck('id');
+                Log::info('Sand Remittance IDs:', $sandRemittanceIds->toArray());
+                
                 $query->whereIn('sandRemittance_id', $sandRemittanceIds);
             }
+            
+            
+            // if (
+            //     $request->filled('sandRemittanceBuyerName') ||
+            //     $request->filled('sandRemittanceBuyerLastName') ||
+            //     $request->filled('sandRemittancePrice') ||
+            //     $request->filled('factory')
+            // ) {
+            //     Log::info('sandRemittanceName');
+            //     // شروط ساده
+            //     $conditions = [
+            //         'buyerName' => $request->sandRemittanceBuyerName ? '%' . $request->sandRemittanceBuyerName . '%' : null,
+            //         'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
+            //         'remainingPrice' => $request->sadnRemittancePrice,
+            //         'factory' => $request->factory,
+            //     ];
+                
+                
+            //     foreach ($conditions as $key => $value) {
+            //         if ($request->filled($key)) {
+            //             if ($key !='remainingPrice') {
+            //                 $querySandRemittance->where($key, 'like', $value);
+            //             } else {
+            //                 // $querySandRemittance->where($key, $value);
 
+            //             }
+                        
+            //         }
+            //     }
 
-            if (
-                $request->filled('buyerName') ||
-                $request->filled('buyerLastName') ||
-                $request->filled('sadnRemittancePrice') ||
-                $request->filled('isCompleted') ||
-                $request->filled('factory')
-            ) {
-
-                // شروط ساده
-                $conditions = [
-                    'buyerName' => $request->buyerName ? '%' . $request->buyerName . '%' : null,
-                    'buyerLastName' => $request->buyerLastName ? '%' . $request->buyerLastName . '%' : null,
-                    'price' => $request->sadnRemittancePrice,
-                    'isCompleted' => $request->isCompleted,
-                    'factory' => $request->factory,
-                ];
-
-                foreach ($conditions as $key => $value) {
-                    if ($request->filled($key)) {
-                        $querySandRemittance->where($key, 'like', $value);
-                    }
-                }
-
-                // if ($request->filled('customerName')) {
-                //     $query2->where('name', 'LIKE', "%{$request->customerName}%");
-                // }
-
-                // if ($request->filled('customerLastName')) {
-                //     $query2->where('lastName', 'LIKE',  "%{$request->customerLastName}%");
-                // }
-                $sandRemittanceIds = $querySandRemittance->pluck('id');
-                $query->whereIn('sandRemittance_id', $sandRemittanceIds);
-            }
+            //     $sandRemittanceIds = $querySandRemittance->pluck('id');
+            //     Log::info($sandRemittanceIds);
+            //     $query->whereIn('sandRemittance_id', $sandRemittanceIds);
+            // }
 
             if ($request->filled('sandType')) {
                 $query->where('sandType', $request->sandType);
