@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('telephone')->nullable();
             $table->string('email')->nullable();
             $table->string('postalCode')->nullable();
-            $table->mediumText('address')->nullable();
+            $table->string('address')->nullable();
 
             $table->timestamps();
         });

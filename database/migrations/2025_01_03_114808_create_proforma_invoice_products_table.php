@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('proforma_invoice_products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('proforma_invoice_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('product', 50);
+            $table->string('type', 40);
+            $table->string('amount', 8);
+            $table->string('countingUnit', 50);
+            $table->string('unitPrice', 8);
+            $table->string('totalPrice', 12);
             $table->timestamps();
         });
     }

@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('proforma_invoices', function (Blueprint $table) {
             $table->id();
+            $table->string('buyer', 110);
+            $table->string('address');
+            $table->string('nationalCode')->nullable()->index()->comment('کد ملی');
+
+
             $table->timestamps();
         });
     }
