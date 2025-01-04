@@ -41,46 +41,7 @@ export const handleSetDate = (e, input, date, setDate, setInput) => {
     setInput(prev => ({ ...prev, date: valDate }));
 }
 
-export const handleSetTime = (e, input, time, setTime, setInput) => {
-    let { value } = e.target,
-        valTime;
-    value = value.toString();
-    switch (input) {
-        case 'second':
-            value = (value != 0 && value.length === 1) ? '0' + value : value;
-            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
-            if (value === '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.second;
-            }
-            valTime = `${time.hour}:${time.minute}:${value}`;
-            break;
-        case 'minute':
-            value = (value != 0 && value.length === 1) ? '0' + value : value;
-            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
-            if (value === '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.minute;
-            }
-            valTime = `${time.hour}:${value}:${time.second}`;
-            break;
-        case 'hour':
-            value = (value != 0 && value.length === 1) ? '0' + value : value;
-            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
-            if (value === '' || (Number(value) >= 0 && Number(value) <= 24)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.hour;
-            }
-            valTime = `${value}:${time.minute}:${time.second}`;
-            break;
-        default:
-            return;
-    }
-    setInput(prev => ({ ...prev, time: valTime }));
-}
+
 
 /**
 * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
@@ -262,28 +223,21 @@ export const handleTotalPriceCalculation = (e, element, input, setInput, refCurr
     refCurrent.innerHTML = totalPrice.toLocaleString();
 };
 
+export const handleAddProduct = (e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice, date, input, setConcreteName, concretes, maskan, setMaskan, setCheckedValue, setCementStoreName, cementStores, setTime, unitPrice, fare, vahed, address, concretingPosition ) => {
+    e.preventDefault();
+    setIndexNewInvoice(invoice.length);
+    setInvoice([...invoice, sampleInvoice]);
+    setIsNewInvoice(true);
+    let date0 = handleSetDateForNewInvoice(date);
+    let concrete_id = handleSetConcreteForNewInvoice(input, invoice, setConcreteName, concretes);
+    let maskanMeli = handleSetMaskanMeliForNewInvoice(input, invoice, maskan, setMaskan, setCheckedValue);
+    let cementStore_id = handleSetCementStoreForNewInvoice(input, invoice, setCementStoreName, cementStores);
+    setInput(perv => {
+        let newInvoice = [...perv.invoice, { date:date0, time: '', weight: '', cubicMeters: '', concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
 
-export const handleTotalFareCalculation = (e, element, input, setInput, refCurrent) => {
-    let totalFare = 0,
-        { value } = e.target;
-    value = value.replace(/,/g, '');
-    value = Number(value);
-    if (element == 'weight') {
-        // تبدیل قیمت هرتن به کیلو
-        let unitFare = input.unitFare;
-        if (Number.isInteger(Number(unitFare))) {
-            totalFare = (unitFare / 1000) * value;
-        }
-    } else {
-        // تبدیل وزن بار به تناژ
-        let weight = input.weight / 1000;
-        if (weight && Number(weight)) {
-            totalFare = weight * value;
-        }
-    }
-    totalFare = Math.round(totalFare);
-
-    setInput(perv => ({ ...perv, totalFare }));
-    refCurrent.innerHTML = totalFare.toLocaleString();
+        return { ...perv, invoice: newInvoice };
+    });
+    handleClearTime(setTime);
+    setIsChecked(true);
 }
 

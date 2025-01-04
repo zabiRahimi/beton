@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('proforma_invoices', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->string('buyer', 110);
-            $table->string('address');
-            $table->string('nationalCode')->nullable()->index()->comment('کد ملی');
-
-
+            $table->string('address')->nullable();
+            $table->string('nationalCode', 22)->nullable()->index()->comment('کد ملی');
+            $table->string('tel', 22)->nullable();
+            $table->boolean('isTax')->comment('ارزش افزوده');
+            $table->mediumText('description')->nullable();
             $table->timestamps();
         });
     }

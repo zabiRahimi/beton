@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('product', 50);
             $table->string('type', 40);
             $table->string('amount', 8);
-            $table->string('countingUnit', 50);
+            $table->string('unit', 50)->comment('واحد اندازه‌گیری');
             $table->string('unitPrice', 8);
             $table->string('totalPrice', 12);
             $table->timestamps();

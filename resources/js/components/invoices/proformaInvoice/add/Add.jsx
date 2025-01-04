@@ -12,13 +12,11 @@ import SearchMixersSelect from "../../searchSelectZabi/SearchMixersSelect";
 import SearchDriversSelect from "../../searchSelectZabi/SearchDriversSelect";
 import HeadPage from '../HeadPage';
 import {
-    handleSetTime,
     handleSetDate,
     htmlFor,
     formatNub,
     resetForm,
     handleTotalPriceCalculation,
-    handleTotalFareCalculation
 } from './Helper';
 
 const Add = () => {
@@ -28,157 +26,115 @@ const Add = () => {
         optionDays,
         optionMonth,
         optionShortYears,
-        optionHours,
-        optionMinutes,
-        optionSeconds,
     } = DataZabi();
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
-    const sandRemittance_idRef = useRef(null);
-    const sandRemittance_idError = useRef(null);
-    const billNumberError = useRef(null);
-    const timeRef = useRef(null);
+
     const dateRef = useRef(null);
     const dateError = useRef(null);
-    const timeError = useRef(null);
-    const sandTypeRef = useRef(null);
-    const sandTypeError = useRef(null);
-    const weightRef = useRef(null);
-    const weightError = useRef(null);
-    const unitPriceRef = useRef(null);
-    const unitPriceError = useRef(null);
-    const totalPriceError = useRef(null);
-    const dumpTruckRef = useRef(null);
-    const truck_idError = useRef(null);
-    const driverRef = useRef(null);
-    const driver_idError = useRef(null);
-    const unitFareRef = useRef(null);
-    const unitFareError = useRef(null);
-    // const totalFareError = useRef(null);
-    const totalPriceRef = useRef(null);
-    const totalFareRef = useRef(null);
-    const sandStoreRef = useRef(null);
-    const sandStore_idError = useRef(null);
-    const hasCalledGetSandSellers = useRef(false);
-    const hasCalledGetSandStores = useRef(false);
+
+    const buyerRef = useRef(null);
+    const buyerError = useRef(null);
+
+    const nationalCodeRef = useRef(null);
+    const nationalCodeError = useRef(null);
+
+    const addressRef = useRef(null);
+    const addressError = useRef(null);
+
+    const telRef = useRef(null);
+    const telError = useRef(null);
+
+    const descriptionRef = useRef(null);
+    const descriptionError = useRef(null);
+
+    const isRef = useRef(false);
+
+
+
+    const [refProducts, setRefProducts] = useState({});
+
+    /**
+        * برای تخصیص رف به هر اینپوت محصولات 
+       */
+    // useEffect(() => {
+    //     if (invoice) {
+    //         let refs = invoice.reduce((acc, cur, i) => {
+    //             acc[`productRef${i}`] = createRef();
+    //             acc[`productError${i}`] = createRef();
+
+    //             acc[`typeRef${i}`] = createRef();
+    //             acc[`typeError${i}`] = createRef();
+
+    //             acc[`amountRef${i}`] = createRef();
+    //             acc[`amountError${i}`] = createRef();
+
+    //             acc[`unitRef${i}`] = createRef();
+    //             acc[`unitError${i}`] = createRef();
+
+    //             acc[`unitPriceRef${i}`] = createRef();
+    //             acc[`unitPriceError${i}`] = createRef();
+
+    //             acc[`totalPriceRef${i}`] = createRef();
+    //             acc[`totalPriceError${i}`] = createRef();
+
+    //             return acc;
+    //         }, {});
+    //         setRefInvoice(refs);
+    //         isRef.current = true;
+    //     }
+    // }, [invoice]);
+
+
     const [loading, setLoading] = useState(true);
-    const [remittanceOptions, setRemittanceOptions] = useState([]);
-    const [sandRemittance_id, setSandRemittance_id] = useState('');
-    
-    const sandType = [
-        {
-            value: 'ماسه شسته',
-            html: <div className="sandAptionSelectFB">ماسه شسته</div>
-        },
-        {
-            value: 'ماسه 06',
-            html: <div className="sandAptionSelectFB">ماسه 06</div>
-        },
-        {
-            value: 'شن بادامی',
-            html: <div className="sandAptionSelectFB">شن بادامی</div>
-        },
-        {
-            value: 'شن نخودی',
-            html: <div className="sandAptionSelectFB">شن نخودی</div>
-        },
-        {
-            value: 'سایر',
-            html: <div className="sandAptionSelectFB">سایر</div>
-        }
-    ];
-    const [sandTypeSelected, setSandTypeSelected] = useState('');
-    // console.log(sandTypeSelected);
     const [ticketNumber, setTicketNumber] = useState('');
 
-    const [dumpTrucks, setDumpTrucks] = useState('');
-    const [dumpTruckOptions, setDumpTruckOptions] = useState([]);
-    const [drivers, setDrivers] = useState('');
-    const [driverOptions, setDriverOptions] = useState([]);
-    const [sandStoreOptions, setSandStoreOptions] = useState([]);
-    const [sandStoreId, setSandStoreId] = useState('');
-
-    const [dumpTruckId, setDumpTruckId] = useState('');
-    const [dumpTruckOwnerId, setDumpTruckOwnerId] = useState('');
-    
-    const [driverId, setDrvierId] = useState('');
     const [date, setDate] = useState({
         day: '',
         month: '',
         year: ''
     });
-    const [time, setTime] = useState({
-        second: '',
-        minute: '',
-        hour: ''
-    });
-    const [sandStores, setSandStores] = useState([]);
-    const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
+
 
     const [input, setInput] = useState({
-        billNumber: '',
-        sandRemittance_id: '',
-        time: '',
         date: '',
-        sandType: '',
-        weight: '',
+        buyer: '',
+        nationalCode: '',
+        address: '',
+        tel: '',
+        products: [
+            {
+                product: '',
+                type: '',
+                amount: '',
+                countingUnit: '',
+                unitPrice: '',
+                totalPrice: '',
+            },
+        ],
+        description: '',
         unitPrice: '',
-        totalPrice: '',
-        truck_id: '',
-        dumpTruckOwner_id: '',
-        driver_id: '',
-        unitFare: '',
-        totalFare: '',
-        sandStore_id: '',
-        description: ''
+        isTax: '',
     });
 
-    RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
+    RouteService({ setLoading, setTicketNumber });
 
-    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: dumpTrucks });
-
-    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
-
-    useEffect(() => {
-        sandRemittance_id && setInput(prev => ({ ...prev, sandRemittance_id }));
-    }, [sandRemittance_id]);
-
-    useEffect(() => {
-        sandTypeSelected && setInput(prev => ({ ...prev, sandType: sandTypeSelected }));
-    }, [sandTypeSelected]);
-
-    useEffect(() => {
-        dumpTruckId && setInput(prev => ({ ...prev, truck_id: dumpTruckId }));
-    }, [dumpTruckId]);
-
-    useEffect(() => {
-        dumpTruckOwnerId && setInput(prev => ({ ...prev, dumpTruckOwner_id: dumpTruckOwnerId }));
-    }, [dumpTruckOwnerId]);
-
-    useEffect(() => {
-        driverId && setInput(prev => ({ ...prev, driver_id: driverId }));
-    }, [driverId]);
-
-    useEffect(() => {
-        sandStoreId && setInput(prev => ({ ...prev, sandStore_id: sandStoreId }));
-    }, [sandStoreId]);
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
-        if (['weight', 'unitPrice', 'unitFare'].includes(input)) {
+        if (['unitPrice', 'totalPrice'].includes(input)) {
             value = value.replace(/,/g, '');
         }
         setInput(prev => ({ ...prev, [input]: value }));
     }
-console.log(input);
+
     const clearInputError = (e, refErr, time = false, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
         const parentWithClass = e.target.closest('.borderRedFB');
         parentWithClass && parentWithClass.classList.remove('borderRedFB');
         date && dateRef.current.classList.remove('borderRedFB');
-        time && timeRef.current.classList.remove('borderRedFB');
     }
 
     const handleSubmit = async (e) => {
@@ -212,20 +168,6 @@ console.log(input);
                 didClose: () => resetForm(
                     setInput,
                     setDate,
-                    setTime,
-                    setSandRemittance_id,
-                    sandRemittance_idRef.current,
-                    setSandTypeSelected,
-                    sandTypeRef.current,
-                    totalPriceRef.current,
-                    setDumpTruckId,
-                    setDumpTruckOwnerId,
-                    dumpTruckRef.current,
-                    setDrvierId,
-                    driverRef.current,
-                    totalFareRef.current,
-                    setSandStoreId,
-                    sandStoreRef.current,
                 ),
             });
         } catch (error) {
@@ -243,10 +185,10 @@ console.log(input);
 
                 Object.entries(error.response.data.errors).map(([key, val]) => {
                     // نادیده گرفتن خطای مربوط به remainingPrice
-                    if (key !== 'totalPrice' && key !== 'dumpTruckOwner_id' && key !== 'totalFare') {
-                        document.getElementById(key).classList.add('borderRedFB');
-                        document.getElementById(key + 'Error').innerHTML = val;
-                    }
+
+                    document.getElementById(key).classList.add('borderRedFB');
+                    document.getElementById(key + 'Error').innerHTML = val;
+
                 });
             }
         } finally {
@@ -282,109 +224,22 @@ console.log(input);
                     <section className="sectionFB">
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label htmlFor="billNumber">شماره قبض</label>
+                                <label htmlFor="buyer">خریدار</label>
                                 <input
                                     type="text"
                                     className="inputTextFB element"
-                                    id="billNumber"
+                                    id="buyer"
                                     // defaultValue={input.billNumber}
-                                    onInput={e => handleSaveValInput(e, 'billNumber')}
-                                    onFocus={e => clearInputError(e, billNumberError)}
+                                    onInput={e => handleSaveValInput(e, 'buyer')}
+                                    onFocus={e => clearInputError(e, buyerError)}
+                                    ref={buyerRef}
                                 />
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                            <div className="errorContainerFB elementError" id="buyerError" ref={buyerError}> </div>
                         </div>
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label> حواله  </label>
-                                <div
-                                    id='sandRemittance_id'
-                                    className="element"
-                                    onClick={e => { clearInputError(e, sandRemittance_idError) }}
-                                >
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={remittanceOptions}
-                                        saveOption={setSandRemittance_id}
-                                        ref={sandRemittance_idRef}
-                                    />
-                                </div>
-                                <i className="icofont-ui-rating starFB" />
 
-                            </div>
-                            <div className="errorContainerFB elementError" id='sandRemittance_idError' ref={sandRemittance_idError}> </div>
-                        </div>
-                        {/* </section> */}
-                        {/* <section className="sectionFB"> */}
-                        <div className="containerInputFB">
-                            <div className="divInputFB ">
-                                <label > ساعت </label>
-                                <div className="divDateBirth">
-                                    <div className="divUpDateAcus element" ref={timeRef} id='time'
-                                    >
-                                        <input
-                                            type="text"
-                                            className="inputTextDateACus inputDayTDACus element"
-                                            placeholder="00"
-                                            value={time.second || ''}
-                                            onInput={(e) => handleSetTime(e, 'second', time, setTime, setInput)}
-                                            onFocus={(e) => clearInputError(e, timeError, true)}
-                                        />
-                                        <span>:</span>
-                                        <input
-                                            type="text"
-                                            className="inputTextDateACus inputMonthTDACus element"
-                                            placeholder="00"
-                                            value={time.minute || ''}
-                                            onInput={(e) => handleSetTime(e, 'minute', time, setTime, setInput)}
-                                            onFocus={(e) => clearInputError(e, timeError, true)}
-                                        />
-                                        <span>:</span>
-                                        <input
-                                            type="text"
-                                            className="inputTextDateACus inputYearTDACus element"
-                                            placeholder="00"
-                                            value={time.hour || ''}
-                                            onInput={(e) => { handleSetTime(e, 'hour', time, setTime, setInput) }}
-                                            onFocus={(e) => clearInputError(e, timeError, true)}
-                                        />
-                                        <i className="icofont-ui-rating starFB" />
-                                    </div>
 
-                                    <div className="divDownDateAcus" >
-                                        <select
-                                            className="element"
-                                            value={time.second || ''}
-                                            onChange={(e) => handleSetTime(e, 'second', time, setTime, setInput)}
-                                            onClick={(e) => clearInputError(e, timeError, true)}
-                                        >
-                                            <option value=""> ثانیه </option>
-                                            {optionSeconds}
-                                        </select>
-                                        <select
-                                            className="element"
-                                            value={time.minute || ''}
-                                            onChange={(e) => handleSetTime(e, 'minute', time, setTime, setInput)}
-                                            onClick={(e) => clearInputError(e, timeError, true)}
-                                        >
-                                            <option value=""> دقیقه </option>
-                                            {optionMinutes}
-                                        </select>
-                                        <select
-                                            className="element"
-                                            value={time.hour || ''}
-                                            onChange={(e) => { handleSetTime(e, 'hour', time, setTime, setInput) }}
-                                            onClick={(e) => clearInputError(e, timeError, true)}
-                                        >
-                                            <option value=""> ساعت </option>
-                                            {optionHours}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="errorContainerFB elementError" id='timeError' ref={timeError}> </div>
-                        </div>
                         <div className="containerInputFB">
                             <div className="divInputFB ">
                                 <label htmlFor="day">تاریخ  </label>
@@ -454,54 +309,121 @@ console.log(input);
                             </div>
                             <div className="errorContainerFB elementError" id='dateError' ref={dateError}> </div>
                         </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="nationalCode">کد ملی </label>
+                                <input
+                                    type="text"
+                                    id="nationalCode"
+                                    className="inputTextFB ltrFB element"
+                                    defaultValue={input.nationalCode}
+                                    onInput={e => handleSaveValInput(e, 'nationalCode')}
+                                    onFocus={(e) => clearInputError(e, nationalCodeError)}
+                                />
+                            </div>
+                            <div className="errorContainerFB elementError" id="nationalCodeError" ref={nationalCodeError}> </div>
+                        </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="tel">شماره تماس</label>
+                                <input type="text" id="tel" className="inputTextFB ltrFB element"
+                                    value={input['tel'] || ''}
+                                    onInput={e => handleSaveValInput(e, 'tel')}
+                                    onFocus={(e) => clearInputError(e, telError)}
+
+                                />
+                            </div>
+                            <div className="errorContainerFB elementError" id="telError" ref={telError}> </div>
+                        </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="address">آدرس</label>
+                                <textarea
+                                    id="address"
+                                    className="textareaAddressACu"
+                                    defaultValue={input.address}
+                                    onInput={e => handleSaveValInput(e, 'address')}
+                                    onFocus={(e) => clearInputError(e, addressError)}
+
+                                />
+                            </div>
+                            <div className="errorContainerFB elementError" id="addressError" ref={addressError}> </div>
+                        </div>
                     </section>
                     <section className="sectionFB">
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label> نوع‌ شن‌وماسه </label>
-                                <div
-                                    id='sandType'
-                                    className="element"
-                                    onClick={e => { clearInputError(e, sandTypeError) }}
-                                >
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={sandType}
-                                        saveOption={setSandTypeSelected}
-                                        ref={sandTypeRef}
-                                    />
-                                </div>
-                                <i className="icofont-ui-rating starFB" />
-
-                            </div>
-                            <div className="errorContainerFB elementError" id='sandTypeError' ref={sandTypeError}> </div>
-                        </div>
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label htmlFor="weight">وزن بار</label>
+                                <label> نام محصول </label>
                                 <input
                                     type="text"
-                                    className="inputTextUnitFB ltrFB element"
-                                    id="weight"
-                                    onInput={e => {
-                                        handleSaveValInput(e, 'weight');
-                                        formatNub(weightRef.current);
-                                        handleTotalPriceCalculation(e, 'weight', input, setInput, totalPriceRef.current);
-                                        handleTotalFareCalculation(e, 'weight', input, setInput, totalFareRef.current)
-                                    }}
-                                    onFocus={e => clearInputError(e, weightError)}
-                                    ref={weightRef}
+                                    className="inputTextFB ltrFB element"
+                                    id="tel"
+                                    value={input['tel'] || ''}
+                                    onInput={e => handleSaveValInput(e, 'tel')}
+                                    onFocus={(e) => clearInputError(e, )}
                                 />
-                                <span
-                                    className="unitFB"
-                                    onClick={() => htmlFor('weight')}
-                                >
-                                    کیلوگرم
-                                </span>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="weightError" ref={weightError}> </div>
+                            <div className="errorContainerFB elementError" id='productError' > </div>
                         </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="type" className='labelTypeFB'>
+                                    <span>نوع محصول</span>
+                                    <span>(عیار)</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB ltrFB element"
+                                    id="type"
+                                    onInput={e => {
+                                        handleSaveValInput(e, 'type');
+                                    }}
+                                    onFocus={e => clearInputError(e, )}
+                                    
+                                />
+                               
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id="typeError" > </div>
+                        </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label> مقدار </label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB ltrFB element"
+                                    id="tel"
+                                    value={input['tel'] || ''}
+                                    onInput={e => handleSaveValInput(e, 'tel')}
+                                    onFocus={(e) => clearInputError(e, )}
+                                />
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id='productError' > </div>
+                        </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor='unit'> واحد اندازه‌گیری </label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB ltrFB element"
+                                    id="unit"
+                                    value={input['unit'] || ''}
+                                    onInput={e => handleSaveValInput(e, 'unit')}
+                                    onFocus={(e) => clearInputError(e, )}
+                                />
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id='unitError' > </div>
+                        </div>
+
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="unitPrice">قیمت واحد</label>
@@ -511,195 +433,61 @@ console.log(input);
                                     id="unitPrice"
                                     onInput={e => {
                                         handleSaveValInput(e, 'unitPrice');
-                                        formatNub(unitPriceRef.current);
-                                        handleTotalPriceCalculation(e, 'unitPrice', input, setInput, totalPriceRef.current)
+                                        // formatNub(unitPriceRef.current);
+                                        // handleTotalPriceCalculation(e, 'unitPrice', input, setInput, totalPriceRef.current)
                                     }}
-                                    onFocus={e => clearInputError(e, unitPriceError)}
-                                    ref={unitPriceRef}
+                                    onFocus={e => clearInputError(e, )}
+                                   
                                 />
-                                <span
-                                    className="unitFB"
+                                <span    className="unitFB"
                                     onClick={() => htmlFor('unitPrice')}
                                 >
                                     تومان
                                 </span>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="unitPriceError" ref={unitPriceError}> </div>
+                            <div className="errorContainerFB elementError" id="unitPriceError" > </div>
                         </div>
-
 
                         <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label> قیمت کل </label>
-                                <div className="mainTotalPriceACSL_FB">
-                                    <div className="totalPriceACSL_FB"
-                                        ref={totalPriceRef}
-                                    >0</div>
-                                    <span className="spanTotalPriceACSL_FB">
-                                        تومان
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="totalPrice">قیمت کل</label>
                                 <input
                                     type="text"
-                                    className="inputTextFB element"
+                                    className="inputTextUnitFB element"
                                     id="totalPrice"
                                     defaultValue={input.totalPrice}
                                     onInput={e => handleSaveValInput(e, 'totalPrice')}
-                                    onFocus={e => clearInputError(e, totalPriceError)}
+                                    onFocus={e => clearInputError(e, )}
                                 />
-                                <i className="icofont-ui-rating starFB" />
-                            </div>
-                            <div className="errorContainerFB elementError" id="totalPriceError" ref={totalPriceError}> </div>
-                        </div> */}
-                    </section>
-                    <section className="sectionFB">
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label>کمپرسی و مالک  </label>
-                                <div
-                                    id='truck_id'
-                                    className="element"
-                                    onClick={e => { clearInputError(e, truck_idError) }}
-                                >
-                                    <SelectZabi2
-                                        primaryLabel='انتخاب'
-                                        options={dumpTruckOptions}
-                                        saveOption={setDumpTruckId}
-                                        saveOption2={setDumpTruckOwnerId}
-                                        input={inputMixerSearch}
-                                        optionsSearched={optionsMixersSearched}
-                                        warning={mixerSearchWarning}
-                                        elementWarning={elementMixerSearchWarning}
-                                        clearSearch={handleClearAllSearchMixer}
-                                        ref={dumpTruckRef}
-                                    />
-                                </div>
-                                <i className="icofont-ui-rating starFB" />
-                            </div>
-                            <div className="errorContainerFB elementError" id='truck_idError' ref={truck_idError}> </div>
-                        </div>
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label>راننده  </label>
-                                <div
-                                    id='driver_id'
-                                    className="element"
-                                    onClick={e => { clearInputError(e, driver_idError) }}
-                                >
-                                    <SelectZabi2
-                                        primaryLabel='انتخاب'
-                                        options={driverOptions}
-                                        saveOption={setDrvierId}
-                                        input={inputDriverSearch}
-                                        optionsSearched={optionsDriversSearched}
-                                        warning={driverSearchWarning}
-                                        elementWarning={elementDriverSearchWarning}
-                                        clearSearch={handleClearAllSearchDriver}
-                                        ref={driverRef}
-                                    />
-                                </div>
-                                <i className="icofont-ui-rating starFB" />
-                            </div>
-                            <div className="errorContainerFB elementError" id='driver_idError' ref={driver_idError}> </div>
-                        </div>
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label htmlFor="unitFare">کرایه هر تن</label>
-                                <input
-                                    type="text"
-                                    className="inputTextUnitFB ltrFB element"
-                                    id="unitFare"
-                                    onInput={e => {
-                                        handleSaveValInput(e, 'unitFare');
-                                        formatNub(unitFareRef.current);
-                                        handleTotalFareCalculation(e, 'unitFare', input, setInput, totalFareRef.current)
-                                    }}
-                                    onFocus={e => clearInputError(e, unitFareError)}
-                                    ref={unitFareRef}
-                                />
-                                <span
-                                    className="unitFB"
-                                    onClick={() => htmlFor('unitFare')}
+                                  <span    className="unitFB"
+                                    onClick={() => htmlFor('unitPrice')}
                                 >
                                     تومان
                                 </span>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="unitFareError" ref={unitFareError}> </div>
+                            <div className="errorContainerFB elementError" id="totalPriceError" > </div>
                         </div>
-
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label> کل کرایه </label>
-                                <div className="mainTotalPriceACSL_FB">
-                                    <div className="totalPriceACSL_FB"
-                                        ref={totalFareRef}
-                                    >0</div>
-                                    <span className="spanTotalPriceACSL_FB">
-                                        تومان
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label htmlFor="totalFare">کل کرایه</label>
-                                <input
-                                    type="text"
-                                    className="inputTextFB element"
-                                    id="totalFare"
-                                    defaultValue={input.totalFare}
-                                    onInput={e => handleSaveValInput(e, 'totalFare')}
-                                    onFocus={e => clearInputError(e, totalFareError)}
-                                />
-                                <i className="icofont-ui-rating starFB" />
-                            </div>
-                            <div className="errorContainerFB elementError" id="totalFareError" ref={totalFareError}> </div>
-                        </div> */}
                     </section>
+
                     <section className="sectionFB">
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label>سیلوی تخلیه  </label>
-                                <div
-                                    id='sandStore_id'
-                                    className="element"
-                                    onClick={e => { clearInputError(e, sandStore_idError) }}
-                                >
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={sandStoreOptions}
-                                        saveOption={setSandStoreId}
-                                        ref={sandStoreRef}
-                                    />
-                                </div>
-                                <i className="icofont-ui-rating starFB" />
-
-                            </div>
-                            <div className="errorContainerFB elementError" id='sandStore_idError' ref={sandStore_idError}> </div>
-                        </div>
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label htmlFor="description">توضیحات</label>
+                                <label> توضیحات </label>
                                 <textarea
-
-                                    // className="textareaAddressACu"
-                                    className="textareaFB element"
+                                    className="inputTextFB ltrFB element"
                                     id="description"
-                                    defaultValue={input.description}
                                     onInput={e => handleSaveValInput(e, 'description')}
+                                    onFocus={(e) => clearInputError(e, descriptionError)}
+
                                 />
                             </div>
-                            <div className="errorContainerFB elementError"> </div>
+                            <div className="errorContainerFB elementError" id='descriptionError' ref={descriptionError}> </div>
                         </div>
-
+                      
                     </section>
+                   
                     <section className="sectionFB divBtnsFB">
                         <Button
                             variant="success"
@@ -715,20 +503,6 @@ console.log(input);
                             onClick={() => resetForm(
                                 setInput,
                                 setDate,
-                                setTime,
-                                setSandRemittance_id,
-                                sandRemittance_idRef.current,
-                                setSandTypeSelected,
-                                sandTypeRef.current,
-                                totalPriceRef.current,
-                                setDumpTruckId,
-                                setDumpTruckOwnerId,
-                                dumpTruckRef.current,
-                                setDrvierId,
-                                driverRef.current,
-                                totalFareRef.current,
-                                setSandStoreId,
-                                sandStoreRef.current,
                             )}
 
                         >
