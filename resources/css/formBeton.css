@@ -50,12 +50,18 @@
     position: relative;
 }
 
-.containerInputFB {
+.containerInputFB,
+.containerInput100FB {
     width: 50%;
     padding: 0 calc((50% - 360px) / 2);
 }
 
-.divInputFB {
+.containerInput100FB {
+    width: 100%;
+}
+
+.divInputFB,
+.divInput100FB {
     display: flex;
     align-items: center;
     position: relative;
@@ -80,7 +86,8 @@
     justify-content: space-around;
 }
 
-.divInputFB label {
+.divInputFB label,
+.divInput100FB label {
     /* width: 135px; */
     display: inline-block;
     font-size: 0.95rem;
@@ -91,6 +98,7 @@
 .inputTextUnitFB,
 .inputShabaFB,
 .textareaFB,
+.textarea100FB,
 .divRadioFB,
 .mainCubicMetersACSL_FB,
 .mainTotalPriceACSL_FB {
@@ -103,6 +111,17 @@
 
 .textareaFB {
     height: 70px;
+}
+
+.textarea100FB {
+    /* width: 590px; */
+    width: 78.90%;
+    height: 40px;
+    padding: 7px;
+}
+
+.descriptionFB{
+    height: 90px;
 }
 
 .inputCheckboxFB {
@@ -517,15 +536,19 @@
     direction: ltr;
 }
 
+.centerFB {
+    text-align: center;
+}
 .rtlPlaceholderFB::placeholder {
     direction: rtl;
     text-align: right;
 }
 
-.radioTrue_FB{
+.radioTrue_FB {
     color: #006700;
     border-color: #006700;
 }
+
 /*  مربوط به کامپوننت ایجاد فیش حقوقی پرسنل، دکمه وضعیت بیمه   */
 
 
@@ -731,16 +754,27 @@
         left: 15px;
     }
 
-    .containerInputFB {
+    .containerInputFB,
+    .containerInput100FB {
         width: 50%;
         /* padding: 0 calc((50% - 362px) / 2); */
         padding: 0 calc((50% - 400px) / 2);
     }
 
+    .containerInput100FB{
+        width: 100%;
+    }
 
-    .divInputFB label {
+    .divInputFB label,
+    .divInput100FB label {
         /* width: 125px; */
         font-size: 1.062rem;
+    }
+
+    .divInput100FB label{
+        width: 170px ;
+        flex-grow: 0;
+
     }
 
     .inputTextFB,
@@ -756,6 +790,12 @@
 
     .inputShabaFB {
         width: 215px;
+        
+    }
+
+    .textarea100FB{
+        flex-grow: 1 ;
+        
     }
 
     .divRightFB .containerInputFB,
