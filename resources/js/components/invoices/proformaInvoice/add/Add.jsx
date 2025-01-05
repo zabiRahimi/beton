@@ -141,7 +141,7 @@ const Add = () => {
 
     useEffect(() => {
          // بازسازی ref ها پس از هر تغییر در 
-         input.products errorRefs.current = input.products.map((_, i) => errorRefs.current[i] || React.createRef()); 
+          errorRefs.current = input.products.map((_, i) => errorRefs.current[i] || React.createRef()); 
         }, [input.products]);
 
     console.log(input.products);
