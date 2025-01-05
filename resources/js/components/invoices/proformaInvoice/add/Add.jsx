@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -18,6 +18,7 @@ import {
     resetForm,
     handleTotalPriceCalculation,
     handleAddProduct,
+    handleRemoveProduct,
 } from './Helper';
 
 const Add = () => {
@@ -47,6 +48,8 @@ const Add = () => {
     const telRef = useRef(null);
     const telError = useRef(null);
 
+    const productError = useRef([]);
+
     const descriptionRef = useRef(null);
     const descriptionError = useRef(null);
 
@@ -55,37 +58,6 @@ const Add = () => {
 
 
     const [refProducts, setRefProducts] = useState({});
-
-    /**
-        * برای تخصیص رف به هر اینپوت محصولات 
-       */
-    // useEffect(() => {
-    //     if (invoice) {
-    //         let refs = invoice.reduce((acc, cur, i) => {
-    //             acc[`productRef${i}`] = createRef();
-    //             acc[`productError${i}`] = createRef();
-
-    //             acc[`typeRef${i}`] = createRef();
-    //             acc[`typeError${i}`] = createRef();
-
-    //             acc[`amountRef${i}`] = createRef();
-    //             acc[`amountError${i}`] = createRef();
-
-    //             acc[`unitRef${i}`] = createRef();
-    //             acc[`unitError${i}`] = createRef();
-
-    //             acc[`unitPriceRef${i}`] = createRef();
-    //             acc[`unitPriceError${i}`] = createRef();
-
-    //             acc[`totalPriceRef${i}`] = createRef();
-    //             acc[`totalPriceError${i}`] = createRef();
-
-    //             return acc;
-    //         }, {});
-    //         setRefInvoice(refs);
-    //         isRef.current = true;
-    //     }
-    // }, [invoice]);
 
 
     const [loading, setLoading] = useState(true);
@@ -113,6 +85,22 @@ const Add = () => {
                 unitPrice: '',
                 totalPrice: '',
             },
+            {
+                product: '',
+                type: '',
+                amount: '',
+                countingUnit: '',
+                unitPrice: '',
+                totalPrice: '',
+            },
+            {
+                product: '',
+                type: '',
+                amount: '',
+                countingUnit: '',
+                unitPrice: '',
+                totalPrice: '',
+            },
            
         ],
         description: '',
@@ -120,6 +108,43 @@ const Add = () => {
         isTax: '',
     });
 
+      /**
+        * برای تخصیص رف به هر اینپوت محصولات 
+       */
+      useEffect(() => {
+        if (input.products) {
+            let refs = input.products.reduce((acc, cur, i) => {
+                acc[`productRef${i}`] = createRef();
+                acc[`productError${i}`] = createRef();
+
+                acc[`typeRef${i}`] = createRef();
+                acc[`typeError${i}`] = createRef();
+
+                acc[`amountRef${i}`] = createRef();
+                acc[`amountError${i}`] = createRef();
+
+                acc[`unitRef${i}`] = createRef();
+                acc[`unitError${i}`] = createRef();
+
+                acc[`unitPriceRef${i}`] = createRef();
+                acc[`unitPriceError${i}`] = createRef();
+
+                acc[`totalPriceRef${i}`] = createRef();
+                acc[`totalPriceError${i}`] = createRef();
+
+                return acc;
+            }, {});
+            console.log(refs);
+            // isRef.current = true;
+        }
+    }, [input.products]);
+
+    useEffect(() => {
+         // بازسازی ref ها پس از هر تغییر در 
+         input.products errorRefs.current = input.products.map((_, i) => errorRefs.current[i] || React.createRef()); 
+        }, [input.products]);
+
+    console.log(input.products);
     RouteService({ setLoading, setTicketNumber });
 
 
@@ -130,6 +155,14 @@ const Add = () => {
         }
         setInput(prev => ({ ...prev, [input]: value }));
     }
+
+
+    const  handleSaveValInputProducts= (e, index) => {
+         const { name, value } = e.target; 
+         const products = [...input.products];
+          products[index][name] = value; 
+          setInput({ ...input, products });
+         };
 
     const clearInputError = (e, refErr, time = false, date = false) => {
         e.target.classList.remove('borderRedFB');
@@ -365,13 +398,13 @@ const Add = () => {
                                             type="text"
                                             className="inputTextFB  element"
                                             id="product"
-
-                                            onInput={e => handleSaveValInput(e, 'product')}
+                                            name='product'
+                                            onInput={e => handleSaveValInputProducts(e, i)}
                                             onFocus={(e) => clearInputError(e,)}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id='productError' > </div>
+                                    <div className="errorContainerFB elementError" id='productError'  > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -478,7 +511,7 @@ const Add = () => {
                                         {(input.products.length == i + 1) &&
                                             <button className='btnAddProductFB'
                                                 onClick={(e) => {
-                                                    handleAddProduct(e);
+                                                    handleAddProduct(e, input, setInput);
                                                 }}
                                             >
                                                 <i className='icofont-plus' />
@@ -489,7 +522,11 @@ const Add = () => {
                                     </div>
                                     <div className="divDelProductFB">
                                         {input.products.length != 1 &&
-                                            <button className="btnDelProductFB">
+                                            <button className="btnDelProductFB"
+                                            onClick={(e) => {
+                                                handleRemoveProduct(e,i, input, setInput);
+                                            }}
+                                            >
                                                 <i className="icofont-close"></i>
                                                 <span>حذف محصول</span>
                                             </button>

@@ -172,10 +172,10 @@ export const resetForm = (
     handleRemoveAllError();
     sandRemittance_idCurrent.updateData('انتخاب');
     sandTypeCurrent.updateData('انتخاب');
-    totalPriceCurrent.innerHTML=0;
+    totalPriceCurrent.innerHTML = 0;
     dumpTruckCurrent.updateData('انتخاب');
     driverCurrent.updateData('انتخاب');
-    totalFareCurrent.innerHTML=0;
+    totalFareCurrent.innerHTML = 0;
     sandStoreCurrent.updateData('انتخاب');
     // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
     if (apply) {
@@ -225,6 +225,20 @@ export const handleTotalPriceCalculation = (e, element, input, setInput, refCurr
 
 export const handleAddProduct = (e, input, setInput) => {
     e.preventDefault();
-  
+    setInput({
+        ...input, products: [...input.products, {
+            product: '',
+            type: '',
+            amount: '',
+            countingUnit: '',
+            unitPrice: '',
+            totalPrice: '',
+        }]
+    });
 }
+
+export const handleRemoveProduct = (e, index , input, setInput) => {
+    const products = input.products.filter((_, i) => i !== index);
+    setInput({ ...input, products });
+};
 
