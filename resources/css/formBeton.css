@@ -51,14 +51,45 @@
 }
 
 .containerInputFB,
-.containerInput100FB {
+.containerInput100FB,
+.divAddDelProductFB {
     width: 50%;
     padding: 0 calc((50% - 360px) / 2);
 }
 
-.containerInput100FB {
+.containerInput100FB,
+.divAddDelProductFB {
     width: 100%;
 }
+
+.divAddDelProductFB{
+    margin-bottom: 10px;
+}
+
+.divAddDelProductFB{
+    display: flex;
+   justify-content: space-between;
+}
+
+.divAddProductFB{}
+.divDelProductFB{}
+
+.btnAddProductFB{
+    padding: 1px 5px;
+    background-color: #cae8ca;
+    border: 1px solid #7fa47f;
+    border-radius: 4px;
+    color: #005e00;
+}
+
+.btnDelProductFB{
+    padding: 1px 5px;
+    background-color: #e8caca;
+    border: 1px solid #a47f7f;
+    border-radius: 4px;
+    color: #5e0000;
+}
+
 
 .divInputFB,
 .divInput100FB {
@@ -755,14 +786,16 @@
     }
 
     .containerInputFB,
-    .containerInput100FB {
+    .containerInput100FB,
+    .divAddDelProductFB {
         width: 50%;
         /* padding: 0 calc((50% - 362px) / 2); */
         padding: 0 calc((50% - 400px) / 2);
     }
 
-    .containerInput100FB{
-        width: 100%;
+    .containerInput100FB,
+    .divAddDelProductFB{
+        width: 100% ;
     }
 
     .divInputFB label,

@@ -223,21 +223,8 @@ export const handleTotalPriceCalculation = (e, element, input, setInput, refCurr
     refCurrent.innerHTML = totalPrice.toLocaleString();
 };
 
-export const handleAddProduct = (e, setIndexNewInvoice, invoice, setInvoice, setIsNewInvoice, setInput, setIsChecked, sampleInvoice, date, input, setConcreteName, concretes, maskan, setMaskan, setCheckedValue, setCementStoreName, cementStores, setTime, unitPrice, fare, vahed, address, concretingPosition ) => {
+export const handleAddProduct = (e, input, setInput) => {
     e.preventDefault();
-    setIndexNewInvoice(invoice.length);
-    setInvoice([...invoice, sampleInvoice]);
-    setIsNewInvoice(true);
-    let date0 = handleSetDateForNewInvoice(date);
-    let concrete_id = handleSetConcreteForNewInvoice(input, invoice, setConcreteName, concretes);
-    let maskanMeli = handleSetMaskanMeliForNewInvoice(input, invoice, maskan, setMaskan, setCheckedValue);
-    let cementStore_id = handleSetCementStoreForNewInvoice(input, invoice, setCementStoreName, cementStores);
-    setInput(perv => {
-        let newInvoice = [...perv.invoice, { date:date0, time: '', weight: '', cubicMeters: '', concrete_id, truck_id: '', driver_id: '', cementStore_id, unitPrice, totalPrice: '', fare, maskanMeli, vahed, address, concretingPosition }];
-
-        return { ...perv, invoice: newInvoice };
-    });
-    handleClearTime(setTime);
-    setIsChecked(true);
+  
 }
 
