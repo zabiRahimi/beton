@@ -199,14 +199,14 @@ export const handleRemoveAllError = () => {
 }
 
 
-export const handleTotalPriceCalculation = (e, element, input, setInput, refCurrent) => {
+export const handleTotalPriceCalculation = (e,i, element, input, setInput, refCurrent) => {
     let totalPrice = 0;
     let { value } = e.target;
     value = Number(value.replace(/,/g, ''));
 
-    if (element === 'weight') {
-        // تبدیل قیمت هر تن به کیلو
-        const unitPrice = Number(input.unitPrice);
+    if (element === 'amount') {
+        
+        const unitPrice = Number(input.products[i][amount]);
         if (Number.isInteger(unitPrice)) {
             totalPrice = unitPrice / 1000 * value;
         }

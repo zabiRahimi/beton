@@ -440,7 +440,7 @@ const Add = () => {
                                             id={`type${i}}`}
                                             name='type'
                                             onInput={e => {
-                                                handleSaveValInput(e, 'type');
+                                                handleSaveValInputProducts(e, i);
                                             }}
                                             onFocus={e => clearInputError(e,productsRef[`typeError${i}`])}
 
@@ -459,7 +459,10 @@ const Add = () => {
                                             className="inputTextFB centerFB element"
                                             id={`amount${i}}`}
                                             name='amount'
-                                            onInput={e => handleSaveValInput(e, 'amount')}
+                                            onInput={e => {
+                                                handleSaveValInputProducts(e, i);
+                                                handleTotalPriceCalculation(e,`amount${i}`, input, setInput, productsRef[`totalPrice${i}`].current);
+                                            }}
                                             onFocus={(e) => clearInputError(e,productsRef[`amountError${i}`])}
                                         />
                                         <i className="icofont-ui-rating starFB" />
@@ -475,8 +478,8 @@ const Add = () => {
                                             className="inputTextFB  element"
                                             id={`unit${i}}`}
                                             name='unit'
-                                            value={input['unit'] || ''}
-                                            onInput={e => handleSaveValInput(e, 'unit')}
+                                           
+                                            onInput={e => handleSaveValInputProducts(e, i)}
                                             onFocus={(e) => clearInputError(e,productsRef[`unitError${i}`])}
                                         />
                                         <i className="icofont-ui-rating starFB" />
@@ -493,9 +496,9 @@ const Add = () => {
                                             id={`unitPrice${i}}`}
                                             name='unitPrice'
                                             onInput={e => {
-                                                handleSaveValInput(e, 'unitPrice');
+                                                handleSaveValInputProducts(e, i);
                                                 formatNub(productsRef[`unitPrice${i}`].current);
-                                                // handleTotalPriceCalculation(e, 'unitPrice', input, setInput, totalPriceRef.current)
+                                                handleTotalPriceCalculation(e,`unitPrice${i}`, input, setInput, productsRef[`totalPrice${i}`].current);
                                             }}
                                             onFocus={e => clearInputError(e,productsRef[`unitPriceError${i}`])}
                                             ref={productsRef[`unitPrice${i}`]}
@@ -521,7 +524,7 @@ const Add = () => {
                                             name='totalPrice'
                                            
                                             onInput={e => {
-                                                handleSaveValInput(e, 'totalPrice');
+                                                handleSaveValInputProducts(e, i);
                                                 formatNub(productsRef[`totalPrice${i}`].current);
                                             }}
                                             onFocus={e => clearInputError(e,productsRef[`totalPriceError${i}`])}
