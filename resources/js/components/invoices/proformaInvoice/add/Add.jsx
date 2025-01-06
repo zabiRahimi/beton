@@ -101,50 +101,71 @@ const Add = () => {
                 unitPrice: '',
                 totalPrice: '',
             },
-           
+
         ],
         description: '',
         unitPrice: '',
         isTax: '',
     });
+    const errorRefs = useRef([])
+    const productRefs = useRef([])
+    const [productsRef, setProductsRef] = useState({});
 
-      /**
-        * برای تخصیص رف به هر اینپوت محصولات 
-       */
+    /**
+      * برای تخصیص رف به هر اینپوت محصولات 
+     */
       useEffect(() => {
         if (input.products) {
             let refs = input.products.reduce((acc, cur, i) => {
-                acc[`productRef${i}`] = createRef();
+                acc[`product${i}`] = createRef();
                 acc[`productError${i}`] = createRef();
 
-                acc[`typeRef${i}`] = createRef();
+                acc[`type${i}`] = createRef();
                 acc[`typeError${i}`] = createRef();
 
-                acc[`amountRef${i}`] = createRef();
+                acc[`amount${i}`] = createRef();
                 acc[`amountError${i}`] = createRef();
 
-                acc[`unitRef${i}`] = createRef();
+                acc[`unit${i}`] = createRef();
                 acc[`unitError${i}`] = createRef();
 
-                acc[`unitPriceRef${i}`] = createRef();
+                acc[`unitPrice${i}`] = createRef();
                 acc[`unitPriceError${i}`] = createRef();
 
-                acc[`totalPriceRef${i}`] = createRef();
+                acc[`totalPrice${i}`] = createRef();
                 acc[`totalPriceError${i}`] = createRef();
 
                 return acc;
             }, {});
-            console.log(refs);
+            setProductsRef(refs);
             // isRef.current = true;
         }
     }, [input.products]);
 
-    useEffect(() => {
-         // بازسازی ref ها پس از هر تغییر در 
-          errorRefs.current = input.products.map((_, i) => errorRefs.current[i] || React.createRef()); 
-        }, [input.products]);
+    // useEffect(() => {
+    //      // بازسازی ref ها پس از هر تغییر در 
+    //       errorRefs.current = input.products.map((product, i) =>{ 
+    //         // `${product}Error`.current[i] || createRef()
+    //         Object.keys(product).map((pro)=> {if(!pro.current[i]){return createRef()}});
+    //     }); 
+    //     }, [input.products]);
+    // useEffect(() => {
+    //     // بازسازی ref ها پس از هر تغییر در input.products
+    //     errorRefs.current = input.products.map((product, i) => {
+    //       return Object.keys(product).map((pro) => {
+    //         if (!errorRefs.current[i]) {
+    //           return createRef();
+    //         }
+    //         return errorRefs.current[i];
+    //       });
+    //     });
+    //   }, [input.products]);
 
-    console.log(input.products);
+    // useEffect(() => { // بازسازی ref ها پس از هر تغییر در input.products
+    //     errorRefs.current = input.products.map((product, i) => ({ productError: errorRefs.current[i]?.productError || createRef(), typeError: errorRefs.current[i]?.typeError || createRef(), amountError: errorRefs.current[i]?.amountError || createRef(), countingUnitError: errorRefs.current[i]?.countingUnitError || createRef(), unitPriceError: errorRefs.current[i]?.unitPriceError || createRef(), totalPriceError: errorRefs.current[i]?.totalPriceError || createRef(), }));
+    // }, [input.products]);
+
+
     RouteService({ setLoading, setTicketNumber });
 
 
@@ -157,14 +178,15 @@ const Add = () => {
     }
 
 
-    const  handleSaveValInputProducts= (e, index) => {
-         const { name, value } = e.target; 
-         const products = [...input.products];
-          products[index][name] = value; 
-          setInput({ ...input, products });
-         };
+    const handleSaveValInputProducts = (e, index) => {
+        const { name, value } = e.target;
+        const products = [...input.products];
+        products[index][name] = value;
+        setInput({ ...input, products });
+    };
 
-    const clearInputError = (e, refErr, time = false, date = false) => {
+    const clearInputError = (e, refErr, date = false) => {
+        console.log(refErr);
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
         const parentWithClass = e.target.closest('.borderRedFB');
@@ -273,7 +295,6 @@ const Add = () => {
                             </div>
                             <div className="errorContainerFB elementError" id="buyerError" ref={buyerError}> </div>
                         </div>
-
 
                         <div className="containerInputFB">
                             <div className="divInputFB ">
@@ -397,14 +418,14 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextFB  element"
-                                            id="product"
+                                            id={`product${i}}`}
                                             name='product'
                                             onInput={e => handleSaveValInputProducts(e, i)}
-                                            onFocus={(e) => clearInputError(e,)}
+                                            onFocus={(e) => clearInputError(e,productsRef[`productError${i}`])}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id='productError'  > </div>
+                                    <div className="errorContainerFB elementError" id={`productError${i}}`} ref={productsRef[`productError${i}`]}  > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -416,17 +437,18 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextFB  element"
-                                            id="type"
+                                            id={`type${i}}`}
+                                            name='type'
                                             onInput={e => {
                                                 handleSaveValInput(e, 'type');
                                             }}
-                                            onFocus={e => clearInputError(e,)}
+                                            onFocus={e => clearInputError(e,productsRef[`typeError${i}`])}
 
                                         />
 
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id="typeError" > </div>
+                                    <div className="errorContainerFB elementError" id={`typeError${i}}`} ref={productsRef[`typeError${i}`]} > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -435,13 +457,14 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextFB centerFB element"
-                                            id="amount"
+                                            id={`amount${i}}`}
+                                            name='amount'
                                             onInput={e => handleSaveValInput(e, 'amount')}
-                                            onFocus={(e) => clearInputError(e,)}
+                                            onFocus={(e) => clearInputError(e,productsRef[`amountError${i}`])}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id='productError' > </div>
+                                    <div className="errorContainerFB elementError" id={`amountError${i}}`} ref={productsRef[`amountError${i}`]} > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -450,14 +473,15 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextFB  element"
-                                            id="unit"
+                                            id={`unit${i}}`}
+                                            name='unit'
                                             value={input['unit'] || ''}
                                             onInput={e => handleSaveValInput(e, 'unit')}
-                                            onFocus={(e) => clearInputError(e,)}
+                                            onFocus={(e) => clearInputError(e,productsRef[`unitError${i}`])}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id='unitError' > </div>
+                                    <div className="errorContainerFB elementError" id={`unitError${i}}`} ref={productsRef[`unitError${i}`]} > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -466,13 +490,15 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextUnitFB ltrFB element"
-                                            id="unitPrice"
+                                            id={`unitPrice${i}}`}
+                                            name='unitPrice'
                                             onInput={e => {
                                                 handleSaveValInput(e, 'unitPrice');
-                                                // formatNub(unitPriceRef.current);
+                                                formatNub(productsRef[`unitPrice${i}`].current);
                                                 // handleTotalPriceCalculation(e, 'unitPrice', input, setInput, totalPriceRef.current)
                                             }}
-                                            onFocus={e => clearInputError(e,)}
+                                            onFocus={e => clearInputError(e,productsRef[`unitPriceError${i}`])}
+                                            ref={productsRef[`unitPrice${i}`]}
 
                                         />
                                         <span className="unitFB"
@@ -482,7 +508,7 @@ const Add = () => {
                                         </span>
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id="unitPriceError" > </div>
+                                    <div className="errorContainerFB elementError" id={`unitPriceError${i}}`}  ref={productsRef[`unitPriceError${i}`]}> </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -491,10 +517,15 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextUnitFB ltrFB element"
-                                            id="totalPrice"
-                                            defaultValue={input.totalPrice}
-                                            onInput={e => handleSaveValInput(e, 'totalPrice')}
-                                            onFocus={e => clearInputError(e,)}
+                                            id={`totalPrice${i}}`}
+                                            name='totalPrice'
+                                           
+                                            onInput={e => {
+                                                handleSaveValInput(e, 'totalPrice');
+                                                formatNub(productsRef[`totalPrice${i}`].current);
+                                            }}
+                                            onFocus={e => clearInputError(e,productsRef[`totalPriceError${i}`])}
+                                            ref={productsRef[`totalPrice${i}`]}
                                         />
                                         <span className="unitFB"
                                             onClick={() => htmlFor('unitPrice')}
@@ -503,7 +534,7 @@ const Add = () => {
                                         </span>
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id="totalPriceError" > </div>
+                                    <div className="errorContainerFB elementError" id={`totalPriceError${i}}`}  ref={productsRef[`totalPriceError${i}`]}> </div>
                                 </div>
 
                                 <div className='divAddDelProductFB'>
@@ -523,9 +554,9 @@ const Add = () => {
                                     <div className="divDelProductFB">
                                         {input.products.length != 1 &&
                                             <button className="btnDelProductFB"
-                                            onClick={(e) => {
-                                                handleRemoveProduct(e,i, input, setInput);
-                                            }}
+                                                onClick={(e) => {
+                                                    handleRemoveProduct(e, i, input, setInput);
+                                                }}
                                             >
                                                 <i className="icofont-close"></i>
                                                 <span>حذف محصول</span>

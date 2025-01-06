@@ -238,6 +238,7 @@ export const handleAddProduct = (e, input, setInput) => {
 }
 
 export const handleRemoveProduct = (e, index , input, setInput) => {
+    e.preventDefault();
     const products = input.products.filter((_, i) => i !== index);
     setInput({ ...input, products });
 };
