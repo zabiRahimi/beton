@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonnelSlipController;
+use App\Http\Controllers\ProformaInvoiceController;
 use App\Http\Controllers\SandInvoiceController;
 use App\Http\Controllers\SandRemittanceController;
 use App\Http\Controllers\SandStoreController;
@@ -148,6 +149,8 @@ Route::controller(SandInvoiceController::class)->group(function () {
     // Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
 
 });
+
+Route::resource('proformaInvoices', ProformaInvoiceController::class);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

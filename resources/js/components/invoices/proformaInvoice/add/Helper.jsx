@@ -199,28 +199,30 @@ export const handleRemoveAllError = () => {
 }
 
 
-export const handleTotalPriceCalculation = (e,i, element, input, setInput, refCurrent) => {
+export const handleTotalPriceCalculation = (e, i, element, input, setInput, refCurrent) => {
     let totalPrice = 0;
     let { value } = e.target;
     value = Number(value.replace(/,/g, ''));
 
     if (element === 'amount') {
-        
-        const unitPrice = Number(input.products[i][amount]);
+
+        const unitPrice = Number(input.products[i]['unitPrice']);
         if (Number.isInteger(unitPrice)) {
-            totalPrice = unitPrice / 1000 * value;
+            totalPrice = unitPrice * value;
         }
     } else {
         // تبدیل وزن بار به تناژ
-        const weight = Number(input.weight) / 1000;
-        if (!isNaN(weight)) {
-            totalPrice = weight * value;
+        const amount = Number(input.products[i]['amount']) ;
+        if (!isNaN(amount)) {
+            totalPrice = amount * value;
         }
     }
 
     totalPrice = Math.round(totalPrice);
-    setInput(prev => ({ ...prev, totalPrice }));
-    refCurrent.innerHTML = totalPrice.toLocaleString();
+    const products = [...input.products];
+    products[i]['totalPrice'] = totalPrice;
+    setInput({ ...input, products });
+    refCurrent.value = totalPrice.toLocaleString();
 };
 
 export const handleAddProduct = (e, input, setInput) => {
@@ -237,9 +239,15 @@ export const handleAddProduct = (e, input, setInput) => {
     });
 }
 
-export const handleRemoveProduct = (e, index , input, setInput) => {
+export const handleRemoveProduct = (e, index, input, setInput, productsRef) => {
     e.preventDefault();
+
+    // productsRef[`product${index}`].current.value=''
     const products = input.products.filter((_, i) => i !== index);
     setInput({ ...input, products });
+};
+
+export const handleOptionRadioChange = (e, setSelectedOptionRadio) => { 
+    setSelectedOptionRadio(e.target.value ==1?'اعمال شود':'اعمال نشود'); 
 };
 

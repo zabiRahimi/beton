@@ -8,7 +8,14 @@ import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import HeadPage from '../HeadPage';
 import RouteService from "./RouteService";
-import { handleSetDate, clearInputError, htmlFor, formatNub, resetForm, handleOptionRadioChange } from './Helper';
+import {
+    handleSetDate,
+    clearInputError,
+    htmlFor, 
+    formatNub,
+    handleOptionRadioChange
+} from './Helper';
+
 const Edit = () => {
     const { sandRemittanceId } = useParams();
     const MySwal = withReactContent(Swal);
@@ -79,7 +86,7 @@ const Edit = () => {
         isCompleted: '',
         description: ''
     });
-    console.log(input);
+
     RouteService({ sandRemittanceId, setLoading, setSandRemittance });
 
     useEffect(() => {
@@ -118,9 +125,6 @@ const Edit = () => {
 
         setSelectedOptionRadio(remainingData.isCompleted ? 'مانده' : 'تمام');
 
-
-
-
         // تنظیم تاریخ و زمان
         if (remainingData.date) {
             let [year, month, day] = remainingData.date.split("-");
@@ -137,8 +141,8 @@ const Edit = () => {
                 remainingPriceRef.current.classList.add('borderRedFB');
                 remainingPriceError.current.innerHTML = 'هنگام ویرایش مبلغ حواله، لازم است مبلغ مانده را نیز اصلاح کنید.';
             }
-
         }
+
         if (input == 'isCompleted') {
             let message;
             if (value == 0) {
@@ -153,31 +157,6 @@ const Edit = () => {
         setInput(prev => ({ ...prev, [input]: value }));
 
     }
-
-    // const swalForSaveValInput = (message, value, input0) => {
-    //     console.log(message);
-    //     MySwal.fire({
-    //         icon: "warning",
-    //         title: "<span style='color:red'>هشدار</span>",
-    //         text:message,
-    //         confirmButtonText: " بله ",
-    //         showCancelButton: true,
-    //         cancelButtonText: " خیر ",
-    //         confirmButtonColor: "#3085d6",
-    //         cancelButtonColor: "#d33",
-    //         preConfirm: () => {
-    //             if (value==0) {
-    //                 const NewDescription = `\n توجه: چون کاربر به صورت دستی گزینه 'تمام' را انتخاب کرده مقدار مانده قبلی حواله در زیر درج شده است \n ${Number(input.remainingPrice).toLocaleString()}`;
-    //             const description = input.description + NewDescription;
-    //             remainingPriceRef.current.innerHTML=0;
-    //             setInput(prev => ({ ...prev,remainingPrice:0, [input0]: value, description })); 
-    //             }else{
-    //                 setInput(prev => ({ ...prev, [input0]: value })); 
-    //             }
-
-    //         }
-    //     });
-    // }
 
     const swalForSaveValInput = (message, value, input0) => {
         MySwal.fire({
@@ -210,7 +189,6 @@ const Edit = () => {
             }
         });
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -264,7 +242,6 @@ const Edit = () => {
     };
 
 
-
     return (
         <div>
             <HeadPage
@@ -273,7 +250,6 @@ const Edit = () => {
                 displayBtnAdd={true}
                 displayBtnShow={true}
             />
-
             <div className="continerAddGe">
                 <form className="formBeton" ref={form}>
                     <section className="sectionFB">
@@ -331,14 +307,12 @@ const Edit = () => {
                                     onInput={e => handleSaveValInput(e, 'buyerFather')}
                                     onFocus={e => clearInputError(e, buyerFatherError)}
                                 />
-
                             </div>
                             <div className="errorContainerFB elementError" id="buyerFatherError" ref={buyerFatherError}> </div>
                         </div>
                     </section>
 
                     <section className='sectionFB'>
-
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="remittanceNumber">شماره حواله</label>
@@ -444,7 +418,6 @@ const Edit = () => {
                                     }}
                                     onFocus={e => clearInputError(e, priceError)}
                                     ref={priceRef}
-
                                 />
                                 <span
                                     className="unitFB"
@@ -497,7 +470,6 @@ const Edit = () => {
                                     }}
                                     onFocus={e => clearInputError(e, remainingPriceError)}
                                     ref={remainingPriceRef}
-
                                 />
                                 <span
                                     className="unitFB"
@@ -514,20 +486,6 @@ const Edit = () => {
                             </div>
                         </div>
 
-                        {/* <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label> مبلغ مانده </label>
-                                <div className="mainTotalPriceACSL_FB">
-                                    <div className="totalPriceACSL_FB"
-                                        ref={remainingPriceRef}
-                                    >{ }</div>
-                                    <span className="spanTotalPriceACSL_FB">
-                                        تومان
-                                    </span>
-                                </div>
-                            </div>
-                        </div> */}
-
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label> وضعیت حواله </label>
@@ -541,7 +499,6 @@ const Edit = () => {
                                             onChange={e => {
                                                 handleOptionRadioChange(e, setSelectedOptionRadio);
                                                 handleSaveValInput(e, 'isCompleted');
-
                                             }}
                                         />
                                         <span className="trueLabel_FB">مانده</span>
@@ -590,7 +547,6 @@ const Edit = () => {
                     </div>
                 </form>
             </div>
-
         </div>
     );
 }

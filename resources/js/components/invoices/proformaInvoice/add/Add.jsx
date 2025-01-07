@@ -19,6 +19,7 @@ import {
     handleTotalPriceCalculation,
     handleAddProduct,
     handleRemoveProduct,
+    handleOptionRadioChange,
 } from './Helper';
 
 const Add = () => {
@@ -55,10 +56,7 @@ const Add = () => {
 
     const isRef = useRef(false);
 
-
-
     const [refProducts, setRefProducts] = useState({});
-
 
     const [loading, setLoading] = useState(true);
     const [ticketNumber, setTicketNumber] = useState('');
@@ -68,7 +66,7 @@ const Add = () => {
         month: '',
         year: ''
     });
-
+    const [selectedOptionRadio, setSelectedOptionRadio] = useState('اعمال نشود');
 
     const [input, setInput] = useState({
         date: '',
@@ -105,16 +103,30 @@ const Add = () => {
         ],
         description: '',
         unitPrice: '',
-        isTax: '',
+        isTax: 0,
     });
-    const errorRefs = useRef([])
-    const productRefs = useRef([])
+    
     const [productsRef, setProductsRef] = useState({});
+
+    useEffect(() => {
+        if (isRef) {
+            input.products.map((product, i) => {
+                if (productsRef[`unitPrice${i}`]) {
+
+                    product['unitPrice'] && (productsRef[`unitPrice${i}`].current.value = parseFloat(product['unitPrice']).toLocaleString());
+
+                    product['totalPrice'] && (productsRef[`totalPrice${i}`].current.value = parseFloat(product['totalPrice']).toLocaleString());
+
+                }
+            });
+        }
+
+    }, [input.products, isRef]);
 
     /**
       * برای تخصیص رف به هر اینپوت محصولات 
      */
-      useEffect(() => {
+    useEffect(() => {
         if (input.products) {
             let refs = input.products.reduce((acc, cur, i) => {
                 acc[`product${i}`] = createRef();
@@ -138,36 +150,11 @@ const Add = () => {
                 return acc;
             }, {});
             setProductsRef(refs);
-            // isRef.current = true;
+            isRef.current = true;
         }
     }, [input.products]);
 
-    // useEffect(() => {
-    //      // بازسازی ref ها پس از هر تغییر در 
-    //       errorRefs.current = input.products.map((product, i) =>{ 
-    //         // `${product}Error`.current[i] || createRef()
-    //         Object.keys(product).map((pro)=> {if(!pro.current[i]){return createRef()}});
-    //     }); 
-    //     }, [input.products]);
-    // useEffect(() => {
-    //     // بازسازی ref ها پس از هر تغییر در input.products
-    //     errorRefs.current = input.products.map((product, i) => {
-    //       return Object.keys(product).map((pro) => {
-    //         if (!errorRefs.current[i]) {
-    //           return createRef();
-    //         }
-    //         return errorRefs.current[i];
-    //       });
-    //     });
-    //   }, [input.products]);
-
-    // useEffect(() => { // بازسازی ref ها پس از هر تغییر در input.products
-    //     errorRefs.current = input.products.map((product, i) => ({ productError: errorRefs.current[i]?.productError || createRef(), typeError: errorRefs.current[i]?.typeError || createRef(), amountError: errorRefs.current[i]?.amountError || createRef(), countingUnitError: errorRefs.current[i]?.countingUnitError || createRef(), unitPriceError: errorRefs.current[i]?.unitPriceError || createRef(), totalPriceError: errorRefs.current[i]?.totalPriceError || createRef(), }));
-    // }, [input.products]);
-
-
     RouteService({ setLoading, setTicketNumber });
-
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
@@ -179,14 +166,16 @@ const Add = () => {
 
 
     const handleSaveValInputProducts = (e, index) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        if (['unitPrice', 'totalPrice', 'amount'].includes(name)) {
+            value = Number(value.replace(/,/g, ''));
+        }
         const products = [...input.products];
         products[index][name] = value;
         setInput({ ...input, products });
     };
 
     const clearInputError = (e, refErr, date = false) => {
-        console.log(refErr);
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
         const parentWithClass = e.target.closest('.borderRedFB');
@@ -199,7 +188,7 @@ const Add = () => {
         setLoading(true);
         try {
             const response = await axios.post(
-                '/api/v1/sandInvoices',
+                '/api/v1/proformaInvoice',
                 { ...input },
                 {
                     headers:
@@ -420,8 +409,10 @@ const Add = () => {
                                             className="inputTextFB  element"
                                             id={`product${i}}`}
                                             name='product'
+                                            value={product['product']}
                                             onInput={e => handleSaveValInputProducts(e, i)}
-                                            onFocus={(e) => clearInputError(e,productsRef[`productError${i}`])}
+                                            onFocus={(e) => clearInputError(e, productsRef[`productError${i}`])}
+                                            ref={productsRef[`product${i}`]}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
@@ -439,10 +430,11 @@ const Add = () => {
                                             className="inputTextFB  element"
                                             id={`type${i}}`}
                                             name='type'
+                                            value={product['type']}
                                             onInput={e => {
                                                 handleSaveValInputProducts(e, i);
                                             }}
-                                            onFocus={e => clearInputError(e,productsRef[`typeError${i}`])}
+                                            onFocus={e => clearInputError(e, productsRef[`typeError${i}`])}
 
                                         />
 
@@ -459,11 +451,12 @@ const Add = () => {
                                             className="inputTextFB centerFB element"
                                             id={`amount${i}}`}
                                             name='amount'
+                                            value={product['amount']}
                                             onInput={e => {
                                                 handleSaveValInputProducts(e, i);
-                                                handleTotalPriceCalculation(e,`amount${i}`, input, setInput, productsRef[`totalPrice${i}`].current);
+                                                handleTotalPriceCalculation(e, i, `amount`, input, setInput, productsRef[`totalPrice${i}`].current);
                                             }}
-                                            onFocus={(e) => clearInputError(e,productsRef[`amountError${i}`])}
+                                            onFocus={(e) => clearInputError(e, productsRef[`amountError${i}`])}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
@@ -478,9 +471,9 @@ const Add = () => {
                                             className="inputTextFB  element"
                                             id={`unit${i}}`}
                                             name='unit'
-                                           
+                                            value={product['unit']}
                                             onInput={e => handleSaveValInputProducts(e, i)}
-                                            onFocus={(e) => clearInputError(e,productsRef[`unitError${i}`])}
+                                            onFocus={(e) => clearInputError(e, productsRef[`unitError${i}`])}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
@@ -495,12 +488,13 @@ const Add = () => {
                                             className="inputTextUnitFB ltrFB element"
                                             id={`unitPrice${i}}`}
                                             name='unitPrice'
+                                            // value={product['unitPrice']}
                                             onInput={e => {
                                                 handleSaveValInputProducts(e, i);
                                                 formatNub(productsRef[`unitPrice${i}`].current);
-                                                handleTotalPriceCalculation(e,`unitPrice${i}`, input, setInput, productsRef[`totalPrice${i}`].current);
+                                                handleTotalPriceCalculation(e, i, `unitPrice`, input, setInput, productsRef[`totalPrice${i}`].current);
                                             }}
-                                            onFocus={e => clearInputError(e,productsRef[`unitPriceError${i}`])}
+                                            onFocus={e => clearInputError(e, productsRef[`unitPriceError${i}`])}
                                             ref={productsRef[`unitPrice${i}`]}
 
                                         />
@@ -511,7 +505,7 @@ const Add = () => {
                                         </span>
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id={`unitPriceError${i}}`}  ref={productsRef[`unitPriceError${i}`]}> </div>
+                                    <div className="errorContainerFB elementError" id={`unitPriceError${i}}`} ref={productsRef[`unitPriceError${i}`]}> </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -522,12 +516,12 @@ const Add = () => {
                                             className="inputTextUnitFB ltrFB element"
                                             id={`totalPrice${i}}`}
                                             name='totalPrice'
-                                           
+                                            // value={product['totalPrice']}
                                             onInput={e => {
                                                 handleSaveValInputProducts(e, i);
-                                                formatNub(productsRef[`totalPrice${i}`].current);
+                                                // formatNub(productsRef[`totalPrice${i}`].current);
                                             }}
-                                            onFocus={e => clearInputError(e,productsRef[`totalPriceError${i}`])}
+                                            onFocus={e => clearInputError(e, productsRef[`totalPriceError${i}`])}
                                             ref={productsRef[`totalPrice${i}`]}
                                         />
                                         <span className="unitFB"
@@ -537,7 +531,7 @@ const Add = () => {
                                         </span>
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id={`totalPriceError${i}}`}  ref={productsRef[`totalPriceError${i}`]}> </div>
+                                    <div className="errorContainerFB elementError" id={`totalPriceError${i}}`} ref={productsRef[`totalPriceError${i}`]}> </div>
                                 </div>
 
                                 <div className='divAddDelProductFB'>
@@ -558,7 +552,7 @@ const Add = () => {
                                         {input.products.length != 1 &&
                                             <button className="btnDelProductFB"
                                                 onClick={(e) => {
-                                                    handleRemoveProduct(e, i, input, setInput);
+                                                    handleRemoveProduct(e, i, input, setInput, productsRef);
                                                 }}
                                             >
                                                 <i className="icofont-close"></i>
@@ -571,6 +565,41 @@ const Add = () => {
                         ))
                     }
 
+                    <section className="sectionFB">
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label> ارزش افزوده </label>
+                                <div className="divRadioFB">
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            className='radioTrue_FB'
+                                            value="1"
+                                            checked={selectedOptionRadio === 'اعمال شود'}
+                                            onChange={e => {
+                                                handleOptionRadioChange(e, setSelectedOptionRadio);
+                                                handleSaveValInput(e, 'isTax');
+                                            }}
+                                        />
+                                        <span className="trueLabel_FB">اعمال شود</span>
+                                    </label>
+
+                                    <label className=''>
+                                        <input
+                                            type="radio"
+                                            value="0"
+                                            checked={selectedOptionRadio === 'اعمال نشود'}
+                                            onChange={e => {
+                                                handleOptionRadioChange(e, setSelectedOptionRadio);
+                                                handleSaveValInput(e, 'isTax');
+                                            }}
+                                        />
+                                        <span className="falseLabel_FB">اعمال نشود</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                     <section className="sectionFB">
                         <div className="containerInput100FB">
