@@ -27,6 +27,13 @@ class StoreProformaInvoiceRequest extends FormRequest
             'nationalCode' => ['nullable', 'bail','numeric','digits:10'],
             'address' => ['required', 'string'],
             'tel' => ['nullable', 'numeric'],
+            'products' => ['required', 'array'],
+            'products.*.product' => ['required', 'string'],
+            'products.*.type' => ['required', 'string'],
+            'products.*.amount' => ['required', 'numeric'],
+            'products.*.unit' => ['required', 'string'],
+            'products.*.unitPrice' => ['required', 'numeric'],
+            'products.*.totalprice' => ['required', 'numeric'],
             'description' => ['nullable', ''],
             'isTax' => ['required', 'boolean'],
         ];
