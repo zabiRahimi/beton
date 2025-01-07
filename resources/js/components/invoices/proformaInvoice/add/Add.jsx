@@ -171,7 +171,7 @@ const Add = () => {
         setLoading(true);
         try {
             const response = await axios.post(
-                '/api/v1/proformaInvoice',
+                '/api/v1/proformaInvoices',
                 { ...input },
                 {
                     headers:
