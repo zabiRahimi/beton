@@ -34,7 +34,7 @@ class StoreProformaInvoiceRequest extends FormRequest
             'products.*.unit' => ['required', 'string'],
             'products.*.unitPrice' => ['required', 'numeric'],
             'products.*.totalprice' => ['required', 'numeric'],
-            'description' => ['nullable', ''],
+            'description' => ['nullable', 'string'],
             'isTax' => ['required', 'boolean'],
         ];
     }
