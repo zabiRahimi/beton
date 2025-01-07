@@ -32,7 +32,7 @@ class StoreCustomerRequest extends FormRequest
             'nationalCode' => 'nullable|bail|numeric|digits:10|unique:customers',
             'dateOfBirth' => 'nullable|date',
             'mobile' => 'nullable|bail|mobile|unique:customers',
-            'telephone' => 'nullable|bail|tel',
+            'telephone' => 'nullable|tel',
             'email' => 'nullable|bail|email:rfc|unique:customers',
             'postalCode' => 'nullable|bail|numeric|digits:10',
             'address' => 'nullable|string',

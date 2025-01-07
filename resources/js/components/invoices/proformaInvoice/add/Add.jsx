@@ -83,27 +83,10 @@ const Add = () => {
                 unitPrice: '',
                 totalPrice: '',
             },
-            {
-                product: '',
-                type: '',
-                amount: '',
-                countingUnit: '',
-                unitPrice: '',
-                totalPrice: '',
-            },
-            {
-                product: '',
-                type: '',
-                amount: '',
-                countingUnit: '',
-                unitPrice: '',
-                totalPrice: '',
-            },
-
         ],
-        description: '',
-        unitPrice: '',
         isTax: 0,
+        description: '',
+       
     });
     
     const [productsRef, setProductsRef] = useState({});

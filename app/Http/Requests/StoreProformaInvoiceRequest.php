@@ -22,7 +22,28 @@ class StoreProformaInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
+            'date' => ['required', 'date'],
+            'buyer' => ['required', 'string'],
+            'nationalCode' => ['nullable', 'bail','numeric','digits:10'],
+            'address' => ['required', 'string'],
+            'tel' => ['nullable', 'numeric'],
+            'description' => ['nullable', ''],
+            'isTax' => ['required', 'boolean'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'buyerName.required' => 'نام خریدار حواله را وارد کنید',
+            'buyerLastName.required' => 'نام خانوادگی خریدار حواله را وارد کنید',
+            'date.required' => 'تاریخ ثبت حواله را وارد کنید',
+            'remittanceNumber.string' => 'شماره حواله را صحیح وارد کنید',
+            'price.required' => 'مبلغ حواله را وارد کنید',
+            'price.numeric' => 'مبلغ حواله را به عدد و به تومان وارد کنید',
+            'remainingPrice.numeric' => 'مبلغ مانده را به عدد و به تومان وارد کنید',
+            'factory.required' => 'کارخانه شن‌وماسه را انتخاب کنید',
+
         ];
     }
 }
