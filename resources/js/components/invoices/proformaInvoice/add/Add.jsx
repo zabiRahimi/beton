@@ -202,7 +202,7 @@ const Add = () => {
         } catch (error) {
             if (error.response && error.response.status == 422) {
                 let id = Object.keys(error.response.data.errors)[0];
-
+                console.log(id);
                 const element = document.getElementById(id);
 
                 // بررسی اینکه آیا عنصر وجود دارد قبل از اسکرول کردن
@@ -213,7 +213,7 @@ const Add = () => {
                 }
 
                 Object.entries(error.response.data.errors).map(([key, val]) => {
-                    // نادیده گرفتن خطای مربوط به remainingPrice
+                    
 
                     document.getElementById(key).classList.add('borderRedFB');
                     document.getElementById(key + 'Error').innerHTML = val;
@@ -390,7 +390,7 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextFB  element"
-                                            id={`product${i}}`}
+                                            id={`products.${i}.product`}
                                             name='product'
                                             value={product['product']}
                                             onInput={e => handleSaveValInputProducts(e, i)}
@@ -399,7 +399,7 @@ const Add = () => {
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id={`productError${i}}`} ref={productsRef[`productError${i}`]}  > </div>
+                                    <div className="errorContainerFB elementError" id={`products.${i}.productError`} ref={productsRef[`productError${i}`]}  > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -411,7 +411,7 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextFB  element"
-                                            id={`type${i}}`}
+                                            id={`products.${i}.type`}
                                             name='type'
                                             value={product['type']}
                                             onInput={e => {
@@ -421,9 +421,8 @@ const Add = () => {
 
                                         />
 
-                                        <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id={`typeError${i}}`} ref={productsRef[`typeError${i}`]} > </div>
+                                    <div className="errorContainerFB elementError" id={`products.${i}.typeError`} ref={productsRef[`typeError${i}`]} > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -432,7 +431,7 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextFB centerFB element"
-                                            id={`amount${i}}`}
+                                            id={`products.${i}.amount`}
                                             name='amount'
                                             value={product['amount']}
                                             onInput={e => {
@@ -443,7 +442,7 @@ const Add = () => {
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id={`amountError${i}}`} ref={productsRef[`amountError${i}`]} > </div>
+                                    <div className="errorContainerFB elementError" id={`products.${i}.amountError`} ref={productsRef[`amountError${i}`]} > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -452,7 +451,7 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextFB  element"
-                                            id={`unit${i}}`}
+                                            id={`products.${i}.unit`}
                                             name='unit'
                                             value={product['unit']}
                                             onInput={e => handleSaveValInputProducts(e, i)}
@@ -460,7 +459,7 @@ const Add = () => {
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id={`unitError${i}}`} ref={productsRef[`unitError${i}`]} > </div>
+                                    <div className="errorContainerFB elementError" id={`products.${i}.unitError`} ref={productsRef[`unitError${i}`]} > </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -469,7 +468,7 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextUnitFB ltrFB element"
-                                            id={`unitPrice${i}}`}
+                                            id={`products.${i}.unitPrice`}
                                             name='unitPrice'
                                             // value={product['unitPrice']}
                                             onInput={e => {
@@ -488,7 +487,7 @@ const Add = () => {
                                         </span>
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id={`unitPriceError${i}}`} ref={productsRef[`unitPriceError${i}`]}> </div>
+                                    <div className="errorContainerFB elementError" id={`products.${i}.unitPriceError`} ref={productsRef[`unitPriceError${i}`]}> </div>
                                 </div>
 
                                 <div className="containerInputFB">
@@ -497,7 +496,7 @@ const Add = () => {
                                         <input
                                             type="text"
                                             className="inputTextUnitFB ltrFB element"
-                                            id={`totalPrice${i}}`}
+                                            id={`products.${i}.totalPrice`}
                                             name='totalPrice'
                                             // value={product['totalPrice']}
                                             onInput={e => {
@@ -514,7 +513,7 @@ const Add = () => {
                                         </span>
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
-                                    <div className="errorContainerFB elementError" id={`totalPriceError${i}}`} ref={productsRef[`totalPriceError${i}`]}> </div>
+                                    <div className="errorContainerFB elementError" id={`products.${i}.totalPriceError`} ref={productsRef[`totalPriceError${i}`]}> </div>
                                 </div>
 
                                 <div className='divAddDelProductFB'>
