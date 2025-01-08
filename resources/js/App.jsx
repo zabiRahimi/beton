@@ -54,6 +54,7 @@ import ProformaInvoice from "./components/invoices/proformaInvoice/ProformaInvoi
 import AddProformaInvoice from "./components/invoices/proformaInvoice/add/Add";
 import EditProformaInvoice from "./components/invoices/proformaInvoice/edit/Edit";
 import ShowProformaInvoices from "./components/invoices/proformaInvoice/show/Show";
+import DisplayProformaInvoice from "./components/invoices/proformaInvoice/display/Display";
 
 import SalesInvoice from "./components/invoices/salesInvoice/SalesInvoice";
 import AddSalesInvoice from "./components/invoices/salesInvoice/add/Add";
@@ -130,6 +131,7 @@ function App() {
                         <Route path="add" element={<AddProformaInvoice />} />
                         <Route path="show" element={<ShowProformaInvoices />} />
                         <Route path="edit/:proformaInvoiceId" element={<EditProformaInvoice />} />
+                        <Route path="display/:proformaInvoiceId" element={<DisplayProformaInvoice />} />
                     </Route>
 
                     <Route path="salesInvoice" element={<SalesInvoice />} >
