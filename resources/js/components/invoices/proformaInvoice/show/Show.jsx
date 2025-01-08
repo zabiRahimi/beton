@@ -9,97 +9,56 @@ import withReactContent from 'sweetalert2-react-content';
 const Show = () => {
     const MySwal = withReactContent(Swal);
     const [loading, setLoading] = useState(false);
-    const hasCalledgetSandInvoices = useRef(false);
-    const [sandInvoices, setSandInvoices] = useState(null);
+    const hasCalledgetProforamInvoices = useRef(false);
+    const [proformaInvoices, setProformaInvoices] = useState(null);
     const [totalPage, setTotalPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
     const [search, setSearch] = useState({
-        startDate: '',//تاریخ ثبت حواله
+        startDate: '',//تاریخ ثبت پیش فاکتور
         endDate: '',
-        date: '',//تاریخ بارگیری
+        date: '',//تاریخ پیش فاکتور
         id: '',
-        billNumber: '',
-        sandType: '',
-        sandStoreId: '',
-        dumpTruckOwnerId: '',
-        dumpTruckOwnerName: '',
-        dumpTruckOwnerLastName: '',
-        dumpTruckId: '',
-        numberplate: '',
-        driverId: '',
-        driverName: '',
-        driverLastName: '',
-        sandRemittanceId: '',
-        sandRemittanceNumber: '',
-        sandRemittanceBuyerName: '',
-        sandRemittanceBuyerLastName: '',
-        sandRemittancePrice: '',
-        factory: ''
+        buyer: '',
+        tel: '',
+        nationalCode: '',
     });
 
     useEffect(() => {
-        if (!hasCalledgetSandInvoices.current) {
-            getSandInvoices();
-            hasCalledgetSandInvoices.current = true;
+        if (!hasCalledgetProforamInvoices.current) {
+            getProforamInvoices();
+            hasCalledgetProforamInvoices.current = true;
         }
     }, []);
 
-    async function getSandInvoices(
+    async function getProforamInvoices(
         page = 1,
         startDate = search.startDate,
         endDate = search.endDate,
         date = search.date,
         id = search.id,
-        billNumber = search.billNumber,
-        sandType = search.sandType,
-        sandStoreId = search.sandStoreId,
-        dumpTruckOwnerId = search.dumpTruckOwnerId,
-        dumpTruckOwnerName = search.dumpTruckOwnerName,
-        dumpTruckOwnerLastName = search.dumpTruckOwnerLastName,
-        dumpTruckId = search.dumpTruckId,
-        numberplate = search.numberplate,
-        driverId = search.driverId,
-        driverName = search.driverName,
-        driverLastName = search.driverLastName,
-        sandRemittanceId = search.sandRemittanceId,
-        sandRemittanceNumber = search.sandRemittanceNumber,
-        sandRemittanceBuyerName = search.sandRemittanceBuyerName,
-        sandRemittanceBuyerLastName = search.sandRemittanceBuyerLastName,
-        sandRemittancePrice = search.sandRemittancePrice,
-        factory = search.factory) {
+        buyer = search.buyer,
+        tel = search.tel,
+        nationalCode = search.nationalCode,
+    ) {
 
         try {
             setLoading(true);
-            const response = await axios.get(`/api/v1/sandInvoices`, {
+            const response = await axios.get(`/api/v1/proformaInvoices`, {
                 params: {
                     page,
                     startDate,
                     endDate,
                     date,
                     id,
-                    billNumber,
-                    sandType,
-                    sandStoreId,
-                    dumpTruckOwnerId,
-                    dumpTruckOwnerName,
-                    dumpTruckOwnerLastName,
-                    dumpTruckId,
-                    numberplate,
-                    driverId,
-                    driverName,
-                    driverLastName,
-                    sandRemittanceId,
-                    sandRemittanceNumber,
-                    sandRemittanceBuyerName,
-                    sandRemittanceBuyerLastName,
-                    sandRemittancePrice,
-                    factory
+                    buyer,
+                    tel,
+                    nationalCode
                 }
             });
 
-            const data = response.data.sandInvoices;
-            setSandInvoices(data.data);
+            const data = response.data.proformaInvoices;
+            setProformaInvoices(data.data);
             setTotalPage(data.last_page);
             setTotalRecords(data.total);
             window.scrollTo({ top: top, behavior: 'smooth' });
@@ -135,47 +94,36 @@ const Show = () => {
      * رکوردهای مشتریان ایجاد شده را با فرمت‌دهی مناسب جهت نمایش بر می گرداند
      * @returns 
      */
-    const returnSandInvoices = () => {
-        let length = sandInvoices.length;
+    const returnProforamInvoices = () => {
+        let length = proformaInvoices.length;
         if (length == 0) {
             return <div className="notResultSearch_Se"> هیچ نتیجه‌ای یافت نشد!! </div>
         }
-        let value = sandInvoices.map((sandInvoice, i) => {
-            let price = Number(sandInvoice['price']).toLocaleString();
-            let remainingPrice = Number(sandInvoice['remainingPrice']).toLocaleString();
-            let sandRemittance = sandInvoice['sand_remittance'];
-            let dumpTruck = sandInvoice['truck'];
-            let date = sandInvoice['date'].split('-');
-            let numberplate=dumpTruck.numberplate.split('-');
-            let dumpTruckOwner= dumpTruck.customer;
+        let value = proformaInvoices.map((proformaInvoice, i) => {
+           
+            let date = proformaInvoice['date'].split('-');
+           
 
             return <div className="rowListShowACSI_Ge" key={i}>
                 <span className="rowNumShowACSI_Ge">{i + 1}</span>
-                <span className="ticketNumberACSI_Ge">{sandInvoice['id']}</span>
-                <span className="remittanceNumber_Ge">{sandInvoice['billNumber']}</span>
+                <span className="ticketNumberACSI_Ge">{proformaInvoice['id']}</span>
                 <span className="customerACSI_Ge buyerName_Ge">
-                    {sandRemittance['buyerName']}{'  '}{sandRemittance['buyerLastName']} {'  '}
-                    <span className='bueryFather_Ge'>{sandRemittance['remittanceNumber']}</span>
+                    {proformaInvoice['buyer']}
                 </span>
-                <span className="dumpTruckOwner_Ge textAlignCenter_Ge">
-                    <span className='dumpTruckOwnerName_Ge'>{dumpTruckOwner['name']}{'  '}{dumpTruckOwner['lastName']}</span>
-                    <span className='dumpTruckNumberplate_Ge'>
-                        <div className="numberplateDiv">
-                            <span className="numberplateDivS1">{numberplate[0]}</span>
-                            <span className="numberplateDivS2">{numberplate[3] == 'ا' ? 'الف' : numberplate[3]}</span>
-                            <span className="numberplateDivS3">{numberplate[1]}</span>
-                            <span className="numberplateDivS4">{numberplate[2]}</span>
-                        </div>
-                    </span>
-                </span>
-                <span className="sandType_Ge sandType2_Ge textAlignCenter_Ge">{sandInvoice['sandType']}</span>
-                
-                <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
 
+                <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
+                <div className="divEditACSI_Ge">
+                    <Link className="--styleLessLink  btnEditACSI_Ge"
+                        title=" مشاهده "
+                        to={`/invoices/proformaInvoice/disPlay/${proformaInvoice['id']}`}
+                    >
+                        <i className="icofont-pencil iDisPlayGe" />
+                    </Link>
+                </div>
                 <div className="divEditACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" ویرایش "
-                        to={`/invoices/sandRemittance/edit/${sandInvoice['id']}`}
+                        to={`/invoices/proformaInvoice/edit/${proformaInvoice['id']}`}
                     >
                         <i className="icofont-pencil iEditGe" />
                     </Link>
@@ -201,7 +149,7 @@ const Show = () => {
             <div className='containerShowGe containerShowCustomer' >
                 <div className="divListShowGe">
                     <Search
-                        getSandInvoices={getSandInvoices}
+                        getProforamInvoices={getProforamInvoices}
                         handelSetDataSearch={handelSetDataSearch}
                         totalRecords={totalRecords}
                     />
@@ -217,13 +165,13 @@ const Show = () => {
                         <span className="editHeadShowACSI_Ge"> ویرایش  </span>
                         <span className="delHeadShowACSI_Ge"> حذف </span>
                     </div>
-                    {sandInvoices ? returnSandInvoices() : <Skeleton height={40} count={12} />}
+                    {proformaInvoices ? returnProforamInvoices() : <Skeleton height={40} count={12} />}
                     {/* <Pagination
                         className="pagination-bar"
                         currentPage={currentPage}
                         totalPage={totalPage}
                         siblingCount={3}
-                        onPageChange={page => { setCurrentPage(page); getSandInvoices(page) }}
+                        onPageChange={page => { setCurrentPage(page); getProforamInvoices(page) }}
                     /> */}
 
                 </div>
