@@ -77,7 +77,7 @@ class ProformaInvoiceController extends Controller
 
         DB::commit();
 
-        $proformaInvoice->load('products'); // بارگذاری ارتباطات برای بازگرداندن در پاسخ
+        $proformaInvoice->load('proformaInvoiceProducts'); // بارگذاری ارتباطات برای بازگرداندن در پاسخ
         return response()->json(['proformaInvoice' => $proformaInvoice], 200);
     } catch (\Throwable $th) {
         DB::rollback();

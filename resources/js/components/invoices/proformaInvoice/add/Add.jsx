@@ -181,6 +181,7 @@ const Add = () => {
                     }
                 }
             );
+            console.log(response.data);
 
             setTicketNumber(ticketNumber + 1);
             form.current.reset();
