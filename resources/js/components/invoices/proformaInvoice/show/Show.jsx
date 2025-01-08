@@ -44,6 +44,7 @@ const Show = () => {
 
         try {
             setLoading(true);
+            console.log(111);
             const response = await axios.get(`/api/v1/proformaInvoices`, {
                 params: {
                     page,
@@ -57,6 +58,7 @@ const Show = () => {
                 }
             });
 
+            console.log(response.data);
             const data = response.data.proformaInvoices;
             setProformaInvoices(data.data);
             setTotalPage(data.last_page);
@@ -112,7 +114,7 @@ const Show = () => {
                 </span>
 
                 <span className="dateACSI_Ge">{`${date[0]}/${date[1]}/${date[2]}`}</span>
-                <div className="divEditACSI_Ge">
+                <div className="divDisplayACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" مشاهده "
                         to={`/invoices/proformaInvoice/display/${proformaInvoice['id']}`}
@@ -159,7 +161,7 @@ const Show = () => {
                         <span className="ticketNumberACSI_Ge ">شناسه</span>
                         <span className="customerHeadACSI_Ge buyerName_Ge textAlignCenter_Ge">خریدار</span>
                         <span className="dateACSI_Ge textAlignCenter_Ge">تاریخ </span>
-                        <span className="editHeadShowACSI_Ge"> مشاهده  </span>
+                        <span className="displayHeadShowACSI_Ge"> مشاهده  </span>
                         <span className="editHeadShowACSI_Ge"> ویرایش  </span>
                         <span className="delHeadShowACSI_Ge"> حذف </span>
                     </div>

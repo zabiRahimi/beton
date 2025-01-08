@@ -38,14 +38,14 @@ const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
             <div className="headPageGe">
                 {
                     displayBtnAdd &&
-                    <Link to="/invoices/proformalInvoice" className="btnAddGe --styleLessLink ">
+                    <Link to="/invoices/proformaInvoice" className="btnAddGe --styleLessLink ">
                         ایجاد پیش‌ فاکتور
                     </Link>
                 }
 
                 {
                     displayBtnShow &&
-                    <Link to="/invoices/proformalInvoice/show" className="btnGetGe --styleLessLink ">
+                    <Link to="/invoices/proformaInvoice/show" className="btnGetGe --styleLessLink ">
                         مشاهده پیش فاکتورها
                     </Link>
                 }

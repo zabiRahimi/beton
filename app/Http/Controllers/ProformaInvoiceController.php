@@ -49,9 +49,9 @@ class ProformaInvoiceController extends Controller
             }
         }
 
-        $porformaInvoices = $query->orderByDesc('id')->paginate(50);
+        $proformaInvoices = $query->orderByDesc('id')->paginate(50);
 
-        return response()->json(['porformaInvoices' =>  $porformaInvoices], 200);
+        return response()->json(['proformaInvoices' =>  $proformaInvoices], 200);
     }
 
 

@@ -297,7 +297,7 @@
 
 .iDisplayGe{
     color: #78f178;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
 
 }
 
@@ -468,11 +468,18 @@
 }
 
 .editHeadShowACSI_Ge,
-.delHeadShowACSI_Ge {
+.delHeadShowACSI_Ge,
+.displayHeadShowACSI_Ge {
     width: 5%;
     font-size: 0.7rem;
     text-align: center;
 
+}
+
+.displayHeadShowACSI_Ge{
+    width: 6%;
+    margin-left: 6px;
+    margin-right: 6px;
 }
 
 .editHeadShowACSI_Ge {
@@ -488,6 +495,15 @@
 .divEditACSI_Ge {
     margin-left: 5px;
 }
+
+.divDisplayACSI_Ge{
+    width: 6%;
+    margin-left: 6px;
+    margin-right: 6px;
+    text-align: center;
+}
+
+
 
 @media screen and (min-width:1200px) {
     .rowNumShowACSI_Ge {
@@ -534,7 +550,8 @@
     }
 
     .editHeadShowACSI_Ge,
-    .delHeadShowACSI_Ge {
+    .delHeadShowACSI_Ge,
+    .displayHeadShowACSI_Ge {
         width: 5%;
         font-size: 1rem;
     }
@@ -543,10 +560,16 @@
         margin-left: 5px;
     }
 
-    .divEditACSI_Ge,
-    .divDelACSI_Ge {
+    /* .divEditACSI_Ge,
+    .divDelACSI_Ge
+     {
         width: 5%;
         text-align: center;
+    } */
+
+    .divDisplayACSI_Ge,
+    .displayHeadShowACSI_Ge{
+        width: 6%;
     }
 
     .divEditACSI_Ge {
