@@ -24,21 +24,40 @@ const Show = () => {
                 displayBtnShow={true}
             />
             <div className='containerShowGe containerShowCustomer' >
-              <div className="mainProForma_PFo">
+                <div className="mainProForma_PFo">
                     <div className="containerProForma_PFo">
                         <section className="hade1_PFo">
-                            <div className="standard_PFo">
-                                <img src={Standard} className='logoStandard_PFo' alt="علامت استاندارد ایران" />
+                                <div className="standard_PFo">
+                                    <img src={Standard} className='logoStandard_PFo' alt="علامت استاندارد ایران" />
+                                </div>
+                                <div className="title_PFo">
+                                    <span>پیش فاکتور فروش</span>
+                                </div>
+                            <div className="divLogoBetonDate_PFo">
+                                <div className="logoDateId_PFo">
+                                    <i className="icofont-concrete-mixer  logoBeton_PFo"></i>
+                                    <span className="nameBeton_PFo">بتن بنای ارسنجان</span>
+                                </div>
+                                <div className="dateId_PFo">
+                                    <div className="date_PFo">
+                                        <span>تاریخ</span>
+                                        <span> 1403 / 03 / 01</span>
+                                    </div>
+                                    <div className="id_PFo">
+                                        <span>شماره</span>
+                                        <span>1000</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="title_PFo"></div>
-                            <div className="logoDateId_PFo"></div>
+
+
                         </section>
                         <section className="hade2_PFo"></section>
                         <section className="body_PFo"></section>
                         <section className="description_PFo"></section>
                         <section className="footer_PFo"></section>
                     </div>
-              </div>
+                </div>
             </div>
         </div>
     )
