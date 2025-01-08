@@ -115,9 +115,9 @@ const Show = () => {
                 <div className="divEditACSI_Ge">
                     <Link className="--styleLessLink  btnEditACSI_Ge"
                         title=" مشاهده "
-                        to={`/invoices/proformaInvoice/disPlay/${proformaInvoice['id']}`}
+                        to={`/invoices/proformaInvoice/display/${proformaInvoice['id']}`}
                     >
-                        <i className="icofont-pencil iDisPlayGe" />
+                        <i className="icofont-black-board  iDisplayGe" />
                     </Link>
                 </div>
                 <div className="divEditACSI_Ge">
@@ -157,11 +157,9 @@ const Show = () => {
                     <div className="rowListShowGe headRowListShowGe rowListShowACSI_Ge">
                         <span className="rowNumShowACSI_Ge ">ردیف</span>
                         <span className="ticketNumberACSI_Ge ">شناسه</span>
-                        <span className="remittanceNumber_Ge ">شماره قبض</span>
-                        <span className="customerHeadACSI_Ge buyerName_Ge textAlignCenter_Ge">حواله</span>
-                        <span className="dumpTruckOwner_Ge textAlignCenter_Ge"> کمپرسی </span>
-                        <span className="sandType_Ge textAlignCenter_Ge"> شن‌‌‌وماسه </span>
+                        <span className="customerHeadACSI_Ge buyerName_Ge textAlignCenter_Ge">خریدار</span>
                         <span className="dateACSI_Ge textAlignCenter_Ge">تاریخ </span>
+                        <span className="editHeadShowACSI_Ge"> مشاهده  </span>
                         <span className="editHeadShowACSI_Ge"> ویرایش  </span>
                         <span className="delHeadShowACSI_Ge"> حذف </span>
                     </div>
