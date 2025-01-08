@@ -197,6 +197,7 @@ const Add = () => {
                 didClose: () => resetForm(
                     setInput,
                     setDate,
+                    setSelectedOptionRadio
                 ),
             });
         } catch (error) {
@@ -615,6 +616,7 @@ const Add = () => {
                             onClick={() => resetForm(
                                 setInput,
                                 setDate,
+                                setSelectedOptionRadio
                             )}
 
                         >

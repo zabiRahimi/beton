@@ -120,63 +120,36 @@ export const formatNub = (refCurrent) => {
 export const resetForm = (
     setInput,
     setDate,
-    setTime,
-    setSandRemittance_id,
-    sandRemittance_idCurrent,
-    setSandTypeSelected,
-    sandTypeCurrent,
-    totalPriceCurrent,
-    setDumpTruckId,
-    setDumpTruckOwnerId,
-    dumpTruckCurrent,
-    setDrvierId,
-    driverCurrent,
-    totalFareCurrent,
-    setSandStoreId,
-    sandStoreCurrent,
+    setSelectedOptionRadio,
     apply = true) => {
     setInput({
-        billNumber: '',
-        sandRemittance_id: '',
-        time: '',
         date: '',
-        sandType: '',
-        weight: '',
-        unitPrice: '',
-        totalPrice: '',
-        truck_id: '',
-        dumpTruckOwner_id: '',
-        driver_id: '',
-        unitFare: '',
-        totalFare: '',
-        sandStore_id: '',
-        description: ''
+        buyer: '',
+        nationalCode: '',
+        address: '',
+        tel: '',
+        products: [
+            {
+                product: '',
+                type: '',
+                amount: '',
+                countingUnit: '',
+                unitPrice: '',
+                totalPrice: '',
+            },
+        ],
+        isTax: 0,
+        description: '',
     });
     setDate({
         day: '',
         month: '',
         year: ''
     });
-    setTime({
-        second: '',
-        minute: '',
-        hour: ''
-    });
-    setSandRemittance_id('');
-    setSandTypeSelected('');
-    setDumpTruckId('');
-    setDumpTruckOwnerId('');
-    setDrvierId('');
-    setSandStoreId('');
+    setSelectedOptionRadio('اعمال نشود');
 
     handleRemoveAllError();
-    sandRemittance_idCurrent.updateData('انتخاب');
-    sandTypeCurrent.updateData('انتخاب');
-    totalPriceCurrent.innerHTML = 0;
-    dumpTruckCurrent.updateData('انتخاب');
-    driverCurrent.updateData('انتخاب');
-    totalFareCurrent.innerHTML = 0;
-    sandStoreCurrent.updateData('انتخاب');
+    
     // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
     if (apply) {
         window.scrollTo({ top: 0 });

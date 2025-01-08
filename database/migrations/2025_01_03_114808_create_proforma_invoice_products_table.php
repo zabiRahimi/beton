@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('proforma_invoice_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('product', 50);
-            $table->string('type', 40);
+            $table->string('type', 40)->nullable();
             $table->string('amount', 8);
             $table->string('unit', 50)->comment('واحد اندازه‌گیری');
             $table->string('unitPrice', 8);
