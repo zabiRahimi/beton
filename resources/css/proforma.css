@@ -24,34 +24,38 @@
     width: 35px;
 }
 
-.title_PFo {
+.divTitle_PFo {
     width: 40%;
-    text-align: center;
-}
-
-.divLogoBetonDate_PFo {
-    width: 30%;
-    text-align: left;
-    padding-left:15px ;
-}
-
-.logoDateId_PFo {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.logoBeton_PFo {
-    font-size: 1.5rem;
+.title_PFo{
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .nameBeton_PFo {
-    font-size: 0.7rem;
+    margin-top: 5px;
 }
 
-.dateId_PFo {}
+.divDateId_PFo {
+    width: 30%;
+    text-align: left;
+    padding-left:15px ;
+}
 
-.date_PFo {}
 
-.id_PFo {}
+.divDate_PFo {}
+
+.sDate_PFo{}
+
+.vDate_PFo{}
+
+.divId_PFo {}
+
+.sId_PFo{}
+
+.vId_PFo{}
+

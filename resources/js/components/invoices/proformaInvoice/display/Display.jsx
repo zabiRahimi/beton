@@ -27,27 +27,23 @@ const Show = () => {
                 <div className="mainProForma_PFo">
                     <div className="containerProForma_PFo">
                         <section className="hade1_PFo">
-                                <div className="standard_PFo">
-                                    <img src={Standard} className='logoStandard_PFo' alt="علامت استاندارد ایران" />
-                                </div>
-                                <div className="title_PFo">
-                                    <span>پیش فاکتور فروش</span>
-                                </div>
-                            <div className="divLogoBetonDate_PFo">
-                                <div className="logoDateId_PFo">
-                                    <i className="icofont-concrete-mixer  logoBeton_PFo"></i>
-                                    <span className="nameBeton_PFo">بتن بنای ارسنجان</span>
-                                </div>
-                                <div className="dateId_PFo">
-                                    <div className="date_PFo">
-                                        <span>تاریخ</span>
-                                        <span> 1403 / 03 / 01</span>
+                            <div className="standard_PFo">
+                                <img src={Standard} className='logoStandard_PFo' alt="علامت استاندارد ایران" />
+                            </div>
+                            <div className="divTitle_PFo">
+                                <span className='title_PFo'>پیش فاکتور فروش</span>
+                                {/* <i className="icofont-concrete-mixer  logoBeton_PFo"></i> */}
+                                <span className="nameBeton_PFo">بتن بنای ارسنجان</span>
+                            </div>
+                            <div className="divDateId_PFo">
+                                    <div className="divDate_PFo">
+                                        <span className='sDate_PFo'>تاریخ</span>
+                                        <span className='vDate_PFo'> 1403/03/01</span>
                                     </div>
-                                    <div className="id_PFo">
-                                        <span>شماره</span>
-                                        <span>1000</span>
+                                    <div className="divId_PFo">
+                                        <span className='sId_PFo'>شماره</span>
+                                        <span className='vId_PFo'>1000</span>
                                     </div>
-                                </div>
                             </div>
 
 
