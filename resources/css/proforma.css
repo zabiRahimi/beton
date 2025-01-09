@@ -15,13 +15,13 @@
     display: flex;
 }
 
-.standard_PFo {
+.divStandard_PFo {
     width: 30%;
-    padding-right: 15px;
+    padding: 10px 15px 0 0;
 }
 
 .logoStandard_PFo {
-    width: 35px;
+    width: 52px;
 }
 
 .divTitle_PFo {
@@ -31,7 +31,7 @@
     align-items: center;
 }
 
-.title_PFo{
+.title_PFo {
     font-size: 1.2rem;
     font-weight: 600;
 }
@@ -43,19 +43,68 @@
 .divDateId_PFo {
     width: 30%;
     text-align: left;
-    padding-left:15px ;
+    padding-left: 10px;
 }
 
 
-.divDate_PFo {}
+.divDate_PFo,
+.divId_PFo {
+    padding: 10px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+}
 
-.sDate_PFo{}
+.sDate_PFo,
+.sId_PFo {
+    width: 45px;
+    text-align: right;
+}
 
-.vDate_PFo{}
+.vDate_PFo,
+.vId_PFo {
+    flex-grow: 1;
+    text-align: center;
+}
 
-.divId_PFo {}
 
-.sId_PFo{}
 
-.vId_PFo{}
+.hade2_PFo {
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+}
 
+
+.divRow_PFo {
+    width: 100%;
+    padding-bottom: 10px;
+    display: flex;
+}
+
+.divCol1_PFo {
+    width: 66%;
+    padding: 0 10px 0 5px;
+    display: flex;
+}
+
+.divCol2_PFo {
+    display: flex;
+    width: 34%;
+}
+
+.sHade2_PFo {
+    width: 83px !important;
+    padding-right: 3px;
+    display: block;
+}
+
+.vHade2_FPo {
+    width: calc(100% - 83px);
+    background-color: antiquewhite;
+}
+
+.divCol2_PFo .vHade2_FPo {
+    text-align: left;
+    padding-left: 15px;
+}
