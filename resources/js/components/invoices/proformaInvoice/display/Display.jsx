@@ -49,7 +49,7 @@ const Show = () => {
                         <section className="hade2_PFo">
                             <div className="divRow_PFo">
                                 <div className="divCol1_PFo">
-                                    <span className="sHade2_PFo">نام خریدار</span>
+                                    <span className="sHade2_PFo">نام خریدار :</span>
                                     <span className="vHade2_FPo">ابوذر نعمتی ارسنجانی اصل</span>
                                 </div>
                                 <div className="divCol2_PFo">
@@ -63,12 +63,40 @@ const Show = () => {
                                     <span className="vHade2_FPo">ارسنجان خیابان طالقانی نرسیده به سه راه فرهنگ نبش کوچه مولوی پلاک 442</span>
                                 </div>
                                 <div className="divCol2_PFo">
-                                    <span className="sHade2_PFo">شماره تماس</span>
+                                    <span className="sHade2_PFo">شماره تماس :</span>
                                     <span className="vHade2_FPo">09178023733</span>
                                 </div>
                             </div>
                         </section>
-                        <section className="body_PFo"></section>
+                        <section className="body_PFo">
+                            <div className="hadeBody_PFo">
+                                <div className="hDivCount_PFo">
+                                    <i className="icofont-star-alt-2" />
+                                </div>
+                                <div className="hDivProduct_PFo">
+                                    <span className="sHadeB_PFo s1Product_PFo"> محصول </span>
+                                    <span className="s2Product_PFo"> (خدمات) </span>
+                                </div>
+                                <div className="hDivType_PFo">
+                                        <span className="sHadeB_PFo s1Type_PFo"> نوع‌محصول </span>
+                                        <span className="s2Type_PFo"> (عیار) </span>
+                                </div>
+                                <div className="hDivAmount_PFo">
+                                  <span className="sHadeB_PFo"> مقدار </span>
+                                </div>
+                                <div className="hDivUnit_PFo">
+                                  <span className="sHadeB_PFo"> واحد اندازه‌گیری </span>
+                                </div>
+                                <div className="hDivUnitPrice_PFo">
+                                  <span className="sHadeB_PFo s1UnitPrice_PFo"> قیمت واحد </span>
+                                  <span className=" s2UnitPrice_PFo"> (تومان) </span>
+                                </div>
+                                <div className="hDivTotalPrice_PFo">
+                                  <span className="sHadeB_PFo s1TotalPrice_PFo"> قیمت کل </span>
+                                  <span className=" s2TotalPrice_PFo"> (تومان) </span>
+                                </div>
+                            </div>
+                        </section>
                         <section className="description_PFo"></section>
                         <section className="footer_PFo"></section>
                     </div>
