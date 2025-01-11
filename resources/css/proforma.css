@@ -116,23 +116,30 @@
     margin: 0 3px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
 }
 
-.hadeBody_PFo{
+.hadeBody_PFo,
+.containerBody_PFo{
   width: 100%;
   display: flex;
   border: 1px solid #000;
-
 }
 
-.hDivCount_PFo{
-    width: 20px;
+.hDivCount_PFo,
+.divCount_PFo{
+    /* width: 19px; */
+    width: 4%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-left: 1px solid #000;
 }
 
-.hDivProduct_PFo{
-    width: 110px;
+.hDivProduct_PFo,
+.divProduct_PFo{
+    /* width: 110px; */
+    width: 18%;
     padding: 5px 3px;
     display: flex;
     flex-direction: column;
@@ -153,8 +160,10 @@
     font-size: 0.75rem;
 }
 
-.hDivType_PFo{
-    width: 110px;
+.hDivType_PFo,
+.divType_PFo{
+    /* width: 100px; */
+    width: 15%;
     padding: 5px 3px;
     display: flex;
     flex-direction: column;
@@ -170,21 +179,30 @@
     font-size: 0.75rem;
 }
 
-.hDivAmount_PFo{
-    width: 50px;
+.hDivAmount_PFo,
+.divAmount_PFo{
+    /* width: 60px; */
+    width: 8%;
     padding: 5px 3px;
     border-left: 1px solid #000;
     text-align: center;
 }
 
-.hDivUnit_PFo{
-    width: 110px;
+.hDivUnit_PFo,
+.divUnit_PFo{
+    /* width: 110px; */
+    width: 17%;
     padding: 5px 3px;
     border-left: 1px solid #000;
+    text-align: center;
 }
 
-.hDivUnitPrice_PFo{
-    width: 120px;
+.hDivUnitPrice_PFo,
+
+.divUnitPrice_PFo
+{
+    /* width: 110px; */
+    width: 17%;
     padding: 5px 3px;
     display: flex;
     flex-direction: column;
@@ -200,13 +218,14 @@
     font-size: 0.75rem;
 }
 
-.hDivTotalPrice_PFo{
-    width: 120px;
-    padding: 5px 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-left: 1px solid #000;
+.hDivTotalPrice_PFo,
+.divTotalPrice_PFo{
+    /* width: 129px; */
+    flex-grow: 1;
+   border: none;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
 }
 
 .s1TotalPrice_PFo{
@@ -216,3 +235,88 @@
 .s2TotalPrice_PFo{
     font-size: 0.75rem;
 }
+
+.containerBody_PFo{
+    border: 1px solid #000;
+    border-top: none;
+}
+
+.divCount_PFo{
+    /* width: 18px; */
+}
+
+.divProduct_PFo{
+}
+
+.vProduct_PFo{
+
+}
+
+.divType_PFo{
+    /* width: 100px; */
+}
+
+.vType_PFo{
+
+}
+
+.divAmount_PFo{
+}
+
+.vAmount_PFo{
+
+}
+
+.divUnit_PFo{
+
+}
+
+.vUnit_PFo{
+
+}
+
+.divUnitPrice_PFo{
+
+}
+
+.vUnitPrice_PFo{
+
+}
+
+.divTotalPrice_PFo{
+    /* width: 130px; */
+}
+
+.vTotalPrice_PFo{
+
+}
+
+
+
+.divSum_PFo{
+    width: 100%;
+    display: flex;
+    border: 1px solid #000;
+    border-top: none;
+}
+
+.divSSum_PFo{
+    flex-grow: 1;
+    padding-right: 30px;
+    border-left: 1px solid #000;
+}
+
+.sSum_PFo{
+
+}
+
+.divVSum_PFo{
+    width: 21%;
+    text-align: center;
+}
+
+.vSum_PFo{
+
+}
+
+

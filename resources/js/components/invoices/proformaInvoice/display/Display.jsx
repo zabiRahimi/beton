@@ -96,6 +96,37 @@ const Show = () => {
                                   <span className=" s2TotalPrice_PFo"> (تومان) </span>
                                 </div>
                             </div>
+                            <div className="containerBody_PFo">
+                                <div className="divCount_PFo">
+                                  1
+                                </div>
+                                <div className="divProduct_PFo">
+                                    <span className="vProduct_PFo"> بتن </span>
+                                </div>
+                                <div className="divType_PFo">
+                                        <span className="vType_PFo"> 450 </span>
+                                </div>
+                                <div className="divAmount_PFo">
+                                  <span className="vAmount_PFo"> 25000 </span>
+                                </div>
+                                <div className="divUnit_PFo">
+                                  <span className="vUnit_PFo"> متر مکعب </span>
+                                </div>
+                                <div className="divUnitPrice_PFo">
+                                  <span className=" vUnitPrice_PFo"> 1950000 </span>
+                                </div>
+                                <div className="divTotalPrice_PFo">
+                                  <span className=" vTotalPrice_PFo"> 48750000000 </span>
+                                </div>
+                            </div>
+                            <div className="divSum_PFo">
+                                <div className="divSSum_PFo">
+                                    <span className="sSum_PFo"> جمع </span>
+                                </div>
+                                <div className="divVSum_PFo">
+                                    <span className="vSum_PFo">98560000000</span>
+                                </div>
+                            </div>
                         </section>
                         <section className="description_PFo"></section>
                         <section className="footer_PFo"></section>
