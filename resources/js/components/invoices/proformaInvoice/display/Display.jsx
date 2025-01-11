@@ -127,9 +127,60 @@ const Show = () => {
                                     <span className="vSum_PFo">98560000000</span>
                                 </div>
                             </div>
+
+                            <div className="divSum_PFo">
+                                <div className="divSSum_PFo">
+                                    <span className="sSum_PFo"> 9% ارزش افزوده </span>
+                                </div>
+                                <div className="divVSum_PFo">
+                                    <span className="vSum_PFo">0</span>
+                                </div>
+                            </div>
+
+                            <div className="divSum_PFo">
+                                <div className="divSSum_PFo">
+                                    <span className="sSum_PFo sTotal_PFo"> قیمت کل </span>
+                                </div>
+                                <div className="divVSum_PFo">
+                                    <span className="vSum_PFo vTotal_PFo">98560000000</span>
+                                </div>
+                            </div>
                         </section>
-                        <section className="description_PFo"></section>
-                        <section className="footer_PFo"></section>
+                        <section className="description_PFo">
+                            لطفا به حساب خانم زهرا نظری با مشخصات زیر واریز نمایید. 
+                            <br/>
+                            شماره کارت  4897-5698-5213-5689
+                            <br></br>
+                            شماره شبا IR-170235000000568956421487
+                        </section>
+                        <section className="footer_PFo">
+                            <div className="divRow1Footer_PFo">
+                                <span className="signSaler_PFo">
+                                    مهر و امضای فروشنده
+                                </span>
+                                <span className="signBuyer_PFo">
+                                    امضای خریدار
+                                </span>
+                            </div>
+                            <div className="divRow2Footer_PFo">
+                                <div>
+                                    <span className="sAddressFooter_PFo"> آدرس : </span>
+                                    <span className="vAddressFooter_PFo">
+                                        ارسنجان، کیلومتر 3 جاده سعادتشهر، روبروی آهن آلات ولیعصر(ع)
+                                     </span>
+                                </div>
+                                <div className="divR2R2Footer_PFo">
+                                    <div className="divCodepostFooter_PFo">
+                                        <span className="sCodepostFooter_PFo"> کدپستی : </span>
+                                        <span className="vCodepostFooter_PFo"> 73761-94572 </span>
+                                    </div>
+                                    <div className="divTelFooter_PFo">
+                                        <span className="sTelFooter_PFo"> تلفن : </span>
+                                        <span className="vTelFooter_PFo"> 09175850042 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </div>
