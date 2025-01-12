@@ -7,24 +7,42 @@ import '../../../../../css/proforma.css';
 
 import Standard from '../../../../../assets/images/standard.png'
 import withReactContent from 'sweetalert2-react-content';
-const Show = () => {
+import { useReactToPrint } from 'react-to-print';
+
+const Display
+ = () => {
     const { proformaInvoiceId } = useParams();
 
     const MySwal = withReactContent(Swal);
     const [loading, setLoading] = useState(false);
     const hasCalledgetProforamInvoices = useRef(false);
+    const componentRef  = useRef(null);
     const [proformaInvoices, setProformaInvoices] = useState(null);
+    const handlePrint = useReactToPrint({
+        
+        contentRef: componentRef,
+        pageStyle: "@page { size: A5 }"
+      });
+    
 
     return (
         <div className=''>
+             {/* <ReactToPrint trigger={() =>
+                            <button>چاپ</button>}
+                            // content={() => printRefCurrent}
+                            pageStyle="@page { size: A5 }"
+                        /> */}
+                        
             <HeadPage
                 loading={loading}
                 title='نمایش پیش فاکتور'
                 displayBtnAdd={true}
                 displayBtnShow={true}
+                displayBtnPrint={true}
+               
             />
-            <div className='containerShowGe containerShowCustomer' >
-                <div className="mainProForma_PFo">
+            <div  className='containerShowGe containerShowCustomer' >
+                <div ref={componentRef} className="mainProForma_PFo">
                     <div className="containerProForma_PFo">
                         <section className="hade1_PFo">
                             <div className="divStandard_PFo">
@@ -32,7 +50,6 @@ const Show = () => {
                             </div>
                             <div className="divTitle_PFo">
                                 <span className='title_PFo'>پیش فاکتور فروش</span>
-                                {/* <i className="icofont-concrete-mixer  logoBeton_PFo"></i> */}
                                 <span className="nameBeton_PFo">بتن بنای ارسنجان</span>
                             </div>
                             <div className="divDateId_PFo">
@@ -59,11 +76,11 @@ const Show = () => {
                             </div>
                             <div className="divRow_PFo">
                                 <div className="divCol1_PFo">
-                                    <span className="sHade2_PFo">آدرس :</span>
+                                    <span className="sHade2_PFo">محل‌ تخلیه :</span>
                                     <span className="vHade2_FPo">ارسنجان خیابان طالقانی نرسیده به سه راه فرهنگ نبش کوچه مولوی پلاک 442</span>
                                 </div>
                                 <div className="divCol2_PFo">
-                                    <span className="sHade2_PFo">شماره تماس :</span>
+                                    <span className="sHade2_PFo">تلفن :</span>
                                     <span className="vHade2_FPo">09178023733</span>
                                 </div>
                             </div>
@@ -184,7 +201,10 @@ const Show = () => {
                     </div>
                 </div>
             </div>
+           
+            <button onClick={()=>handlePrint()}>Print article</button>
         </div>
     )
 }
-export default Show;
+export default Display
+;

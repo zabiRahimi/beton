@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { ScaleLoader } from 'react-spinners';
 import Title from '../../hooks/Title'
 import { Link } from 'react-router-dom';
+// import ReactToPrint from 'react-to-print';
 
 
-const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
+const HeadPage = ({ loading, title, displayBtnAdd, displayBtnShow, displayBtnPrint
+    , printRefCurrent }) => {
     const container = useRef(null);
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
@@ -49,8 +51,23 @@ const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
                         مشاهده پیش فاکتورها
                     </Link>
                 }
+
+                {/* { */}
+                {/* // displayBtnPrint
+ && */}
+                <div className='containerPrintGe'>
+                    <div className="divBtnPrintGe">
+                        {/* <ReactToPrint trigger={() =>
+                            <button>چاپ</button>}
+                            // content={() => printRefCurrent}
+                            pageStyle="@page { size: A5 }"
+                        /> */}
+                    </div>
+                </div>
+                {/* } */}
+
             </div>
         </div>
     )
 }
-export default headPage;
+export default HeadPage;

@@ -1,7 +1,14 @@
-.mainProForma_PFo {
+/* .mainProForma_PFo {
     width: 600px;
     margin: 0 auto;
-    padding: 10px;
+    padding: 3px 5px;
+    background-color: #ffffff;
+} */
+
+.mainProForma_PFo {
+    width: 13cm;
+    margin: 0 auto;
+    padding: 0 3px;
     background-color: #ffffff;
 }
 
@@ -52,6 +59,7 @@
     padding: 10px 20px 0 0;
     display: flex;
     justify-content: space-between;
+    font-size: 12px;
 }
 
 .sDate_PFo,
@@ -94,16 +102,25 @@
 }
 
 .sHade2_PFo {
-    width: 92px ;
+    width: 80px;
     padding-right: 3px;
     display: block;
+    font-size: 14px;
+}
+
+.divCol2_PFo .sHade2_PFo{
+    width: 58px ;
 }
 
 .vHade2_FPo {
-    width: calc(100% - 92px);
+    width: calc(100% - 80px);
+    font-size: 12px;
 }
 
+
+
 .divCol2_PFo .vHade2_FPo {
+    width: calc(100% - 58px);
     text-align: left;
     padding-left: 15px;
 }
@@ -116,7 +133,6 @@
     margin: 0 3px;
     display: flex;
     flex-direction: column;
-    /* border: 1px solid #000; */
 }
 
 .hadeBody_PFo,
@@ -128,7 +144,6 @@
 
 .hDivCount_PFo,
 .divCount_PFo{
-    /* width: 19px; */
     width: 4%;
     display: flex;
     justify-content: center;
@@ -138,7 +153,6 @@
 
 .hDivProduct_PFo,
 .divProduct_PFo{
-    /* width: 110px; */
     width: 18%;
     padding: 5px 3px;
     display: flex;
@@ -162,7 +176,6 @@
 
 .hDivType_PFo,
 .divType_PFo{
-    /* width: 100px; */
     width: 15%;
     padding: 5px 3px;
     display: flex;
@@ -181,7 +194,6 @@
 
 .hDivAmount_PFo,
 .divAmount_PFo{
-    /* width: 60px; */
     width: 8%;
     padding: 5px 3px;
     border-left: 1px solid #000;
@@ -190,7 +202,6 @@
 
 .hDivUnit_PFo,
 .divUnit_PFo{
-    /* width: 110px; */
     width: 17%;
     padding: 5px 3px;
     border-left: 1px solid #000;
@@ -201,7 +212,6 @@
 
 .divUnitPrice_PFo
 {
-    /* width: 110px; */
     width: 17%;
     padding: 5px 3px;
     display: flex;
@@ -220,7 +230,6 @@
 
 .hDivTotalPrice_PFo,
 .divTotalPrice_PFo{
-    /* width: 129px; */
     flex-grow: 1;
    border: none;
    display: flex;
@@ -240,58 +249,6 @@
     border: 1px solid #000;
     border-top: none;
 }
-
-.divCount_PFo{
-    /* width: 18px; */
-}
-
-.divProduct_PFo{
-}
-
-.vProduct_PFo{
-
-}
-
-.divType_PFo{
-    /* width: 100px; */
-}
-
-.vType_PFo{
-
-}
-
-.divAmount_PFo{
-}
-
-.vAmount_PFo{
-
-}
-
-.divUnit_PFo{
-
-}
-
-.vUnit_PFo{
-
-}
-
-.divUnitPrice_PFo{
-
-}
-
-.vUnitPrice_PFo{
-
-}
-
-.divTotalPrice_PFo{
-    /* width: 130px; */
-}
-
-.vTotalPrice_PFo{
-
-}
-
-
 
 .divSum_PFo{
     width: 100%;
@@ -315,9 +272,7 @@
     text-align: center;
 }
 
-.vSum_PFo{
 
-}
 
 .sTotal_PFo,
 .vTotal_PFo{
@@ -360,25 +315,15 @@
  font-weight: 600;
 }
 
-/* .vAddressFooter_PFo{
-
-} */
 
 .divR2R2Footer_PFo{
 width: 100%;
 display: flex;
 }
 
-.divCodepostFooter_PFo{
-
-}
 
 .sCodepostFooter_PFo{
 font-weight: 600;
-}
-
-.vCodepostFooter_PFo{
-
 }
 
 .divTelFooter_PFo{
@@ -389,8 +334,13 @@ font-weight: 600;
     font-weight: 600;
 }
 
-.vTelFooter_PFo{
 
+
+@media print {
+    @page { margin:0; /* حذف حاشیه‌ها */ }
+    .mainProForma_PFo{
+        width: 13cm;
+        margin:2px auto;
+        padding: 0 2px ;
+    }
 }
-
-
