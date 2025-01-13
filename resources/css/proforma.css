@@ -108,16 +108,14 @@
     font-size: 14px;
 }
 
-.divCol2_PFo .sHade2_PFo{
-    width: 58px ;
+.divCol2_PFo .sHade2_PFo {
+    width: 58px;
 }
 
 .vHade2_FPo {
     width: calc(100% - 80px);
     font-size: 12px;
 }
-
-
 
 .divCol2_PFo .vHade2_FPo {
     width: calc(100% - 58px);
@@ -128,7 +126,7 @@
 
 
 
-.body_PFo{
+.body_PFo {
     width: calc(100% - 6px);
     margin: 0 3px;
     display: flex;
@@ -136,211 +134,173 @@
 }
 
 .hadeBody_PFo,
-.containerBody_PFo{
-  width: 100%;
-  display: flex;
-  border: 1px solid #000;
+.containerBody_PFo {
+    width: 100%;
+    display: flex;
+    border: 1px solid #000;
 }
 
-.hDivCount_PFo,
-.divCount_PFo{
-    width: 4%;
+
+.hDivBody_PFo,
+.divBody_PFo {
+    border-left: 1px solid #000;
     display: flex;
+    align-items: center;
+    text-align: center;
     justify-content: center;
-    align-items: center;
-    border-left: 1px solid #000;
-}
-
-.hDivProduct_PFo,
-.divProduct_PFo{
-    width: 18%;
-    padding: 5px 3px;
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    border-left: 1px solid #000;
 }
 
-.sHadeB_PFo{
-    font-size: 0.8rem;
+.divBody_PFo {
+    padding: 3px 0;
+    font-size: 13px;
+}
+
+.s1HadeB_PFo {
+    font-size: 12px;
     font-weight: 600;
 }
 
-.s1Product_PFo{
-
+.s2HadeB_PFo {
+    font-size: 10px;
 }
 
-.s2Product_PFo{
-    font-size: 0.75rem;
+.hDivCount_PFo,
+.divCount_PFo {
+    width: 3%;
+    font-size: 12px;
+}
+
+.hDivProduct_PFo,
+.divProduct_PFo {
+    width: 18%;
 }
 
 .hDivType_PFo,
-.divType_PFo{
+.divType_PFo {
     width: 15%;
-    padding: 5px 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-left: 1px solid #000;
-}
-
-.s1Type_PFo{
-
-}
-
-.s2Type_PFo{
-    font-size: 0.75rem;
 }
 
 .hDivAmount_PFo,
-.divAmount_PFo{
-    width: 8%;
-    padding: 5px 3px;
-    border-left: 1px solid #000;
-    text-align: center;
+.divAmount_PFo {
+    width: 9%;
+}
+
+.s2Anount_PFo {
+    color: #fff;
 }
 
 .hDivUnit_PFo,
-.divUnit_PFo{
-    width: 17%;
-    padding: 5px 3px;
-    border-left: 1px solid #000;
-    text-align: center;
-}
-
+.divUnit_PFo,
 .hDivUnitPrice_PFo,
-
-.divUnitPrice_PFo
-{
+.divUnitPrice_PFo {
     width: 17%;
-    padding: 5px 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-left: 1px solid #000;
-}
-
-.s1UnitPrice_PFo{
-
-}
-
-.s2UnitPrice_PFo{
-    font-size: 0.75rem;
 }
 
 .hDivTotalPrice_PFo,
-.divTotalPrice_PFo{
+.divTotalPrice_PFo {
     flex-grow: 1;
-   border: none;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
+    border: none;
 }
 
-.s1TotalPrice_PFo{
-
-}
-
-.s2TotalPrice_PFo{
-    font-size: 0.75rem;
-}
-
-.containerBody_PFo{
+.containerBody_PFo {
     border: 1px solid #000;
     border-top: none;
 }
 
-.divSum_PFo{
+.divSum_PFo {
     width: 100%;
     display: flex;
     border: 1px solid #000;
     border-top: none;
+    font-size: 14px;
 }
 
-.divSSum_PFo{
+.divSSum_PFo {
+    padding: 2px 0;
     flex-grow: 1;
     padding-right: 30px;
     border-left: 1px solid #000;
 }
 
-.sSum_PFo{
-
-}
-
-.divVSum_PFo{
+.divVSum_PFo {
     width: 21%;
+    padding: 2px 0;
     text-align: center;
 }
 
-
-
 .sTotal_PFo,
-.vTotal_PFo{
+.vTotal_PFo {
     font-weight: 600;
 }
 
-.description_PFo{
+.description_PFo {
     padding: 5px 10px;
+    font-size: 14px;
 }
 
 
 
-.footer_PFo{
+.footer_PFo {
     width: 100%;
     margin-top: 5px;
+    padding-top: 5px;
     border-top: 1px solid #000;
 }
 
-.divRow1Footer_PFo{
+.divRow1Footer_PFo {
     width: 100%;
     display: flex;
     justify-content: space-around;
 }
 
 .signSaler_PFo,
-.signBuyer_PFo{
+.signBuyer_PFo {
+    font-size: 14px;
     font-weight: 600;
 }
 
 
 
-.divRow2Footer_PFo{
+.divRow2Footer_PFo {
     width: 100%;
-    margin: 10px;
+    margin: 10px 10px 2px;
 }
 
-
-
-.sAddressFooter_PFo{
- font-weight: 600;
-}
-
-
-.divR2R2Footer_PFo{
-width: 100%;
-display: flex;
-}
-
-
-.sCodepostFooter_PFo{
-font-weight: 600;
-}
-
-.divTelFooter_PFo{
- margin-right: 50px;
-}
-
-.sTelFooter_PFo{
+.sFooter_PFo{
+    font-size: 13px;
     font-weight: 600;
 }
+
+.vFooter_PFo{
+    font-size: 13px;
+}
+
+
+.divR2R2Footer_PFo {
+    width: 100%;
+    display: flex;
+}
+
+
+
+
+.divTelFooter_PFo {
+    margin-right: 50px;
+}
+
 
 
 
 @media print {
-    @page { margin:0; /* حذف حاشیه‌ها */ }
-    .mainProForma_PFo{
+    @page {
+        margin: 0;
+        /* حذف حاشیه‌ها */
+    }
+
+    .mainProForma_PFo {
         width: 13cm;
-        margin:2px auto;
-        padding: 0 2px ;
+        margin: 2px auto;
+        padding: 0 2px;
     }
 }

@@ -87,52 +87,54 @@ const Display
                         </section>
                         <section className="body_PFo">
                             <div className="hadeBody_PFo">
-                                <div className="hDivCount_PFo">
+                                <div className="hDivBody_PFo hDivCount_PFo">
                                     <i className="icofont-star-alt-2" />
                                 </div>
-                                <div className="hDivProduct_PFo">
-                                    <span className="sHadeB_PFo s1Product_PFo"> محصول </span>
-                                    <span className="s2Product_PFo"> (خدمات) </span>
+                                <div className="hDivBody_PFo hDivProduct_PFo">
+                                    <span className="s1HadeB_PFo s1Product_PFo"> محصول </span>
+                                    <span className="s2HadeB_PFo s2Product_PFo"> (خدمات) </span>
                                 </div>
-                                <div className="hDivType_PFo">
-                                        <span className="sHadeB_PFo s1Type_PFo"> نوع‌محصول </span>
-                                        <span className="s2Type_PFo"> (عیار) </span>
+                                <div className="hDivBody_PFo hDivType_PFo">
+                                        <span className="s1HadeB_PFo s1Type_PFo"> نوع‌محصول </span>
+                                        <span className="s2HadeB_PFo  s2Type_PFo"> (عیار) </span>
                                 </div>
-                                <div className="hDivAmount_PFo">
-                                  <span className="sHadeB_PFo"> مقدار </span>
+                                <div className="hDivBody_PFo hDivAmount_PFo">
+                                  <span className="s1HadeB_PFo"> مقدار </span>
+                                  <span className="s2HadeB_PFo s2Anount_PFo"> s </span>
                                 </div>
-                                <div className="hDivUnit_PFo">
-                                  <span className="sHadeB_PFo"> واحد اندازه‌گیری </span>
+                                <div className="hDivBody_PFo hDivUnit_PFo">
+                                  <span className="s1HadeB_PFo"> واحد  </span>
+                                  <span className="s2HadeB_PFo"> اندازه‌گیری </span>
                                 </div>
-                                <div className="hDivUnitPrice_PFo">
-                                  <span className="sHadeB_PFo s1UnitPrice_PFo"> قیمت واحد </span>
-                                  <span className=" s2UnitPrice_PFo"> (تومان) </span>
+                                <div className="hDivBody_PFo hDivUnitPrice_PFo">
+                                  <span className="s1HadeB_PFo s1UnitPrice_PFo"> قیمت واحد </span>
+                                  <span className="s2HadeB_PFo   s2UnitPrice_PFo"> (تومان) </span>
                                 </div>
-                                <div className="hDivTotalPrice_PFo">
-                                  <span className="sHadeB_PFo s1TotalPrice_PFo"> قیمت کل </span>
-                                  <span className=" s2TotalPrice_PFo"> (تومان) </span>
+                                <div className="hDivBody_PFo hDivTotalPrice_PFo">
+                                  <span className="s1HadeB_PFo s1TotalPrice_PFo"> قیمت کل </span>
+                                  <span className="s2HadeB_PFo   s2TotalPrice_PFo"> (تومان) </span>
                                 </div>
                             </div>
                             <div className="containerBody_PFo">
-                                <div className="divCount_PFo">
+                                <div className="divBody_PFo divCount_PFo">
                                   1
                                 </div>
-                                <div className="divProduct_PFo">
-                                    <span className="vProduct_PFo"> بتن </span>
+                                <div className="divBody_PFo divProduct_PFo">
+                                    <span className="vProduct_PFo"> بتن 450 afsdf</span>
                                 </div>
-                                <div className="divType_PFo">
+                                <div className="divBody_PFo divType_PFo">
                                         <span className="vType_PFo"> 450 </span>
                                 </div>
-                                <div className="divAmount_PFo">
+                                <div className="divBody_PFo divAmount_PFo">
                                   <span className="vAmount_PFo"> 25000 </span>
                                 </div>
-                                <div className="divUnit_PFo">
+                                <div className="divBody_PFo divUnit_PFo">
                                   <span className="vUnit_PFo"> متر مکعب </span>
                                 </div>
-                                <div className="divUnitPrice_PFo">
+                                <div className="divBody_PFo divUnitPrice_PFo">
                                   <span className=" vUnitPrice_PFo"> 1950000 </span>
                                 </div>
-                                <div className="divTotalPrice_PFo">
+                                <div className="divBody_PFo divTotalPrice_PFo">
                                   <span className=" vTotalPrice_PFo"> 48750000000 </span>
                                 </div>
                             </div>
@@ -181,19 +183,19 @@ const Display
                             </div>
                             <div className="divRow2Footer_PFo">
                                 <div>
-                                    <span className="sAddressFooter_PFo"> آدرس : </span>
-                                    <span className="vAddressFooter_PFo">
+                                    <span className="sFooter_PFo sAddressFooter_PFo"> آدرس : </span>
+                                    <span className="vFooter_PFo vAddressFooter_PFo">
                                         ارسنجان، کیلومتر 3 جاده سعادتشهر، روبروی آهن آلات ولیعصر(ع)
                                      </span>
                                 </div>
                                 <div className="divR2R2Footer_PFo">
                                     <div className="divCodepostFooter_PFo">
-                                        <span className="sCodepostFooter_PFo"> کدپستی : </span>
-                                        <span className="vCodepostFooter_PFo"> 73761-94572 </span>
+                                        <span className="sFooter_PFo sCodepostFooter_PFo"> کدپستی : </span>
+                                        <span className="vFooter_PFo vCodepostFooter_PFo"> 73761-94572 </span>
                                     </div>
                                     <div className="divTelFooter_PFo">
-                                        <span className="sTelFooter_PFo"> تلفن : </span>
-                                        <span className="vTelFooter_PFo"> 09175850042 </span>
+                                        <span className="sFooter_PFo sTelFooter_PFo"> تلفن : </span>
+                                        <span className="vFooter_PFo vTelFooter_PFo"> 09175850042 </span>
                                     </div>
                                 </div>
                             </div>
