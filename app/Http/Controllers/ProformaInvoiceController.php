@@ -66,31 +66,7 @@ class ProformaInvoiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(StoreProformaInvoiceRequest $request)
-    // {
-    //     try {
-    //         DB::beginTransaction();
-
-    //         $proformaInvoice = new ProformaInvoice();
-    //         $proformaInvoice->fill($request->validated());
-    //         $proformaInvoice->save();
-
-    //         $allResult = [];
-    //         foreach ($request->validated()['products'] as $key) {
-    //             $proformaInvoiceProduct = new ProformaInvoiceProduct();
-    //             $proformaInvoiceProduct->proforma_invoice_id =  $proformaInvoiceId;
-    //             $proformaInvoiceProduct->fill($key);
-    //             $proformaInvoiceProduct->save();
-    //         }
-    //         DB::commit();
-    //     } catch (\Throwable $th) {
-    //         DB::rollback();
-
-    //         throw $th;
-    //     }
-
-    //     return response()->json(['proformaInvoice' =>  $allResult], 200);
-    // }
+   
 
     public function store(StoreProformaInvoiceRequest $request)
     {
@@ -127,8 +103,21 @@ class ProformaInvoiceController extends Controller
      */
     public function show(ProformaInvoice $proformaInvoice)
     {
-        //
+        // $proformaInvoice->load('proformaInvoiceProducts');
+        return response()->json(['proformaInvoice'=>$proformaInvoice],200);
+
     }
+
+//     public function show(int $id)
+// {
+//     // جستجوی پیش‌فاکتور با استفاده از شناسه
+//     // $proformaInvoice = ProformaInvoice::with('proformaInvoiceProducts')->findOrFail($id);
+//     $proformaInvoice = $id;
+    
+//     // برگرداندن پاسخ به صورت JSON
+//     return response()->json(['proformaInvoice' => $proformaInvoice], 200);
+// }
+
 
     /**
      * Show the form for editing the specified resource.

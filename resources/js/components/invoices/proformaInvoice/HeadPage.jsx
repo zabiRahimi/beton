@@ -62,8 +62,9 @@ const HeadPage = ({ loading, title, displayBtnAdd, displayBtnShow, displayBtnPri
                 {
                     displayBtnPrint &&
                     
-                        <button className='btnPrintGe --styleLessBtn' onClick={() => handlePrint()}>
-                            <i className="icofont-"/>
+                        <button className='btnPrintGe' onClick={() => handlePrint()}>
+                            <i className="icofont-print"/>
+                            <span> چاپ </span>
                         </button>
                    
                 }

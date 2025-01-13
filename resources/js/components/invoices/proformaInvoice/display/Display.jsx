@@ -4,26 +4,41 @@ import HeadPage from '../HeadPage';
 import Skeleton from 'react-loading-skeleton';
 import Swal from 'sweetalert2';
 import '../../../../../css/proforma.css';
-
 import Standard from '../../../../../assets/images/standard.png'
 import withReactContent from 'sweetalert2-react-content';
-// import { useReactToPrint } from 'react-to-print';
 
 const Display
  = () => {
     const { proformaInvoiceId } = useParams();
-
     const MySwal = withReactContent(Swal);
     const [loading, setLoading] = useState(false);
     const hasCalledgetProforamInvoices = useRef(false);
     const printRef  = useRef(null);
-    const [proformaInvoices, setProformaInvoices] = useState(null);
-    // const handlePrint = useReactToPrint({
-        
-    //     contentRef: printRef,
-    //     pageStyle: "@page { size: A5 }"
-    //   });
+    const [proformaInvoices, setProformaInvoices] = useState('');
     
+    useEffect(() => {
+        if (!hasCalledgetProforamInvoices.current) {
+          fetchData();
+          hasCalledgetProforamInvoices.current = true;
+        }
+      }, []);
+
+      const fetchData = async () => {
+        try {
+            const response = await axios.get(`/api/v1/proformaInvoices/${proformaInvoiceId}/show`, {
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            setProformaInvoices(response); // استفاده از response.data برای دسترسی به داده‌ها
+        } catch (error) {
+            console.error("Error fetching data for proformaInvoice:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+      console.log(proformaInvoices);
 
     return (
         <div>

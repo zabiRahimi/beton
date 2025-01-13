@@ -44,7 +44,6 @@ const Show = () => {
 
         try {
             setLoading(true);
-            console.log(111);
             const response = await axios.get(`/api/v1/proformaInvoices`, {
                 params: {
                     page,
@@ -58,7 +57,6 @@ const Show = () => {
                 }
             });
 
-            console.log(response.data);
             const data = response.data.proformaInvoices;
             setProformaInvoices(data.data);
             setTotalPage(data.last_page);

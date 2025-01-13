@@ -21,8 +21,19 @@
 }
 
 .btnPrintGe{
-    margin-right: auto;
-    background-color: #068270;
+    margin:0 auto 0 30px;
+    padding: 1px 4px;
+    display: inline-flex;
+    align-items: center;
+    background-color: #e1ecee;
+    color: #033d44;
+    border: 1px solid #07535d;
+    border-radius: 4px;
+}
+.btnPrintGe i{
+    margin-left: 5px;
+    font-size: 1.3rem;
+
 }
 
 .disabledBtnGe {
