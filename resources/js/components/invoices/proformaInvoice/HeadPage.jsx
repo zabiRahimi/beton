@@ -2,18 +2,24 @@ import { useEffect, useRef, useState } from 'react';
 import { ScaleLoader } from 'react-spinners';
 import Title from '../../hooks/Title'
 import { Link } from 'react-router-dom';
-// import ReactToPrint from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
+
 
 
 const HeadPage = ({ loading, title, displayBtnAdd, displayBtnShow, displayBtnPrint
-    , printRefCurrent }) => {
+    , pRef }) => {
     const container = useRef(null);
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
     const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
     const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
+    const printRef = useRef(pRef)
 
+    const handlePrint = useReactToPrint({
 
+        contentRef: printRef.current,
+        pageStyle: "@page { size: A5 }"
+    });
     /**
     * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
     */
@@ -52,19 +58,15 @@ const HeadPage = ({ loading, title, displayBtnAdd, displayBtnShow, displayBtnPri
                     </Link>
                 }
 
-                {/* { */}
-                {/* // displayBtnPrint
- && */}
-                <div className='containerPrintGe'>
-                    <div className="divBtnPrintGe">
-                        {/* <ReactToPrint trigger={() =>
-                            <button>چاپ</button>}
-                            // content={() => printRefCurrent}
-                            pageStyle="@page { size: A5 }"
-                        /> */}
-                    </div>
-                </div>
-                {/* } */}
+
+                {
+                    displayBtnPrint &&
+                    
+                        <button className='btnPrintGe --styleLessBtn' onClick={() => handlePrint()}>
+                            <i className="icofont-"/>
+                        </button>
+                   
+                }
 
             </div>
         </div>

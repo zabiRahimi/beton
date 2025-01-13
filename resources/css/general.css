@@ -4,6 +4,7 @@
     margin-bottom: -6px;
     padding: 6px 22px;
     background-color: #f6f6f9;
+    display: flex;
 }
 
 .btnAddGe,
@@ -17,6 +18,11 @@
 
 .btnAddGe {
     margin-left: 9px;
+}
+
+.btnPrintGe{
+    margin-right: auto;
+    background-color: #068270;
 }
 
 .disabledBtnGe {

@@ -14,11 +14,13 @@
 
 .containerProForma_PFo {
     width: 100%;
+    
     border: 2px solid #000;
 }
 
 .hade1_PFo {
     width: 100%;
+    padding-top: 5px;
     display: flex;
 }
 
@@ -54,22 +56,20 @@
 }
 
 
-.divDate_PFo,
-.divId_PFo {
+.divDateId_PFo div{
     padding: 10px 20px 0 0;
     display: flex;
     justify-content: space-between;
     font-size: 12px;
-}
+} 
 
-.sDate_PFo,
-.sId_PFo {
+
+.divDateId_PFo .label{
     width: 45px;
     text-align: right;
 }
 
-.vDate_PFo,
-.vId_PFo {
+.divDateId_PFo .value{
     flex-grow: 1;
     text-align: center;
 }
@@ -156,12 +156,12 @@
     font-size: 13px;
 }
 
-.s1HadeB_PFo {
+.labelHB {
     font-size: 12px;
     font-weight: 600;
 }
 
-.s2HadeB_PFo {
+.subLabelHB {
     font-size: 10px;
 }
 
@@ -186,9 +186,6 @@
     width: 9%;
 }
 
-.s2Anount_PFo {
-    color: #fff;
-}
 
 .hDivUnit_PFo,
 .divUnit_PFo,
@@ -216,21 +213,20 @@
     font-size: 14px;
 }
 
-.divSSum_PFo {
-    padding: 2px 0;
-    flex-grow: 1;
-    padding-right: 30px;
+.divLabelS_PFo {
+   
+    width: 79%;
+    padding:2px 30px;
     border-left: 1px solid #000;
 }
 
-.divVSum_PFo {
+.divValueS_PFo {
     width: 21%;
     padding: 2px 0;
     text-align: center;
 }
 
-.sTotal_PFo,
-.vTotal_PFo {
+.fW600 {
     font-weight: 600;
 }
 
@@ -254,8 +250,8 @@
     justify-content: space-around;
 }
 
-.signSaler_PFo,
-.signBuyer_PFo {
+
+.divRow1Footer_PFo .sign {
     font-size: 14px;
     font-weight: 600;
 }
@@ -267,12 +263,12 @@
     margin: 10px 10px 2px;
 }
 
-.sFooter_PFo{
+.labelF{
     font-size: 13px;
     font-weight: 600;
 }
 
-.vFooter_PFo{
+.valueF{
     font-size: 13px;
 }
 
@@ -300,7 +296,7 @@
 
     .mainProForma_PFo {
         width: 13cm;
-        margin: 2px auto;
+        margin: 20px auto 2px;
         padding: 0 2px;
     }
 }
