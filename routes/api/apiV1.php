@@ -150,8 +150,23 @@ Route::controller(SandInvoiceController::class)->group(function () {
 
 });
 
-Route::resource('proformaInvoices', ProformaInvoiceController::class);
+Route::apiResource('proformaInvoices', ProformaInvoiceController::class);
 
+Route::controller(ProformaInvoiceController::class)->group(function () {
+    
+    // Route::post('/addSandInvoice', 'store');
+    // Route::get('/getSandInvoices', 'index');
+    Route::get('/proformaInvoice/show/{id}', 'showInvoice');
+    
+    // Route::get('/sandInvoice/getSandSellers', 'getSandSellers');
+    // Route::get('/sandInvoice/getSandStores', 'getSandStores');
+    // Route::get('/getCSIConcretes', 'getCSIConcretes');
+    // Route::get('/getCSIMixers', 'getCSIMixers');
+    // Route::get('/getCSIDrivers', 'getCSIDrivers');
+    // Route::get('/getCSICementStores', 'getCSICementStores');
+    // Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
+
+});
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

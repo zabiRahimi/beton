@@ -25,12 +25,12 @@ const Display
 
       const fetchData = async () => {
         try {
-            const response = await axios.get(`/api/v1/proformaInvoices/${proformaInvoiceId}/show`, {
+            const response = await axios.get(`/api/v1/proformaInvoice/show/${proformaInvoiceId}`, {
                 headers: {
                     'Accept': 'application/json'
                 }
             });
-            setProformaInvoices(response); // استفاده از response.data برای دسترسی به داده‌ها
+            setProformaInvoices(response.data.proformaInvoice); // استفاده از response.data برای دسترسی به داده‌ها
         } catch (error) {
             console.error("Error fetching data for proformaInvoice:", error);
         } finally {

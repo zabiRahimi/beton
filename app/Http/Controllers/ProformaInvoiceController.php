@@ -101,23 +101,12 @@ class ProformaInvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProformaInvoice $proformaInvoice)
+   
+    public function showInvoice(int $id)
     {
-        // $proformaInvoice->load('proformaInvoiceProducts');
+        $proformaInvoice = ProformaInvoice::with('proformaInvoiceProducts')->findOrFail($id);
         return response()->json(['proformaInvoice'=>$proformaInvoice],200);
-
     }
-
-//     public function show(int $id)
-// {
-//     // جستجوی پیش‌فاکتور با استفاده از شناسه
-//     // $proformaInvoice = ProformaInvoice::with('proformaInvoiceProducts')->findOrFail($id);
-//     $proformaInvoice = $id;
-    
-//     // برگرداندن پاسخ به صورت JSON
-//     return response()->json(['proformaInvoice' => $proformaInvoice], 200);
-// }
-
 
     /**
      * Show the form for editing the specified resource.
