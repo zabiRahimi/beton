@@ -181,6 +181,15 @@ const Home = () => {
                         </div>
                         <span>آمار</span>
                     </Link>
+
+                    <Link to="receipts" className="linksHome --styleLessLink ">
+                    <div className="divIcofontLinksHome">
+                        <i className="icofont-swoosh-down sDownRIHome "/>
+                            <i className="icofont-coins  receiptsIHome  iLinksHome  " />
+                            <i className="icofont-plus Iplus" />
+                        </div>
+                        <span> ثبت دریافتی‌ها </span>
+                    </Link>
                 </section>
 
                 <div className="borderDivHome"></div>
