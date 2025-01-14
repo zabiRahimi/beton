@@ -15,6 +15,7 @@ const Display
     const hasCalledgetProforamInvoices = useRef(false);
     const printRef  = useRef(null);
     const [proformaInvoices, setProformaInvoices] = useState('');
+    const [products, setProducts] = useState('');
     
     useEffect(() => {
         if (!hasCalledgetProforamInvoices.current) {
@@ -22,6 +23,12 @@ const Display
           hasCalledgetProforamInvoices.current = true;
         }
       }, []);
+
+      useEffect(() => {
+        if (proformaInvoices) {
+            // handleSetData();
+        }
+      }, [proformaInvoices]);
 
       const fetchData = async () => {
         try {
@@ -31,14 +38,26 @@ const Display
                 }
             });
             setProformaInvoices(response.data.proformaInvoice); // استفاده از response.data برای دسترسی به داده‌ها
+            setProducts(response.data.proformaInvoice.proforma_invoice_products);
         } catch (error) {
             console.error("Error fetching data for proformaInvoice:", error);
         } finally {
             setLoading(false);
         }
     };
+
+    console.log(products);
     
-      console.log(proformaInvoices);
+    const handleSetDate =()=>{
+        const date= proformaInvoices.date;
+        return date.replace(/-/g, ' / ');
+    }
+    
+     const handleSetProducts = ()=>{
+        proformaInvoices
+     }
+
+
 
     return (
         <div>
@@ -65,11 +84,11 @@ const Display
                             <div className="divDateId_PFo">
                                 <div>
                                     <span className='label'>تاریخ</span>
-                                    <span className='value'> 1403/03/01</span>
+                                    <span className='value ltrFB'>{proformaInvoices && handleSetDate()}</span>
                                 </div>
                                 <div>
                                     <span className='label'>شماره</span>
-                                    <span className='value'>1000</span>
+                                    <span className='value'>{proformaInvoices.id}</span>
                                 </div>
                             </div>
                         </section>
@@ -77,21 +96,21 @@ const Display
                             <div className="divRow_PFo">
                                 <div className="divCol1_PFo">
                                     <span className="sHade2_PFo">نام خریدار :</span>
-                                    <span className="vHade2_FPo">ابوذر نعمتی ارسنجانی اصل</span>
+                                    <span className="vHade2_FPo">{proformaInvoices.buyer}</span>
                                 </div>
                                 <div className="divCol2_PFo">
                                     <span className="sHade2_PFo">کد ملی :</span>
-                                    <span className="vHade2_FPo">1234567899</span>
+                                    <span className="vHade2_FPo">{proformaInvoices.nationalCode}</span>
                                 </div>
                             </div>
                             <div className="divRow_PFo">
                                 <div className="divCol1_PFo">
                                     <span className="sHade2_PFo">محل‌ تخلیه :</span>
-                                    <span className="vHade2_FPo">ارسنجان خیابان طالقانی نرسیده به سه راه فرهنگ نبش کوچه مولوی پلاک 442</span>
+                                    <span className="vHade2_FPo">{proformaInvoices.address}</span>
                                 </div>
                                 <div className="divCol2_PFo">
                                     <span className="sHade2_PFo">تلفن :</span>
-                                    <span className="vHade2_FPo">09178023733</span>
+                                    <span className="vHade2_FPo">{proformaInvoices.tel}</span>
                                 </div>
                             </div>
                         </section>
@@ -175,8 +194,8 @@ const Display
                                 </div>
                             </div>
                         </section>
-                        <section className="description_PFo">
-                            
+                        <section className="description_PFo textarea-output">
+                            {proformaInvoices.description}
                         </section>
                         <section className="footer_PFo">
                             <div className="divRow1Footer_PFo">
