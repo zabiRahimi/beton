@@ -9,15 +9,16 @@ const RouteService = ({
   const hasCalledFetchData = useRef(false);
 
   const [customerOptions, setCustomerOptions] = useState('');
-  const [doucmentReceivableOptions, setDoucmentReceivableOptions] = useState('');
+  const [documentReceivableOptions, setDoucmentReceivableOptions] = useState('');
   const [sandRemittanceOptions, setSandRemittanceOptions] = useState('');
   const [cementRemittanceOptions, setCementRemittanceOptions] = useState('');
 
   useEffect(() => {
     if (!hasCalledFetchData.current) {
-      fetchData();
+      // fetchData();
       hasCalledFetchData.current = true;
     }
+    createDocumentReceivableOptions()
   }, []);
 
 
@@ -25,10 +26,10 @@ const RouteService = ({
 
     try {
       const response = await axios.get("/api/v1/sandInvoice/fetchData")
-      const { count, sandRemittances, dumpTrucks, drivers, sandStores } = response.data;
+      const { count, customers, documentReceivables, sandRemittances, cementRemittances } = response.data;
       setTicketNumber(count + 1);
       createCustomerOptions(customers);
-      createDocumentOptions(couc);
+      createDocumentReceivableOptions(documentReceivables);
       createSandRemittanceOptions(sandRemittances);
       createCementRemittanceOptions(cementRemittances);
     } catch (error) {
@@ -37,6 +38,65 @@ const RouteService = ({
       setLoading(false);
     }
   };
+
+  const createCustomerOptions = (sandRemittances) => {
+    let options;
+    if (sandRemittances.length > 0) {
+      options = sandRemittances.map(data => ({
+        value: data.id,
+        html: <div className=" divRemittanceSelectFB"
+          title={data.buyerName + ' ' + data.buyerLastName + ' ' + data.remittanceNumber}
+        >
+          <span className="mixerOwnerSelectFB buyerSelectFB">
+            {data.buyerName}
+            {' '}
+            {data.buyerLastName}
+          </span>
+          <span className='remittanceNumberFB' title={data.remittanceNumber}>
+            {data.remittanceNumber}
+          </span>
+        </div>
+      }));
+    } else {
+      options = notOption('هیچ حواله شن‌وماسه‌ای وجود ندارد');
+    }
+    setRemittanceOptions(options);
+  }
+
+  const createDocumentReceivableOptions = () => {
+    let options;
+    // if (drviers.length > 0) {
+      if (true) {
+      // options = drviers.map(data => ({
+       options = {
+        value: data.id,
+        html: (
+          <div className="containerChekOption_SZabi">
+            <div>
+              <span className="name" title='ذبیح الله رحیمی'>
+                {'ذبیح الله'} {' '} {'رحیمی'}
+              </span>
+              <span className="namber" title='12345678945'>
+                {'12345678945'}
+              </span>
+            </div>
+            <div>
+              <span className="date" title='1403/01/31'>
+                {'1403/01/31'}
+              </span>
+              <span className="price" title='200,000,000'>
+                {'200,000,000'}
+              </span>
+            </div>
+          </div>
+        )
+      };
+    // }));
+    } else {
+      options = notOption('هیچ راننده ثبت شده‌ای وجود ندارد');
+    }
+    setDriverOptions(options);
+  }
 
   const createSandRemittanceOptions = (sandRemittances) => {
     let options;
@@ -62,7 +122,7 @@ const RouteService = ({
     setRemittanceOptions(options);
   }
 
-  const createDumpTruckOptions = (dumpTrucks) => {
+  const createCementRemittanceOptions = (dumpTrucks) => {
     let options;
     if (dumpTrucks.length > 0) {
       options = dumpTrucks.map(data => {
@@ -94,29 +154,9 @@ const RouteService = ({
     setDumpTruckOptions(options);
   }
 
-  const createDrvierOptions = (drviers) => {
-    let options;
-    if (drviers.length > 0) {
-      options = drviers.map(data => ({
-        value: data.id,
-        html: (
-          <div className="personnelAption_addPerS">
-            <span className="name_addPers">
-              {data.name} {' '} {data.lastName}
-            </span>
-            <span className="fther_addPers">
-              {data.father || ''}
-            </span>
-          </div>
-        )
-      }));
-    } else {
-      options = notOption('هیچ راننده ثبت شده‌ای وجود ندارد');
-    }
-    setDriverOptions(options);
-  }
 
- 
+
+
 
   const notOption = (message) => {
     return [{
@@ -131,7 +171,7 @@ const RouteService = ({
 
   return {
     customerOptions,
-    doucmentReceivableOptions,
+    documentReceivableOptions,
     sandRemittanceOptions,
     cementRemittanceOptions
   };

@@ -182,7 +182,7 @@ const Home = () => {
                         <span>آمار</span>
                     </Link>
 
-                    <Link to="receipts" className="linksHome --styleLessLink ">
+                    <Link to="invoices/receipt" className="linksHome --styleLessLink ">
                     <div className="divIcofontLinksHome">
                         <i className="icofont-swoosh-down sDownRIHome "/>
                             <i className="icofont-coins  receiptsIHome  iLinksHome  " />

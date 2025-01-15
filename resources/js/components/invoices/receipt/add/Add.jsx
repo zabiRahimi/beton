@@ -82,9 +82,9 @@ const Add = () => {
         }
     }, [customer_id]);
 
-    const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers: concreteBuyers.datas });
+    const{customerOptions, documentReceivableOptions, dataCustomers} = RouteService({ setLoading, setTicketNumber });
+    const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
 
-    // RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
 
 
     // const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
@@ -217,7 +217,7 @@ const Add = () => {
                                 >
                                     <SelectZabi2
                                         primaryLabel='انتخاب'
-                                        options={cutomers}
+                                        options={customerOptions}
                                         saveOption={setCustomer_id}
                                         input={inputCustomerSearch}
                                         optionsSearched={optionsCustomersSearched}
