@@ -1,18 +1,18 @@
 import axios from 'axios';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const RouteService = ({
   setLoading,
   setTicketNumber,
-  setRemittanceOptions,
-  setDumpTrucks,
-  setDumpTruckOptions,
-  setDrivers,
-  setDriverOptions,
-  setSandStoreOptions
 }) => {
 
   const hasCalledFetchData = useRef(false);
+
+  const [customerOptions, setCustomerOptions] = useState('');
+  const [doucmentReceivableOptions, setDoucmentReceivableOptions] = useState('');
+  const [sandRemittanceOptions, setSandRemittanceOptions] = useState('');
+  const [cementRemittanceOptions, setCementRemittanceOptions] = useState('');
+
   useEffect(() => {
     if (!hasCalledFetchData.current) {
       fetchData();
@@ -27,12 +27,10 @@ const RouteService = ({
       const response = await axios.get("/api/v1/sandInvoice/fetchData")
       const { count, sandRemittances, dumpTrucks, drivers, sandStores } = response.data;
       setTicketNumber(count + 1);
-      createRemittanceOptions(sandRemittances);
-      setDumpTrucks(dumpTrucks);
-      createDumpTruckOptions(dumpTrucks);
-      setDrivers(drivers);
-      createDrvierOptions(drivers);
-      createSandStoreOptions(sandStores);
+      createCustomerOptions(customers);
+      createDocumentOptions(couc);
+      createSandRemittanceOptions(sandRemittances);
+      createCementRemittanceOptions(cementRemittances);
     } catch (error) {
       console.error("Error fetching data for sandRemittance count in component Add:", error);
     } finally {
@@ -40,7 +38,7 @@ const RouteService = ({
     }
   };
 
-  const createRemittanceOptions = (sandRemittances) => {
+  const createSandRemittanceOptions = (sandRemittances) => {
     let options;
     if (sandRemittances.length > 0) {
       options = sandRemittances.map(data => ({
@@ -59,7 +57,7 @@ const RouteService = ({
         </div>
       }));
     } else {
-      options = notOption('هیچ حواله فعالی وجود ندارد');
+      options = notOption('هیچ حواله شن‌وماسه‌ای وجود ندارد');
     }
     setRemittanceOptions(options);
   }
@@ -67,7 +65,7 @@ const RouteService = ({
   const createDumpTruckOptions = (dumpTrucks) => {
     let options;
     if (dumpTrucks.length > 0) {
-       options = dumpTrucks.map(data => {
+      options = dumpTrucks.map(data => {
         let arr = data.numberplate.split('-');
         return {
           value: data.id,
@@ -99,7 +97,7 @@ const RouteService = ({
   const createDrvierOptions = (drviers) => {
     let options;
     if (drviers.length > 0) {
-       options = drviers.map(data => ({
+      options = drviers.map(data => ({
         value: data.id,
         html: (
           <div className="personnelAption_addPerS">
@@ -118,22 +116,7 @@ const RouteService = ({
     setDriverOptions(options);
   }
 
-  const createSandStoreOptions = (sandStores) => {
-    let options;
-    if (sandStores.length > 0) {
-       options = sandStores.map(data => ({
-        value: data.id,
-        html: <div className=" divSiloSeletcFB">
-          <span className=" siloSeletctFB">
-            {data.silo}
-          </span>
-        </div>
-      }));
-    } else {
-      options = notOption('هیچ سیلوی شن‌وماسه‌ای وجود ندارد');
-    }
-    setSandStoreOptions(options);
-  }
+ 
 
   const notOption = (message) => {
     return [{
@@ -146,6 +129,11 @@ const RouteService = ({
     }];
   }
 
-  return null;
+  return {
+    customerOptions,
+    doucmentReceivableOptions,
+    sandRemittanceOptions,
+    cementRemittanceOptions
+  };
 };
 export default RouteService;
