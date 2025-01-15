@@ -9,6 +9,7 @@ import SelectZabi from "../../../hooks/SelectZabi";
 import SelectZabi2 from "../../../hooks/SelectZabi2";
 import RouteService from "./RouteService";
 import SearchDriversSelect from "../../searchSelectZabi/SearchDriversSelect";
+import SearchCustomersSelect from "./searchSelectZabi/SearchCustomersSelect";
 import HeadPage from '../HeadPage';
 import {
     handleSetTime,
@@ -30,6 +31,8 @@ const Add = () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
+    const cutomerIdRef= useRef(null);
+    const customer_idError= useRef(null);
     const dateRef = useRef(null);
     const hasCalledGetSandSellers = useRef(false);
     const hasCalledGetSandStores = useRef(false);
@@ -37,6 +40,7 @@ const Add = () => {
     
     
     const [ticketNumber, setTicketNumber] = useState('');
+    const [customer_id, setCustomer_id] = useState('');
 
 
     
@@ -71,6 +75,14 @@ const Add = () => {
         owner:'',//صاحب چک، صاحب حساب یا کارت دریافت کننده
         description: ''
     });
+
+    useEffect(() => {
+        if (customer_id) {
+            setInput(prev => ({ ...prev, customer_id }));
+        }
+    }, [customer_id]);
+
+    const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers: concreteBuyers.datas });
 
     // RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
 
@@ -195,20 +207,29 @@ const Add = () => {
                         </div>
                     </section>
                     <section className="sectionFB">
-                        <div className="containerInputFB">
+                    <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label htmlFor="billNumber">شماره قبض</label>
-                                <input
-                                    type="text"
-                                    className="inputTextFB element"
-                                    id="billNumber"
-                                    // defaultValue={input.billNumber}
-                                    onInput={e => handleSaveValInput(e, 'billNumber')}
-                                    onFocus={e => clearInputError(e, billNumberError)}
-                                />
+                                <label> مشتری </label>
+                                <div
+                                    id='customer_id'
+                                    className="element"
+                                    onClick={e => { clearInputError(e, customer_idError) }}
+                                >
+                                    <SelectZabi2
+                                        primaryLabel='انتخاب'
+                                        options={cutomers}
+                                        saveOption={setCustomer_id}
+                                        input={inputCustomerSearch}
+                                        optionsSearched={optionsCustomersSearched}
+                                        warning={customerSearchWarning}
+                                        elementWarning={elementCustomerSearchWarning}
+                                        clearSearch={handleClearAllSearchCustomer}
+                                        ref={cutomerIdRef}
+                                    />
+                                </div>
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="billNumberError" ref={billNumberError}> </div>
+                            <div className="errorContainerFB elementError" id='customer_idError' ref={customer_idError}> </div>
                         </div>
                         <div className="containerInputFB">
                             <div className="divInputFB">
