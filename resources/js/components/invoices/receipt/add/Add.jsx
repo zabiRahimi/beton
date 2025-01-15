@@ -8,7 +8,6 @@ import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import SelectZabi2 from "../../../hooks/SelectZabi2";
 import RouteService from "./RouteService";
-import SearchMixersSelect from "../../searchSelectZabi/SearchMixersSelect";
 import SearchDriversSelect from "../../searchSelectZabi/SearchDriversSelect";
 import HeadPage from '../HeadPage';
 import {
@@ -27,119 +26,58 @@ const Add = () => {
         optionDays,
         optionMonth,
         optionShortYears,
-        optionHours,
-        optionMinutes,
-        optionSeconds,
     } = DataZabi();
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
-    const sandRemittance_idRef = useRef(null);
-    const sandRemittance_idError = useRef(null);
-    const billNumberError = useRef(null);
-    const timeRef = useRef(null);
     const dateRef = useRef(null);
-    const dateError = useRef(null);
-    const timeError = useRef(null);
-    const sandTypeRef = useRef(null);
-    const sandTypeError = useRef(null);
-    const weightRef = useRef(null);
-    const weightError = useRef(null);
-    const unitPriceRef = useRef(null);
-    const unitPriceError = useRef(null);
-    const totalPriceError = useRef(null);
-    const dumpTruckRef = useRef(null);
-    const truck_idError = useRef(null);
-    const driverRef = useRef(null);
-    const driver_idError = useRef(null);
-    const unitFareRef = useRef(null);
-    const unitFareError = useRef(null);
-    // const totalFareError = useRef(null);
-    const totalPriceRef = useRef(null);
-    const totalFareRef = useRef(null);
-    const sandStoreRef = useRef(null);
-    const sandStore_idError = useRef(null);
     const hasCalledGetSandSellers = useRef(false);
     const hasCalledGetSandStores = useRef(false);
     const [loading, setLoading] = useState(true);
-    const [remittanceOptions, setRemittanceOptions] = useState([]);
-    const [sandRemittance_id, setSandRemittance_id] = useState('');
     
     
-    const [sandTypeSelected, setSandTypeSelected] = useState('');
     const [ticketNumber, setTicketNumber] = useState('');
 
-    const [dumpTrucks, setDumpTrucks] = useState('');
-    const [dumpTruckOptions, setDumpTruckOptions] = useState([]);
-    const [drivers, setDrivers] = useState('');
-    const [driverOptions, setDriverOptions] = useState([]);
-    const [sandStoreOptions, setSandStoreOptions] = useState([]);
-    const [sandStoreId, setSandStoreId] = useState('');
 
-    const [dumpTruckId, setDumpTruckId] = useState('');
-    const [dumpTruckOwnerId, setDumpTruckOwnerId] = useState('');
     
-    const [driverId, setDrvierId] = useState('');
     const [date, setDate] = useState({
         day: '',
         month: '',
         year: ''
     });
-    const [time, setTime] = useState({
-        second: '',
-        minute: '',
-        hour: ''
+
+    const [date_check, setDate_check] = useState({
+        day: '',
+        month: '',
+        year: ''
     });
-    const [sandStores, setSandStores] = useState([]);
-    const [sandStoreIdSelected, setSandStoreIdSelected] = useState('');
+  
+   
 
     const [input, setInput] = useState({
-        billNumber: '',
-        sandRemittance_id: '',
-        time: '',
+        customer_id: '',
+        document_receivable_id:'',
         date: '',
-        sandType: '',
-        weight: '',
-        unitPrice: '',
-        totalPrice: '',
-        truck_id: '',
-        dumpTruckOwner_id: '',
-        driver_id: '',
-        unitFare: '',
-        totalFare: '',
-        sandStore_id: '',
+        Price: '',
+        sand_remittance_id:'',
+        cement_remittance_id:'',
+        isDocument:0,
+        isSandRemittance:0,
+        isCementRemittance:0,
+        namber:'',//شماره چک، شماره کارت، شماره حساب
+        bank:'',
+        bank_branch:'',
+        date_check:'',
+        owner:'',//صاحب چک، صاحب حساب یا کارت دریافت کننده
         description: ''
     });
 
-    RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
+    // RouteService({ setLoading, setTicketNumber, setRemittanceOptions, setDumpTrucks, setDumpTruckOptions, setDrivers, setDriverOptions, setSandStoreOptions });
 
-    const { inputMixerSearch, optionsMixersSearched, mixerSearchWarning, elementMixerSearchWarning, handleClearAllSearchMixer } = SearchMixersSelect({ dataMixers: dumpTrucks });
 
-    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
+    // const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
 
-    useEffect(() => {
-        sandRemittance_id && setInput(prev => ({ ...prev, sandRemittance_id }));
-    }, [sandRemittance_id]);
-
-    useEffect(() => {
-        sandTypeSelected && setInput(prev => ({ ...prev, sandType: sandTypeSelected }));
-    }, [sandTypeSelected]);
-
-    useEffect(() => {
-        dumpTruckId && setInput(prev => ({ ...prev, truck_id: dumpTruckId }));
-    }, [dumpTruckId]);
-
-    useEffect(() => {
-        dumpTruckOwnerId && setInput(prev => ({ ...prev, dumpTruckOwner_id: dumpTruckOwnerId }));
-    }, [dumpTruckOwnerId]);
-
-    useEffect(() => {
-        driverId && setInput(prev => ({ ...prev, driver_id: driverId }));
-    }, [driverId]);
-
-    useEffect(() => {
-        sandStoreId && setInput(prev => ({ ...prev, sandStore_id: sandStoreId }));
-    }, [sandStoreId]);
+    
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
