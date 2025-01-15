@@ -63,6 +63,10 @@ import ShowSalesInvoices from "./components/invoices/salesInvoice/show/Show";
 
 import ConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/ConcreteSalesInvoice";
 
+import Receipt from "./components/invoices/receipt/Receipt";
+import AddReceipt from "./components/invoices/receipt/add/Add";
+
+
 function App() {
     // const userData = useUserContext();
 
@@ -129,6 +133,14 @@ function App() {
                     <Route path="proformaInvoice" element={<ProformaInvoice />} >
                         <Route index element={<Navigate to="add" replace />} />
                         <Route path="add" element={<AddProformaInvoice />} />
+                        <Route path="show" element={<ShowProformaInvoices />} />
+                        <Route path="edit/:proformaInvoiceId" element={<EditProformaInvoice />} />
+                        <Route path="display/:proformaInvoiceId" element={<DisplayProformaInvoice />} />
+                    </Route>
+
+                    <Route path="receipt" element={<Receipt />} >
+                        <Route index element={<Navigate to="add" replace />} />
+                        <Route path="add" element={<AddReceipt />} />
                         <Route path="show" element={<ShowProformaInvoices />} />
                         <Route path="edit/:proformaInvoiceId" element={<EditProformaInvoice />} />
                         <Route path="display/:proformaInvoiceId" element={<DisplayProformaInvoice />} />
