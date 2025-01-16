@@ -9,9 +9,54 @@ const RouteService = ({
   const hasCalledFetchData = useRef(false);
 
   const [customerOptions, setCustomerOptions] = useState('');
+  const [dataCudtomers, setDataCudtomers] = useState('');
   const [documentReceivableOptions, setDoucmentReceivableOptions] = useState('');
   const [sandRemittanceOptions, setSandRemittanceOptions] = useState('');
   const [cementRemittanceOptions, setCementRemittanceOptions] = useState('');
+  const how_to_payOptions = [
+    {
+      value: 'پول نقد',
+      html: <div className=" divRemittanceSelectFB">
+        پول نقد
+      </div>
+    },
+    {
+      value: 'کارت به کارت',
+      html: <div className=" divRemittanceSelectFB">
+        کارت به کارت
+      </div>
+    },
+    {
+      value: 'واریز به حساب',
+      html: <div className=" divRemittanceSelectFB">
+        واریز به حساب
+      </div>
+    },
+    {
+      value: 'حواله شن و ماسه',
+      html: <div className=" divRemittanceSelectFB">
+        حواله شن و ماسه
+      </div>
+    },
+    {
+      value: 'حواله سیمان',
+      html: <div className=" divRemittanceSelectFB">
+        حواله سیمان
+      </div>
+    },
+    {
+      value: 'وصول چک',
+      html: <div className=" divRemittanceSelectFB">
+        وصول چک
+      </div>
+    },
+    {
+      value: 'سایر',
+      html: <div className=" divRemittanceSelectFB">
+        سایر
+      </div>
+    }
+  ]
 
   useEffect(() => {
     if (!hasCalledFetchData.current) {
@@ -29,6 +74,7 @@ const RouteService = ({
       const { count, customers, documentReceivables, sandRemittances, cementRemittances } = response.data;
       setTicketNumber(count + 1);
       createCustomerOptions(customers);
+      setDataCudtomers(customers);
       createDocumentReceivableOptions(documentReceivables);
       createSandRemittanceOptions(sandRemittances);
       createCementRemittanceOptions(cementRemittances);
@@ -171,6 +217,8 @@ const RouteService = ({
 
   return {
     customerOptions,
+    dataCustoemrs,
+    how_to_payOptions,
     documentReceivableOptions,
     sandRemittanceOptions,
     cementRemittanceOptions
