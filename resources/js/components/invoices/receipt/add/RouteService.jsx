@@ -1,16 +1,21 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const RouteService = ({
   setLoading,
   setTicketNumber,
+  checkIsSelected,
+  setDocumentReceivableSelect
 }) => {
 
+  const MySwal = withReactContent(Swal);
   const hasCalledFetchData = useRef(false);
 
   const [customerOptions, setCustomerOptions] = useState('');
-  const [dataCudtomers, setDataCudtomers] = useState('');
-  const [documentReceivableOptions, setDoucmentReceivableOptions] = useState('');
+  const [dataCustomers, setDataCustomers] = useState('');
+  const [documentReceivableOptions, setDocumentReceivableOptions] = useState('');
   const [sandRemittanceOptions, setSandRemittanceOptions] = useState('');
   const [cementRemittanceOptions, setCementRemittanceOptions] = useState('');
   const how_to_payOptions = [
@@ -63,8 +68,39 @@ const RouteService = ({
       // fetchData();
       hasCalledFetchData.current = true;
     }
-    createDocumentReceivableOptions()
+    createDocumentReceivableOptions();
+    setLoading(false);
   }, []);
+
+
+  useEffect(() => {
+    if (checkIsSelected) {
+      MySwal.fire({
+        icon: "info",
+        showCancelButton: true,
+        title: "آیا چک در اسناد دریافتنی ثبت شده است؟",
+        confirmButtonText: " ثبت شده ",
+        cancelButtonText: 'ثبت نشده',
+
+        customClass: {
+
+        },
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // عملیات برای دکمه تایید 
+          console.log('تایید شد');
+          Swal.fire('انجام شد!', 'عملیات با موفقیت انجام شد.', 'success')
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+          // عملیات برای دکمه لغو console.log('لغو شد');
+          Swal.fire('لغو شد', 'عملیات لغو شد.', 'error')
+        }
+      });
+    }
+
+  }, [checkIsSelected]);
+
 
 
   const fetchData = async () => {
@@ -74,7 +110,7 @@ const RouteService = ({
       const { count, customers, documentReceivables, sandRemittances, cementRemittances } = response.data;
       setTicketNumber(count + 1);
       createCustomerOptions(customers);
-      setDataCudtomers(customers);
+      setDataCustomers(customers);
       createDocumentReceivableOptions(documentReceivables);
       createSandRemittanceOptions(sandRemittances);
       createCementRemittanceOptions(cementRemittances);
@@ -112,10 +148,10 @@ const RouteService = ({
   const createDocumentReceivableOptions = () => {
     let options;
     // if (drviers.length > 0) {
-      if (true) {
+    if (true) {
       // options = drviers.map(data => ({
-       options = {
-        value: data.id,
+      options = {
+        value: 'data.id',
         html: (
           <div className="containerChekOption_SZabi">
             <div>
@@ -137,11 +173,11 @@ const RouteService = ({
           </div>
         )
       };
-    // }));
+      // }));
     } else {
       options = notOption('هیچ راننده ثبت شده‌ای وجود ندارد');
     }
-    setDriverOptions(options);
+    setDocumentReceivableOptions(options);
   }
 
   const createSandRemittanceOptions = (sandRemittances) => {
@@ -217,7 +253,7 @@ const RouteService = ({
 
   return {
     customerOptions,
-    dataCustoemrs,
+    dataCustomers,
     how_to_payOptions,
     documentReceivableOptions,
     sandRemittanceOptions,

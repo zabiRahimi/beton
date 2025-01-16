@@ -66,6 +66,7 @@ const Add = () => {
     const [ticketNumber, setTicketNumber] = useState('');
     const [customer_id, setCustomer_id] = useState('');
     const [how_to_pay, setHow_to_pay] = useState('');
+    const [checkIsSelected, setCheckIsSelected] = useState(false);
 
 
 
@@ -109,7 +110,14 @@ const Add = () => {
         }
     }, [customer_id]);
 
-    const { customerOptions, dataCustomers, how_to_payOptions, documentReceivableOptions,  } = RouteService({ setLoading, setTicketNumber });
+    useEffect(() => {
+        if (how_to_pay) {
+             setCheckIsSelected(how_to_pay == 'وصول چک' ?true:false);
+            setInput(prev => ({ ...prev, how_to_pay }));
+        }
+    }, [how_to_pay]);
+
+    const { customerOptions, dataCustomers, how_to_payOptions, documentReceivableOptions,  } = RouteService({ setLoading, setTicketNumber, checkIsSelected });
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
 
 
