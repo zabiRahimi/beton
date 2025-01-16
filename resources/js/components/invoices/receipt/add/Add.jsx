@@ -120,6 +120,20 @@ const Add = () => {
     useEffect(() => {
         if (how_to_pay) {
             setCheckIsSelected(how_to_pay == 'وصول چک' ? true : false);
+            how_to_pay == 'کارت به کارت' && setPayType({
+                display: true,
+                dateLabel: 'تاریخ پرداخت',
+                numberLabel: 'شماره کارت مقصد',
+                ownerLabel: 'صاحب کارت مقصد'
+
+            });
+            how_to_pay == 'واریز به حساب' && setPayType({
+                display: true,
+                dateLabel: 'تاریخ پرداخت',
+                numberLabel: '',
+                ownerLabel: ''
+
+            })
             setInput(prev => ({ ...prev, how_to_pay }));
         }
     }, [how_to_pay]);
