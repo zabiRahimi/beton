@@ -88,13 +88,10 @@ const RouteService = ({
 
       }).then((result) => {
         if (result.isConfirmed) {
-          // عملیات برای دکمه تایید 
-          console.log('تایید شد');
-          Swal.fire('انجام شد!', 'عملیات با موفقیت انجام شد.', 'success')
+          
         }
         else if (result.dismiss === Swal.DismissReason.cancel) {
-          // عملیات برای دکمه لغو console.log('لغو شد');
-          Swal.fire('لغو شد', 'عملیات لغو شد.', 'error')
+          
         }
       });
     }
