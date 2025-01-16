@@ -472,78 +472,77 @@ const Add = () => {
                                 <label htmlFor="number">شماره چک</label>
                                 <input
                                     type="text"
-                                    className="inputTextUnitFB ltrFB element"
+                                    className="inputTextFB ltrFB element"
                                     id="number"
                                     name='number'
                                     onInput={e => {
                                         handleSaveValInput(e);
-                                        formatNub(unitFareRef.current);
                                         
                                     }}
-                                    onFocus={e => clearInputError(e, unitFareError)}
-                                    ref={unitFareRef}
+                                    onFocus={e => clearInputError(e, numberError)}
+                                    ref={numberRef}
                                 />
-                                <span
-                                    className="unitFB"
-                                    onClick={() => htmlFor('unitFare')}
-                                >
-                                    تومان
-                                </span>
-                                <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="unitFareError" ref={unitFareError}> </div>
+                            <div className="errorContainerFB elementError" id="numberError" ref={numberError}> </div>
                         </div>
 
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label> کل کرایه </label>
-                                <div className="mainTotalPriceACSL_FB">
-                                    <div className="totalPriceACSL_FB"
-                                        ref={totalFareRef}
-                                    >0</div>
-                                    <span className="spanTotalPriceACSL_FB">
-                                        تومان
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label htmlFor="totalFare">کل کرایه</label>
+                                <label htmlFor="owner">صاحب چک</label>
                                 <input
                                     type="text"
                                     className="inputTextFB element"
-                                    id="totalFare"
-                                    defaultValue={input.totalFare}
-                                    onInput={e => handleSaveValInput(e, 'totalFare')}
-                                    onFocus={e => clearInputError(e, totalFareError)}
+                                    id="owner"
+                                    name='owner'
+                                  
+                                    onInput={e => handleSaveValInput(e)}
+                                    onFocus={e => clearInputError(e, ownerError)}
+                                    ref={ownerRef}
                                 />
                                 <i className="icofont-ui-rating starFB" />
                             </div>
-                            <div className="errorContainerFB elementError" id="totalFareError" ref={totalFareError}> </div>
-                        </div> */}
-                    </section>
-                    <section className="sectionFB">
+                            <div className="errorContainerFB elementError" id="ownerError" ref={ownerError}> </div>
+                        </div>
+
                         <div className="containerInputFB">
                             <div className="divInputFB">
-                                <label>سیلوی تخلیه  </label>
-                                <div
-                                    id='sandStore_id'
-                                    className="element"
-                                    onClick={e => { clearInputError(e, sandStore_idError) }}
-                                >
-                                    <SelectZabi
-                                        primaryLabel='انتخاب'
-                                        options={sandStoreOptions}
-                                        saveOption={setSandStoreId}
-                                        ref={sandStoreRef}
-                                    />
-                                </div>
+                                <label htmlFor="bank">بانک</label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB element"
+                                    id="bank"
+                                    name='bank'
+                                    defaultValue={input.for}
+                                    onInput={e => handleSaveValInput(e)}
+                                    onFocus={e => clearInputError(e, bankError)}
+                                    ref={bankRef}
+                                />
                                 <i className="icofont-ui-rating starFB" />
-
                             </div>
-                            <div className="errorContainerFB elementError" id='sandStore_idError' ref={sandStore_idError}> </div>
+                            <div className="errorContainerFB elementError" id="bankError" ref={bankError}> </div>
                         </div>
+
+                        <div className="containerInputFB">
+                            <div className="divInputFB">
+                                <label htmlFor="band_branch">شعبه</label>
+                                <input
+                                    type="text"
+                                    className="inputTextFB element"
+                                    id="band_branch"
+                                    name='band_branch'
+                                    defaultValue={input.for}
+                                    onInput={e => handleSaveValInput(e)}
+                                    onFocus={e => clearInputError(e, bank_branchError)}
+                                    ref={bank_branchRef}
+                                />
+                                <i className="icofont-ui-rating starFB" />
+                            </div>
+                            <div className="errorContainerFB elementError" id="bank_branchError" ref={bank_branchError}> </div>
+                        </div>
+                       
+                    </section>
+                    <section className="sectionFB">
+                        
                         <div className="containerInputFB">
                             <div className="divInputFB">
                                 <label htmlFor="description">توضیحات</label>
