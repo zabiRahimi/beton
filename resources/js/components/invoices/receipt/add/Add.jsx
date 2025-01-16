@@ -117,26 +117,97 @@ const Add = () => {
         }
     }, [customer_id]);
 
+    const paymentOptions = {
+        'کارت به کارت': {
+            display: true,
+            dateLabel: 'تاریخ پرداخت',
+            numberLabel: 'شماره کارت مقصد',
+            ownerLabel: 'صاحب کارت مقصد'
+        },
+        'واریز به حساب': {
+            display: true,
+            dateLabel: 'تاریخ پرداخت',
+            numberLabel: 'شماره حساب',
+            ownerLabel: 'صاحب حساب'
+        },
+        'پول نقد': {
+            display: false,
+            dateLabel: '',
+            numberLabel: '',
+            ownerLabel: ''
+        },
+        'سایر': {
+            display: false,
+            dateLabel: '',
+            numberLabel: '',
+            ownerLabel: ''
+        },
+        'حواله سیمان': {
+            display: true,
+            dateLabel: 'تاریخ حواله',
+            numberLabel: 'شماره حواله',
+            ownerLabel: 'خریدار حواله'
+        },
+        'حواله شن و ماسه': {
+            display: true,
+            dateLabel: 'تاریخ حواله',
+            numberLabel: 'شماره حواله',
+            ownerLabel: 'خریدار حواله'
+        }
+    };
+
     useEffect(() => {
         if (how_to_pay) {
-            setCheckIsSelected(how_to_pay == 'وصول چک' ? true : false);
-            how_to_pay == 'کارت به کارت' && setPayType({
-                display: true,
-                dateLabel: 'تاریخ پرداخت',
-                numberLabel: 'شماره کارت مقصد',
-                ownerLabel: 'صاحب کارت مقصد'
-
-            });
-            how_to_pay == 'واریز به حساب' && setPayType({
-                display: true,
-                dateLabel: 'تاریخ پرداخت',
-                numberLabel: '',
-                ownerLabel: ''
-
-            })
+            setCheckIsSelected(how_to_pay === 'وصول چک');
+            const payTypeConfig = paymentOptions[how_to_pay];
+            if (payTypeConfig) {
+                setPayType(payTypeConfig);
+            }
             setInput(prev => ({ ...prev, how_to_pay }));
         }
     }, [how_to_pay]);
+
+    // useEffect(() => {
+    //     if (how_to_pay) {
+    //         setCheckIsSelected(how_to_pay == 'وصول چک' ? true : false);
+    //         how_to_pay == 'کارت به کارت' && setPayType({
+    //             display: true,
+    //             dateLabel: 'تاریخ پرداخت',
+    //             numberLabel: 'شماره کارت مقصد',
+    //             ownerLabel: 'صاحب کارت مقصد'
+
+    //         });
+    //         how_to_pay == 'واریز به حساب' && setPayType({
+    //             display: true,
+    //             dateLabel: 'تاریخ پرداخت',
+    //             numberLabel: 'شماره حساب',
+    //             ownerLabel: 'صاحب حساب'
+
+    //         });
+    //         how_to_pay == 'پول نقد' && setPayType({
+    //             display: false,
+    //             dateLabel: ' ',
+    //             numberLabel: '',
+    //             ownerLabel: ''
+
+    //         })
+    //         how_to_pay == 'سایر' && setPayType({
+    //             display: false,
+    //             dateLabel: '',
+    //             numberLabel: '',
+    //             ownerLabel: ''
+
+    //         })
+    //         how_to_pay == 'حواله سیمان' || how_to_pay == 'حواله شن و ماسه' && setPayType({
+    //             display: true,
+    //             dateLabel: 'تاریخ حواله',
+    //             numberLabel: 'شماره حواله',
+    //             ownerLabel: 'خریدار حواله'
+
+    //         })
+    //         setInput(prev => ({ ...prev, how_to_pay }));
+    //     }
+    // }, [how_to_pay]);
 
     const { customerOptions, dataCustomers, how_to_payOptions, documentReceivableOptions, } = RouteService({ setLoading, setTicketNumber, checkIsSelected, setDocumentReceivableDisplay, setPayType });
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
@@ -537,41 +608,46 @@ const Add = () => {
                                         <div className="errorContainerFB elementError" id="ownerError" ref={ownerError}> </div>
                                     </div>
 
-                                    <div className="containerInputFB">
-                                        <div className="divInputFB">
-                                            <label htmlFor="bank">بانک</label>
-                                            <input
-                                                type="text"
-                                                className="inputTextFB element"
-                                                id="bank"
-                                                name='bank'
-                                                defaultValue={input.for}
-                                                onInput={e => handleSaveValInput(e)}
-                                                onFocus={e => clearInputError(e, bankError)}
-                                                ref={bankRef}
-                                            />
-                                            <i className="icofont-ui-rating starFB" />
-                                        </div>
-                                        <div className="errorContainerFB elementError" id="bankError" ref={bankError}> </div>
-                                    </div>
+                                    {
+                                       ( how_to_pay !=='حواله سیمان' && how_to_pay !=='حواله شن و ماسه') &&
+                                        <>
+                                            <div className="containerInputFB">
+                                                <div className="divInputFB">
+                                                    <label htmlFor="bank">بانک</label>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextFB element"
+                                                        id="bank"
+                                                        name='bank'
+                                                        defaultValue={input.for}
+                                                        onInput={e => handleSaveValInput(e)}
+                                                        onFocus={e => clearInputError(e, bankError)}
+                                                        ref={bankRef}
+                                                    />
+                                                    <i className="icofont-ui-rating starFB" />
+                                                </div>
+                                                <div className="errorContainerFB elementError" id="bankError" ref={bankError}> </div>
+                                            </div>
 
-                                    <div className="containerInputFB">
-                                        <div className="divInputFB">
-                                            <label htmlFor="band_branch">شعبه</label>
-                                            <input
-                                                type="text"
-                                                className="inputTextFB element"
-                                                id="band_branch"
-                                                name='band_branch'
-                                                defaultValue={input.for}
-                                                onInput={e => handleSaveValInput(e)}
-                                                onFocus={e => clearInputError(e, bank_branchError)}
-                                                ref={bank_branchRef}
-                                            />
-                                            <i className="icofont-ui-rating starFB" />
-                                        </div>
-                                        <div className="errorContainerFB elementError" id="bank_branchError" ref={bank_branchError}> </div>
-                                    </div>
+                                            <div className="containerInputFB">
+                                                <div className="divInputFB">
+                                                    <label htmlFor="band_branch">شعبه</label>
+                                                    <input
+                                                        type="text"
+                                                        className="inputTextFB element"
+                                                        id="band_branch"
+                                                        name='band_branch'
+                                                        defaultValue={input.for}
+                                                        onInput={e => handleSaveValInput(e)}
+                                                        onFocus={e => clearInputError(e, bank_branchError)}
+                                                        ref={bank_branchRef}
+                                                    />
+                                                    <i className="icofont-ui-rating starFB" />
+                                                </div>
+                                                <div className="errorContainerFB elementError" id="bank_branchError" ref={bank_branchError}> </div>
+                                            </div>
+                                        </>
+                                    }
                                 </>
                         }
 
