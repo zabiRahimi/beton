@@ -7,7 +7,8 @@ const RouteService = ({
   setLoading,
   setTicketNumber,
   checkIsSelected,
-  setDocumentReceivableSelect
+  setDocumentReceivableDisplay,
+  setPayType
 }) => {
 
   const MySwal = withReactContent(Swal);
@@ -88,10 +89,16 @@ const RouteService = ({
 
       }).then((result) => {
         if (result.isConfirmed) {
-          
+          setDocumentReceivableDisplay(true);
         }
         else if (result.dismiss === Swal.DismissReason.cancel) {
-          
+          setDocumentReceivableDisplay(false);
+          setPayType({
+            display:true,
+            dateLabel:'تاریخ چک',
+            numberLabel:'شماره چک',
+            ownerLabel:'صاحب چک'
+          })
         }
       });
     }
