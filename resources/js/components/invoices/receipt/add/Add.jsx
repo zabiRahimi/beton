@@ -534,7 +534,6 @@ const Add = () => {
                                                         onInput={(e) => { handleSetDate(e, 'year', date_check, setDate, setInput) }}
                                                         onFocus={(e) => clearInputError(e, date_checkError, false, true)}
                                                     />
-                                                    <i className="icofont-ui-rating starFB" />
                                                 </div>
 
                                                 <div className="divDownDateAcus" >
@@ -603,7 +602,6 @@ const Add = () => {
                                                 onFocus={e => clearInputError(e, ownerError)}
                                                 ref={ownerRef}
                                             />
-                                            <i className="icofont-ui-rating starFB" />
                                         </div>
                                         <div className="errorContainerFB elementError" id="ownerError" ref={ownerError}> </div>
                                     </div>
@@ -624,7 +622,6 @@ const Add = () => {
                                                         onFocus={e => clearInputError(e, bankError)}
                                                         ref={bankRef}
                                                     />
-                                                    <i className="icofont-ui-rating starFB" />
                                                 </div>
                                                 <div className="errorContainerFB elementError" id="bankError" ref={bankError}> </div>
                                             </div>
@@ -642,7 +639,6 @@ const Add = () => {
                                                         onFocus={e => clearInputError(e, bank_branchError)}
                                                         ref={bank_branchRef}
                                                     />
-                                                    <i className="icofont-ui-rating starFB" />
                                                 </div>
                                                 <div className="errorContainerFB elementError" id="bank_branchError" ref={bank_branchError}> </div>
                                             </div>
@@ -653,20 +649,18 @@ const Add = () => {
 
                     </section>
                     <section className="sectionFB">
-
-                        <div className="containerInputFB">
-                            <div className="divInputFB">
-                                <label htmlFor="description">توضیحات</label>
+                        <div className="containerInput100FB">
+                            <div className="divInput100FB">
+                                <label> توضیحات </label>
                                 <textarea
-
-                                    // className="textareaAddressACu"
-                                    className="textareaFB element"
+                                    className="textarea100FB descriptionFB element"
                                     id="description"
-                                    defaultValue={input.description}
                                     onInput={e => handleSaveValInput(e, 'description')}
+                                    onFocus={(e) => clearInputError(e, descriptionError)}
+
                                 />
                             </div>
-                            <div className="errorContainerFB elementError"> </div>
+                            <div className="errorContainerFB elementError" id='descriptionError' ref={descriptionError}> </div>
                         </div>
 
                     </section>
