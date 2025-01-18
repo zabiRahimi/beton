@@ -90,24 +90,24 @@ const Add = () => {
     });
 
 
-
+    
     const [input, setInput] = useState({
         customer_id: '',
         date: '',
-        document_receivable_id: '',
         price: '',
         for: '',//بابت خرید...
         how_to_pay: '',//نحوه پرداخت
+        document_receivable_id: '',
         sand_remittance_id: '',
         cement_remittance_id: '',
         isDocument: 0,
         isSandRemittance: 0,
         isCementRemittance: 0,
+        date_check: '',
         number: '',//شماره چک، شماره کارت، شماره حساب
+        owner: '',//صاحب چک، صاحب حساب یا کارت دریافت کننده
         bank: '',
         bank_branch: '',
-        date_check: '',
-        owner: '',//صاحب چک، صاحب حساب یا کارت دریافت کننده
         description: ''
     });
 
