@@ -10,9 +10,14 @@ class SandRemittance extends Model
 {
     use HasFactory;
     protected $guarded = ['id', 'created_at', 'updated_at'];
-    
+
     public function sandInvoice(): HasOne
     {
         return $this->hasOne(SandInvoice::class);
+    }
+
+    public function receipt(): HasOne
+    {
+        return $this->hasOne(Receipt::class, 'sand_remittance_id');
     }
 }

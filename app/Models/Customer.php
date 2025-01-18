@@ -37,7 +37,7 @@ class Customer extends Model
     //     'updated' => ConcreteBuyerChanged::class,
     //     'deleted' => ConcreteBuyerChanged::class
     // ];
-    
+
     public function customerType(): HasMany
     {
         return $this->hasMany(CustomerType::class);
@@ -85,5 +85,10 @@ class Customer extends Model
         return $query->whereHas('customerType', function ($query) {
             $query->where('code', 2);
         });
+    }
+
+    public function receipts(): HasMany
+    {
+        return $this->hasMany(Receipt::class);
     }
 }
