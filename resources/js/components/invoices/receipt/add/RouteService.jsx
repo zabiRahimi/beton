@@ -163,16 +163,17 @@ const RouteService = ({
               <span className="name" title='ذبیح الله رحیمی'>
                 {'ذبیح الله'} {' '} {'رحیمی'}
               </span>
-              <span className="namber" title='1234567898956145'>
-                {'1234567898956145'}
+              
+              <span className="price" title='3,000,000,000'>
+                {'3,000,000,000'}
               </span>
             </div>
-            <div>
+            <div className='divRow2'>
               <span className="date" title='1403/01/31'>
                 {'1403/01/31'}
               </span>
-              <span className="price" title='3,000,000,000'>
-                {'3,000,000,000'}
+              <span className="namber" title='1234567898956145'>
+                {'1234567898956145'}
               </span>
             </div>
           </div>
@@ -186,16 +187,17 @@ const RouteService = ({
               <span className="name" title='میلاد زارع'>
                 {'میلاد'} {' '} {'زارع'}
               </span>
-              <span className="namber" title='1234567598413819'>
-                {'1234567598413819'}
+              <span className="price" title='2,500,000,000'>
+                {'2,500,000,000'}
               </span>
+             
             </div>
-            <div>
+            <div className='divRow2'>
               <span className="date" title='1403/05/31'>
                 {'1403/05/31'}
               </span>
-              <span className="price" title='2,500,000,000'>
-                {'2,500,000,000'}
+              <span className="namber" title='1234567598413819'>
+                {'1234567598413819'}
               </span>
             </div>
           </div>
@@ -209,16 +211,17 @@ const RouteService = ({
               <span className="name" title='رویا  مکانیان'>
                 {' رویا'} {' '} {'مکانیان'}
               </span>
-              <span className="namber" title='1234567894523066'>
-                {'1234567894523066'}
+              <span className="price" title='200,000,000'>
+                {'200,000,000'}
               </span>
+              
             </div>
-            <div>
+            <div className='divRow2'>
               <span className="date" title='1403/06/31'>
                 {'1403/06/31'}
               </span>
-              <span className="price" title='200,000,000'>
-                {'200,000,000'}
+              <span className="namber" title='1234567894523066'>
+                {'1234567894523066'}
               </span>
             </div>
           </div>

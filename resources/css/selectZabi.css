@@ -206,6 +206,34 @@
 }
 
 /* مربوط به سکلت چک */
+.containerChekOption_SZabi div {
+    padding: 0 3px;
+    display: flex;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.containerChekOption_SZabi span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.containerChekOption_SZabi .name,
+.containerChekOption_SZabi .date{
+    width: 44%;
+}
+
+.containerChekOption_SZabi .namber,
+.containerChekOption_SZabi .price{
+    width: 56%;
+    text-align: left;
+}
+
+.titleSZ .containerChekOption_SZabi .divRow2 {
+    display: none;
+    background-color: green;
+}
 
 
 @media screen and (min-width:1200px) {
