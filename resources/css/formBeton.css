@@ -626,6 +626,7 @@
     padding: 3px 8px 2px 15px;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .mixerAptionSelectFB,

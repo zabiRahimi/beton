@@ -68,6 +68,13 @@ const Add = () => {
     const [how_to_pay, setHow_to_pay] = useState('');
     const [checkIsSelected, setCheckIsSelected] = useState(false);
     const [documentReceivableDisplay, setDocumentReceivableDisplay] = useState(false);
+    const [sandRemittanceDisplay, setSandRemittanceDisplay] = useState(false);
+    const [cementRemittanceDisplay, setcementRemittanceDisplay] = useState(false);
+
+    const [document_receivable_id, setDocument_receivable_id] = useState('');
+    const [sand_remittance_id, setSand_remittance_id] = useState('');
+    const [cement_remittance_id, setCement_remittance_id] = useState('');
+
     const [payType, setPayType] = useState(
         {
             display: false,
@@ -89,8 +96,6 @@ const Add = () => {
         year: ''
     });
 
-
-    
     const [input, setInput] = useState({
         customer_id: '',
         date: '',
@@ -167,6 +172,24 @@ const Add = () => {
         }
     }, [how_to_pay]);
 
+    useEffect(() => {
+        if (document_receivable_id) {
+            setInput(prev => ({ ...prev, document_receivable_id }));
+        }
+    }, [document_receivable_id]);
+
+    useEffect(() => {
+        if (sand_remittance_id) {
+            setInput(prev => ({ ...prev, sand_remittance_id }));
+        }
+    }, [sand_remittance_id]);
+
+    useEffect(() => {
+        if (cement_remittance_id) {
+            setInput(prev => ({ ...prev, cement_remittance_id }));
+        }
+    }, [cement_remittance_id]);
+
     // useEffect(() => {
     //     if (how_to_pay) {
     //         setCheckIsSelected(how_to_pay == 'وصول چک' ? true : false);
@@ -210,13 +233,10 @@ const Add = () => {
     // }, [how_to_pay]);
 
     const { customerOptions, dataCustomers, how_to_payOptions, documentReceivableOptions, } = RouteService({ setLoading, setTicketNumber, checkIsSelected, setDocumentReceivableDisplay, setPayType });
+    console.log(documentReceivableOptions);
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
 
-
-
     // const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
-
-
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
@@ -497,8 +517,95 @@ const Add = () => {
                             <div className="errorContainerFB elementError" id='how_to_payError' ref={how_to_payError}> </div>
                         </div>
                         {
-                            documentReceivableDisplay ?
-                                ''
+                            (documentReceivableDisplay || sandRemittanceDisplay || cementRemittanceDisplay) ?
+                                <>
+                                    {
+                                        documentReceivableDisplay &&
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label> چک </label>
+                                                <div
+                                                    id='document_receivable_id'
+                                                    className="element"
+                                                    onClick={e => { clearInputError(e, document_receivable_idError) }}
+                                                >
+                                                    <SelectZabi
+                                                        primaryLabel='انتخاب'
+                                                        options={documentReceivableOptions}
+                                                        saveOption={setDocument_receivable_id}
+                                                        // input={inputCustomerSearch}
+                                                        // optionsSearched={optionsCustomersSearched}
+                                                        // warning={customerSearchWarning}
+                                                        // elementWarning={elementCustomerSearchWarning}
+                                                        // clearSearch={handleClearAllSearchCustomer}
+                                                        ref={document_receivable_idRef}
+                                                    />
+                                                </div>
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id='document_receivable_idError' ref={document_receivable_idError}> </div>
+                                        </div>
+                                    }
+
+                                    {
+                                        sandRemittanceDisplay &&
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label> حواله شن و ماسه </label>
+                                                <div
+                                                    id='sand_remittance_id'
+                                                    className="element"
+                                                    onClick={e => { clearInputError(e, sand_remittance_idError) }}
+                                                >
+                                                    <SelectZabi2
+                                                        primaryLabel='انتخاب'
+                                                        options={customerOptions}
+                                                        saveOption={setSand_remittance_id}
+                                                        input={inputCustomerSearch}
+                                                        optionsSearched={optionsCustomersSearched}
+                                                        warning={customerSearchWarning}
+                                                        elementWarning={elementCustomerSearchWarning}
+                                                        clearSearch={handleClearAllSearchCustomer}
+                                                        ref={sand_remittance_idRef}
+                                                    />
+                                                </div>
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id='sand_remittance_idError' ref={sand_remittance_idError}> </div>
+                                        </div>
+                                    }
+
+                                    {
+                                        cementRemittanceDisplay &&
+                                        <div className="containerInputFB">
+                                            <div className="divInputFB">
+                                                <label> حواله سیمان </label>
+                                                <div
+                                                    id='cement_remittance_id'
+                                                    className="element"
+                                                    onClick={e => { clearInputError(e, cement_remittance_idError) }}
+                                                >
+                                                    <SelectZabi2
+                                                        primaryLabel='انتخاب'
+                                                        options={customerOptions}
+                                                        saveOption={setCustomer_id}
+                                                        input={inputCustomerSearch}
+                                                        optionsSearched={optionsCustomersSearched}
+                                                        warning={customerSearchWarning}
+                                                        elementWarning={elementCustomerSearchWarning}
+                                                        clearSearch={handleClearAllSearchCustomer}
+                                                        ref={cement_remittance_idRef}
+                                                    />
+                                                </div>
+                                                <i className="icofont-ui-rating starFB" />
+                                            </div>
+                                            <div className="errorContainerFB elementError" id='cement_remittance_idError' ref={cement_remittance_idError}> </div>
+                                        </div>
+                                    }
+                                </>
+
+
+
                                 : payType.display &&
                                 <>
                                     <div className="containerInputFB">
@@ -607,7 +714,7 @@ const Add = () => {
                                     </div>
 
                                     {
-                                       ( how_to_pay !=='حواله سیمان' && how_to_pay !=='حواله شن و ماسه') &&
+                                        (how_to_pay !== 'حواله سیمان' && how_to_pay !== 'حواله شن و ماسه') &&
                                         <>
                                             <div className="containerInputFB">
                                                 <div className="divInputFB">
