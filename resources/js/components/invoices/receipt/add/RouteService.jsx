@@ -73,11 +73,9 @@ const RouteService = ({
 
   useEffect(() => {
     if (!hasCalledFetchData.current) {
-      // fetchData();
+      fetchData();
       hasCalledFetchData.current = true;
     }
-    createDocumentReceivableOptions();
-    createSandRemittanceOptions();
     setLoading(false);
   }, []);
 
@@ -158,7 +156,7 @@ const RouteService = ({
   const fetchData = async () => {
 
     try {
-      const response = await axios.get("/api/v1/sandInvoice/fetchData")
+      const response = await axios.get("/api/v1/receipt/fetchData")
       const { count, customers, documentReceivables, sandRemittances, cementRemittances } = response.data;
       setTicketNumber(count + 1);
       createCustomerOptions(customers);
@@ -173,240 +171,116 @@ const RouteService = ({
     }
   };
 
-  const createCustomerOptions = (sandRemittances) => {
+  const createCustomerOptions = (customers) => {
     let options;
-    if (sandRemittances.length > 0) {
-      options = sandRemittances.map(data => ({
+    if (customers.length > 0) {
+      options = customers.map(data => ({
         value: data.id,
         html: <div className=" divRemittanceSelectFB"
           title={data.buyerName + ' ' + data.buyerLastName + ' ' + data.remittanceNumber}
         >
           <span className="mixerOwnerSelectFB buyerSelectFB">
-            {data.buyerName}
+            {data.name}
             {' '}
-            {data.buyerLastName}
+            {data.lastName}
           </span>
-          <span className='remittanceNumberFB' title={data.remittanceNumber}>
-            {data.remittanceNumber}
+          <span className='remittanceNumberFB' title={data.father}>
+            {data.father}
           </span>
         </div>
       }));
     } else {
-      options = notOption('هیچ حواله شن‌وماسه‌ای وجود ندارد');
+      options = notOption('مشتری وجود ندارد');
     }
-    setRemittanceOptions(options);
+    setCustomerOptions(options);
   }
 
-  const createDocumentReceivableOptions = () => {
+  const createDocumentReceivableOptions = (documentReceivables) => {
     let options;
-    // if (drviers.length > 0) {
-    if (true) {
-      // options = drviers.map(data => ({
-      options = [
-        {
-          value: 'data.id',
-          html: (
-            <div className="containerChekOption_SZabi">
-              <div>
-                <span className="name" title='ذبیح الله رحیمی'>
-                  {'ذبیح الله'} {' '} {'رحیمی'}
-                </span>
+    if (documentReceivables.length > 0) {
+      options = documentReceivables.map(data => ({
+        value: 'data.id',
+        html: (
+          <div className="containerChekOption_SZabi">
+            <div>
+              <span className="name" title='ذبیح الله رحیمی'>
+                {'ذبیح الله'} {' '} {'رحیمی'}
+              </span>
 
-                <span className="price" title='3,000,000,000'>
-                  {'3,000,000,000'}
-                </span>
+              <span className="price" title='3,000,000,000'>
+                {'3,000,000,000'}
+              </span>
 
-                <span className='unit'>
-                  تومان
-                </span>
-              </div>
-              <div className='divRow2'>
-                <span className="date" title='1403/01/31'>
-                  {'1403/01/31'}
-                </span>
-                <span className="namber" title='1234567898956145'>
-                  {'1234567898956145'}
-                </span>
-              </div>
+              <span className='unit'>
+                تومان
+              </span>
             </div>
-          )
-        },
-        {
-          value: 'data.id',
-          html: (
-            <div className="containerChekOption_SZabi">
-              <div>
-                <span className="name" title='میلاد زارع'>
-                  {'میلاد'} {' '} {'زارع'}
-                </span>
-                <span className="price" title='2,500,000,000'>
-                  {'2,500,000,000'}
-                </span>
-
-              </div>
-              <div className='divRow2'>
-                <span className="date" title='1403/05/31'>
-                  {'1403/05/31'}
-                </span>
-                <span className="namber" title='1234567598413819'>
-                  {'1234567598413819'}
-                </span>
-              </div>
+            <div className='divRow2'>
+              <span className="date" title='1403/01/31'>
+                {'1403/01/31'}
+              </span>
+              <span className="namber" title='1234567898956145'>
+                {'1234567898956145'}
+              </span>
             </div>
-          )
-        },
-        {
-          value: 'data.id',
-          html: (
-            <div className="containerChekOption_SZabi">
-              <div>
-                <span className="name" title='رویا  مکانیان'>
-                  {' رویا'} {' '} {'مکانیان'}
-                </span>
-                <span className="price" title='200,000,000'>
-                  {'200,000,000'}
-                </span>
-
-              </div>
-              <div className='divRow2'>
-                <span className="date" title='1403/06/31'>
-                  {'1403/06/31'}
-                </span>
-                <span className="namber" title='1234567894523066'>
-                  {'1234567894523066'}
-                </span>
-              </div>
-            </div>
-          )
-        },
-      ];
-      // }));
+          </div>
+        )
+      }));
     } else {
-      options = notOption('هیچ راننده ثبت شده‌ای وجود ندارد');
+      options = notOption('هیچ سند پرداختنی وجود ندارد');
     }
     setDocumentReceivableOptions(options);
   }
 
-  const createSandRemittanceOptions = () => {
+  const createSandRemittanceOptions = (sandRemittances) => {
     let options;
-    // if (drviers.length > 0) {
-    if (true) {
-      // options = drviers.map(data => ({
-      options = [
-        {
-          value: 'data.id',
-          html: (
-            <div className="containerChekOption_SZabi">
-              <div>
-                <span className="name" title='پدرام اسکندری'>
-                  {'پدرام'} {' '} {'اسکندری'}
-                </span>
+    if (sandRemittances.length > 0) {
+      options = sandRemittances.map(data => ({
+        value: 'data.id',
+        html: (
+          <div className="containerChekOption_SZabi">
+            <div>
+              <span className="name" title={`${data.buyerName}  ${data.buyerLastName}`}>
+                {data.buyerName} {' '} {data.buyerLastName}
+              </span>
 
-                <span className="price" title='3,000,000,000'>
-                  {'3,000,000,000'}
-                </span>
+              <span className="price" title={parseFloat(data.price).toLocaleString()}>
+                {parseFloat(data.price).toLocaleString()}
+              </span>
 
-                <span className='unit'>
-                  تومان
-                </span>
-              </div>
-              <div className='divRow2'>
-                <span className="date" title='1403/01/31'>
-                  {'1403/01/31'}
-                </span>
-                <span className="namber" title='1234567898956145'>
-                  {'1234567898956145'}
-                </span>
-              </div>
+              <span className='unit'>
+                تومان
+              </span>
             </div>
-          )
-        },
-        {
-          value: 'data.id',
-          html: (
-            <div className="containerChekOption_SZabi">
-              <div>
-                <span className="name" title='میلاد زارع'>
-                  {'میلاد'} {' '} {'زارع'}
-                </span>
-                <span className="price" title='2,500,000,000'>
-                  {'2,500,000,000'}
-                </span>
-
-              </div>
-              <div className='divRow2'>
-                <span className="date" title='1403/05/31'>
-                  {'1403/05/31'}
-                </span>
-                <span className="namber" title='1234567598413819'>
-                  {'1234567598413819'}
-                </span>
-              </div>
+            <div className='divRow2'>
+              <span className="date" title={data.date}>
+                {data.date}
+              </span>
+              <span className="namber" title={data.remittanceNumber}>
+                {data.remittanceNumber}
+              </span>
             </div>
-          )
-        },
-        {
-          value: 'data.id',
-          html: (
-            <div className="containerChekOption_SZabi">
-              <div>
-                <span className="name" title='رویا  مکانیان'>
-                  {' رویا'} {' '} {'مکانیان'}
-                </span>
-                <span className="price" title='200,000,000'>
-                  {'200,000,000'}
-                </span>
+          </div>
+        )
+      }));
 
-              </div>
-              <div className='divRow2'>
-                <span className="date" title='1403/06/31'>
-                  {'1403/06/31'}
-                </span>
-                <span className="namber" title='1234567894523066'>
-                  {'1234567894523066'}
-                </span>
-              </div>
-            </div>
-          )
-        },
-      ];
-      // }));
     } else {
       options = notOption('هیچ راننده ثبت شده‌ای وجود ندارد');
     }
     setSandRemittanceOptions(options);
   }
 
-  const createCementRemittanceOptions = (dumpTrucks) => {
+  const createCementRemittanceOptions = (cementRemittances) => {
     let options;
-    if (dumpTrucks.length > 0) {
-      options = dumpTrucks.map(data => {
-        let arr = data.numberplate.split('-');
-        return {
-          value: data.id,
-          value2: data.customer.id,
-          html: <div className="mixerAptionSelectFB">
-            <span className="mixerNamberpalteSelectFB">
-              <div className="numberplateDiv">
-                <span className="numberplateDivS1">{arr[0]}</span>
-                <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-                <span className="numberplateDivS3">{arr[1]}</span>
-                <span className="numberplateDivS4">{arr[2]}</span>
-              </div>
-            </span>
-            <span className="mixerOwnerSelectFB">
-              {data.customer.name}
-              {' '}
-              {data.customer.lastName}
-            </span>
+    if (cementRemittances.length > 0) {
+      options = cementRemittances.map(data => {
 
-          </div>
-        }
+
       });
     } else {
-      options = notOption('هیچ کمپرسی ثبت شده‌ای وجود ندارد');
+      options = notOption('حواله سیمان ثبت شده وجود ندارد');
     }
-    setDumpTruckOptions(options);
+    setCementRemittanceOptions(options);
   }
 
 

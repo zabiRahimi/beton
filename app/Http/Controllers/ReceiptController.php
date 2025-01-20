@@ -1,10 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Collection;
+
 
 use App\Models\Receipt;
 use App\Http\Requests\StoreReceiptRequest;
 use App\Http\Requests\UpdateReceiptRequest;
+use App\Models\Customer;
+use App\Models\SandRemittance;
+use Illuminate\Http\JsonResponse;
 
 class ReceiptController extends Controller
 {
@@ -62,5 +67,48 @@ class ReceiptController extends Controller
     public function destroy(Receipt $receipt)
     {
         //
+    }
+
+    public function fetchData() : JsonResponse {
+        $count = $this->count();
+        $customers = $this->customers();
+        $documentReceivables = $this->documentReceivables();
+        $sandRemittances = $this->sandRemittances();
+        $cementRemittances = $this->cementRemittances();
+        return response()->json([
+            'count' => $count,
+            'customers' => $customers,
+            'documentReceivables' => $documentReceivables,
+            'sandRemittances' => $sandRemittances,
+            'cementRemittances' => $cementRemittances,
+            
+        ]);
+    }
+
+    private function count(): int
+    {
+        return Receipt::count();
+    }
+
+    private function customers (): Collection {
+        return Customer::get();
+    }
+
+    private function documentReceivables()
+    {
+        // return DocumentReceivable::get();
+        return null;
+    }
+
+    private function sandRemittances()
+    {
+        return SandRemittance::get();
+    }
+
+    private function cementRemittances()
+    {
+        // return CementRemittance::get();
+        return null;
+
     }
 }

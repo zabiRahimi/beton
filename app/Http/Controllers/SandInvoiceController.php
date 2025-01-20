@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 namespace App\Http\Controllers;
  use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 use App\Http\Requests\GetSandInvoiceRequest;
 use App\Models\SandInvoice;
 use App\Http\Requests\StoreSandInvoiceRequest;
@@ -304,7 +305,7 @@ class SandInvoiceController extends Controller
         ]);
     }
 
-    private function count()
+    private function count(): int
     {
         return SandInvoice::count();
     }
@@ -314,7 +315,7 @@ class SandInvoiceController extends Controller
         return SandRemittance::where('isCompleted', true)->get();
     }
 
-    private function dumpTrucks()
+    private function dumpTrucks(): Collection
     {
         return Truck::dumpTrucks()->get();
     }

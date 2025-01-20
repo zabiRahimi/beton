@@ -11,6 +11,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonnelSlipController;
 use App\Http\Controllers\ProformaInvoiceController;
+use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\SandInvoiceController;
 use App\Http\Controllers\SandRemittanceController;
 use App\Http\Controllers\SandStoreController;
@@ -134,38 +135,20 @@ Route::controller(SandRemittanceController::class)->group(function () {
 Route::resource('sandInvoices', SandInvoiceController::class);
 
 Route::controller(SandInvoiceController::class)->group(function () {
-    
-    // Route::post('/addSandInvoice', 'store');
-    // Route::get('/getSandInvoices', 'index');
     Route::get('/sandInvoice/fetchData', 'fetchData');
     Route::get('/sandInvoice/fetchDataForSearch', 'fetchDataForSearch');
-    
-    // Route::get('/sandInvoice/getSandSellers', 'getSandSellers');
-    // Route::get('/sandInvoice/getSandStores', 'getSandStores');
-    // Route::get('/getCSIConcretes', 'getCSIConcretes');
-    // Route::get('/getCSIMixers', 'getCSIMixers');
-    // Route::get('/getCSIDrivers', 'getCSIDrivers');
-    // Route::get('/getCSICementStores', 'getCSICementStores');
-    // Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
-
 });
 
 Route::apiResource('proformaInvoices', ProformaInvoiceController::class);
 
 Route::controller(ProformaInvoiceController::class)->group(function () {
-    
-    // Route::post('/addSandInvoice', 'store');
-    // Route::get('/getSandInvoices', 'index');
     Route::get('/proformaInvoice/show/{id}', 'showInvoice');
-    
-    // Route::get('/sandInvoice/getSandSellers', 'getSandSellers');
-    // Route::get('/sandInvoice/getSandStores', 'getSandStores');
-    // Route::get('/getCSIConcretes', 'getCSIConcretes');
-    // Route::get('/getCSIMixers', 'getCSIMixers');
-    // Route::get('/getCSIDrivers', 'getCSIDrivers');
-    // Route::get('/getCSICementStores', 'getCSICementStores');
-    // Route::patch('/editConcreteSalesInvoice/{concreteSalesInvoice}', 'update');
+});
 
+Route::apiResource('receipts', ReceiptController::class);
+
+Route::controller(ReceiptController::class)->group(function () {
+    Route::get('/receipt/fetchData', 'fetchData');
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
