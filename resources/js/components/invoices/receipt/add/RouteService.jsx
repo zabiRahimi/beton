@@ -167,6 +167,10 @@ const RouteService = ({
               <span className="price" title='3,000,000,000'>
                 {'3,000,000,000'}
               </span>
+
+              <span className='unit'>
+                تومان
+              </span>
             </div>
             <div className='divRow2'>
               <span className="date" title='1403/01/31'>
