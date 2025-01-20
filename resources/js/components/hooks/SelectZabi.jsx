@@ -12,7 +12,6 @@ const SelectZabi = forwardRef(({ options, optionsSearch, primaryLabel, saveOptio
         }
     }));
 
-
     const returnOptions = () => {
         let vals;
         vals = options.map((val, i) => {

@@ -173,6 +173,7 @@ const Add = () => {
                 setPayType(payTypeConfig);
             }
             setInput(prev => ({ ...prev, how_to_pay }));
+            setHow_to_pay('');
         }
     }, [how_to_pay]);
 
@@ -237,10 +238,21 @@ const Add = () => {
     // }, [how_to_pay]);
 
     const { customerOptions, dataCustomers, how_to_payOptions, documentReceivableOptions, sandRemittanceOptions,
-        cementRemittanceOptions, } = RouteService({ setLoading, setTicketNumber, checkIsSelected,sandIsSelected,
-        cementIsSelected, setDocumentReceivableDisplay,setSandRemittanceDisplay,
-        setCementRemittanceDisplay, setPayType });
-    console.log(documentReceivableOptions);
+        cementRemittanceOptions, } = RouteService({
+            setLoading,
+            setTicketNumber,
+            checkIsSelected,
+            setCheckIsSelected,
+            sandIsSelected,
+            setSandIsSelected,
+            cementIsSelected,
+            setCementIsSelected,
+            setDocumentReceivableDisplay,
+            setSandRemittanceDisplay,
+            setCementRemittanceDisplay,
+            setPayType
+        });
+
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
 
     // const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
@@ -510,7 +522,7 @@ const Add = () => {
                                 <div
                                     id='how_to_pay'
                                     className="element"
-                                    onClick={e => { clearInputError(e, how_to_payError) }}
+                                    onClick={e => { clearInputError(e, how_to_payError); }}
                                 >
                                     <SelectZabi
                                         primaryLabel='انتخاب'
@@ -534,7 +546,7 @@ const Add = () => {
                                                 <div
                                                     id='document_receivable_id'
                                                     className="element"
-                                                    onClick={e => { clearInputError(e, document_receivable_idError) }}
+                                                    onClick={e => { clearInputError(e, document_receivable_idError); }}
                                                 >
                                                     <SelectZabi
                                                         primaryLabel='انتخاب'
@@ -595,7 +607,7 @@ const Add = () => {
                                                     <SelectZabi2
                                                         primaryLabel='انتخاب'
                                                         options={cementRemittanceOptions}
-                                                        saveOption={set_id}
+                                                        saveOption={setCement_remittance_id}
                                                         // input={inputCustomerSearch}
                                                         // optionsSearched={optionsCustomersSearched}
                                                         // warning={customerSearchWarning}

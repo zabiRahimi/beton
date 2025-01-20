@@ -7,8 +7,11 @@ const RouteService = ({
   setLoading,
   setTicketNumber,
   checkIsSelected,
+  setCheckIsSelected,
   sandIsSelected,
+  setSandIsSelected,
   cementIsSelected,
+  setCementIsSelected,
   setDocumentReceivableDisplay,
   setSandRemittanceDisplay,
   setCementRemittanceDisplay,
@@ -105,12 +108,14 @@ const RouteService = ({
             dateLabel: 'تاریخ چک',
             numberLabel: 'شماره چک',
             ownerLabel: 'صاحب چک'
-          })
+          });
         }
+      }).finally(() => {
+        setCheckIsSelected(false);
       });
     }
 
-  }, [checkIsSelected]);
+  }, [checkIsSelected,]);
 
   useEffect(() => {
     if (sandIsSelected) {
@@ -141,6 +146,8 @@ const RouteService = ({
             ownerLabel: 'خریدار حواله'
           })
         }
+      }).finally(() => {
+        setSandIsSelected(false);
       });
     }
 
@@ -292,7 +299,7 @@ const RouteService = ({
             <div className="containerChekOption_SZabi">
               <div>
                 <span className="name" title='پدرام اسکندری'>
-                  {'ذبیح الله'} {' '} {'رحیمی'}
+                  {'پدرام'} {' '} {'اسکندری'}
                 </span>
 
                 <span className="price" title='3,000,000,000'>
