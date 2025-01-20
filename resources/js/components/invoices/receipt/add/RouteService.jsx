@@ -7,7 +7,11 @@ const RouteService = ({
   setLoading,
   setTicketNumber,
   checkIsSelected,
+  sandIsSelected,
+  cementIsSelected,
   setDocumentReceivableDisplay,
+  setSandRemittanceDisplay,
+  setCementRemittanceDisplay,
   setPayType
 }) => {
 
@@ -70,12 +74,15 @@ const RouteService = ({
       hasCalledFetchData.current = true;
     }
     createDocumentReceivableOptions();
+    createSandRemittanceOptions();
     setLoading(false);
   }, []);
 
 
   useEffect(() => {
     if (checkIsSelected) {
+      setSandRemittanceDisplay(false);
+      setCementRemittanceOptions(false);
       MySwal.fire({
         icon: "info",
         showCancelButton: true,
@@ -94,16 +101,50 @@ const RouteService = ({
         else if (result.dismiss === Swal.DismissReason.cancel) {
           setDocumentReceivableDisplay(false);
           setPayType({
-            display:true,
-            dateLabel:'تاریخ چک',
-            numberLabel:'شماره چک',
-            ownerLabel:'صاحب چک'
+            display: true,
+            dateLabel: 'تاریخ چک',
+            numberLabel: 'شماره چک',
+            ownerLabel: 'صاحب چک'
           })
         }
       });
     }
 
   }, [checkIsSelected]);
+
+  useEffect(() => {
+    if (sandIsSelected) {
+      setDocumentReceivableDisplay(false);
+      setCementRemittanceOptions(false);
+      MySwal.fire({
+        icon: "info",
+        showCancelButton: true,
+        title: "آیا حواله ثبت شده است؟",
+        confirmButtonText: " ثبت شده ",
+        cancelButtonText: 'ثبت نشده',
+
+        customClass: {
+
+        },
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setSandRemittanceDisplay(true);
+
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+          setSandRemittanceDisplay(false);
+          setPayType({
+            display: true,
+            dateLabel: 'تاریخ ',
+            numberLabel: 'شماره حوله',
+            ownerLabel: 'خریدار حواله'
+          })
+        }
+      });
+    }
+
+  }, [sandIsSelected]);
 
 
 
@@ -156,82 +197,82 @@ const RouteService = ({
       // options = drviers.map(data => ({
       options = [
         {
-        value: 'data.id',
-        html: (
-          <div className="containerChekOption_SZabi">
-            <div>
-              <span className="name" title='ذبیح الله رحیمی'>
-                {'ذبیح الله'} {' '} {'رحیمی'}
-              </span>
-              
-              <span className="price" title='3,000,000,000'>
-                {'3,000,000,000'}
-              </span>
+          value: 'data.id',
+          html: (
+            <div className="containerChekOption_SZabi">
+              <div>
+                <span className="name" title='ذبیح الله رحیمی'>
+                  {'ذبیح الله'} {' '} {'رحیمی'}
+                </span>
 
-              <span className='unit'>
-                تومان
-              </span>
+                <span className="price" title='3,000,000,000'>
+                  {'3,000,000,000'}
+                </span>
+
+                <span className='unit'>
+                  تومان
+                </span>
+              </div>
+              <div className='divRow2'>
+                <span className="date" title='1403/01/31'>
+                  {'1403/01/31'}
+                </span>
+                <span className="namber" title='1234567898956145'>
+                  {'1234567898956145'}
+                </span>
+              </div>
             </div>
-            <div className='divRow2'>
-              <span className="date" title='1403/01/31'>
-                {'1403/01/31'}
-              </span>
-              <span className="namber" title='1234567898956145'>
-                {'1234567898956145'}
-              </span>
+          )
+        },
+        {
+          value: 'data.id',
+          html: (
+            <div className="containerChekOption_SZabi">
+              <div>
+                <span className="name" title='میلاد زارع'>
+                  {'میلاد'} {' '} {'زارع'}
+                </span>
+                <span className="price" title='2,500,000,000'>
+                  {'2,500,000,000'}
+                </span>
+
+              </div>
+              <div className='divRow2'>
+                <span className="date" title='1403/05/31'>
+                  {'1403/05/31'}
+                </span>
+                <span className="namber" title='1234567598413819'>
+                  {'1234567598413819'}
+                </span>
+              </div>
             </div>
-          </div>
-        )
-      },
-      {
-        value: 'data.id',
-        html: (
-          <div className="containerChekOption_SZabi">
-            <div>
-              <span className="name" title='میلاد زارع'>
-                {'میلاد'} {' '} {'زارع'}
-              </span>
-              <span className="price" title='2,500,000,000'>
-                {'2,500,000,000'}
-              </span>
-             
+          )
+        },
+        {
+          value: 'data.id',
+          html: (
+            <div className="containerChekOption_SZabi">
+              <div>
+                <span className="name" title='رویا  مکانیان'>
+                  {' رویا'} {' '} {'مکانیان'}
+                </span>
+                <span className="price" title='200,000,000'>
+                  {'200,000,000'}
+                </span>
+
+              </div>
+              <div className='divRow2'>
+                <span className="date" title='1403/06/31'>
+                  {'1403/06/31'}
+                </span>
+                <span className="namber" title='1234567894523066'>
+                  {'1234567894523066'}
+                </span>
+              </div>
             </div>
-            <div className='divRow2'>
-              <span className="date" title='1403/05/31'>
-                {'1403/05/31'}
-              </span>
-              <span className="namber" title='1234567598413819'>
-                {'1234567598413819'}
-              </span>
-            </div>
-          </div>
-        )
-      },
-      {
-        value: 'data.id',
-        html: (
-          <div className="containerChekOption_SZabi">
-            <div>
-              <span className="name" title='رویا  مکانیان'>
-                {' رویا'} {' '} {'مکانیان'}
-              </span>
-              <span className="price" title='200,000,000'>
-                {'200,000,000'}
-              </span>
-              
-            </div>
-            <div className='divRow2'>
-              <span className="date" title='1403/06/31'>
-                {'1403/06/31'}
-              </span>
-              <span className="namber" title='1234567894523066'>
-                {'1234567894523066'}
-              </span>
-            </div>
-          </div>
-        )
-      },
-    ];
+          )
+        },
+      ];
       // }));
     } else {
       options = notOption('هیچ راننده ثبت شده‌ای وجود ندارد');
@@ -239,28 +280,94 @@ const RouteService = ({
     setDocumentReceivableOptions(options);
   }
 
-  const createSandRemittanceOptions = (sandRemittances) => {
+  const createSandRemittanceOptions = () => {
     let options;
-    if (sandRemittances.length > 0) {
-      options = sandRemittances.map(data => ({
-        value: data.id,
-        html: <div className=" divRemittanceSelectFB"
-          title={data.buyerName + ' ' + data.buyerLastName + ' ' + data.remittanceNumber}
-        >
-          <span className="mixerOwnerSelectFB buyerSelectFB">
-            {data.buyerName}
-            {' '}
-            {data.buyerLastName}
-          </span>
-          <span className='remittanceNumberFB' title={data.remittanceNumber}>
-            {data.remittanceNumber}
-          </span>
-        </div>
-      }));
+    // if (drviers.length > 0) {
+    if (true) {
+      // options = drviers.map(data => ({
+      options = [
+        {
+          value: 'data.id',
+          html: (
+            <div className="containerChekOption_SZabi">
+              <div>
+                <span className="name" title='پدرام اسکندری'>
+                  {'ذبیح الله'} {' '} {'رحیمی'}
+                </span>
+
+                <span className="price" title='3,000,000,000'>
+                  {'3,000,000,000'}
+                </span>
+
+                <span className='unit'>
+                  تومان
+                </span>
+              </div>
+              <div className='divRow2'>
+                <span className="date" title='1403/01/31'>
+                  {'1403/01/31'}
+                </span>
+                <span className="namber" title='1234567898956145'>
+                  {'1234567898956145'}
+                </span>
+              </div>
+            </div>
+          )
+        },
+        {
+          value: 'data.id',
+          html: (
+            <div className="containerChekOption_SZabi">
+              <div>
+                <span className="name" title='میلاد زارع'>
+                  {'میلاد'} {' '} {'زارع'}
+                </span>
+                <span className="price" title='2,500,000,000'>
+                  {'2,500,000,000'}
+                </span>
+
+              </div>
+              <div className='divRow2'>
+                <span className="date" title='1403/05/31'>
+                  {'1403/05/31'}
+                </span>
+                <span className="namber" title='1234567598413819'>
+                  {'1234567598413819'}
+                </span>
+              </div>
+            </div>
+          )
+        },
+        {
+          value: 'data.id',
+          html: (
+            <div className="containerChekOption_SZabi">
+              <div>
+                <span className="name" title='رویا  مکانیان'>
+                  {' رویا'} {' '} {'مکانیان'}
+                </span>
+                <span className="price" title='200,000,000'>
+                  {'200,000,000'}
+                </span>
+
+              </div>
+              <div className='divRow2'>
+                <span className="date" title='1403/06/31'>
+                  {'1403/06/31'}
+                </span>
+                <span className="namber" title='1234567894523066'>
+                  {'1234567894523066'}
+                </span>
+              </div>
+            </div>
+          )
+        },
+      ];
+      // }));
     } else {
-      options = notOption('هیچ حواله شن‌وماسه‌ای وجود ندارد');
+      options = notOption('هیچ راننده ثبت شده‌ای وجود ندارد');
     }
-    setRemittanceOptions(options);
+    setSandRemittanceOptions(options);
   }
 
   const createCementRemittanceOptions = (dumpTrucks) => {

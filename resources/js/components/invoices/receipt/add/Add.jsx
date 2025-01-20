@@ -67,9 +67,11 @@ const Add = () => {
     const [customer_id, setCustomer_id] = useState('');
     const [how_to_pay, setHow_to_pay] = useState('');
     const [checkIsSelected, setCheckIsSelected] = useState(false);
+    const [sandIsSelected, setSandIsSelected] = useState(false);
+    const [cementIsSelected, setCementIsSelected] = useState(false);
     const [documentReceivableDisplay, setDocumentReceivableDisplay] = useState(false);
     const [sandRemittanceDisplay, setSandRemittanceDisplay] = useState(false);
-    const [cementRemittanceDisplay, setcementRemittanceDisplay] = useState(false);
+    const [cementRemittanceDisplay, setCementRemittanceDisplay] = useState(false);
 
     const [document_receivable_id, setDocument_receivable_id] = useState('');
     const [sand_remittance_id, setSand_remittance_id] = useState('');
@@ -164,6 +166,8 @@ const Add = () => {
     useEffect(() => {
         if (how_to_pay) {
             setCheckIsSelected(how_to_pay === 'وصول چک');
+            setSandIsSelected(how_to_pay === 'حواله شن و ماسه');
+            setCementIsSelected(how_to_pay === 'حواله سیمان');
             const payTypeConfig = paymentOptions[how_to_pay];
             if (payTypeConfig) {
                 setPayType(payTypeConfig);
@@ -232,7 +236,10 @@ const Add = () => {
     //     }
     // }, [how_to_pay]);
 
-    const { customerOptions, dataCustomers, how_to_payOptions, documentReceivableOptions, } = RouteService({ setLoading, setTicketNumber, checkIsSelected, setDocumentReceivableDisplay, setPayType });
+    const { customerOptions, dataCustomers, how_to_payOptions, documentReceivableOptions, sandRemittanceOptions,
+        cementRemittanceOptions, } = RouteService({ setLoading, setTicketNumber, checkIsSelected,sandIsSelected,
+        cementIsSelected, setDocumentReceivableDisplay,setSandRemittanceDisplay,
+        setCementRemittanceDisplay, setPayType });
     console.log(documentReceivableOptions);
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
 
@@ -557,15 +564,15 @@ const Add = () => {
                                                     className="element"
                                                     onClick={e => { clearInputError(e, sand_remittance_idError) }}
                                                 >
-                                                    <SelectZabi2
+                                                    <SelectZabi
                                                         primaryLabel='انتخاب'
-                                                        options={customerOptions}
+                                                        options={sandRemittanceOptions}
                                                         saveOption={setSand_remittance_id}
-                                                        input={inputCustomerSearch}
-                                                        optionsSearched={optionsCustomersSearched}
-                                                        warning={customerSearchWarning}
-                                                        elementWarning={elementCustomerSearchWarning}
-                                                        clearSearch={handleClearAllSearchCustomer}
+                                                        // input={inputCustomerSearch}
+                                                        // optionsSearched={optionsCustomersSearched}
+                                                        // warning={customerSearchWarning}
+                                                        // elementWarning={elementCustomerSearchWarning}
+                                                        // clearSearch={handleClearAllSearchCustomer}
                                                         ref={sand_remittance_idRef}
                                                     />
                                                 </div>
@@ -587,13 +594,13 @@ const Add = () => {
                                                 >
                                                     <SelectZabi2
                                                         primaryLabel='انتخاب'
-                                                        options={customerOptions}
-                                                        saveOption={setCustomer_id}
-                                                        input={inputCustomerSearch}
-                                                        optionsSearched={optionsCustomersSearched}
-                                                        warning={customerSearchWarning}
-                                                        elementWarning={elementCustomerSearchWarning}
-                                                        clearSearch={handleClearAllSearchCustomer}
+                                                        options={cementRemittanceOptions}
+                                                        saveOption={set_id}
+                                                        // input={inputCustomerSearch}
+                                                        // optionsSearched={optionsCustomersSearched}
+                                                        // warning={customerSearchWarning}
+                                                        // elementWarning={elementCustomerSearchWarning}
+                                                        // clearSearch={handleClearAllSearchCustomer}
                                                         ref={cement_remittance_idRef}
                                                     />
                                                 </div>
