@@ -19,6 +19,7 @@ import {
     handleTotalPriceCalculation,
     handleTotalFareCalculation
 } from './Helper';
+import SearchDocumentsAndRemittancesSelect from './searchSelectZabi/SearchDocumentsAndRemittancesSelect';
 
 const Add = () => {
     const MySwal = withReactContent(Swal);
@@ -242,11 +243,11 @@ const Add = () => {
         dataCustomers,
         how_to_payOptions,
         documentReceivableOptions,
-        dataDocumentReceivable,
+        dataDocumentReceivables,
         sandRemittanceOptions,
-        dataSandRemittance,
+        dataSandRemittances,
         cementRemittanceOptions,
-        dataCementRemittance,
+        dataCementRemittances,
     } = RouteService({
         setLoading,
         setTicketNumber,
@@ -264,10 +265,38 @@ const Add = () => {
 
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
 
-    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDocumentsAndRemittancesSelect({
-         dataDocumentReceivable,
-         type:'check' 
-        });
+    const {
+        inputDoReSearch: inputCheckSearch,
+        optionsDoReSearched: optionsCheckSearched,
+        doReSearchWarning: checkSearchWarning,
+        elementDoReSearchWarning:elementCheckSearchWarning,
+        handleClearAllSearchDoRe:handleClearAllSearchCheck
+    } = SearchDocumentsAndRemittancesSelect({
+        dataDoRes:dataDocumentReceivables,
+        type: 'check'
+    });
+
+    const {
+        inputDoReSearch: inputSandRemittanceSearch,
+        optionsDoReSearched: optionsSandRemittanceSearched,
+        doReSearchWarning: sandRemittanceSearchWarning,
+        elementDoReSearchWarning:elementSandRemittanceSearchWarning,
+        handleClearAllSearchDoRe:handleClearAllSearchSandRemittance
+    } = SearchDocumentsAndRemittancesSelect({
+        dataDoRes:dataSandRemittances,
+        type: 'remittance'
+    });
+
+    const {
+        inputDoReSearch: inputCementRemittanceSearch,
+        optionsDoReSearched: optionsCementRemittanceSearched,
+        doReSearchWarning: cementRemittanceSearchWarning,
+        elementDoReSearchWarning:elementCementRemittanceSearchWarning,
+        handleClearAllSearchDoRe:handleClearAllSearchCementRemittance
+    } = SearchDocumentsAndRemittancesSelect({
+        dataDoRes:dataCementRemittances,
+        type: 'remittance'
+    });
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;

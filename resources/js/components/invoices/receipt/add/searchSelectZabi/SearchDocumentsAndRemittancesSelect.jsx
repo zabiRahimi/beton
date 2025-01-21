@@ -13,21 +13,21 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const [doReSearchWarning, setDoReSearchWarning] = useState();
     const [warning, setWarning] = useState();
     const [label, setLabel] = useState({
-        id:'',
-        number:''
+        id: '',
+        number: ''
     })
 
     const labels = {
-        'check':{
-            id:'شناسه چک',
-            number:'شماره چک'
+        'check': {
+            id: 'شناسه چک',
+            number: 'شماره چک'
 
         }
     }
 
     useEffect(() => {
         if (type) {
-           
+
             const typeConfig = paymentOptions[type];
             if (typeConfig) {
                 setLabel(typeConfig);
@@ -63,17 +63,28 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
             const doReFound = [dataDoRes.find(obj => obj.id === id)];
             if (doReFound[0] != undefined) {
                 const optionsFound = doReFound.map((data, i) => {
+                    const adjustedData = type === 'check' ?
+                        {
+                            name: data.ownerName,
+                            lastName: data.ownerLastName,
+                            number: data.checkNumber
+                        } :
+                        {
+                            name: data.buyerName,
+                            lastName: data.buyerLastName,
+                            number: remittanceNumber
+                        };
                     return {
-                        value: 'data.id',
+                        value: data.id,
                         html: (
                             <div className="containerChekOption_SZabi">
                                 <div>
-                                    <span className="name" title='ذبیح الله رحیمی'>
-                                        {'ذبیح الله'} {' '} {'رحیمی'}
+                                    <span className="name" title={`${adjustedData.name}  ${adjustedData.lastName}`}>
+                                        {adjustedData.name} {' '} {adjustedData.lastName}
                                     </span>
 
                                     <span className="price" title='3,000,000,000'>
-                                        {'3,000,000,000'}
+                                        {data.price}
                                     </span>
 
                                     <span className='unit'>
@@ -82,10 +93,10 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                                 </div>
                                 <div className='divRow2'>
                                     <span className="date" title='1403/01/31'>
-                                        {'1403/01/31'}
+                                        {data.date}
                                     </span>
-                                    <span className="namber" title='1234567898956145'>
-                                        {'1234567898956145'}
+                                    <span className="number" title={adjustedData.number}>
+                                        {adjustedData.number}
                                     </span>
                                 </div>
                             </div>
@@ -214,7 +225,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
             .map(item => item.id);
     };
 
-    
+
 
     const handleSearchByNumberplate = () => {
         if (numberplate.left || numberplate.alphabet || numberplate.mid || numberplate.right) {
@@ -284,7 +295,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
      * این متد در کامپوننت سلکت و هنگامی که کاربر آپشنی را انتخاب کند و یا از سلکت خارج شود
      * فراخوانی می‌شود
      */
-    const handleClearAllSearchMixer = () => {
+    const handleClearAllSearchDoRe = () => {
         setId();
         setOwnerId();
         handleClearInput('ownerId_doRe');
@@ -437,7 +448,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         optionsDoReSearched,
         doReSearchWarning,
         elementDoReSearchWarning,
-        handleClearAllSearchMixer
+        handleClearAllSearchDoRe
     };
 }
 

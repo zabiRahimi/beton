@@ -24,8 +24,11 @@ const RouteService = ({
   const [customerOptions, setCustomerOptions] = useState('');
   const [dataCustomers, setDataCustomers] = useState('');
   const [documentReceivableOptions, setDocumentReceivableOptions] = useState('');
+  const [dataDocumentReceivables, setDataDocumentReceivables] = useState('');
   const [sandRemittanceOptions, setSandRemittanceOptions] = useState('');
+  const [dataSandRemittances, setDataSandRemittances] = useState('');
   const [cementRemittanceOptions, setCementRemittanceOptions] = useState('');
+  const [dataCementRemittances, setDataCementRemittances] = useState('');
   const how_to_payOptions = [
     {
       value: 'پول نقد',
@@ -183,12 +186,18 @@ const RouteService = ({
       const response = await axios.get("/api/v1/receipt/fetchData")
       const { count, customers, documentReceivables, sandRemittances, cementRemittances } = response.data;
       setTicketNumber(count + 1);
+
       createCustomerOptions(customers);
       setDataCustomers(customers);
+
       createDocumentReceivableOptions(documentReceivables);
-      console.log(sandRemittances);
+      setDataDocumentReceivables(documentReceivables);
+
       createSandRemittanceOptions(sandRemittances);
+      setDataSandRemittances(sandRemittances);
+
       createCementRemittanceOptions(cementRemittances);
+      setDataCementRemittances(cementRemittances);
     } catch (error) {
       console.error("Error fetching data for sandRemittance count in component Add:", error);
     } finally {
@@ -244,7 +253,7 @@ const RouteService = ({
               <span className="date" title='1403/01/31'>
                 {'1403/01/31'}
               </span>
-              <span className="namber" title='1234567898956145'>
+              <span className="number" title='1234567898956145'>
                 {'1234567898956145'}
               </span>
             </div>
@@ -281,7 +290,7 @@ const RouteService = ({
               <span className="date" title={data.date}>
                 {data.date}
               </span>
-              <span className="namber" title={data.remittanceNumber}>
+              <span className="number" title={data.remittanceNumber}>
                 {data.remittanceNumber}
               </span>
             </div>
@@ -324,8 +333,11 @@ const RouteService = ({
     dataCustomers,
     how_to_payOptions,
     documentReceivableOptions,
+    dataDocumentReceivables,
     sandRemittanceOptions,
-    cementRemittanceOptions
+    dataSandRemittances,
+    cementRemittanceOptions,
+    dataCementRemittances
   };
 };
 export default RouteService;

@@ -236,17 +236,17 @@
     width: 35%;
 }
 
-.containerChekOption_SZabi .namber {
+.containerChekOption_SZabi .number {
     flex-grow: 1;
     border-bottom: 1px solid #76ab76;
     border-radius: 0 0 0 5px;
 }
 
-.containerChekOption_SZabi:hover .namber {
+.containerChekOption_SZabi:hover .number {
     background-color: #4f4ffa;
 }
 
-.containerChekOption_SZabi .namber,
+.containerChekOption_SZabi .number,
 .containerChekOption_SZabi .price {
 
     text-align: left;
