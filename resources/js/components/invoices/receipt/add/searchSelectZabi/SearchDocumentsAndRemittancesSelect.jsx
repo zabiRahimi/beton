@@ -288,10 +288,10 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                             />
                         </div>
                         <div className="row_SZ">
-                            
+
                             <div className="divDate_SZ">
                                 <input type="text" className="day" placeholder="روز" />
-                                <input type="text" className="month" placeholder="ماه"/>
+                                <input type="text" className="month" placeholder="ماه" />
                                 <input type="text" className="year" placeholder="سال" />
                             </div>
 

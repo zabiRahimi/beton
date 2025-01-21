@@ -154,7 +154,7 @@
 }
 
 .row_SZ .divDate_SZ{
-    width: 30%;
+    width: 40%;
     display: flex;
 }
 
@@ -164,11 +164,11 @@
 }
 .row_SZ .divDate_SZ .month{}
 .row_SZ .divDate_SZ .year{
-    flex-grow: 1;
+    width: 40%;
 }
 
 .row_SZ .price{
-    flex-grow: 1;
+    width: 60%;
     background-color: green;
 }
 
