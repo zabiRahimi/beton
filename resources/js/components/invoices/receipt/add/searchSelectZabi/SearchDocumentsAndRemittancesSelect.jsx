@@ -20,15 +20,20 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const labels = {
         'check': {
             id: 'شناسه چک',
+            owner: 'صاحب حواله',
             number: 'شماره چک'
-
+        },
+        'remittance': {
+            id: 'شناسه حواله',
+            owner: 'خریدار حواله',
+            number: 'شماره حواله'
         }
     }
 
     useEffect(() => {
         if (type) {
 
-            const typeConfig = paymentOptions[type];
+            const typeConfig = labels[type];
             if (typeConfig) {
                 setLabel(typeConfig);
             }
@@ -225,55 +230,6 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
             .map(item => item.id);
     };
 
-
-
-    const handleSearchByNumberplate = () => {
-        if (numberplate.left || numberplate.alphabet || numberplate.mid || numberplate.right) {
-            const filteredMixers = dataDoRes.filter(item => {
-                const [leftPart, midPart, rightPart, alphabetPart] = item.numberplate.split('-');
-                return (
-                    (numberplate.left === '' || leftPart.includes(numberplate.left)) &&
-                    (numberplate.alphabet === '' || alphabetPart === numberplate.alphabet) &&
-                    (numberplate.mid === '' || midPart.includes(numberplate.mid)) &&
-                    (numberplate.right === '' || rightPart.includes(numberplate.right))
-                );
-            });
-            if (filteredMixers.length > 0) {
-                const optionsFound = filteredMixers.map((data, i) => {
-                    let arr = data.numberplate.split('-');
-                    return {
-                        value: data.id,
-                        value2: data.customer.id,
-                        html: <div key={i} className="mixerAptionSelectFB">
-                            <span className="mixerNamberpalteSelectFB">
-                                <div className="numberplateDiv">
-                                    <span className="numberplateDivS1">{arr[0]}</span>
-                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-                                    <span className="numberplateDivS3">{arr[1]}</span>
-                                    <span className="numberplateDivS4">{arr[2]}</span>
-                                </div>
-                            </span>
-
-                            <span className="mixerOwnerSelectFB">
-                                {data.customer.name}
-                                {' '}
-                                {data.customer.lastName}
-                            </span>
-
-                        </div>
-                    }
-                });
-                setOptionsDoReSearched(optionsFound);
-            } else {
-                setOptionsDoReSearched();
-                handleThrowWarning('نتیجه‌ای یافت نشد');
-            }
-
-        } else {
-            setOptionsDoReSearched();
-        }
-    }
-
     const handleClearInput = (className) => {
         const element = document.querySelectorAll(`.${className}`);
         element.forEach(input => {
@@ -309,113 +265,51 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     useEffect(() => {
         if (dataDoRes && dataDoRes.length > 0) {
             setInputDoReSearch([{
-                html: <div className="mainSearchMixerACSI_SZ">
-                    <div className="DInputsMixersACSI_SZ">
-                        <div className="DIdsInputsMixersACSI_SZ">
+                html:
+                    <>
+                        <div className="row_SZ">
+                            <div className="DIdsInputsMixersACSI_SZ">
+                                <input
+                                    type="text"
+                                    className="ownerId_doRe"
+                                    placeholder={label.id}
+                                    onInput={(e) => { handleSetOwnerId(e) }}
+                                    autoComplete="off"
+                                />
+                                <button onClick={(e) => handleSearchOwnerId(e)}><i className="icofont-search-2" /></button>
+                            </div>
                             <input
                                 type="text"
-                                className="ownerId_doRe"
-                                placeholder={labeld.id}
-                                onInput={(e) => { handleSetOwnerId(e) }}
+                                id="nameInput"
+                                className="inputMixersACSI_SZ ownerName_doRe"
+                                onInput={(e) => handleSearchOptionsByOwners(e)}
+                                placeholder={label.owner}
                                 autoComplete="off"
                             />
-                            <button onClick={(e) => handleSearchOwnerId(e)}><i className="icofont-search-2" /></button>
                         </div>
-                        <input
-                            type="text"
-                            id="nameInput"
-                            className="inputMixersACSI_SZ ownerName_doRe"
-                            onInput={(e) => handleSearchOptionsByOwners(e)}
-                            placeholder="نام و نام‌خانوادگی"
-                            autoComplete="off"
-                        />
-                    </div>
-                    <div className="DInputsMixersACSI_SZ D2InputsMixersACSI_SZ">
-                        <div className="DIdsInputsMixersACSI_SZ">
-                            <input
-                                type="text"
-                                id="idInput"
-                                className="id_mixer"
-                                placeholder="شناسه‌میکسر"
-                                onInput={(e) => { handleSetId(e) }}
-                                autoComplete="off"
-                            />
-                            <button onClick={(e) => handleSearchId(e)}><i className="icofont-search-2" /></button>
-                        </div>
-                        <div className="DNumberplateACSI_SZ">
-                            <input
-                                type="text"
-                                name=""
-                                id=""
-                                className="text2NumberplateACSI_SZ numberplate_mixer"
-                                placeholder="00"
-                                maxLength="2"
-                                // value={numberplate.left || ''}
-                                onInput={e => handleSetNumberplate(e, 'left')}
-                            />
-
-                            <select
-                                className="selectChNumberplateACSI_SZ numberplate_mixer"
-                                // value={numberplate.alphabet}
-                                onChange={e => handleSetNumberplate(e, 'alphabet')}
-                            >
-                                <option value=""> حرف </option>
-                                <option value="ا"> الف </option>
-                                <option value="ب"> ب </option>
-                                <option value="پ"> پ </option>
-                                <option value="ت"> ت </option>
-                                <option value="ث"> ث </option>
-                                <option value="ج"> ج </option>
-                                <option value="چ"> چ </option>
-                                <option value="ح"> ح </option>
-                                <option value="خ"> خ </option>
-                                <option value="د"> د </option>
-                                <option value="ذ"> ذ </option>
-                                <option value="ر"> ر </option>
-                                <option value="ز"> ز </option>
-                                <option value="ژ"> ژ </option>
-                                <option value="س"> س </option>
-                                <option value="ش"> ش </option>
-                                <option value="ص"> ص </option>
-                                <option value="ض"> ض </option>
-                                <option value="ط"> ط </option>
-                                <option value="ظ"> ظ </option>
-                                <option value="ع"> ع </option>
-                                <option value="غ"> غ </option>
-                                <option value="ف"> ف </option>
-                                <option value="ق"> ق </option>
-                                <option value="ک"> ک </option>
-                                <option value="گ"> گ </option>
-                                <option value="ل"> ل </option>
-                                <option value="م"> م </option>
-                                <option value="ن"> ن </option>
-                                <option value="و"> و </option>
-                                <option value="ه"> ه </option>
-                                <option value="ی"> ی </option>
-                            </select>
+                        <div className="row_SZ">
+                            
+                            <div className="divDate_SZ">
+                                <input type="text" className="day" />
+                                <input type="text" className="month" />
+                                <input type="text" className="year" />
+                            </div>
 
                             <input
                                 type="text"
-                                name=""
-                                id=""
-                                className="text3NumberplateACSI_SZ numberplate_mixer"
-                                placeholder="000"
-                                maxLength="3"
-                                // value={numberplate.mid || ''}
-                                onInput={e => handleSetNumberplate(e, 'mid')}
+                                className="price"
+                                placeholder='مبلغ'
+
                             />
+                        </div>
+                        <div className="row_SZ">
                             <input
                                 type="text"
-                                className="textSerialNumberplateACSI_SZ numberplate_mixer"
-                                placeholder="00"
-                                maxLength="2"
-                                // value={numberplate.right || ''}
-                                onInput={e => handleSetNumberplate(e, 'right')}
+                                placeholder={label.number}
                             />
-
                         </div>
-                    </div>
-                </div>
+
+                    </>
 
             }]);
         }
@@ -437,11 +331,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         }
     }, [warning]);
 
-    useEffect(() => {
-        if (numberplate.left || numberplate.alphabet || numberplate.mid || numberplate.right) {
-            handleSearchByNumberplate();
-        }
-    }, [numberplate]);
+
 
     return {
         inputDoReSearch,

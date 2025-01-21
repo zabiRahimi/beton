@@ -278,7 +278,7 @@ const Add = () => {
 
     const {
         inputDoReSearch: inputSandRemittanceSearch,
-        optionsDoReSearched: optionsSandRemittanceSearched,
+        optionsDoReSearched: optionsSandRemittancesSearched,
         doReSearchWarning: sandRemittanceSearchWarning,
         elementDoReSearchWarning:elementSandRemittanceSearchWarning,
         handleClearAllSearchDoRe:handleClearAllSearchSandRemittance
@@ -589,15 +589,15 @@ const Add = () => {
                                                     className="element"
                                                     onClick={e => { clearInputError(e, document_receivable_idError); }}
                                                 >
-                                                    <SelectZabi
+                                                    <SelectZabi2
                                                         primaryLabel='انتخاب'
                                                         options={documentReceivableOptions}
                                                         saveOption={setDocument_receivable_id}
-                                                        // input={inputCustomerSearch}
-                                                        // optionsSearched={optionsCustomersSearched}
-                                                        // warning={customerSearchWarning}
-                                                        // elementWarning={elementCustomerSearchWarning}
-                                                        // clearSearch={handleClearAllSearchCustomer}
+                                                        input={inputCheckSearch}
+                                                        optionsSearched={optionsCheckSearched}
+                                                        warning={checkSearchWarning}
+                                                        elementWarning={elementCheckSearchWarning}
+                                                        clearSearch={handleClearAllSearchCheck}
                                                         ref={document_receivable_idRef}
                                                     />
                                                 </div>
@@ -617,15 +617,15 @@ const Add = () => {
                                                     className="element"
                                                     onClick={e => { clearInputError(e, sand_remittance_idError) }}
                                                 >
-                                                    <SelectZabi
+                                                    <SelectZabi2
                                                         primaryLabel='انتخاب'
                                                         options={sandRemittanceOptions}
                                                         saveOption={setSand_remittance_id}
-                                                        // input={inputCustomerSearch}
-                                                        // optionsSearched={optionsCustomersSearched}
-                                                        // warning={customerSearchWarning}
-                                                        // elementWarning={elementCustomerSearchWarning}
-                                                        // clearSearch={handleClearAllSearchCustomer}
+                                                        input={inputSandRemittanceSearch}
+                                                        optionsSearched={optionsSandRemittancesSearched}
+                                                        warning={sandRemittanceSearchWarning}
+                                                        elementWarning={elementSandRemittanceSearchWarning}
+                                                        clearSearch={handleClearAllSearchSandRemittance}
                                                         ref={sand_remittance_idRef}
                                                     />
                                                 </div>

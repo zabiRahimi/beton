@@ -30,7 +30,8 @@
 
 .DInputsCustomersACSI_SZ,
 .DInputsMixersACSI_SZ,
-.DInputsDriversACSI_SZ {
+.DInputsDriversACSI_SZ,
+.row_SZ {
     width: 100%;
     display: flex;
 }
@@ -150,6 +151,24 @@
 
 .textSerialNumberplateACSI_SZ {
     width: 20% !important;
+}
+
+.row_SZ .divDate_SZ{
+    width: 30%;
+    display: flex;
+}
+
+.row_SZ .divDate_SZ .day
+.row_SZ .divDate_SZ .month{
+    width: 30%;
+}
+.row_SZ .divDate_SZ .month{}
+.row_SZ .divDate_SZ .year{
+    flex-grow: 1;
+}
+
+.row_SZ .price{
+    flex-grow: 1;
 }
 
 /** end file AddConcreteSalesInvoice */
