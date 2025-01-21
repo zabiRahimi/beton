@@ -169,6 +169,7 @@
 
 .row_SZ .price{
     flex-grow: 1;
+    background-color: green;
 }
 
 /** end file AddConcreteSalesInvoice */
