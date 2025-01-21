@@ -733,7 +733,7 @@ const Add = () => {
                                     </div>
 
                                     {
-                                        (how_to_pay !== 'حواله سیمان' && how_to_pay !== 'حواله شن و ماسه') &&
+                                       payType.numberLabel !== 'شماره حواله'  &&
                                         <>
                                             <div className="containerInputFB">
                                                 <div className="divInputFB">

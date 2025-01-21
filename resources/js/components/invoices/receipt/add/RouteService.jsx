@@ -125,22 +125,18 @@ const RouteService = ({
         title: "آیا حواله ثبت شده است؟",
         confirmButtonText: " ثبت شده ",
         cancelButtonText: 'ثبت نشده',
-
         customClass: {
-
         },
-
       }).then((result) => {
         if (result.isConfirmed) {
           setSandRemittanceDisplay(true);
-
         }
         else if (result.dismiss === Swal.DismissReason.cancel) {
           setSandRemittanceDisplay(false);
           setPayType({
             display: true,
             dateLabel: 'تاریخ ',
-            numberLabel: 'شماره حوله',
+            numberLabel: 'شماره حواله',
             ownerLabel: 'خریدار حواله'
           })
         }
@@ -148,10 +144,38 @@ const RouteService = ({
         setSandIsSelected(false);
       });
     }
-
   }, [sandIsSelected]);
 
-
+  useEffect(() => {
+    if (cementIsSelected) {
+      setDocumentReceivableDisplay(false);
+      setSandRemittanceOptions(false);
+      MySwal.fire({
+        icon: "info",
+        showCancelButton: true,
+        title: "آیا حواله ثبت شده است؟",
+        confirmButtonText: " ثبت شده ",
+        cancelButtonText: 'ثبت نشده',
+        customClass: {
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setCementRemittanceDisplay(true);
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+          setCementRemittanceDisplay(false);
+          setPayType({
+            display: true,
+            dateLabel: 'تاریخ ',
+            numberLabel: 'شماره حواله',
+            ownerLabel: 'خریدار حواله'
+          })
+        }
+      }).finally(() => {
+        setCementIsSelected(false);
+      });
+    }
+  }, [cementIsSelected]);
 
   const fetchData = async () => {
 
@@ -162,6 +186,7 @@ const RouteService = ({
       createCustomerOptions(customers);
       setDataCustomers(customers);
       createDocumentReceivableOptions(documentReceivables);
+      console.log(sandRemittances);
       createSandRemittanceOptions(sandRemittances);
       createCementRemittanceOptions(cementRemittances);
     } catch (error) {
@@ -197,7 +222,7 @@ const RouteService = ({
 
   const createDocumentReceivableOptions = (documentReceivables) => {
     let options;
-    if (documentReceivables.length > 0) {
+    if (documentReceivables && documentReceivables.length > 0) {
       options = documentReceivables.map(data => ({
         value: 'data.id',
         html: (
@@ -227,7 +252,7 @@ const RouteService = ({
         )
       }));
     } else {
-      options = notOption('هیچ سند پرداختنی وجود ندارد');
+      options = notOption('هیچ چک ثبت شده ای وجود ندارد');
     }
     setDocumentReceivableOptions(options);
   }
@@ -265,14 +290,14 @@ const RouteService = ({
       }));
 
     } else {
-      options = notOption('هیچ راننده ثبت شده‌ای وجود ندارد');
+      options = notOption('هیچ حواله ثبت شده‌ای وجود ندارد');
     }
     setSandRemittanceOptions(options);
   }
 
   const createCementRemittanceOptions = (cementRemittances) => {
     let options;
-    if (cementRemittances.length > 0) {
+    if (cementRemittances && cementRemittances.length > 0) {
       options = cementRemittances.map(data => {
 
 
@@ -282,10 +307,6 @@ const RouteService = ({
     }
     setCementRemittanceOptions(options);
   }
-
-
-
-
 
   const notOption = (message) => {
     return [{
