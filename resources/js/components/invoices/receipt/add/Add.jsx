@@ -237,25 +237,37 @@ const Add = () => {
     //     }
     // }, [how_to_pay]);
 
-    const { customerOptions, dataCustomers, how_to_payOptions, documentReceivableOptions, sandRemittanceOptions,
-        cementRemittanceOptions, } = RouteService({
-            setLoading,
-            setTicketNumber,
-            checkIsSelected,
-            setCheckIsSelected,
-            sandIsSelected,
-            setSandIsSelected,
-            cementIsSelected,
-            setCementIsSelected,
-            setDocumentReceivableDisplay,
-            setSandRemittanceDisplay,
-            setCementRemittanceDisplay,
-            setPayType
-        });
+    const {
+        customerOptions,
+        dataCustomers,
+        how_to_payOptions,
+        documentReceivableOptions,
+        dataDocumentReceivable,
+        sandRemittanceOptions,
+        dataSandRemittance,
+        cementRemittanceOptions,
+        dataCementRemittance,
+    } = RouteService({
+        setLoading,
+        setTicketNumber,
+        checkIsSelected,
+        setCheckIsSelected,
+        sandIsSelected,
+        setSandIsSelected,
+        cementIsSelected,
+        setCementIsSelected,
+        setDocumentReceivableDisplay,
+        setSandRemittanceDisplay,
+        setCementRemittanceDisplay,
+        setPayType
+    });
 
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
 
-    // const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDriversSelect({ dataDrivers: drivers });
+    const { inputDriverSearch, optionsDriversSearched, driverSearchWarning, elementDriverSearchWarning, handleClearAllSearchDriver } = SearchDocumentsAndRemittancesSelect({
+         dataDocumentReceivable,
+         type:'check' 
+        });
 
     const handleSaveValInput = (e, input) => {
         let { value } = e.target;
@@ -733,7 +745,7 @@ const Add = () => {
                                     </div>
 
                                     {
-                                       payType.numberLabel !== 'شماره حواله'  &&
+                                        payType.numberLabel !== 'شماره حواله' &&
                                         <>
                                             <div className="containerInputFB">
                                                 <div className="divInputFB">
