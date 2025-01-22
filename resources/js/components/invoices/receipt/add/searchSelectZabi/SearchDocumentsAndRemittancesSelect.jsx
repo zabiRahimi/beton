@@ -287,17 +287,19 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                                 autoComplete="off"
                             />
                         </div>
-                        <div className="row_SZ">
+                        <div className="row_SZ rowDatePrice_SZ">
 
                             <div className="divDate_SZ">
-                                <input type="text" className="day" placeholder="روز" />
-                                <input type="text" className="month" placeholder="ماه" />
-                                <input type="text" className="year" placeholder="سال" />
+                                <input type="text" className="day btnS" placeholder="روز" />
+                                <span className="slash"> / </span>
+                                <input type="text" className="month btnS" placeholder="ماه" />
+                                <span className="slash"> / </span>
+                                <input type="text" className="year btnS" placeholder="سال" />
                             </div>
 
                             <input
                                 type="text"
-                                className="price"
+                                className="price btnS"
                                 placeholder='مبلغ'
 
                             />
