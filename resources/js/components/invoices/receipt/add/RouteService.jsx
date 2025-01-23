@@ -207,7 +207,7 @@ const RouteService = ({
 
   const createCustomerOptions = (customers) => {
     let options;
-    if (customers.length > 0) {
+    if (customers && customers.length > 0) {
       options = customers.map(data => ({
         value: data.id,
         html: <div className=" divRemittanceSelectFB"
@@ -268,7 +268,7 @@ const RouteService = ({
 
   const createSandRemittanceOptions = (sandRemittances) => {
     let options;
-    if (sandRemittances.length > 0) {
+    if (sandRemittances && sandRemittances.length > 0) {
       options = sandRemittances.map(data => ({
         value: 'data.id',
         html: (

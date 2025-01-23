@@ -206,6 +206,10 @@
     text-align: left;
 }
 
+.row_SZ .remittanceNumber::placeholder{
+    text-align: right;
+}
+
 /** end file AddConcreteSalesInvoice */
 
 .mainOptionSZ {
