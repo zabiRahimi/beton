@@ -168,9 +168,9 @@
     cursor: auto;
 }
 
-.rowDatePrice_SZ .btnS::placeholder{
+.row_SZ .btnS::placeholder
+{
     font-size: 0.8rem;
-    
 }
 
 .row_SZ .divDate_SZ .day,
@@ -187,7 +187,7 @@
 
 .row_SZ .price{
     width: 60%;
-    padding-right: 7px;
+    padding:0 7px 0 10px;
     border: none;
     border-right: 1px solid #646464;
     text-align: left;
@@ -196,6 +196,14 @@
 .row_SZ .price::placeholder{
     text-align: right;
     
+}
+
+.row_SZ .remittanceNumber{
+    width: 100%;
+    padding: 0 10px;
+    border: none;
+    border-top: 1px solid #646464;
+    text-align: left;
 }
 
 /** end file AddConcreteSalesInvoice */

@@ -45,7 +45,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         setOwnerId();
 
         setOptionsDoReSearched();
-        handleClearInput('ownerId_doRe');
+        handleClearInput('idSandRemittanceSZ');
         handleClearInput('ownerName_doRe');
         handleClearInput('numberplate_mixer');
         handleClearWarning();
@@ -59,7 +59,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const handleSearchId = (e) => {
         e.preventDefault();
         setOwnerId();
-        handleClearInput('ownerId_doRe');
+        handleClearInput('idSandRemittanceSZ');
         handleClearInput('ownerName_doRe');
         handleClearInput('numberplate_mixer');
         setOptionsDoReSearched();
@@ -120,9 +120,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const handleSetOwnerId = (e) => {
         const { value } = e.target;
         setId();
-        handleClearInput('id_mixer');
-        handleClearInput('ownerName_doRe');
-        handleClearInput('numberplate_mixer');
+        handleClearInput('sandRemittanceSZ');
         setOptionsDoReSearched();
         handleClearWarning();
         if (/^\d*$/.test(value)) {
@@ -179,9 +177,9 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         const { value } = e.target;
         setId();
         setOwnerId();
-        handleClearInput('ownerId_doRe');
-        handleClearInput('id_mixer');
-        handleClearInput('numberplate_mixer');
+        handleClearInput('idSandRemittanceSZ');
+        // handleClearInput('id_mixer');
+        // handleClearInput('numberplate_mixer');
         setOptionsDoReSearched();
         handleClearWarning();
         if (value) {
@@ -254,7 +252,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const handleClearAllSearchDoRe = () => {
         setId();
         setOwnerId();
-        handleClearInput('ownerId_doRe');
+        handleClearInput('idSandRemittanceSZ');
         handleClearInput('ownerName_doRe');
         handleClearInput('id_mixer');
         handleClearInput('numberplate_mixer');
@@ -271,7 +269,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                             <div className="DIdsInputsMixersACSI_SZ">
                                 <input
                                     type="text"
-                                    className="ownerId_doRe"
+                                    className="idSandRemittanceSZ"
                                     placeholder={label.id}
                                     onInput={(e) => { handleSetOwnerId(e) }}
                                     autoComplete="off"
@@ -281,7 +279,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                             <input
                                 type="text"
                                 id="nameInput"
-                                className="inputMixersACSI_SZ ownerName_doRe"
+                                className="inputMixersACSI_SZ sandRemittanceSZ"
                                 onInput={(e) => handleSearchOptionsByOwners(e)}
                                 placeholder={label.owner}
                                 autoComplete="off"
@@ -290,16 +288,16 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                         <div className="row_SZ rowDatePrice_SZ">
 
                             <div className="divDate_SZ">
-                                <input type="text" className="day btnS" placeholder="روز" />
+                                <input type="text" className="day btnS sandRemittanceSZ" placeholder="روز" />
                                 <span className="slash"> / </span>
-                                <input type="text" className="month btnS" placeholder="ماه" />
+                                <input type="text" className="month btnS sandRemittanceSZ" placeholder="ماه" />
                                 <span className="slash"> / </span>
-                                <input type="text" className="year btnS" placeholder="سال" />
+                                <input type="text" className="year btnS sandRemittanceSZ" placeholder="سال" />
                             </div>
 
                             <input
                                 type="text"
-                                className="price btnS"
+                                className="price btnS sandRemittanceSZ"
                                 placeholder='مبلغ'
 
                             />
@@ -307,6 +305,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                         <div className="row_SZ">
                             <input
                                 type="text"
+                                className="remittanceNumber btnS sandRemittanceSZ"
                                 placeholder={label.number}
                             />
                         </div>
