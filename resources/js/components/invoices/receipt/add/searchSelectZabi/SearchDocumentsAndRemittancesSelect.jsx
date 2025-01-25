@@ -12,6 +12,12 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const [elementDoReSearchWarning, setElementDoReSearchWarning] = useState();
     const [doReSearchWarning, setDoReSearchWarning] = useState();
     const [warning, setWarning] = useState();
+    const [date, setDate] = useState({
+        day: '',
+        month: '',
+        year: ''
+    });
+
     const [label, setLabel] = useState({
         id: '',
         number: ''
@@ -117,66 +123,9 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         }
     }
 
-    const handleSetOwnerId = (e) => {
+    const handleSearchOptionsByName = (e) => {
         const { value } = e.target;
         setId();
-        handleClearInput('sandRemittanceSZ');
-        setOptionsDoReSearched();
-        handleClearWarning();
-        if (/^\d*$/.test(value)) {
-            setOwnerId(parseInt(value, 10));
-        } else {
-            handleThrowWarning('لطفاً فقط عدد وارد کنید');
-        }
-    }
-
-    const handleSearchOwnerId = (e) => {
-        e.preventDefault();
-        setId();
-        handleClearInput('id_mixer');
-        handleClearInput('ownerName_doRe');
-        handleClearInput('numberplate_mixer');
-        setOptionsDoReSearched();
-        handleClearWarning();
-        if (ownerId) {
-            const customerIdsFound = dataDoRes.filter(obj => obj.customer.id === ownerId);
-            if (customerIdsFound[0] != undefined) {
-                const optionsFound = customerIdsFound.map((data, i) => {
-                    let arr = data.numberplate.split('-');
-                    return {
-                        value: data.id,
-                        value2: data.customer.id,
-                        html: <div key={i} className="mixerAptionSelectFB">
-                            <span className="mixerNamberpalteSelectFB">
-                                <div className="numberplateDiv">
-                                    <span className="numberplateDivS1">{arr[0]}</span>
-                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-                                    <span className="numberplateDivS3">{arr[1]}</span>
-                                    <span className="numberplateDivS4">{arr[2]}</span>
-                                </div>
-                            </span>
-                            <span className="mixerOwnerSelectFB">
-                                {data.customer.name}
-                                {' '}
-                                {data.customer.lastName}
-                            </span>
-
-                        </div>
-                    }
-                });
-                setOptionsDoReSearched(optionsFound);
-            } else {
-                handleThrowWarning(`نتیجه‌ای یافت نشد`);
-            }
-        } else {
-            handleThrowWarning('ابتدا شناسه مالک را وارد کنید');
-        }
-    }
-
-    const handleSearchOptionsByOwners = (e) => {
-        const { value } = e.target;
-        setId();
-        setOwnerId();
         handleClearInput('idSandRemittanceSZ');
         // handleClearInput('id_mixer');
         // handleClearInput('numberplate_mixer');
@@ -187,7 +136,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                 id: item.customer.id,
                 name: `${item.customer.name} ${item.customer.lastName}`
             }));
-            const ids = handleSearchByOwnerName(newDataOwners, value);
+            const ids = handleSearchByName(newDataOwners, value);
 
             if (ids.length > 0) {
                 let filteredArr = dataDoRes.filter(item => ids.includes(item.customer.id));
@@ -222,11 +171,24 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         }
     }
 
-    const handleSearchByOwnerName = (newArr, searchTerm) => {
+    const handleSearchByName = (newArr, searchTerm) => {
         return newArr
             .filter(item => item.name.includes(searchTerm))
             .map(item => item.id);
     };
+
+    const handleSetDate = (e) => {
+        let { value, name } = e.target;
+        (name=='day'|| name=='month') && (value.length== 1 && (value=0+value));
+        setDate(prev => ({ ...prev, [name]: value }));
+        // handleSearchByDate();
+    }
+    console.log(date);
+
+   const handleSearchByDate = ()=>{
+    const value= `${date.year}.-.${date.month}.-.${date.day}`;
+    
+   }
 
     const handleClearInput = (className) => {
         const element = document.querySelectorAll(`.${className}`);
@@ -251,11 +213,8 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
      */
     const handleClearAllSearchDoRe = () => {
         setId();
-        setOwnerId();
         handleClearInput('idSandRemittanceSZ');
         handleClearInput('ownerName_doRe');
-        handleClearInput('id_mixer');
-        handleClearInput('numberplate_mixer');
         setOptionsDoReSearched();
         handleClearWarning();
     }
@@ -271,16 +230,16 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                                     type="text"
                                     className="idSandRemittanceSZ"
                                     placeholder={label.id}
-                                    onInput={(e) => { handleSetOwnerId(e) }}
+                                    onInput={(e) => { handleSetId(e) }}
                                     autoComplete="off"
                                 />
-                                <button onClick={(e) => handleSearchOwnerId(e)}><i className="icofont-search-2" /></button>
+                                <button onClick={(e) => handleSearchId(e)}><i className="icofont-search-2" /></button>
                             </div>
                             <input
                                 type="text"
                                 id="nameInput"
                                 className="inputMixersACSI_SZ sandRemittanceSZ"
-                                onInput={(e) => handleSearchOptionsByOwners(e)}
+                                onInput={(e) => handleSearchOptionsByName(e)}
                                 placeholder={label.owner}
                                 autoComplete="off"
                             />
@@ -288,11 +247,28 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                         <div className="row_SZ rowDatePrice_SZ">
 
                             <div className="divDate_SZ">
-                                <input type="text" className="day btnS sandRemittanceSZ" placeholder="روز" />
+                                <input type="text"
+                                    className="day btnS sandRemittanceSZ"
+                                    placeholder="روز"
+                                    name="day"
+                                    onInput={(e) => handleSetDate(e)}
+                                />
                                 <span className="slash"> / </span>
-                                <input type="text" className="month btnS sandRemittanceSZ" placeholder="ماه" />
+                                <input
+                                    type="text"
+                                    className="month btnS sandRemittanceSZ"
+                                    placeholder="ماه"
+                                    name='month'
+                                    onInput={(e) => handleSetDate(e)}
+                                />
                                 <span className="slash"> / </span>
-                                <input type="text" className="year btnS sandRemittanceSZ" placeholder="سال" />
+                                <input
+                                    type="text"
+                                    className="year btnS sandRemittanceSZ"
+                                    placeholder="سال"
+                                    name="year"
+                                    onInput={(e) => handleSetDate(e)}
+                                />
                             </div>
 
                             <input
