@@ -42,7 +42,6 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     }
 
     const handleSetInitialData = () => {
-        console.log(12);
         let value;
         if (type === 'check') {
             value = dataDoRes.map((dataDoRe) => (
@@ -69,8 +68,6 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         setData(value);
         return value;
     }
-
-    
 
     useEffect(() => {
         if (type) {
@@ -128,10 +125,10 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const handleSearchOptionsByName = async(e) => {
         const { value } = e.target;
         
-        // setId();
-        // handleClearInput('idSandRemittanceSZ');
-        // setOptionsDoReSearched();
-        // handleClearWarning();
+        setId();
+        handleClearInput('idSandRemittanceSZ');
+        setOptionsDoReSearched();
+        handleClearWarning();
         if (value ) {
             // setName(value);
             // const newDataOwners = dataDoRes.map(item => ({
@@ -175,6 +172,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
 
             if (doReFounds[0] != undefined) {
                 handleCreateOptions(doReFounds);
+                setData(doReFounds);
             } else {
                 handleThrowWarning('نتیجه‌ای یافت نشد');
             }
