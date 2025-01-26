@@ -5,10 +5,15 @@ import { useEffect, useState } from "react";
  * for use in AddCocreteSalesInvoice
  */
 const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
+    /**
+     * دیتای ورودی به کامپوننت را طی یک عملیاتی به دادهایی با فرمت مورد نظر
+     * تبدیل شده و در استیت زیر قرار می گیرند
+     */
+    const [data, setData] = useState([]);
     const [inputDoReSearch, setInputDoReSearch] = useState();
     const [optionsDoReSearched, setOptionsDoReSearched] = useState([]);
     const [id, setId] = useState();
-    const [ownerId, setOwnerId] = useState();
+    const [name, setName] = useState();
     const [elementDoReSearchWarning, setElementDoReSearchWarning] = useState();
     const [doReSearchWarning, setDoReSearchWarning] = useState();
     const [warning, setWarning] = useState();
@@ -36,6 +41,37 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         }
     }
 
+    const handleSetInitialData = () => {
+        console.log(12);
+        let value;
+        if (type === 'check') {
+            value = dataDoRes.map((dataDoRe) => (
+                {
+                    id: dataDoRe.id,
+                    name: `${dataDoRe.name}  ${dataDoRe.lastName}`,
+                    price: dataDoRe.price,
+                    number: dataDoRe.checkNumber,
+                    date: dataDoRe.date
+                }
+            ));
+        } else {
+            value = dataDoRes.map((dataDoRe) => (
+                {
+                    id: dataDoRe.id,
+                    name: `${dataDoRe.buyerName}  ${dataDoRe.buyerLastName}`,
+                    price: dataDoRe.price,
+                    number: dataDoRe.remittanceNumber,
+                    date: dataDoRe.date
+                }
+            ));
+        }
+
+        setData(value);
+        return value;
+    }
+
+    
+
     useEffect(() => {
         if (type) {
 
@@ -46,10 +82,17 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         }
     }, [type]);
 
+    useEffect(() => {
+        if (dataDoRes && data[0] == undefined) {
+            handleSetInitialData();
+        }
+    }, [dataDoRes, data]);
+
     const handleSetId = (e) => {
         const { value } = e.target;
-        setOwnerId();
         setOptionsDoReSearched();
+        handleSetInitialData();
+        setName();
         handleClearInput('sandRemittanceSZ');
         handleClearWarning();
         if (/^\d*$/.test(value)) {
@@ -59,128 +102,141 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         }
     }
 
+    /**
+     * هنگامی که کاربر پس از وارد کردن آی دی مورد نظر دکمه سرچ را فشار داد فراخوانی می شود
+     * @param {*} e 
+     */
     const handleSearchId = (e) => {
         e.preventDefault();
-        setOwnerId();
         handleClearInput('idSandRemittanceSZ');
         handleClearInput('name_doRe');
         setOptionsDoReSearched();
         handleClearWarning();
-        if (id) {
-            const doReFound = [dataDoRes.find(obj => obj.id === id)];
-            if (doReFound[0] != undefined) {
-                const optionsFound = doReFound.map((data, i) => {
-                    const adjustedData = type === 'check' ?
-                        {
-                            name: data.ownerName,
-                            lastName: data.ownerLastName,
-                            number: data.checkNumber
-                        } :
-                        {
-                            name: data.buyerName,
-                            lastName: data.buyerLastName,
-                            number: remittanceNumber
-                        };
-                    return {
-                        value: data.id,
-                        html: (
-                            <div className="containerChekOption_SZabi">
-                                <div>
-                                    <span className="name" title={`${adjustedData.name}  ${adjustedData.lastName}`}>
-                                        {adjustedData.name} {' '} {adjustedData.lastName}
-                                    </span>
-
-                                    <span className="price" title='3,000,000,000'>
-                                        {data.price}
-                                    </span>
-
-                                    <span className='unit'>
-                                        تومان
-                                    </span>
-                                </div>
-                                <div className='divRow2'>
-                                    <span className="date" title='1403/01/31'>
-                                        {data.date}
-                                    </span>
-                                    <span className="number" title={adjustedData.number}>
-                                        {adjustedData.number}
-                                    </span>
-                                </div>
-                            </div>
-                        )
-                    }
-                });
-                setOptionsDoReSearched(optionsFound);
+        if (id && data != null) {
+            const doReFounds = [data.find(obj => obj.id === id)];
+            if (doReFounds[0] != undefined) {
+                handleCreateOptions(doReFounds);
             } else {
                 handleThrowWarning(`نتیجه‌ای یافت نشد`);
             }
         } else {
-            handleThrowWarning('ابتدا شناسه میکسر را وارد کنید');
+            handleThrowWarning('ابتدا شناسه را وارد کنید');
         }
     }
 
 
-    const handleSearchOptionsByName = (e) => {
+    const handleSearchOptionsByName = async(e) => {
         const { value } = e.target;
-        setId();
-        handleClearInput('idSandRemittanceSZ');
-        setOptionsDoReSearched();
-        handleClearWarning();
-        if (value) {
-            const newDataOwners = dataDoRes.map(item => ({
-                id: item.customer.id,
-                name: `${item.customer.name} ${item.customer.lastName}`
-            }));
-            const ids = handleSearchByName(newDataOwners, value);
+        
+        // setId();
+        // handleClearInput('idSandRemittanceSZ');
+        // setOptionsDoReSearched();
+        // handleClearWarning();
+        if (value ) {
+            // setName(value);
+            // const newDataOwners = dataDoRes.map(item => ({
+            //     id: item.customer.id,
+            //     name: `${item.customer.name} ${item.customer.lastName}`
+            // }));
+            // const doReFounds = handleSearchByName(newDataOwners, value);
+            const doReFounds = handleSearchByName(value);
 
-            if (ids.length > 0) {
-                let filteredArr = dataDoRes.filter(item => ids.includes(item.customer.id));
-                const optionsFound = filteredArr.map((data, i) => {
-                    let arr = data.numberplate.split('-');
-                    return {
-                        value: data.id,
-                        value2: data.customer.id,
-                        html: <div key={i} className="mixerAptionSelectFB">
-                            <span className="mixerNamberpalteSelectFB">
-                                <div className="numberplateDiv">
-                                    <span className="numberplateDivS1">{arr[0]}</span>
-                                    <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-                                    <span className="numberplateDivS3">{arr[1]}</span>
-                                    <span className="numberplateDivS4">{arr[2]}</span>
-                                </div>
-                            </span>
 
-                            <span className="mixerOwnerSelectFB">
-                                {data.customer.name}
-                                {' '}
-                                {data.customer.lastName}
-                            </span>
+            // if (ids.length > 0) {
+            //     let filteredArr = dataDoRes.filter(item => ids.includes(item.customer.id));
+            //     const optionsFound = filteredArr.map((data, i) => {
+            //         let arr = data.numberplate.split('-');
+            //         return {
+            //             value: data.id,
+            //             value2: data.customer.id,
+            //             html: <div key={i} className="mixerAptionSelectFB">
+            //                 <span className="mixerNamberpalteSelectFB">
+            //                     <div className="numberplateDiv">
+            //                         <span className="numberplateDivS1">{arr[0]}</span>
+            //                         <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+            //                         <span className="numberplateDivS3">{arr[1]}</span>
+            //                         <span className="numberplateDivS4">{arr[2]}</span>
+            //                     </div>
+            //                 </span>
 
-                        </div>
-                    }
-                });
-                setOptionsDoReSearched(optionsFound);
+            //                 <span className="mixerOwnerSelectFB">
+            //                     {data.customer.name}
+            //                     {' '}
+            //                     {data.customer.lastName}
+            //                 </span>
+
+            //             </div>
+            //         }
+            //     });
+            //     setOptionsDoReSearched(optionsFound);
+            // } else {
+            //     handleThrowWarning('نتیجه‌ای یافت نشد');
+            // }
+
+            if (doReFounds[0] != undefined) {
+                handleCreateOptions(doReFounds);
             } else {
                 handleThrowWarning('نتیجه‌ای یافت نشد');
             }
         }
     }
 
-    const handleSearchByName = (newArr, searchTerm) => {
-        return newArr
+    const handleSearchByName = (searchTerm) => {
+        let val;
+        if (data[0]==undefined) {
+           val=  handleSetInitialData();
+         }
+         else{
+            val=data
+         }
+        console.log(val);
+        return val
             .filter(item => item.name.includes(searchTerm))
-            .map(item => item.id);
+        // .map(item => item.id);
     };
 
-    const handleSetDate=(e)=>{
-        let{value, name}=e.target;
-        (name=='day'|| name=='month') && (value.length==1 && (value=0+value));
-        setDate(perv=>({...perv, [name]:value}));
+    const handleSetDate = (e) => {
+        let { value, name } = e.target;
+        (name == 'day' || name == 'month') && (value.length == 1 && (value = 0 + value));
+        setDate(perv => ({ ...perv, [name]: value }));
     }
 
-    const handelSearchByDate=()=>{
-        const value= `${date.year}-${date.month}-${date.day}`;
-        console.log(value);
+    const handelSearchByDate = () => {
+        const value = `${date.year}-${date.month}-${date.day}`;
+    }
+
+    const handleCreateOptions = (doReFounds) => {
+        const optionsFound = doReFounds.map((doReFound, i) => {
+            return {
+                value: data.id,
+                html: (
+                    <div className="containerChekOption_SZabi">
+                        <div>
+                            <span className="name" title={`${doReFound.name}  ${doReFound.lastName}`}>
+                                {doReFound.name} {' '} {doReFound.lastName}
+                            </span>
+
+                            <span className="price" title={parseFloat(doReFound.price).toLocaleString()}>
+                                {parseFloat(doReFound.price).toLocaleString()}
+                            </span>
+
+                            <span className='unit'>
+                                تومان
+                            </span>
+                        </div>
+                        <div className='divRow2'>
+                            <span className="date" title='1403/01/31'>
+                                {doReFound.date}
+                            </span>
+                            <span className="number" title={doReFound.number}>
+                                {doReFound.number}
+                            </span>
+                        </div>
+                    </div>
+                )
+            }
+        });
+        setOptionsDoReSearched(optionsFound);
     }
 
     const handleClearInput = (className) => {
@@ -208,7 +264,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         setId();
         handleClearInput('idSandRemittanceSZ');
         handleClearInput('name_doRe');
-       
+
         setOptionsDoReSearched();
         handleClearWarning();
     }
@@ -242,12 +298,12 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
 
                             <div className="divDate_SZ">
                                 <input
-                                 type="text"
-                                  className="day btnS sandRemittanceSZ"
-                                   placeholder="روز"
-                                   name="day"
-                                   onInput={e=>handleSetDate(e)}
-                                    />
+                                    type="text"
+                                    className="day btnS sandRemittanceSZ"
+                                    placeholder="روز"
+                                    name="day"
+                                    onInput={e => handleSetDate(e)}
+                                />
                                 <span className="slash"> / </span>
                                 <input
                                     type="text"
@@ -285,13 +341,13 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
 
             }]);
         }
-    }, [dataDoRes, id, ownerId]);
+    }, [dataDoRes, id]);
 
     useEffect(() => {
         handelSearchByDate()
     }, [date])
-    
-    
+
+
     useEffect(() => {
         if (warning && doReSearchWarning) {
             setDoReSearchWarning(true);
