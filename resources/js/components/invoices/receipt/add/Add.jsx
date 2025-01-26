@@ -8,7 +8,6 @@ import withReactContent from 'sweetalert2-react-content';
 import SelectZabi from "../../../hooks/SelectZabi";
 import SelectZabi2 from "../../../hooks/SelectZabi2";
 import RouteService from "./RouteService";
-import SearchDriversSelect from "../../searchSelectZabi/SearchDriversSelect";
 import SearchCustomersSelect from "./searchSelectZabi/SearchCustomersSelect";
 import HeadPage from '../HeadPage';
 import {
@@ -269,10 +268,10 @@ const Add = () => {
         inputDoReSearch: inputCheckSearch,
         optionsDoReSearched: optionsCheckSearched,
         doReSearchWarning: checkSearchWarning,
-        elementDoReSearchWarning:elementCheckSearchWarning,
-        handleClearAllSearchDoRe:handleClearAllSearchCheck
+        elementDoReSearchWarning: elementCheckSearchWarning,
+        handleClearAllSearchDoRe: handleClearAllSearchCheck
     } = SearchDocumentsAndRemittancesSelect({
-        dataDoRes:dataDocumentReceivables,
+        dataDoRes: dataDocumentReceivables,
         type: 'check'
     });
 
@@ -280,10 +279,10 @@ const Add = () => {
         inputDoReSearch: inputSandRemittanceSearch,
         optionsDoReSearched: optionsSandRemittancesSearched,
         doReSearchWarning: sandRemittanceSearchWarning,
-        elementDoReSearchWarning:elementSandRemittanceSearchWarning,
-        handleClearAllSearchDoRe:handleClearAllSearchSandRemittance
+        elementDoReSearchWarning: elementSandRemittanceSearchWarning,
+        handleClearAllSearchDoRe: handleClearAllSearchSandRemittance
     } = SearchDocumentsAndRemittancesSelect({
-        dataDoRes:dataSandRemittances,
+        dataDoRes: dataSandRemittances,
         type: 'remittance'
     });
 
@@ -291,10 +290,10 @@ const Add = () => {
         inputDoReSearch: inputCementRemittanceSearch,
         optionsDoReSearched: optionsCementRemittanceSearched,
         doReSearchWarning: cementRemittanceSearchWarning,
-        elementDoReSearchWarning:elementCementRemittanceSearchWarning,
-        handleClearAllSearchDoRe:handleClearAllSearchCementRemittance
+        elementDoReSearchWarning: elementCementRemittanceSearchWarning,
+        handleClearAllSearchDoRe: handleClearAllSearchCementRemittance
     } = SearchDocumentsAndRemittancesSelect({
-        dataDoRes:dataCementRemittances,
+        dataDoRes: dataCementRemittances,
         type: 'remittance'
     });
 

@@ -1,10 +1,11 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * for use in AddCocreteSalesInvoice
  */
 const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
+    const priceDoReRef = useRef(null)
     /**
      * دیتای ورودی به کامپوننت را طی یک عملیاتی به دادهایی با فرمت مورد نظر
      * تبدیل شده و در استیت زیر قرار می گیرند
@@ -14,6 +15,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const [optionsDoReSearched, setOptionsDoReSearched] = useState([]);
     const [id, setId] = useState();
     const [name, setName] = useState();
+    const [price,setPrice]=useState();
     const [elementDoReSearchWarning, setElementDoReSearchWarning] = useState();
     const [doReSearchWarning, setDoReSearchWarning] = useState();
     const [warning, setWarning] = useState();
@@ -49,7 +51,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                     id: dataDoRe.id,
                     name: `${dataDoRe.name}  ${dataDoRe.lastName}`,
                     price: dataDoRe.price,
-                    number: dataDoRe.checkNumber,
+                    number: parseFloat(dataDoRe.checkNumber).toLocaleString(),
                     date: dataDoRe.date
                 }
             ));
@@ -59,7 +61,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                     id: dataDoRe.id,
                     name: `${dataDoRe.buyerName}  ${dataDoRe.buyerLastName}`,
                     price: dataDoRe.price,
-                    number: dataDoRe.remittanceNumber,
+                    number: parseFloat(dataDoRe.remittanceNumber).toLocaleString(),
                     date: dataDoRe.date
                 }
             ));
@@ -85,6 +87,13 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         }
     }, [dataDoRes, data]);
 
+    useEffect(() => {
+        console.log(data);
+    
+      
+    }, [name, price])
+    
+
     const handleSetId = (e) => {
         const { value } = e.target;
         setOptionsDoReSearched();
@@ -109,7 +118,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         handleClearInput('name_doRe');
         setOptionsDoReSearched();
         handleClearWarning();
-        if (id && data != null) {
+        if (id && data[0] !== undefined) {
             const doReFounds = [data.find(obj => obj.id === id)];
             if (doReFounds[0] != undefined) {
                 handleCreateOptions(doReFounds);
@@ -124,7 +133,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
 
     const handleSearchOptionsByName = async(e) => {
         const { value } = e.target;
-        
+        setName(value);
         setId();
         handleClearInput('idSandRemittanceSZ');
         setOptionsDoReSearched();
@@ -182,14 +191,49 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const handleSearchByName = (searchTerm) => {
         let val;
         if (data[0]==undefined) {
+            console.log('nnn');
            val=  handleSetInitialData();
          }
          else{
             val=data
          }
-        console.log(val);
+
         return val
             .filter(item => item.name.includes(searchTerm))
+        // .map(item => item.id);
+    };
+
+    const handleSearchOptionsByPrice = async(e) => {
+        const { value } = e.target;
+        setPrice(value);
+        setId();
+        handleClearInput('idSandRemittanceSZ');
+        setOptionsDoReSearched();
+        handleClearWarning();
+        if (value ) {
+            
+            const doReFounds = handleSearchByPrice(value);
+
+            if (doReFounds[0] != undefined) {
+                handleCreateOptions(doReFounds);
+                setData(doReFounds);
+            } else {
+                handleThrowWarning('نتیجه‌ای یافت نشد');
+            }
+        }
+    }
+
+    const handleSearchByPrice = (searchTerm) => {
+        let val;
+        if (data[0]==undefined) {
+           val=  handleSetInitialData();
+         }
+         else{
+            val=data
+         }
+
+        return val
+            .filter(item => item.price.includes(searchTerm))
         // .map(item => item.id);
     };
 
@@ -267,6 +311,30 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         handleClearWarning();
     }
 
+    const formatNub = (refCurrent) => {
+        const element=document.getElementById('priceDoRe');
+        let val,
+            checkDthot,
+            resalt = element.value.replace(/[\s,]/g, "");
+        // چک می کند که آیا آخرین کارکتر وارد شده علامت "." است؟
+        if (resalt.slice(-1) == '.') {
+            checkDthot = true;
+        } else {
+            checkDthot = false;
+        }
+        // چک می کند فقط رشته عددی باشد
+        if (parseFloat(resalt)) {
+            val = parseFloat(resalt);
+            /**
+             * طبق شرط بالا چنانچه آخرین کارکتر "." دوباره این
+             * علامت را به آخر رشته اضافه می کند
+             */
+            val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
+            
+            element.value = val;
+        }
+    }
+
     useEffect(() => {
         if (dataDoRes && dataDoRes.length > 0) {
             setInputDoReSearch([{
@@ -324,7 +392,12 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                                 type="text"
                                 className="price btnS sandRemittanceSZ"
                                 placeholder='مبلغ'
-
+                                onInput={(e) => {
+                                    formatNub('priceDoRe');
+                                    handleSearchOptionsByPrice(e);
+                                }}
+                                id="priceDoRe"
+                                // ref={priceDoReRef}
                             />
                         </div>
                         <div className="row_SZ">
