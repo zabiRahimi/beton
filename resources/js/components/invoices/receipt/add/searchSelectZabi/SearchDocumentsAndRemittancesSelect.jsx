@@ -15,7 +15,8 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     const [optionsDoReSearched, setOptionsDoReSearched] = useState([]);
     const [id, setId] = useState();
     const [name, setName] = useState();
-    const [price,setPrice]=useState();
+    const [price, setPrice] = useState();
+    const [number, setNumber] = useState();
     const [elementDoReSearchWarning, setElementDoReSearchWarning] = useState();
     const [doReSearchWarning, setDoReSearchWarning] = useState();
     const [warning, setWarning] = useState();
@@ -49,9 +50,9 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
             value = dataDoRes.map((dataDoRe) => (
                 {
                     id: dataDoRe.id,
-                    name: `${dataDoRe.name}  ${dataDoRe.lastName}`,
-                    price: dataDoRe.price,
-                    number: parseFloat(dataDoRe.checkNumber).toLocaleString(),
+                    name: `${dataDoRe.name} ${dataDoRe.lastName}`,
+                    price: parseFloat(dataDoRe.price).toLocaleString(),
+                    number: dataDoRe.checkNumber,
                     date: dataDoRe.date
                 }
             ));
@@ -59,9 +60,9 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
             value = dataDoRes.map((dataDoRe) => (
                 {
                     id: dataDoRe.id,
-                    name: `${dataDoRe.buyerName}  ${dataDoRe.buyerLastName}`,
-                    price: dataDoRe.price,
-                    number: parseFloat(dataDoRe.remittanceNumber).toLocaleString(),
+                    name: `${dataDoRe.buyerName} ${dataDoRe.buyerLastName}`,
+                    price: parseFloat(dataDoRe.price).toLocaleString(),
+                    number: dataDoRe.remittanceNumber,
                     date: dataDoRe.date
                 }
             ));
@@ -88,17 +89,61 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     }, [dataDoRes, data]);
 
     useEffect(() => {
-        console.log(data);
-    
-      
-    }, [name, price])
-    
+
+        let foundedw;
+        if (id) {
+            foundedw = '';
+        } else {
+            let doReFounds = [];
+
+            if (!foundedw) {
+                foundedw = data;
+            }
+            if (name) {
+
+                const result = handleSearchByName(foundedw, name);
+                doReFounds = result;
+                // setData(doReFounds)
+                foundedw = result;
+            }
+            if (price) {
+
+                const result = handleSearchByPrice(foundedw, price);
+                doReFounds = result;
+                foundedw = result;
+
+            }
+
+            if (date.day || date.year || date.month ) {
+               const result= handleSearchByDate(foundedw);
+                doReFounds = result;
+                foundedw = result;
+            }
+
+            if (number) {
+                const result=  handleSearchByNumber(foundedw, number);
+                doReFounds = result;
+                foundedw = result;
+            }
+            if (doReFounds[0] != undefined) {
+                handleCreateOptions(doReFounds);
+            } else if (name || price || date.day || date.year || date.month || number) {
+
+                handleThrowWarning('نتیجه‌ای یافت نشد');
+            }
+
+        }
+
+
+    }, [name, price, id, date.day, date.year, date.month, number])
+
 
     const handleSetId = (e) => {
         const { value } = e.target;
         setOptionsDoReSearched();
         handleSetInitialData();
         setName();
+        setPrice();
         handleClearInput('sandRemittanceSZ');
         handleClearWarning();
         if (/^\d*$/.test(value)) {
@@ -131,121 +176,147 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     }
 
 
-    const handleSearchOptionsByName = async(e) => {
+    const handleSearchOptionsByName = async (e) => {
         const { value } = e.target;
         setName(value);
         setId();
         handleClearInput('idSandRemittanceSZ');
         setOptionsDoReSearched();
         handleClearWarning();
-        if (value ) {
-            // setName(value);
-            // const newDataOwners = dataDoRes.map(item => ({
-            //     id: item.customer.id,
-            //     name: `${item.customer.name} ${item.customer.lastName}`
-            // }));
-            // const doReFounds = handleSearchByName(newDataOwners, value);
-            const doReFounds = handleSearchByName(value);
+        // if (value ) {
+        //     // setName(value);
+        //     // const newDataOwners = dataDoRes.map(item => ({
+        //     //     id: item.customer.id,
+        //     //     name: `${item.customer.name} ${item.customer.lastName}`
+        //     // }));
+        //     // const doReFounds = handleSearchByName(newDataOwners, value);
+        //     const doReFounds = handleSearchByName(value);
 
 
-            // if (ids.length > 0) {
-            //     let filteredArr = dataDoRes.filter(item => ids.includes(item.customer.id));
-            //     const optionsFound = filteredArr.map((data, i) => {
-            //         let arr = data.numberplate.split('-');
-            //         return {
-            //             value: data.id,
-            //             value2: data.customer.id,
-            //             html: <div key={i} className="mixerAptionSelectFB">
-            //                 <span className="mixerNamberpalteSelectFB">
-            //                     <div className="numberplateDiv">
-            //                         <span className="numberplateDivS1">{arr[0]}</span>
-            //                         <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
-            //                         <span className="numberplateDivS3">{arr[1]}</span>
-            //                         <span className="numberplateDivS4">{arr[2]}</span>
-            //                     </div>
-            //                 </span>
+        //     // if (ids.length > 0) {
+        //     //     let filteredArr = dataDoRes.filter(item => ids.includes(item.customer.id));
+        //     //     const optionsFound = filteredArr.map((data, i) => {
+        //     //         let arr = data.numberplate.split('-');
+        //     //         return {
+        //     //             value: data.id,
+        //     //             value2: data.customer.id,
+        //     //             html: <div key={i} className="mixerAptionSelectFB">
+        //     //                 <span className="mixerNamberpalteSelectFB">
+        //     //                     <div className="numberplateDiv">
+        //     //                         <span className="numberplateDivS1">{arr[0]}</span>
+        //     //                         <span className="numberplateDivS2">{arr[3] == 'ا' ? 'الف' : arr[3]}</span>
+        //     //                         <span className="numberplateDivS3">{arr[1]}</span>
+        //     //                         <span className="numberplateDivS4">{arr[2]}</span>
+        //     //                     </div>
+        //     //                 </span>
 
-            //                 <span className="mixerOwnerSelectFB">
-            //                     {data.customer.name}
-            //                     {' '}
-            //                     {data.customer.lastName}
-            //                 </span>
+        //     //                 <span className="mixerOwnerSelectFB">
+        //     //                     {data.customer.name}
+        //     //                     {' '}
+        //     //                     {data.customer.lastName}
+        //     //                 </span>
 
-            //             </div>
-            //         }
-            //     });
-            //     setOptionsDoReSearched(optionsFound);
-            // } else {
-            //     handleThrowWarning('نتیجه‌ای یافت نشد');
-            // }
+        //     //             </div>
+        //     //         }
+        //     //     });
+        //     //     setOptionsDoReSearched(optionsFound);
+        //     // } else {
+        //     //     handleThrowWarning('نتیجه‌ای یافت نشد');
+        //     // }
 
-            if (doReFounds[0] != undefined) {
-                handleCreateOptions(doReFounds);
-                setData(doReFounds);
-            } else {
-                handleThrowWarning('نتیجه‌ای یافت نشد');
-            }
-        }
+        //     if (doReFounds[0] != undefined) {
+        //         handleCreateOptions(doReFounds);
+        //         setData(doReFounds);
+        //     } else {
+        //         handleThrowWarning('نتیجه‌ای یافت نشد');
+        //     }
+        // }
     }
 
-    const handleSearchByName = (searchTerm) => {
-        let val;
-        if (data[0]==undefined) {
-            console.log('nnn');
-           val=  handleSetInitialData();
-         }
-         else{
-            val=data
-         }
+    // const handleSearchByName = (searchTerm) => {
+    //     let val;
+    //     if (data[0]==undefined) {
+    //        val=  handleSetInitialData();
+    //      }
+    //      else{
+    //         val=data
+    //      }
 
-        return val
+    //     return val
+    //         .filter(item => item.name.includes(searchTerm))
+    //     // .map(item => item.id);
+    // };
+    const handleSearchByName = (data0, searchTerm) => {
+        return data0
             .filter(item => item.name.includes(searchTerm))
         // .map(item => item.id);
     };
-
-    const handleSearchOptionsByPrice = async(e) => {
+    const handleSearchOptionsByPrice = async (e) => {
         const { value } = e.target;
         setPrice(value);
         setId();
         handleClearInput('idSandRemittanceSZ');
         setOptionsDoReSearched();
         handleClearWarning();
-        if (value ) {
-            
-            const doReFounds = handleSearchByPrice(value);
-
-            if (doReFounds[0] != undefined) {
-                handleCreateOptions(doReFounds);
-                setData(doReFounds);
-            } else {
-                handleThrowWarning('نتیجه‌ای یافت نشد');
-            }
-        }
     }
 
-    const handleSearchByPrice = (searchTerm) => {
-        let val;
-        if (data[0]==undefined) {
-           val=  handleSetInitialData();
-         }
-         else{
-            val=data
-         }
+    const handleSearchByPrice = (data0, searchTerm) => {
+        // let val;
+        // if (data[0] == undefined) {
+        //     val = handleSetInitialData();
+        // }
+        // else {
+        //     val = data
+        // }
 
-        return val
+        return data0
             .filter(item => item.price.includes(searchTerm))
         // .map(item => item.id);
     };
 
     const handleSetDate = (e) => {
         let { value, name } = e.target;
+        setId();
+        handleClearInput('idSandRemittanceSZ');
+        setOptionsDoReSearched();
+        handleClearWarning();
         (name == 'day' || name == 'month') && (value.length == 1 && (value = 0 + value));
         setDate(perv => ({ ...perv, [name]: value }));
     }
 
-    const handelSearchByDate = () => {
-        const value = `${date.year}-${date.month}-${date.day}`;
+    const handleSearchByDate = (data0) => {
+        const parsedDateArray = data0.map(item => {
+            const [year, month, day] = item.date.split('-');
+            return {
+              ...item,
+              day,
+              month,
+              year,
+            };
+          });
+          const filteredArray = parsedDateArray.filter(item => {
+            const matchDay = date.day ? item.day === date.day : true;
+            const matchMonth = date.month ? item.month === date.month : true;
+            const matchYear = date.year ? item.year === date.year : true;
+          
+            return matchDay && matchMonth && matchYear;
+          });
+          
+          const finalArray = filteredArray.map(({ day, month, year, ...rest }) => rest);
+
+        return finalArray;
     }
+    const handleSearchOptionsByNumber = async (e) => {
+        const { value } = e.target;
+        setNumber(value);
+        setId();
+        handleClearInput('idSandRemittanceSZ');
+        setOptionsDoReSearched();
+        handleClearWarning();
+    }
+    const handleSearchByNumber = (data0, searchTerm) => {
+        return data0.filter(item => item.number.includes(searchTerm))
+    };
 
     const handleCreateOptions = (doReFounds) => {
         const optionsFound = doReFounds.map((doReFound, i) => {
@@ -258,8 +329,8 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                                 {doReFound.name} {' '} {doReFound.lastName}
                             </span>
 
-                            <span className="price" title={parseFloat(doReFound.price).toLocaleString()}>
-                                {parseFloat(doReFound.price).toLocaleString()}
+                            <span className="price" title={doReFound.price}>
+                                {doReFound.price}
                             </span>
 
                             <span className='unit'>
@@ -312,7 +383,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
     }
 
     const formatNub = (refCurrent) => {
-        const element=document.getElementById('priceDoRe');
+        const element = document.getElementById('priceDoRe');
         let val,
             checkDthot,
             resalt = element.value.replace(/[\s,]/g, "");
@@ -330,7 +401,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
              * علامت را به آخر رشته اضافه می کند
              */
             val = checkDthot ? val.toLocaleString() + '.' : val.toLocaleString();
-            
+
             element.value = val;
         }
     }
@@ -397,7 +468,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                                     handleSearchOptionsByPrice(e);
                                 }}
                                 id="priceDoRe"
-                                // ref={priceDoReRef}
+                            // ref={priceDoReRef}
                             />
                         </div>
                         <div className="row_SZ">
@@ -405,6 +476,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
                                 type="text"
                                 className="remittanceNumber btnS sandRemittanceSZ"
                                 placeholder={label.number}
+                                onInput={e=>handleSearchOptionsByNumber(e)}
                             />
                         </div>
 
@@ -414,9 +486,7 @@ const SearchDocumentsAndRemittancesSelect = ({ dataDoRes, type }) => {
         }
     }, [dataDoRes, id]);
 
-    useEffect(() => {
-        handelSearchByDate()
-    }, [date])
+    
 
 
     useEffect(() => {
