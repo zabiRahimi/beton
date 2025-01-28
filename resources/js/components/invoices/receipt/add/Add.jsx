@@ -250,6 +250,7 @@ const Add = () => {
         dataSandRemittances,
         cementRemittanceOptions,
         dataCementRemittances,
+        
     } = RouteService({
         setLoading,
         setTicketNumber,
@@ -262,7 +263,8 @@ const Add = () => {
         setDocumentReceivableDisplay,
         setSandRemittanceDisplay,
         setCementRemittanceDisplay,
-        setPayType
+        setPayType,
+        setInput
     });
 
     const { inputCustomerSearch, optionsCustomersSearched, customerSearchWarning, elementCustomerSearchWarning, handleClearAllSearchCustomer } = SearchCustomersSelect({ dataCustomers });
@@ -321,7 +323,7 @@ const Add = () => {
         setLoading(true);
         try {
             const response = await axios.post(
-                '/api/v1/sandInvoices',
+                '/api/v1/receipts',
                 { ...input },
                 {
                     headers:
@@ -347,8 +349,7 @@ const Add = () => {
                 didClose: () => resetForm(
                     setInput,
                     setDate,
-                    setTime,
-                    setSandRemittance_id,
+                    setSand_remittance_id,
                     sandRemittance_idRef.current,
                     setSandTypeSelected,
                     sandTypeRef.current,
@@ -377,11 +378,10 @@ const Add = () => {
                 }
 
                 Object.entries(error.response.data.errors).map(([key, val]) => {
-                    // نادیده گرفتن خطای مربوط به remainingPrice
-                    if (key !== 'totalPrice' && key !== 'dumpTruckOwner_id' && key !== 'totalFare') {
+                    
                         document.getElementById(key).classList.add('borderRedFB');
                         document.getElementById(key + 'Error').innerHTML = val;
-                    }
+                    
                 });
             }
         } finally {

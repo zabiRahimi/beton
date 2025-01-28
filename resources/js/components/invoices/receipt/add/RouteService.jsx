@@ -15,7 +15,8 @@ const RouteService = ({
   setDocumentReceivableDisplay,
   setSandRemittanceDisplay,
   setCementRemittanceDisplay,
-  setPayType
+  setPayType,
+  setInput
 }) => {
 
   const MySwal = withReactContent(Swal);
@@ -101,6 +102,7 @@ const RouteService = ({
       }).then((result) => {
         if (result.isConfirmed) {
           setDocumentReceivableDisplay(true);
+          setInput(prev => ({ ...prev, isDocument: 1 }));
         }
         else if (result.dismiss === Swal.DismissReason.cancel) {
           setDocumentReceivableDisplay(false);
@@ -133,6 +135,8 @@ const RouteService = ({
       }).then((result) => {
         if (result.isConfirmed) {
           setSandRemittanceDisplay(true);
+          setInput(prev => ({ ...prev, isSandRemittance: 1 }));
+
         }
         else if (result.dismiss === Swal.DismissReason.cancel) {
           setSandRemittanceDisplay(false);
@@ -164,6 +168,8 @@ const RouteService = ({
       }).then((result) => {
         if (result.isConfirmed) {
           setCementRemittanceDisplay(true);
+          setInput(prev => ({ ...prev, isCementRemittance: 1 }));
+
         }
         else if (result.dismiss === Swal.DismissReason.cancel) {
           setCementRemittanceDisplay(false);
