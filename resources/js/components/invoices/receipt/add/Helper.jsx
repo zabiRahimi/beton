@@ -1,86 +1,61 @@
 
-export const handleSetDate = (e, input, date, setDate, setInput) => {
-    let { value } = e.target,
+export const handleSetDate = (e, date, setDate, date_check, setDate_check, setInput) => {
+    // چون در کامپوننت پدر دو نوع تاریخ داریم این متد به صورت پویا کار می کند
+    let { value, name } = e.target,
         valDate;
     value = value.toString();
-    switch (input) {
+    switch (name) {
         case 'day':
             value = (value != 0 && value.length === 1) ? '0' + value : value;
             value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
             if (value === '' || (Number(value) >= 0 && Number(value) <= 31)) {
-                setDate(prev => ({ ...prev, [input]: value }));
+                date ?
+                    setDate(prev => ({ ...prev, day: value }))
+                    :
+                    setDate_check(prev => ({ ...prev, day: value }))
 
             } else {
-                e.target.value = date.day;
+                e.target.value = date ? date.day : date_check.day;
             }
-            valDate = `${date.year}-${date.month}-${value}`;
+            valDate = `${date ? date.year : date_check.year}-${date ? date.month : date_check.month}-${value}`;
             break;
         case 'month':
             value = (value != 0 && value.length === 1) ? '0' + value : value;
             value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
             if (value === '' || (Number(value) >= 0 && Number(value) <= 12)) {
-                setDate(prev => ({ ...prev, [input]: value }));
+
+                date ?
+                    setDate(prev => ({ ...prev, month: value }))
+                    :
+                    setDate_check(prev => ({ ...prev, month: value }))
 
             } else {
-                e.target.value = date.month;
+                e.target.value = date ? date.month : date_check.month;
             }
-            valDate = `${date.year}-${value}-${date.day}`;
+            valDate = `${date ? date.year : date_check.year}-${value}-${date ? date.day : date_check.day}`;
             break;
         case 'year':
             if (value === '' || (Number(value) >= 1 && Number(value) <= 1500)) {
-                setDate(prev => ({ ...prev, [input]: value }));
+                date ?
+                    setDate(prev => ({ ...prev, year: value }))
+                    :
+                    setDate_check(prev => ({ ...prev, year: value }))
 
             } else {
-                e.target.value = date.year;
+                e.target.value = date ? date.year : date_check.year;
             }
-            valDate = `${value}-${date.month}-${date.day}`;
+            valDate = `${value}-${date ? date.month : date_check.month}-${date ? date.day : date_check.day}`;
             break;
         default:
             return;
     }
-    setInput(prev => ({ ...prev, date: valDate }));
+    date ?
+        setInput(prev => ({ ...prev, date: valDate }))
+        :
+        setInput(prev => ({ ...prev, date_check: valDate }))
 }
 
-export const handleSetTime = (e, input, time, setTime, setInput) => {
-    let { value } = e.target,
-        valTime;
-    value = value.toString();
-    switch (input) {
-        case 'second':
-            value = (value != 0 && value.length === 1) ? '0' + value : value;
-            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
-            if (value === '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.second;
-            }
-            valTime = `${time.hour}:${time.minute}:${value}`;
-            break;
-        case 'minute':
-            value = (value != 0 && value.length === 1) ? '0' + value : value;
-            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
-            if (value === '' || (Number(value) >= 0 && Number(value) <= 60)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.minute;
-            }
-            valTime = `${time.hour}:${value}:${time.second}`;
-            break;
-        case 'hour':
-            value = (value != 0 && value.length === 1) ? '0' + value : value;
-            value = (value.length >= 3 && value[0] === '0') ? value.slice(1) : value;
-            if (value === '' || (Number(value) >= 0 && Number(value) <= 24)) {
-                setTime(prev => ({ ...prev, [input]: value }));
-            } else {
-                e.target.value = time.hour;
-            }
-            valTime = `${value}:${time.minute}:${time.second}`;
-            break;
-        default:
-            return;
-    }
-    setInput(prev => ({ ...prev, time: valTime }));
-}
+
 
 /**
 * برای پاک کردن پیام خطا و برداشتن رنگ قرمز دور کادر
@@ -159,7 +134,6 @@ export const formatNub = (refCurrent) => {
 export const resetForm = (
     setInput,
     setDate,
-    setTime,
     setSandRemittance_id,
     sandRemittance_idCurrent,
     setSandTypeSelected,
@@ -211,10 +185,10 @@ export const resetForm = (
     handleRemoveAllError();
     sandRemittance_idCurrent.updateData('انتخاب');
     sandTypeCurrent.updateData('انتخاب');
-    totalPriceCurrent.innerHTML=0;
+    totalPriceCurrent.innerHTML = 0;
     dumpTruckCurrent.updateData('انتخاب');
     driverCurrent.updateData('انتخاب');
-    totalFareCurrent.innerHTML=0;
+    totalFareCurrent.innerHTML = 0;
     sandStoreCurrent.updateData('انتخاب');
     // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
     if (apply) {

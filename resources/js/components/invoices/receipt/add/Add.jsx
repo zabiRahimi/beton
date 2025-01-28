@@ -110,19 +110,44 @@ const Add = () => {
         isDocument: 0,
         isSandRemittance: 0,
         isCementRemittance: 0,
-        date_check: '',
+        date_check: '',//تاریخ چک، تاریخ کارت به کارت، تاریخ واریزی به حساب
         number: '',//شماره چک، شماره کارت، شماره حساب
         owner: '',//صاحب چک، صاحب حساب یا کارت دریافت کننده
         bank: '',
         bank_branch: '',
         description: ''
     });
+    console.log(input);
 
     useEffect(() => {
         if (customer_id) {
             setInput(prev => ({ ...prev, customer_id }));
         }
     }, [customer_id]);
+
+    useEffect(() => {
+        if (how_to_pay) {
+            setInput(prev => ({ ...prev, how_to_pay }));
+        }
+    }, [how_to_pay]);
+
+    useEffect(() => {
+        if (document_receivable_id) {
+            setInput(prev => ({ ...prev, document_receivable_id }));
+        }
+    }, [document_receivable_id]);
+
+    useEffect(() => {
+        if (sand_remittance_id) {
+            setInput(prev => ({ ...prev, sand_remittance_id }));
+        }
+    }, [sand_remittance_id]);
+
+    useEffect(() => {
+        if (cement_remittance_id) {
+            setInput(prev => ({ ...prev, cement_remittance_id }));
+        }
+    }, [cement_remittance_id]);
 
     const paymentOptions = {
         'کارت به کارت': {
@@ -195,48 +220,6 @@ const Add = () => {
         }
     }, [cement_remittance_id]);
 
-    // useEffect(() => {
-    //     if (how_to_pay) {
-    //         setCheckIsSelected(how_to_pay == 'وصول چک' ? true : false);
-    //         how_to_pay == 'کارت به کارت' && setPayType({
-    //             display: true,
-    //             dateLabel: 'تاریخ پرداخت',
-    //             numberLabel: 'شماره کارت مقصد',
-    //             ownerLabel: 'صاحب کارت مقصد'
-
-    //         });
-    //         how_to_pay == 'واریز به حساب' && setPayType({
-    //             display: true,
-    //             dateLabel: 'تاریخ پرداخت',
-    //             numberLabel: 'شماره حساب',
-    //             ownerLabel: 'صاحب حساب'
-
-    //         });
-    //         how_to_pay == 'پول نقد' && setPayType({
-    //             display: false,
-    //             dateLabel: ' ',
-    //             numberLabel: '',
-    //             ownerLabel: ''
-
-    //         })
-    //         how_to_pay == 'سایر' && setPayType({
-    //             display: false,
-    //             dateLabel: '',
-    //             numberLabel: '',
-    //             ownerLabel: ''
-
-    //         })
-    //         how_to_pay == 'حواله سیمان' || how_to_pay == 'حواله شن و ماسه' && setPayType({
-    //             display: true,
-    //             dateLabel: 'تاریخ حواله',
-    //             numberLabel: 'شماره حواله',
-    //             ownerLabel: 'خریدار حواله'
-
-    //         })
-    //         setInput(prev => ({ ...prev, how_to_pay }));
-    //     }
-    // }, [how_to_pay]);
-
     const {
         customerOptions,
         dataCustomers,
@@ -297,21 +280,20 @@ const Add = () => {
         type: 'remittance'
     });
 
-    const handleSaveValInput = (e, input) => {
-        let { value } = e.target;
-        if (['weight', 'unitPrice', 'unitFare'].includes(input)) {
+    const handleSaveValInput = (e) => {
+        let { value, name } = e.target;
+        if (name == 'price') {
             value = value.replace(/,/g, '');
         }
-        setInput(prev => ({ ...prev, [input]: value }));
+        setInput(prev => ({ ...prev, [name]: value }));
     }
 
-    const clearInputError = (e, refErr, time = false, date = false) => {
+    const clearInputError = (e, refErr, date = false) => {
         e.target.classList.remove('borderRedFB');
         refErr.current && (refErr.current.innerHTML = '');
         const parentWithClass = e.target.closest('.borderRedFB');
         parentWithClass && parentWithClass.classList.remove('borderRedFB');
         date && dateRef.current.classList.remove('borderRedFB');
-        time && timeRef.current.classList.remove('borderRedFB');
     }
 
     const handleSubmit = async (e) => {
@@ -448,28 +430,30 @@ const Add = () => {
                                             type="text"
                                             className="inputTextDateACus inputDayTDACus element"
                                             placeholder="1"
-                                            id="day"
+                                            name='day'
                                             value={date.day || ''}
-                                            onInput={(e) => handleSetDate(e, 'day', date, setDate, setInput)}
-                                            onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            onInput={(e) => handleSetDate(e,  date, setDate,'','', setInput)}
+                                            onFocus={(e) => clearInputError(e, dateError, true)}
                                         />
                                         <span>/</span>
                                         <input
                                             type="text"
                                             className="inputTextDateACus inputMonthTDACus element"
                                             placeholder="1"
+                                            name='month'
                                             value={date.month || ''}
-                                            onInput={(e) => handleSetDate(e, 'month', date, setDate, setInput)}
-                                            onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            onInput={(e) => handleSetDate(e,  date, setDate,'','', setInput)}
+                                            onFocus={(e) => clearInputError(e, dateError, true)}
                                         />
                                         <span>/</span>
                                         <input
                                             type="text"
                                             className="inputTextDateACus inputYearTDACus element"
                                             placeholder="1300"
+                                            name='year'
                                             value={date.year || ''}
-                                            onInput={(e) => { handleSetDate(e, 'year', date, setDate, setInput) }}
-                                            onFocus={(e) => clearInputError(e, dateError, false, true)}
+                                            onInput={(e) => { handleSetDate(e,date, setDate,'','', setInput) }}
+                                            onFocus={(e) => clearInputError(e, dateError, true)}
                                         />
                                         <i className="icofont-ui-rating starFB" />
                                     </div>
@@ -477,27 +461,30 @@ const Add = () => {
                                     <div className="divDownDateAcus" >
                                         <select
                                             className="element"
+                                            name='day'
                                             value={date.day || ''}
-                                            onChange={(e) => handleSetDate(e, 'day', date, setDate, setInput)}
-                                            onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            onChange={(e) => handleSetDate(e, date, setDate,'','', setInput)}
+                                            onClick={(e) => clearInputError(e, dateError, true)}
                                         >
                                             <option value="">روز</option>
                                             {optionDays}
                                         </select>
                                         <select
                                             className="element"
+                                            name='month'
                                             value={date.month || ''}
-                                            onChange={(e) => handleSetDate(e, 'month', date, setDate, setInput)}
-                                            onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            onChange={(e) => handleSetDate(e, date, setDate,'','', setInput)}
+                                            onClick={(e) => clearInputError(e, dateError, true)}
                                         >
                                             <option value="">ماه</option>
                                             {optionMonth}
                                         </select>
                                         <select
                                             className="element"
+                                            name='year'
                                             value={date.year || ''}
-                                            onChange={(e) => { handleSetDate(e, 'year', date, setDate, setInput) }}
-                                            onClick={(e) => clearInputError(e, dateError, false, true)}
+                                            onChange={(e) => { handleSetDate(e, date, setDate,'','', setInput) }}
+                                            onClick={(e) => clearInputError(e, dateError, true)}
                                         >
                                             <option value="">سال</option>
                                             {optionShortYears}
@@ -521,7 +508,6 @@ const Add = () => {
                                     onInput={e => {
                                         handleSaveValInput(e);
                                         formatNub(priceRef.current);
-                                        handleTotalPriceCalculation(e, 'unitPrice', input, setInput, totalPriceRef.current)
                                     }}
                                     onFocus={e => clearInputError(e, priceError)}
                                     ref={priceRef}
@@ -671,61 +657,70 @@ const Add = () => {
                                         <div className="divInputFB ">
                                             <label htmlFor="day"> {payType.dateLabel} </label>
                                             <div className="divDateBirth">
-                                                <div className="divUpDateAcus element" ref={date_checkRef} id='date'
+                                                <div className="divUpDateAcus element" ref={date_checkRef} id='date_check'
                                                 >
                                                     <input
                                                         type="text"
                                                         className="inputTextDateACus inputDayTDACus element"
                                                         placeholder="1"
-                                                        id="day"
+                                                        name='day'
                                                         value={date_check.day || ''}
-                                                        onInput={(e) => handleSetDate(e, 'day', date_check, setDate, setInput)}
-                                                        onFocus={(e) => clearInputError(e, date_checkError, false, true)}
+                                                        onInput={
+                                                            (e) => {
+                                                                handleSetDate(e, '', '',date_check, setDate_check, setInput);
+                                                            }
+                                                        }
+                                                        onFocus={(e) => clearInputError(e, date_checkError, true)}
                                                     />
                                                     <span>/</span>
                                                     <input
                                                         type="text"
                                                         className="inputTextDateACus inputMonthTDACus element"
                                                         placeholder="1"
+                                                        name='month'
                                                         value={date_check.month || ''}
-                                                        onInput={(e) => handleSetDate(e, 'month', date_check, setDate, setInput)}
-                                                        onFocus={(e) => clearInputError(e, date_checkError, false, true)}
+                                                        onInput={(e) => handleSetDate(e, '', '', date_check, setDate_check, setInput)}
+                                                        onFocus={(e) => clearInputError(e, date_checkError, true)}
                                                     />
                                                     <span>/</span>
                                                     <input
                                                         type="text"
                                                         className="inputTextDateACus inputYearTDACus element"
                                                         placeholder="1300"
+                                                        name='year'
                                                         value={date_check.year || ''}
-                                                        onInput={(e) => { handleSetDate(e, 'year', date_check, setDate, setInput) }}
-                                                        onFocus={(e) => clearInputError(e, date_checkError, false, true)}
+                                                        onInput={(e) => { handleSetDate(e,  '', '',date_check, setDate_check, setInput) }}
+                                                        onFocus={(e) => clearInputError(e, date_checkError, true)}
                                                     />
                                                 </div>
 
                                                 <div className="divDownDateAcus" >
                                                     <select
                                                         className="element"
+                                                        name='day'
                                                         value={date_check.day || ''}
-                                                        onChange={(e) => handleSetDate(e, 'day', date_check, setDate, setInput)}
-                                                        onClick={(e) => clearInputError(e, date_checkError, false, true)}
+                                                        onChange={(e) => handleSetDate(e,  '', '',date_check, setDate_check, setInput)}
+                                                        onClick={(e) => clearInputError(e, date_checkError, true)}
                                                     >
                                                         <option value="">روز</option>
                                                         {optionDays}
                                                     </select>
                                                     <select
                                                         className="element"
+                                                        name='month'
                                                         value={date_check.month || ''}
-                                                        onChange={(e) => handleSetDate(e, 'month', date_check, setDate, setInput)}
-                                                        onClick={(e) => clearInputError(e, date_checkError, false, true)}
+                                                        onChange={e => handleSetDate(e, '', '', date_check, setDate_check, setInput)}
+                                                        onClick={e => clearInputError(e, date_checkError, true)}
                                                     >
                                                         <option value="">ماه</option>
                                                         {optionMonth}
                                                     </select>
                                                     <select
                                                         className="element"
+                                                        name='year'
                                                         value={date_check.year || ''}
-                                                        onChange={(e) => { handleSetDate(e, 'year', date_check, setDate, setInput) }}
-                                                        onClick={(e) => clearInputError(e, date_checkError, false, true)}
+                                                        onChange={e => handleSetDate(e, '', '', date_check, setDate_check, setInput)}
+                                                        onClick={e => clearInputError(e, date_checkError, true)}
                                                     >
                                                         <option value="">سال</option>
                                                         {optionShortYears}
@@ -744,10 +739,7 @@ const Add = () => {
                                                 className="inputTextFB ltrFB element"
                                                 id="number"
                                                 name='number'
-                                                onInput={e => {
-                                                    handleSaveValInput(e);
-
-                                                }}
+                                                onInput={e => handleSaveValInput(e)}
                                                 onFocus={e => clearInputError(e, numberError)}
                                                 ref={numberRef}
                                             />
@@ -763,7 +755,6 @@ const Add = () => {
                                                 className="inputTextFB element"
                                                 id="owner"
                                                 name='owner'
-
                                                 onInput={e => handleSaveValInput(e)}
                                                 onFocus={e => clearInputError(e, ownerError)}
                                                 ref={ownerRef}
@@ -800,7 +791,6 @@ const Add = () => {
                                                         className="inputTextFB element"
                                                         id="band_branch"
                                                         name='band_branch'
-                                                        defaultValue={input.for}
                                                         onInput={e => handleSaveValInput(e)}
                                                         onFocus={e => clearInputError(e, bank_branchError)}
                                                         ref={bank_branchRef}
@@ -821,7 +811,8 @@ const Add = () => {
                                 <textarea
                                     className="textarea100FB descriptionFB element"
                                     id="description"
-                                    onInput={e => handleSaveValInput(e, 'description')}
+                                    name='description'
+                                    onInput={e => handleSaveValInput(e)}
                                     onFocus={(e) => clearInputError(e, descriptionError)}
 
                                 />
