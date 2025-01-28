@@ -212,52 +212,5 @@ export const handleRemoveAllError = () => {
 }
 
 
-export const handleTotalPriceCalculation = (e, element, input, setInput, refCurrent) => {
-    let totalPrice = 0;
-    let { value } = e.target;
-    value = Number(value.replace(/,/g, ''));
 
-    if (element === 'weight') {
-        // تبدیل قیمت هر تن به کیلو
-        const unitPrice = Number(input.unitPrice);
-        if (Number.isInteger(unitPrice)) {
-            totalPrice = unitPrice / 1000 * value;
-        }
-    } else {
-        // تبدیل وزن بار به تناژ
-        const weight = Number(input.weight) / 1000;
-        if (!isNaN(weight)) {
-            totalPrice = weight * value;
-        }
-    }
-
-    totalPrice = Math.round(totalPrice);
-    setInput(prev => ({ ...prev, totalPrice }));
-    refCurrent.innerHTML = totalPrice.toLocaleString();
-};
-
-
-export const handleTotalFareCalculation = (e, element, input, setInput, refCurrent) => {
-    let totalFare = 0,
-        { value } = e.target;
-    value = value.replace(/,/g, '');
-    value = Number(value);
-    if (element == 'weight') {
-        // تبدیل قیمت هرتن به کیلو
-        let unitFare = input.unitFare;
-        if (Number.isInteger(Number(unitFare))) {
-            totalFare = (unitFare / 1000) * value;
-        }
-    } else {
-        // تبدیل وزن بار به تناژ
-        let weight = input.weight / 1000;
-        if (weight && Number(weight)) {
-            totalFare = weight * value;
-        }
-    }
-    totalFare = Math.round(totalFare);
-
-    setInput(perv => ({ ...perv, totalFare }));
-    refCurrent.innerHTML = totalFare.toLocaleString();
-}
 

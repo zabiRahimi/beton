@@ -138,7 +138,7 @@ const RouteService = ({
           setSandRemittanceDisplay(false);
           setPayType({
             display: true,
-            dateLabel: 'تاریخ ',
+            dateLabel: 'تاریخ حواله',
             numberLabel: 'شماره حواله',
             ownerLabel: 'خریدار حواله'
           })
@@ -169,7 +169,7 @@ const RouteService = ({
           setCementRemittanceDisplay(false);
           setPayType({
             display: true,
-            dateLabel: 'تاریخ ',
+            dateLabel: 'تاریخ حواله',
             numberLabel: 'شماره حواله',
             ownerLabel: 'خریدار حواله'
           })
@@ -270,7 +270,7 @@ const RouteService = ({
     let options;
     if (sandRemittances && sandRemittances.length > 0) {
       options = sandRemittances.map(data => ({
-        value: 'data.id',
+        value: data.id,
         html: (
           <div className="containerChekOption_SZabi">
             <div>

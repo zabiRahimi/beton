@@ -15,8 +15,6 @@ import {
     htmlFor,
     formatNub,
     resetForm,
-    handleTotalPriceCalculation,
-    handleTotalFareCalculation
 } from './Helper';
 import SearchDocumentsAndRemittancesSelect from './searchSelectZabi/SearchDocumentsAndRemittancesSelect';
 
@@ -190,6 +188,9 @@ const Add = () => {
 
     useEffect(() => {
         if (how_to_pay) {
+            setDocumentReceivableDisplay(false);
+            setSandRemittanceDisplay(false);
+            setCementRemittanceDisplay(false);
             setCheckIsSelected(how_to_pay === 'وصول چک');
             setSandIsSelected(how_to_pay === 'حواله شن و ماسه');
             setCementIsSelected(how_to_pay === 'حواله سیمان');
@@ -197,7 +198,26 @@ const Add = () => {
             if (payTypeConfig) {
                 setPayType(payTypeConfig);
             }
-            setInput(prev => ({ ...prev, how_to_pay }));
+            setInput(prev => ({
+                ...prev,
+                how_to_pay,
+                document_receivable_id: '',
+                sand_remittance_id: '',
+                cement_remittance_id: '',
+                isDocument: 0,
+                isCementRemittance: 0,
+                isSandRemittance: 0,
+                date_check: '',
+                owner: '',
+                number: '',
+                bank: '',
+                bank_branch: '',
+            }));
+            setDate_check({
+                day: '',
+                month: '',
+                year: ''
+            });
             setHow_to_pay('');
         }
     }, [how_to_pay]);
@@ -432,7 +452,7 @@ const Add = () => {
                                             placeholder="1"
                                             name='day'
                                             value={date.day || ''}
-                                            onInput={(e) => handleSetDate(e,  date, setDate,'','', setInput)}
+                                            onInput={(e) => handleSetDate(e, date, setDate, '', '', setInput)}
                                             onFocus={(e) => clearInputError(e, dateError, true)}
                                         />
                                         <span>/</span>
@@ -442,7 +462,7 @@ const Add = () => {
                                             placeholder="1"
                                             name='month'
                                             value={date.month || ''}
-                                            onInput={(e) => handleSetDate(e,  date, setDate,'','', setInput)}
+                                            onInput={(e) => handleSetDate(e, date, setDate, '', '', setInput)}
                                             onFocus={(e) => clearInputError(e, dateError, true)}
                                         />
                                         <span>/</span>
@@ -452,7 +472,7 @@ const Add = () => {
                                             placeholder="1300"
                                             name='year'
                                             value={date.year || ''}
-                                            onInput={(e) => { handleSetDate(e,date, setDate,'','', setInput) }}
+                                            onInput={(e) => { handleSetDate(e, date, setDate, '', '', setInput) }}
                                             onFocus={(e) => clearInputError(e, dateError, true)}
                                         />
                                         <i className="icofont-ui-rating starFB" />
@@ -463,7 +483,7 @@ const Add = () => {
                                             className="element"
                                             name='day'
                                             value={date.day || ''}
-                                            onChange={(e) => handleSetDate(e, date, setDate,'','', setInput)}
+                                            onChange={(e) => handleSetDate(e, date, setDate, '', '', setInput)}
                                             onClick={(e) => clearInputError(e, dateError, true)}
                                         >
                                             <option value="">روز</option>
@@ -473,7 +493,7 @@ const Add = () => {
                                             className="element"
                                             name='month'
                                             value={date.month || ''}
-                                            onChange={(e) => handleSetDate(e, date, setDate,'','', setInput)}
+                                            onChange={(e) => handleSetDate(e, date, setDate, '', '', setInput)}
                                             onClick={(e) => clearInputError(e, dateError, true)}
                                         >
                                             <option value="">ماه</option>
@@ -483,7 +503,7 @@ const Add = () => {
                                             className="element"
                                             name='year'
                                             value={date.year || ''}
-                                            onChange={(e) => { handleSetDate(e, date, setDate,'','', setInput) }}
+                                            onChange={(e) => { handleSetDate(e, date, setDate, '', '', setInput) }}
                                             onClick={(e) => clearInputError(e, dateError, true)}
                                         >
                                             <option value="">سال</option>
@@ -667,7 +687,7 @@ const Add = () => {
                                                         value={date_check.day || ''}
                                                         onInput={
                                                             (e) => {
-                                                                handleSetDate(e, '', '',date_check, setDate_check, setInput);
+                                                                handleSetDate(e, '', '', date_check, setDate_check, setInput);
                                                             }
                                                         }
                                                         onFocus={(e) => clearInputError(e, date_checkError, true)}
@@ -689,7 +709,7 @@ const Add = () => {
                                                         placeholder="1300"
                                                         name='year'
                                                         value={date_check.year || ''}
-                                                        onInput={(e) => { handleSetDate(e,  '', '',date_check, setDate_check, setInput) }}
+                                                        onInput={(e) => { handleSetDate(e, '', '', date_check, setDate_check, setInput) }}
                                                         onFocus={(e) => clearInputError(e, date_checkError, true)}
                                                     />
                                                 </div>
@@ -699,7 +719,7 @@ const Add = () => {
                                                         className="element"
                                                         name='day'
                                                         value={date_check.day || ''}
-                                                        onChange={(e) => handleSetDate(e,  '', '',date_check, setDate_check, setInput)}
+                                                        onChange={(e) => handleSetDate(e, '', '', date_check, setDate_check, setInput)}
                                                         onClick={(e) => clearInputError(e, date_checkError, true)}
                                                     >
                                                         <option value="">روز</option>
