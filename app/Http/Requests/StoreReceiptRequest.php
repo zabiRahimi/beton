@@ -43,7 +43,20 @@ class StoreReceiptRequest extends FormRequest
             // 'cement_remittance_id' => [''nullable',required_if_accepted:isCementRemittance', 'exists:cement_remittances,id'],
 
             'date_check' => ['nullable', 'date'],
-            'number' => ['nullable', 'bail', 'numeric', 'digits:16'],
+            // 'number' => ['nullable', 'bail', 'numeric', 'digits:16'],
+            'number' => [
+                'nullable', 
+                'string',
+                function ($attribute, $value, $fail) {
+                    if (in_array($this->how_to_pay, ['کارت به کارت', 'وصول چک', 'واریز به حساب'])) {
+                        if (!is_numeric($value)) {
+                            $fail('شماره باید عددی باشد.');
+                        } elseif (strlen($value) !== 16) {
+                            $fail('شماره باید ۱۶ رقم باشد.');
+                        }
+                    }
+                }
+            ],
             'owner' => ['nullable', 'string'],
             'bank' => ['nullable', 'string'],
             'bank_branck' => ['nullable', 'string'],
@@ -72,7 +85,29 @@ class StoreReceiptRequest extends FormRequest
             'number.numeric' => 'شماره را به عدد وارد کنید',
             'number.digits' => 'شماره 16 رقم است، صحیح وارد کنید',
         ];
+
     }
+
+//     public function rules()
+// {
+//     return [
+//         'how_to_pay' => ['required', 'string'],
+//         'number' => [
+//             'nullable', 
+//             'string',
+//             function ($attribute, $value, $fail) {
+//                 if (in_array($this->how_to_pay, ['کارت به کارت', 'وصول چک', 'واریز به حساب'])) {
+//                     if (!is_numeric($value)) {
+//                         $fail('شماره باید عددی باشد.');
+//                     } elseif (strlen($value) !== 16) {
+//                         $fail('شماره باید ۱۶ رقم باشد.');
+//                     }
+//                 }
+//             }
+//         ],
+//     ];
+// }
+
 
 
 

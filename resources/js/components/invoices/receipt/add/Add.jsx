@@ -123,11 +123,11 @@ const Add = () => {
         }
     }, [customer_id]);
 
-    useEffect(() => {
-        if (how_to_pay) {
-            setInput(prev => ({ ...prev, how_to_pay }));
-        }
-    }, [how_to_pay]);
+    // useEffect(() => {
+    //     if (how_to_pay) {
+    //         setInput(prev => ({ ...prev, how_to_pay }));
+    //     }
+    // }, [how_to_pay]);
 
     useEffect(() => {
         if (document_receivable_id) {
@@ -219,6 +219,15 @@ const Add = () => {
                 year: ''
             });
             setHow_to_pay('');
+            const elements = document.getElementsByClassName('elementRemittance');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].classList.remove('borderRedFB');
+                elements[i].value= '';
+            }
+            const errorElements = document.getElementsByClassName('errorRemittance');
+            for (var i = 0; i < errorElements.length; i++) {
+                errorElements[i].innerHTML = '';
+            }
         }
     }, [how_to_pay]);
 
@@ -250,7 +259,7 @@ const Add = () => {
         dataSandRemittances,
         cementRemittanceOptions,
         dataCementRemittances,
-        
+
     } = RouteService({
         setLoading,
         setTicketNumber,
@@ -378,10 +387,10 @@ const Add = () => {
                 }
 
                 Object.entries(error.response.data.errors).map(([key, val]) => {
-                    
-                        document.getElementById(key).classList.add('borderRedFB');
-                        document.getElementById(key + 'Error').innerHTML = val;
-                    
+
+                    document.getElementById(key).classList.add('borderRedFB');
+                    document.getElementById(key + 'Error').innerHTML = val;
+
                 });
             }
         } finally {
@@ -591,7 +600,7 @@ const Add = () => {
                                                 <label> چک </label>
                                                 <div
                                                     id='document_receivable_id'
-                                                    className="element"
+                                                    className="element elementRemittance"
                                                     onClick={e => { clearInputError(e, document_receivable_idError); }}
                                                 >
                                                     <SelectZabi2
@@ -608,7 +617,7 @@ const Add = () => {
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            <div className="errorContainerFB elementError" id='document_receivable_idError' ref={document_receivable_idError}> </div>
+                                            <div className="errorContainerFB elementError errorRemittance" id='document_receivable_idError' ref={document_receivable_idError}> </div>
                                         </div>
                                     }
 
@@ -619,7 +628,7 @@ const Add = () => {
                                                 <label> حواله شن و ماسه </label>
                                                 <div
                                                     id='sand_remittance_id'
-                                                    className="element"
+                                                    className="element elementRemittance"
                                                     onClick={e => { clearInputError(e, sand_remittance_idError) }}
                                                 >
                                                     <SelectZabi2
@@ -636,7 +645,7 @@ const Add = () => {
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            <div className="errorContainerFB elementError" id='sand_remittance_idError' ref={sand_remittance_idError}> </div>
+                                            <div className="errorContainerFB elementError errorRemittance" id='sand_remittance_idError' ref={sand_remittance_idError}> </div>
                                         </div>
                                     }
 
@@ -647,7 +656,7 @@ const Add = () => {
                                                 <label> حواله سیمان </label>
                                                 <div
                                                     id='cement_remittance_id'
-                                                    className="element"
+                                                    className="element elementRemittance"
                                                     onClick={e => { clearInputError(e, cement_remittance_idError) }}
                                                 >
                                                     <SelectZabi2
@@ -664,7 +673,7 @@ const Add = () => {
                                                 </div>
                                                 <i className="icofont-ui-rating starFB" />
                                             </div>
-                                            <div className="errorContainerFB elementError" id='cement_remittance_idError' ref={cement_remittance_idError}> </div>
+                                            <div className="errorContainerFB elementError errorRemittance" id='cement_remittance_idError' ref={cement_remittance_idError}> </div>
                                         </div>
                                     }
                                 </>
@@ -677,7 +686,7 @@ const Add = () => {
                                         <div className="divInputFB ">
                                             <label htmlFor="day"> {payType.dateLabel} </label>
                                             <div className="divDateBirth">
-                                                <div className="divUpDateAcus element" ref={date_checkRef} id='date_check'
+                                                <div className="divUpDateAcus element elementRemittance" ref={date_checkRef} id='date_check'
                                                 >
                                                     <input
                                                         type="text"
@@ -749,14 +758,14 @@ const Add = () => {
                                             </div>
                                         </div>
 
-                                        <div className="errorContainerFB elementError" id='date_checkError' ref={date_checkError}> </div>
+                                        <div className="errorContainerFB elementError errorRemittance" id='date_checkError' ref={date_checkError}> </div>
                                     </div>
                                     <div className="containerInputFB">
                                         <div className="divInputFB">
                                             <label htmlFor="number">{payType.numberLabel}</label>
                                             <input
                                                 type="text"
-                                                className="inputTextFB ltrFB element"
+                                                className="inputTextFB ltrFB element elementRemittance"
                                                 id="number"
                                                 name='number'
                                                 onInput={e => handleSaveValInput(e)}
@@ -764,7 +773,7 @@ const Add = () => {
                                                 ref={numberRef}
                                             />
                                         </div>
-                                        <div className="errorContainerFB elementError" id="numberError" ref={numberError}> </div>
+                                        <div className="errorContainerFB elementError errorRemittance" id="numberError" ref={numberError}> </div>
                                     </div>
 
                                     <div className="containerInputFB">
@@ -772,7 +781,7 @@ const Add = () => {
                                             <label htmlFor="owner">{payType.ownerLabel}</label>
                                             <input
                                                 type="text"
-                                                className="inputTextFB element"
+                                                className="inputTextFB element elementRemittance"
                                                 id="owner"
                                                 name='owner'
                                                 onInput={e => handleSaveValInput(e)}
@@ -780,7 +789,7 @@ const Add = () => {
                                                 ref={ownerRef}
                                             />
                                         </div>
-                                        <div className="errorContainerFB elementError" id="ownerError" ref={ownerError}> </div>
+                                        <div className="errorContainerFB elementError errorRemittance" id="ownerError" ref={ownerError}> </div>
                                     </div>
 
                                     {
@@ -791,7 +800,7 @@ const Add = () => {
                                                     <label htmlFor="bank">بانک</label>
                                                     <input
                                                         type="text"
-                                                        className="inputTextFB element"
+                                                        className="inputTextFB element elementRemittance"
                                                         id="bank"
                                                         name='bank'
                                                         onInput={e => handleSaveValInput(e)}
@@ -799,7 +808,7 @@ const Add = () => {
                                                         ref={bankRef}
                                                     />
                                                 </div>
-                                                <div className="errorContainerFB elementError" id="bankError" ref={bankError}> </div>
+                                                <div className="errorContainerFB elementError errorRemittance" id="bankError" ref={bankError}> </div>
                                             </div>
 
                                             <div className="containerInputFB">
@@ -807,7 +816,7 @@ const Add = () => {
                                                     <label htmlFor="bank_branch">شعبه</label>
                                                     <input
                                                         type="text"
-                                                        className="inputTextFB element"
+                                                        className="inputTextFB element elementRemittance"
                                                         id="bank_branch"
                                                         name='bank_branch'
                                                         onInput={e => handleSaveValInput(e)}
@@ -815,7 +824,7 @@ const Add = () => {
                                                         ref={bank_branchRef}
                                                     />
                                                 </div>
-                                                <div className="errorContainerFB elementError" id="bank_branchError" ref={bank_branchError}> </div>
+                                                <div className="errorContainerFB elementError errorRemittance" id="bank_branchError" ref={bank_branchError}> </div>
                                             </div>
                                         </>
                                     }
