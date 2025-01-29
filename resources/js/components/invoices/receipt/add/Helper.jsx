@@ -133,36 +133,36 @@ export const formatNub = (refCurrent) => {
 
 export const resetForm = (
     setInput,
+    setCustomer_id,
+    customer_idCurrent,
     setDate,
-    setSandRemittance_id,
-    sandRemittance_idCurrent,
-    setSandTypeSelected,
-    sandTypeCurrent,
-    totalPriceCurrent,
-    setDumpTruckId,
-    setDumpTruckOwnerId,
-    dumpTruckCurrent,
-    setDrvierId,
-    driverCurrent,
-    totalFareCurrent,
-    setSandStoreId,
-    sandStoreCurrent,
+    setHow_to_pay,
+    how_to_payCurrent,
+    setDocument_receivable_id,
+    document_receivable_idCurrent,
+    setSand_remittance_id,
+    sand_remittance_idCurrent,
+    setCement_remittance_id,
+    cement_remittance_idCurrent,
+    setDate_check,
     apply = true) => {
     setInput({
-        billNumber: '',
-        sandRemittance_id: '',
-        time: '',
+        customer_id: '',
         date: '',
-        sandType: '',
-        weight: '',
-        unitPrice: '',
-        totalPrice: '',
-        truck_id: '',
-        dumpTruckOwner_id: '',
-        driver_id: '',
-        unitFare: '',
-        totalFare: '',
-        sandStore_id: '',
+        price: '',
+        for: '',//بابت خرید...
+        how_to_pay: '',//نحوه پرداخت
+        isDocument: 0,
+        isSandRemittance: 0,
+        isCementRemittance: 0,
+        document_receivable_id: '',
+        sand_remittance_id: '',
+        cement_remittance_id: '',
+        date_check: '',//تاریخ چک، تاریخ کارت به کارت، تاریخ واریزی به حساب
+        number: '',//شماره چک، شماره کارت، شماره حساب
+        owner: '',//صاحب چک، صاحب حساب یا کارت دریافت کننده
+        bank: '',
+        bank_branch: '',
         description: ''
     });
     setDate({
@@ -170,26 +170,27 @@ export const resetForm = (
         month: '',
         year: ''
     });
-    setTime({
-        second: '',
-        minute: '',
-        hour: ''
+
+    setDate_check({
+        day: '',
+        month: '',
+        year: ''
     });
-    setSandRemittance_id('');
-    setSandTypeSelected('');
-    setDumpTruckId('');
-    setDumpTruckOwnerId('');
-    setDrvierId('');
-    setSandStoreId('');
+
+    setCustomer_id();
+    setHow_to_pay();
+    setDocument_receivable_id();
+    setSand_remittance_id();
+    setCement_remittance_id();
+
+    customer_idCurrent.updateData('انتخاب');
+    how_to_payCurrent.updateData('انتخاب');
+    document_receivable_idCurrent && document_receivable_idCurrent.updateData('انتخاب');
+    sand_remittance_idCurrent && sand_remittance_idCurrent.updateData('انتخاب');
+    cement_remittance_idCurrent && cement_remittance_idCurrent.updateData('انتخاب');
 
     handleRemoveAllError();
-    sandRemittance_idCurrent.updateData('انتخاب');
-    sandTypeCurrent.updateData('انتخاب');
-    totalPriceCurrent.innerHTML = 0;
-    dumpTruckCurrent.updateData('انتخاب');
-    driverCurrent.updateData('انتخاب');
-    totalFareCurrent.innerHTML = 0;
-    sandStoreCurrent.updateData('انتخاب');
+
     // در برخی مواقع لازم نیست کدهای داخل شرط استفاده شود
     if (apply) {
         window.scrollTo({ top: 0 });

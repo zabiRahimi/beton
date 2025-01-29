@@ -28,7 +28,7 @@ const Add = () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const form = useRef(null);
-    const cutomer_idRef = useRef(null);
+    const customer_idRef = useRef(null);
     const customer_idError = useRef(null);
     const dateRef = useRef(null);
     const dateError = useRef(null);
@@ -115,19 +115,12 @@ const Add = () => {
         bank_branch: '',
         description: ''
     });
-    console.log(input);
 
     useEffect(() => {
         if (customer_id) {
             setInput(prev => ({ ...prev, customer_id }));
         }
     }, [customer_id]);
-
-    // useEffect(() => {
-    //     if (how_to_pay) {
-    //         setInput(prev => ({ ...prev, how_to_pay }));
-    //     }
-    // }, [how_to_pay]);
 
     useEffect(() => {
         if (document_receivable_id) {
@@ -357,20 +350,18 @@ const Add = () => {
 
                 didClose: () => resetForm(
                     setInput,
+                    setCustomer_id,
+                    customer_idRef.current,
                     setDate,
+                    setHow_to_pay,
+                    how_to_payRef.current,
+                    setDocument_receivable_id,
+                    document_receivable_idRef.current,
                     setSand_remittance_id,
-                    sandRemittance_idRef.current,
-                    setSandTypeSelected,
-                    sandTypeRef.current,
-                    totalPriceRef.current,
-                    setDumpTruckId,
-                    setDumpTruckOwnerId,
-                    dumpTruckRef.current,
-                    setDrvierId,
-                    driverRef.current,
-                    totalFareRef.current,
-                    setSandStoreId,
-                    sandStoreRef.current,
+                    sand_remittance_idRef.current,
+                    setCement_remittance_id,
+                    cement_remittance_idRef.current,
+                    setDate_check,
                 ),
             });
         } catch (error) {
@@ -441,7 +432,7 @@ const Add = () => {
                                         warning={customerSearchWarning}
                                         elementWarning={elementCustomerSearchWarning}
                                         clearSearch={handleClearAllSearchCustomer}
-                                        ref={cutomer_idRef}
+                                        ref={customer_idRef}
                                     />
                                 </div>
                                 <i className="icofont-ui-rating starFB" />
