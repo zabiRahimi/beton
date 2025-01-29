@@ -102,12 +102,12 @@ const Add = () => {
         price: '',
         for: '',//بابت خرید...
         how_to_pay: '',//نحوه پرداخت
-        document_receivable_id: '',
-        sand_remittance_id: '',
-        cement_remittance_id: '',
         isDocument: 0,
         isSandRemittance: 0,
         isCementRemittance: 0,
+        document_receivable_id: '',
+        sand_remittance_id: '',
+        cement_remittance_id: '',
         date_check: '',//تاریخ چک، تاریخ کارت به کارت، تاریخ واریزی به حساب
         number: '',//شماره چک، شماره کارت، شماره حساب
         owner: '',//صاحب چک، صاحب حساب یا کارت دریافت کننده
@@ -794,7 +794,6 @@ const Add = () => {
                                                         className="inputTextFB element"
                                                         id="bank"
                                                         name='bank'
-                                                        defaultValue={input.for}
                                                         onInput={e => handleSaveValInput(e)}
                                                         onFocus={e => clearInputError(e, bankError)}
                                                         ref={bankRef}
@@ -805,12 +804,12 @@ const Add = () => {
 
                                             <div className="containerInputFB">
                                                 <div className="divInputFB">
-                                                    <label htmlFor="band_branch">شعبه</label>
+                                                    <label htmlFor="bank_branch">شعبه</label>
                                                     <input
                                                         type="text"
                                                         className="inputTextFB element"
-                                                        id="band_branch"
-                                                        name='band_branch'
+                                                        id="bank_branch"
+                                                        name='bank_branch'
                                                         onInput={e => handleSaveValInput(e)}
                                                         onFocus={e => clearInputError(e, bank_branchError)}
                                                         ref={bank_branchRef}
