@@ -1,0 +1,302 @@
+
+.main_Rec {
+    width: 18.5cm;
+    height: 8.5cm;
+    margin: 0 auto;
+    padding: 0 3px;
+    background-color: #ffffff;
+}
+
+.containerProForma_PFo {
+    width: 100%;
+    border: 2px solid #000;
+}
+
+.hade1_PFo {
+    width: 100%;
+    padding-top: 5px;
+    display: flex;
+}
+
+.divLogo_Rec {
+    width: 30%;
+    padding: 10px 25px 0 0;
+}
+
+.iLogo_Rec {
+    font-size: 2.1rem;
+
+}
+
+.divTitle_PFo {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title_PFo {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.nameBeton_PFo {
+    margin-top: 5px;
+}
+
+.divId_Rec {
+    width: 30%;
+    text-align: left;
+    padding-left: 10px;
+}
+
+
+.divId_Rec div{
+    padding: 20px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+} 
+
+
+.divId_Rec .label{
+    width: 52px;
+    padding-right: 40px;
+    text-align: right;
+}
+
+.divId_Rec .value{
+    flex-grow: 1;
+    text-align: center;
+}
+
+
+
+.hade2_PFo {
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.divRow_PFo {
+    width: 100%;
+    padding-bottom: 10px;
+    display: flex;
+}
+
+.divCol1_PFo {
+    width: 66%;
+    padding: 0 10px 0 5px;
+    display: flex;
+}
+
+.divCol2_PFo {
+    display: flex;
+    width: 34%;
+}
+
+.sHade2_PFo {
+    width: 80px;
+    padding-right: 3px;
+    display: block;
+    font-size: 14px;
+}
+
+.divCol2_PFo .sHade2_PFo {
+    width: 58px;
+}
+
+.vHade2_FPo {
+    width: calc(100% - 80px);
+    font-size: 12px;
+}
+
+.divCol2_PFo .vHade2_FPo {
+    width: calc(100% - 58px);
+    text-align: left;
+    padding-left: 15px;
+}
+
+
+
+
+.body_PFo {
+    width: calc(100% - 6px);
+    margin: 0 3px;
+    display: flex;
+    flex-direction: column;
+}
+
+.hadeBody_PFo,
+.containerBody_PFo {
+    width: 100%;
+    display: flex;
+    border: 1px solid #000;
+}
+
+
+.hDivBody_PFo,
+.divBody_PFo {
+    border-left: 1px solid #000;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.divBody_PFo {
+    padding: 3px 0;
+    font-size: 13px;
+}
+
+.labelHB {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.subLabelHB {
+    font-size: 10px;
+}
+
+.hDivCount_PFo,
+.divCount_PFo {
+    width: 3%;
+    font-size: 12px;
+}
+
+.hDivProduct_PFo,
+.divProduct_PFo {
+    width: 18%;
+}
+
+.hDivType_PFo,
+.divType_PFo {
+    width: 15%;
+}
+
+.hDivAmount_PFo,
+.divAmount_PFo {
+    width: 9%;
+}
+
+
+.hDivUnit_PFo,
+.divUnit_PFo,
+.hDivUnitPrice_PFo,
+.divUnitPrice_PFo {
+    width: 17%;
+}
+
+.hDivTotalPrice_PFo,
+.divTotalPrice_PFo {
+    flex-grow: 1;
+    border: none;
+}
+
+.containerBody_PFo {
+    border: 1px solid #000;
+    border-top: none;
+}
+
+.divSum_PFo {
+    width: 100%;
+    display: flex;
+    border: 1px solid #000;
+    border-top: none;
+    font-size: 14px;
+}
+
+.divLabelS_PFo {
+   
+    width: 79%;
+    padding:2px 30px;
+    border-left: 1px solid #000;
+}
+
+.divValueS_PFo {
+    width: 21%;
+    padding: 2px 0;
+    text-align: center;
+}
+
+.fW600 {
+    font-weight: 600;
+}
+
+.description_PFo {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+
+
+.footer_PFo {
+    width: 100%;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px solid #000;
+}
+
+.divRow1Footer_PFo {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.divRow1Footer_PFo .sign {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+
+.divRow2Footer_PFo {
+    width: 100%;
+    margin: 10px 10px 2px;
+}
+
+.labelF{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.valueF{
+    font-size: 13px;
+}
+
+
+.divR2R2Footer_PFo {
+    width: 100%;
+    display: flex;
+}
+
+
+
+
+.divTelFooter_PFo {
+    margin-right: 50px;
+}
+
+.textarea-output {
+    white-space: pre-line;
+}
+
+
+
+@media print {
+    @page {
+        margin: 0;
+        /* حذف حاشیه‌ها */
+    }
+
+    .main_Rec {
+        width: 18.5cm;
+        height: 8.5cm;
+        margin: 20px auto 2px;
+        padding: 0 2px;
+    }
+}

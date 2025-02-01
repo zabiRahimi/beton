@@ -65,6 +65,9 @@ import ConcreteSalesInvoice from "./components/invoices/concreteSalesInvoice/Con
 
 import Receipt from "./components/invoices/receipt/Receipt";
 import AddReceipt from "./components/invoices/receipt/add/Add";
+import EditReceipt from "./components/invoices/receipt/edit/Edit";
+import ShowReceipts from "./components/invoices/receipt/show/Show";
+import DisplayReceipt from "./components/invoices/receipt/display/Display";
 
 
 function App() {
@@ -141,9 +144,9 @@ function App() {
                     <Route path="receipt" element={<Receipt />} >
                         <Route index element={<Navigate to="add" replace />} />
                         <Route path="add" element={<AddReceipt />} />
-                        <Route path="show" element={<ShowProformaInvoices />} />
-                        <Route path="edit/:proformaInvoiceId" element={<EditProformaInvoice />} />
-                        <Route path="display/:proformaInvoiceId" element={<DisplayProformaInvoice />} />
+                        <Route path="show" element={<ShowReceipts />} />
+                        <Route path="edit/:receiptId" element={<EditReceipt />} />
+                        <Route path="display/:receiptId" element={<DisplayReceipt />} />
                     </Route>
 
                     <Route path="salesInvoice" element={<SalesInvoice />} >

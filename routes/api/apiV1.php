@@ -149,6 +149,8 @@ Route::apiResource('receipts', ReceiptController::class);
 
 Route::controller(ReceiptController::class)->group(function () {
     Route::get('/receipt/fetchData', 'fetchData');
+    Route::get('/receipt/show/{id}', 'showReceipt');
+
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

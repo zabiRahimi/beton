@@ -52,9 +52,11 @@ class ReceiptController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Receipt $receipt)
+    public function showReceipt(int $id)
     {
-        //
+        // $proformaInvoice = Receipt::with('proformaInvoiceProducts')->findOrFail($id);
+        $receipt = Receipt::findOrFail($id);
+        return response()->json(['receipt'=>$receipt],200);
     }
 
     /**
