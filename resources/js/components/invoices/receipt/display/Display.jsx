@@ -88,105 +88,67 @@ const Display
                                     </div>
                                 </div>
                             </section>
-                            <section className="hade2_PFo">
-                                <div className="divRow_PFo">
-                                    <div className="divCol1_PFo">
-                                        <span className="sHade2_PFo">مبلغ :</span>
-                                        <span className="vHade2_FPo">{receipt.buyer}</span>
+                            <section className="container_Rec">
+                                <div className="divRow_Rec">
+                                    <div className="divCol1Row1_Rec">
+                                        <span className="labelRow1_Rec">مبلغ :</span>
+                                        <div className="divValuePrice_Rec">
+                                            <span className="numberPrice_Rec">
+                                                14,567,250,000
+                                            </span>
+                                            <span className="letterPrice_Rec">
+                                                چهارده میلیارد و پانصدوشست و هفت میلیون دویست و پنجاه هزار تومان
+                                            </span>
+                                        </div>
+                                      
                                     </div>
-                                    <div className="divCol2_PFo">
-                                        <span className="sHade2_PFo">در تاریخ :</span>
-                                        <span className="vHade2_FPo">{receipt.nationalCode}</span>
+                                    <div className="divCol2Row1_Rec">
+                                        <span className="labelRow1_Rec">در تاریخ :</span>
+                                        <span className="valueRow1_Rec">1403/12/29</span>
                                     </div>
-                                    <div className="divCol2_PFo">
-                                        <span className="sHade2_PFo">بابت :</span>
-                                        <span className="vHade2_FPo">{receipt.nationalCode}</span>
+                                    <div className="divCol3Row1_Rec">
+                                        <span className="labelRow1_Rec">بابت :</span>
+                                        <span className="valueRow1_Rec">خرید ضایعات و خرید بتن 450 برای شرکت آراین فرد</span>
                                     </div>
                                 </div>
-                                <div className="divRow_PFo">
+                                <div className="divRow_Rec">
+                                    <div className="divCol1Row2_Rec">
+                                        <span className="label_Rec">پرداخت کننده :</span>
+                                        <span className="valueRow2_Rec">
+                                            شرکت صنعتی فرد ایرانیان البرز
+                                        </span>
+                                    </div>
+                                    <div className="divCol2Row2_Rec">
+                                        <span className="label_Rec">نحوه پرداخت :</span>
+                                        <span className="valueRow2_Rec">واریز به شماره حساب</span>
+                                    </div>
+
+                                    
+                                </div>
+                                <div className="divRow_Rec">
                                     <div className="divCol1_PFo">
-                                        <span className="sHade2_PFo">پرداخت کننده :</span>
+                                        <span className="labelC_Rec"> کارت مقصد :</span>
                                         <span className="vHade2_FPo">{receipt.address}</span>
                                     </div>
                                     <div className="divCol2_PFo">
-                                        <span className="sHade2_PFo">نحوه پرداخت :</span>
+                                        <span className="labelC_Rec"> صاحب کارت مقصد :</span>
                                         <span className="vHade2_FPo">{receipt.tel}</span>
                                     </div>
 
-                                    <div className="divCol2_PFo">
-                                        <span className="sHade2_PFo">نحوه پرداخت :</span>
-                                        <span className="vHade2_FPo">{receipt.tel}</span>
-                                    </div>
+                                    
                                 </div>
                             </section>
-                            <section className="body_PFo">
-                                <div className="hadeBody_PFo">
-                                    <div className="hDivBody_PFo hDivCount_PFo">
-                                        <i className="icofont-star-alt-2" />
-                                    </div>
-                                    <div className="hDivBody_PFo hDivProduct_PFo">
-                                        <span className="labelHB"> محصول </span>
-                                        <span className="subLabelHB"> (خدمات) </span>
-                                    </div>
-                                    <div className="hDivBody_PFo hDivType_PFo">
-                                        <span className="labelHB"> نوع‌محصول </span>
-                                        <span className="subLabelHB"> (عیار) </span>
-                                    </div>
-                                    <div className="hDivBody_PFo hDivAmount_PFo">
-                                        <span className="labelHB"> مقدار </span>
-                                        <span className="subLabelHB"> - </span>
-                                    </div>
-                                    <div className="hDivBody_PFo hDivUnit_PFo">
-                                        <span className="labelHB"> واحد  </span>
-                                        <span className="subLabelHB"> اندازه‌گیری </span>
-                                    </div>
-                                    <div className="hDivBody_PFo hDivUnitPrice_PFo">
-                                        <span className="labelHB"> قیمت واحد </span>
-                                        <span className="subLabelHB"> (تومان) </span>
-                                    </div>
-                                    <div className="hDivBody_PFo hDivTotalPrice_PFo">
-                                        <span className="labelHB"> قیمت کل </span>
-                                        <span className="subLabelHB"> (تومان) </span>
-                                    </div>
-                                </div>
-                               
-                                
-                                <div className="divSum_PFo">
-                                    <div className="divLabelS_PFo">
-                                        جمع
-                                    </div>
-                                    <div className="divValueS_PFo">
-                                        
-                                    </div>
-                                </div>
-
-                                <div className="divSum_PFo">
-                                    <div className="divLabelS_PFo">
-                                        9% ارزش افزوده
-                                    </div>
-                                    <div className="divValueS_PFo">
-                                       
-                                    </div>
-                                </div>
-
-                                <div className="divSum_PFo">
-                                    <div className="divLabelS_PFo fW600">
-                                        قیمت کل
-                                    </div>
-                                    <div className="divValueS_PFo fW600">
-                                    </div>
-                                </div>
-                            </section>
+                           
                             <section className="description_PFo textarea-output">
                                 {receipt.description}
                             </section>
                             <section className="footer_PFo">
                                 <div className="divRow1Footer_PFo">
                                     <span className="sign">
-                                        مهر و امضای فروشنده
+                                        مهر و امضای دریافت کننده
                                     </span>
                                     <span className="sign">
-                                        امضای خریدار
+                                        امضای پرداخت کننده
                                     </span>
                                 </div>
                                 <div className="divRow2Footer_PFo">
@@ -196,16 +158,11 @@ const Display
                                             ارسنجان، کیلومتر 3 جاده سعادتشهر، روبروی آهن آلات ولیعصر(ع)
                                         </span>
                                     </div>
-                                    <div className="divR2R2Footer_PFo">
-                                        <div className="divCodepostFooter_PFo">
-                                            <span className="labelF"> کدپستی : </span>
-                                            <span className="valueF"> 73761-94572 </span>
-                                        </div>
+                                        
                                         <div className="divTelFooter_PFo">
                                             <span className="labelF"> تلفن : </span>
                                             <span className="valueF"> 09175850042 </span>
                                         </div>
-                                    </div>
                                 </div>
                             </section>
                         </div>
