@@ -1,16 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import HeadPage from '../HeadPage';
-import Skeleton from 'react-loading-skeleton';
-import Swal from 'sweetalert2';
 import '../../../../../css/proforma.css';
 import Standard from '../../../../../assets/images/standard.png'
-import withReactContent from 'sweetalert2-react-content';
 
 const Display
     = () => {
         const { proformaInvoiceId } = useParams();
-        const MySwal = withReactContent(Swal);
         const [loading, setLoading] = useState(false);
         const hasCalledgetProforamInvoices = useRef(false);
         const printRef = useRef(null);
@@ -206,29 +202,7 @@ const Display
                                     </div>
                                 </div>
                                 {products && handleSetProducts()}
-                                {/* <div className="containerBody_PFo">
-                                    <div className="divBody_PFo divCount_PFo">
-                                        1
-                                    </div>
-                                    <div className="divBody_PFo divProduct_PFo">
-
-                                    </div>
-                                    <div className="divBody_PFo divType_PFo">
-
-                                    </div>
-                                    <div className="divBody_PFo divAmount_PFo">
-
-                                    </div>
-                                    <div className="divBody_PFo divUnit_PFo">
-
-                                    </div>
-                                    <div className="divBody_PFo divUnitPrice_PFo">
-
-                                    </div>
-                                    <div className="divBody_PFo divTotalPrice_PFo">
-
-                                    </div>
-                                </div> */}
+                              
                                 <div className="divSum_PFo">
                                     <div className="divLabelS_PFo">
                                         جمع
