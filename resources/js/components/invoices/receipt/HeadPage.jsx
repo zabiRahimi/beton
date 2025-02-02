@@ -1,17 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { ScaleLoader } from 'react-spinners';
-import Title from '../../hooks/Title';
+import Title from '../../hooks/Title'
+import { Link } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
 
 
-const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
+
+const HeadPage = ({ loading, title, displayBtnAdd, displayBtnShow, displayBtnPrint
+    , pRef }) => {
     const container = useRef(null);
     const btnAddGeRef = useRef(null);
     const btnGetGeRef = useRef(null);
     const [disabledBtnShowForm, setDisabledBtnShowForm] = useState(true);
     const [disabledBtnShowRecords, setDisabledBtnShowRecords] = useState(false);
+    const printRef = useRef(pRef)
 
+    const handlePrint = useReactToPrint({
 
+        contentRef: printRef.current,
+
+    });
     /**
     * دریافت و ذخیره پهنای کامپوننت برای نمایش بهتر لودر
     */
@@ -46,11 +54,23 @@ const headPage = ({ loading, title, displayBtnAdd, displayBtnShow }) => {
                 {
                     displayBtnShow &&
                     <Link to="/invoices/receipt/show" className="btnGetGe --styleLessLink ">
-                        مشاهده رسیدها
+                        مشاهده رسید‌ها
                     </Link>
                 }
+
+
+                {
+                    displayBtnPrint &&
+
+                    <button className='btnPrintGe' onClick={() => handlePrint()}>
+                        <i className="icofont-print" />
+                        <span> چاپ </span>
+                    </button>
+
+                }
+
             </div>
         </div>
     )
 }
-export default headPage;
+export default HeadPage;

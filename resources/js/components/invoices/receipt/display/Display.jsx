@@ -61,7 +61,7 @@ const Display
         <div className='containerShowGe containerShowCustomer' >
           <div ref={printRef} className="main_Rec">
             <div className="containerReceipt_Rec">
-              <section className="hade1_PFo">
+              <section className="hade_Rec">
                 <div className="divLogo_Rec">
                   <i className="icofont-concrete-mixer iLogo_Rec"></i>
                 </div>
