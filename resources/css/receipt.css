@@ -89,7 +89,10 @@
 .divCol2Row1_Rec,
 .divCol3Row1_Rec,
 .divCol1Row2_Rec,
-.divCol2Row2_Rec {
+.divCol2Row2_Rec,
+.divCol1Row3_Rec,
+.divCol2Row3_Rec,
+.divCol3Row3_Rec {
     height: 25px;
     display: flex;
     align-items: center;
@@ -160,17 +163,17 @@
     text-overflow: ellipsis;
 }
 
-.divCol1Row2_Rec{
-flex-grow: 1;
-padding-right: 10px;
+.divCol1Row2_Rec {
+    flex-grow: 1;
+    padding-right: 10px;
 }
 
-.divCol2Row2_Rec{
+.divCol2Row2_Rec {
     width: 33%;
     white-space: nowrap;
 }
 
-.valueRow2_Rec{
+.valueRow2_Rec {
     text-align: right;
     padding-right: 6px;
 }
