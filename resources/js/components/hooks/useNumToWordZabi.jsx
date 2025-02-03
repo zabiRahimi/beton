@@ -1,94 +1,188 @@
 import { useState, useEffect } from 'react';
 
 const useNumToWordZabi = (number) => {
- const [words, setWords] = useState('');
+  const [words, setWords] = useState('');
 
- useEffect(() => {
-  const units = ['صفر', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه'];
-  const teens = ['ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده'];
-  const tens = ['بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'];
-  const hundreds = ['صد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'];
+  useEffect(() => {
+    const units = ['صفر', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه'];
+    const teens = ['ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده'];
+    const tens = ['بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'];
+    const hundreds = ['صد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'];
 
-  const handleHundred = (part) => {
-   let val = part.split('');
-   let string;
-   if (val[0] > 0) {
-    string = `${hundreds[val[0] - 1]} و`;
-   }
-   if (val[1] == 0) {
-    if (val[2] > 0) {
-     string = string + ` ${units[val[2]]}`;
+    const handleHundred = (part) => {
+      while (part.length < 3) {
+        part = "0" + part;}
+        
+        let val = part.split('');
+      let string;
+      if (val[0] > 0) {
+        string = `${hundreds[val[0] - 1]} و`;
+      }
+      if (val[1] == 0) {
+        if (val[2] > 0) {
+          string = string + ` ${units[val[2]]}`;
+        }
+      } else if (val[1] == 1) {
+        string = string + ` ${teens[val[2]]}`;
+      } else if (val[1] > 1) {
+        if (val[2] == 0) {
+          string = string + ` ${tens[val[1] - 2]}`
+        }
+        else if (val[2] > 0) {
+          string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
+        }
+      }
+      return string;
 
     }
-
-   } else if (val[1] == 1) {
-    // console.log(teens[val[1]] - 1);
-    string = string + ` ${teens[val[2]]}`;
-
-   } else if (val[1] > 1) {
-
-    if (val[2] == 0) {
-     string = string + ` ${tens[val[1] - 2]}`
+    const handleThousand = (part) => {
+      while (part.length < 3) {
+        part = "0" + part;}
+      let val = part.split('');
+      let string;
+      if (val[0] > 0) {
+        string = `${hundreds[val[0] - 1]} و`;
+      }
+      if (val[1] == 0) {
+        if (val[2] > 0) {
+          string = string + ` ${units[val[2]]}`;
+        }
+      } else if (val[1] == 1) {
+        string = string + ` ${teens[val[2]]}`;
+      } else if (val[1] > 1) {
+        if (val[2] == 0) {
+          string = string + ` ${tens[val[1] - 2]}`
+        }
+        else if (val[2] > 0) {
+          string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
+        }
+      }
+      string = string + 'هزار';
+      return string;
     }
-    else if (val[2] > 0) {
-     string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
-
-     console.log(string);
-
+    const handleMillion = (part) => {
+      while (part.length < 3) {
+        part = "0" + part;}
+      let val = part.split('');
+      let string;
+      if (val[0] > 0) {
+        string = `${hundreds[val[0] - 1]} و`;
+      }
+      if (val[1] == 0) {
+        if (val[2] > 0) {
+          string = string + ` ${units[val[2]]}`;
+        }
+      } else if (val[1] == 1) {
+        string = string + ` ${teens[val[2]]}`;
+      } else if (val[1] > 1) {
+        if (val[2] == 0) {
+          string = string + ` ${tens[val[1] - 2]}`
+        }
+        else if (val[2] > 0) {
+          string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
+        }
+      }
+      string = string + 'میلیون';
+      return string;
+     }
+    const handleBillion = (part) => {
+      while (part.length < 3) {
+        part = "0" + part;}
+      let val = part.split('');
+      let string;
+      if (val[0] > 0) {
+        string = `${hundreds[val[0] - 1]} و`;
+      }
+      if (val[1] == 0) {
+        if (val[2] > 0) {
+          string = string + ` ${units[val[2]]}`;
+        }
+      } else if (val[1] == 1) {
+        string = string + ` ${teens[val[2]]}`;
+      } else if (val[1] > 1) {
+        if (val[2] == 0) {
+          string = string + ` ${tens[val[1] - 2]}`
+        }
+        else if (val[2] > 0) {
+          string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
+        }
+      }
+      string = string + 'میلیارد';
+      return string;
+     }
+    const handleTillyard = (part) => { 
+      while (part.length < 3) {
+        part = "0" + part;}
+      let val = part.split('');
+      let string;
+      if (val[0] > 0) {
+        string = `${hundreds[val[0] - 1]} و`;
+      }
+      if (val[1] == 0) {
+        if (val[2] > 0) {
+          string = string + ` ${units[val[2]]}`;
+        }
+      } else if (val[1] == 1) {
+        string = string + ` ${teens[val[2]]}`;
+      } else if (val[1] > 1) {
+        if (val[2] == 0) {
+          string = string + ` ${tens[val[1] - 2]}`
+        }
+        else if (val[2] > 0) {
+          string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
+        }
+      }
+      string = string + 'تیلیارد';
+      return string;
     }
-    console.log(string);
 
-   }
+    const convertToWords = (num) => {
+      let val = num.toLocaleString();
+      val = val.split(',')
+      console.log(val.length);
+      switch (val.length) {
+        case 1:
 
-  }
-  const handleThousand = (part) => { }
-  const handleMillion = (part) => { }
-  const handleBillion = (part) => { }
-  const handleTillyard = (part) => { }
+          break;
 
-  const convertToWords = (num) => {
-   let val = num.toLocaleString();
-   val = val.split(',')
-   console.log(val.length);
-   switch (val.length) {
-    case 1:
+        case 2:
 
-     break;
+          break;
 
-    case 2:
+        case 3:
 
-     break;
+          break;
 
-    case 3:
+        case 4:
 
-     break;
+          break;
 
-    case 4:
+        case 5:
+          let letter;
+          letter= handleTillyard('2');
+          letter=letter+handleBillion('987');
+          letter= letter+handleMillion('654');
+          letter=letter+handleThousand('568');
+          letter=letter+handleHundred('249');
+          console.log(letter);
+          break;
 
-     break;
+        case 6:
 
-    case 5:
+          break;
 
-     // handleHundred(val[4])
-     handleHundred('249')
-     break;
-
-    case 6:
-
-     break;
-
-    default:
-     break;
-   }
+        default:
+          break;
+      }
 
 
-   return num;
-  };
+      return num;
+    };
 
-  setWords(convertToWords(number));
- }, [number]);
+    setWords(convertToWords(number));
+  }, [number]);
 
- return words;
+  return words;
 };
 
 export default useNumToWordZabi;
