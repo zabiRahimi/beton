@@ -7,7 +7,7 @@ import useNumToWordZabi from '../../../hooks/useNumToWordZabi';
 
 const Display
  = () => {
-  const numToWord =useNumToWordZabi(9999999);
+  const numToWord =useNumToWordZabi(825);
   const { receiptId } = useParams();
   const [loading, setLoading] = useState(false);
   const hasCalledgetReceipt = useRef(false);
@@ -20,6 +20,11 @@ const Display
     hasCalledgetReceipt.current = true;
    }
   }, []);
+
+  useEffect(() => {
+    numToWord && console.log(numToWord);
+  }, [numToWord])
+  
 
   useEffect(() => {
    if (receipt) {
