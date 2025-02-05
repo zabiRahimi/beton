@@ -9,12 +9,13 @@ const useNumToWordZabi = (number) => {
     const tens = ['بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'];
     const hundreds = ['صد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'];
 
-    const handleHundred = (part) => {
+    const handleHundred = (part, letter = '') => {
       while (part.length < 3) {
-        part = "0" + part;}
-        
-        let val = part.split('');
-      let string;
+        part = "0" + part;
+      }
+      let val = part.split('');
+      console.log(`val = ${val}`);
+      let string = '';
       if (val[0] > 0) {
         string = `${hundreds[val[0] - 1]} و`;
       }
@@ -32,14 +33,17 @@ const useNumToWordZabi = (number) => {
           string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
         }
       }
+      string = string && (letter ? (' و ' + string + ' ') : ( string + ' '));
+      console.log(`string ${string}`);
       return string;
 
     }
-    const handleThousand = (part) => {
+    const handleThousand = (part, letter = '') => {
       while (part.length < 3) {
-        part = "0" + part;}
+        part = "0" + part;
+      }
       let val = part.split('');
-      let string;
+      let string = '';
       if (val[0] > 0) {
         string = `${hundreds[val[0] - 1]} و`;
       }
@@ -57,16 +61,19 @@ const useNumToWordZabi = (number) => {
           string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
         }
       }
-      string = string + 'هزار';
+      // string = string && string + 'هزار';
+      string = string && (letter ? (' و ' + string) : ( string)) + ' هزار';
       return string;
     }
-    const handleMillion = (part) => {
+    const handleMillion = (part, letter = '') => {
       while (part.length < 3) {
-        part = "0" + part;}
+        part = "0" + part;
+      }
+      console.log(part);
       let val = part.split('');
-      let string;
+      let string = '';
       if (val[0] > 0) {
-        string = `${hundreds[val[0] - 1]} و`;
+        string = ` ${hundreds[val[0] - 1]} و`;
       }
       if (val[1] == 0) {
         if (val[2] > 0) {
@@ -82,14 +89,16 @@ const useNumToWordZabi = (number) => {
           string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
         }
       }
-      string = string + 'میلیون';
+
+      string = string && (letter ? (' و' + string) : (+ string)) + ' میلیون';
       return string;
-     }
-    const handleBillion = (part) => {
+    }
+    const handleBillion = (part, letter = '') => {
       while (part.length < 3) {
-        part = "0" + part;}
+        part = "0" + part;
+      }
       let val = part.split('');
-      let string;
+      let string = '';
       if (val[0] > 0) {
         string = `${hundreds[val[0] - 1]} و`;
       }
@@ -107,14 +116,16 @@ const useNumToWordZabi = (number) => {
           string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
         }
       }
-      string = string + 'میلیارد';
+      string = string && (letter ? (' و ' + string) : string) + ' میلیارد';
+      // string = letter && ' و ' + string;
       return string;
-     }
-    const handleTillyard = (part) => { 
+    }
+    const handleTillyard = (part) => {
       while (part.length < 3) {
-        part = "0" + part;}
+        part = "0" + part;
+      }
       let val = part.split('');
-      let string;
+      let string = '';
       if (val[0] > 0) {
         string = `${hundreds[val[0] - 1]} و`;
       }
@@ -132,46 +143,55 @@ const useNumToWordZabi = (number) => {
           string = string + ` ${tens[val[1] - 2]} و ${units[val[2]]}`
         }
       }
-      string = string + 'تیلیارد';
+      string = string + ' تیلیارد';
       return string;
     }
 
     const convertToWords = (num) => {
       let val = num.toLocaleString();
       val = val.split(',')
-      console.log(val.length);
+      let letter;
       switch (val.length) {
         case 1:
-
+          letter = handleHundred(val[0]);
+          letter = letter && letter + 'تومان';
+          console.log(letter);
           break;
 
         case 2:
-
+          letter =  handleThousand(val[0]);
+          letter = letter + handleHundred(val[1], letter);
+          letter = letter && letter + 'تومان';
+          console.log(letter);
           break;
 
         case 3:
-
+          letter = handleMillion(val[0]);
+          letter = letter + handleThousand(val[1], letter);
+          letter = letter + handleHundred(val[2], letter);
+          letter = letter && letter + 'تومان';
+          console.log(letter);
           break;
 
         case 4:
 
-          break;
-
-        case 5:
-          let letter;
-          letter= handleTillyard('2');
-          letter=letter+handleBillion('987');
-          letter= letter+handleMillion('654');
-          letter=letter+handleThousand('568');
-          letter=letter+handleHundred('249');
+          letter = handleBillion(val[0]);
+          letter = letter + handleMillion(val[1], letter);
+          letter = letter + handleThousand(val[2], letter);
+          letter = letter + handleHundred(val[3], letter);
+          letter = letter && letter + 'تومان';
           console.log(letter);
           break;
 
-        case 6:
+        case 5:
 
-          break;
-
-        default:
+          letter = handleTillyard(val[0]);
+          letter = letter + handleBillion(val[1], letter);
+          letter = letter + handleMillion(val[2], letter);
+          letter = letter + handleThousand(val[3], letter);
+          letter = letter + handleHundred(val[4], letter);
+          letter = letter && letter + 'تومان';
+          console.log(letter);
           break;
       }
 
