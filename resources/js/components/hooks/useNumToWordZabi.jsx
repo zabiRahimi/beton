@@ -211,33 +211,39 @@ const useNumToWordZabi = (number) => {
     const tens = ['بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'];
     const hundreds = ['صد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'];
 
-    const handlePart = (part, suffix) => {
+    const handlePart = (part, suffix, index) => {
       const val = part.padStart(3, '0').split('');
+      console.log(index);
       let string = '';
       if (val[0] > 0) string = `${hundreds[val[0] - 1]}`;
       if (val[1] == 1) {
         string = string ? (string + ' و ' + teens[val[2]]) : teens[val[2]];
       } else {
-        if (val[1] > 1) string =  string ?`${string} و ${tens[val[1] - 2]} `:`${tens[val[1] - 2]} `;
-        if (val[2] > 0) string += ` ${units[val[2]]}`;
+        if (val[1] > 1) string =  string ?`${string} و ${tens[val[1] - 2]}`:`${tens[val[1] - 2]}`;
+        if (val[2] > 0) string = string ? `${string} و ${units[val[2]]}`: units[val[2]];
       }
-      return string.trim() + (suffix ? ` ${suffix}` : '');
+      if(index>0 && (val[0]>0 || val[1]>0 || val[2]>0)) string= `و ${string}`;
+      return string.trim() + ((suffix&& (val[0]>0 || val[1]>0 || val[2]>0)) ? ` ${suffix}` : '');
     };
 
     const convertToWords = (num) => {
+      num = Number(num);//تبدیل رشته عددی به عدد
       const parts = num.toLocaleString('en-US').split(',');
       let result = '';
       const suffixes = ['', 'هزار', 'میلیون', 'میلیارد', 'تیلیارد'];
 
       parts.forEach((part, index) => {
         const suffixIndex = parts.length - index - 1;
-        result += `${handlePart(part, suffixes[suffixIndex])} `;
+        result += `${handlePart(part, suffixes[suffixIndex], index)} `;
       });
 
       return result.trim() + ' تومان';
     };
-
-    setWords(convertToWords(number));
+    if(!isNaN(number) && String(number).length<=15){
+      setWords(convertToWords(number));                
+    }else{
+      setWords('عدد ورودی معتبر نیست');                
+    }
   }, [number]);
 
   return words;
