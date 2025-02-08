@@ -55,7 +55,7 @@ class ReceiptController extends Controller
     public function showReceipt(int $id)
     {
         // $proformaInvoice = Receipt::with('proformaInvoiceProducts')->findOrFail($id);
-        $receipt = Receipt::findOrFail($id);
+        $receipt = Receipt::with('customer')->findOrFail($id);
         return response()->json(['receipt'=>$receipt],200);
     }
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useNumToWordZabi = (number) => {
+const NumToWordZabi = (number) => {
   const [words, setWords] = useState('');
 
   useEffect(() => {
@@ -46,13 +46,13 @@ const useNumToWordZabi = (number) => {
   return words;
 };
 
-export default useNumToWordZabi;
+export default NumToWordZabi;
 
 
 
 // import { useState, useEffect } from 'react';
 
-// const useNumToWordZabi = (number) => {
+// const NumToWordZabi = (number) => {
 //   const [words, setWords] = useState('');
 
 //   useEffect(() => {
@@ -249,4 +249,4 @@ export default useNumToWordZabi;
 //   return words;
 // };
 
-// export default useNumToWordZabi;
+// export default NumToWordZabi;
