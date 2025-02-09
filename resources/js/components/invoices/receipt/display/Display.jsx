@@ -84,7 +84,7 @@ const Display
               {handleSetBankLable(receipt.how_to_pay)}
             </span>
             <span className="value_Rec">
-              {receipt.bank}
+              {handleSetBankValue(receipt.how_to_pay)}
 
             </span>
           </div>
@@ -100,22 +100,16 @@ const Display
           break;
         case 'واریز به حساب':
           label = 'شماره حساب مقصد';
-
           break;
         case 'وصول چک':
           label = 'شماره چک';
-
           break;
         case 'حواله سیمان':
           label = 'شماره حواله';
-
           break;
         case 'حواله شن و ماسه':
           label = 'شماره حواله';
-
           break;
-
-
       }
       return label;
     }
@@ -128,19 +122,15 @@ const Display
           break;
         case 'واریز به حساب':
           label = 'صاحب حساب مقصد';
-
           break;
         case 'وصول چک':
           label = 'صاحب چک';
-
           break;
         case 'حواله سیمان':
-          label = 'خریدار حواله حواله';
-
+          label = 'خریدار حواله';
           break;
         case 'حواله شن و ماسه':
-          label = 'خریدار حواله حواله';
-
+          label = 'خریدار حواله';
           break;
       }
       return label;
