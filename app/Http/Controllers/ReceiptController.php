@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -52,12 +53,31 @@ class ReceiptController extends Controller
     /**
      * Display the specified resource.
      */
+    // public function showReceipt(int $id)
+    // {
+    //     $receipt = Receipt::with('customer')->findOrFail($id);
+    //     return response()->json(['receipt'=>$receipt],200);
+    // }
+
     public function showReceipt(int $id)
     {
-        // $proformaInvoice = Receipt::with('proformaInvoiceProducts')->findOrFail($id);
         $receipt = Receipt::with('customer')->findOrFail($id);
-        return response()->json(['receipt'=>$receipt],200);
+
+        // بررسی ستون‌ها و اضافه کردن اطلاعات مربوطه
+        if ($receipt->document_receivable_id) {
+            $documentReceivable = $this->getDocumentReceivable($receipt->document_receivable_id);
+            $receipt->document_receivable = $documentReceivable;
+        } elseif ($receipt->sand_remittance_id) {
+            $sandRemittance = $this->getSandRemittance($receipt->sand_remittance_id);
+            $receipt->sand_remittance = $sandRemittance;
+        } elseif ($receipt->cement_remittance_id) {
+            $cementRemittance = $this->getCementRemittance($receipt->cement_remittance_id);
+            $receipt->cement_remittance = $cementRemittance;
+        }
+
+        return response()->json(['receipt' => $receipt], 200);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -83,7 +103,8 @@ class ReceiptController extends Controller
         //
     }
 
-    public function fetchData() : JsonResponse {
+    public function fetchData(): JsonResponse
+    {
         $count = $this->count();
         $customers = $this->customers();
         $documentReceivables = $this->documentReceivables();
@@ -95,7 +116,7 @@ class ReceiptController extends Controller
             'documentReceivables' => $documentReceivables,
             'sandRemittances' => $sandRemittances,
             'cementRemittances' => $cementRemittances,
-            
+
         ]);
     }
 
@@ -104,7 +125,8 @@ class ReceiptController extends Controller
         return Receipt::count();
     }
 
-    private function customers (): Collection {
+    private function customers(): Collection
+    {
         return Customer::get();
     }
 
@@ -123,10 +145,9 @@ class ReceiptController extends Controller
     {
         // return CementRemittance::get();
         return null;
-
     }
 
-     /**
+    /**
      * مبلغ  را به حساب پرداخت کننده اضافه می کند
      */
     private function addTopayerAccount(int $customer_id, int $price)
@@ -135,5 +156,20 @@ class ReceiptController extends Controller
             ['customer_id' => $customer_id],
             ['creditor' => DB::raw('creditor + ' . $price)]
         );
+    }
+
+    public function getDocumentReceivable($id)
+    {
+        // return DocumentReceivable::find($id);
+    }
+
+    public function getSandRemittance($id)
+    {
+        return SandRemittance::find($id);
+    }
+
+    public function getCementRemittance($id)
+    {
+        // return CementRemittance::find($id);
     }
 }

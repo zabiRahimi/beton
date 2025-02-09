@@ -21,11 +21,11 @@ return new class extends Migration
             $table->string('price',22);
             $table->string('for')->comment('بابت');
             $table->string('how_to_pay');
-            $table->string('number',40)->nullable();
+            $table->string('number',40)->nullable()->comment('شماره چک، کارت، حساب و حواله شن و سیمان');
             $table->string('bank',70)->nullable();
             $table->string('bank_branch',120)->nullable();
-            $table->date('date_check')->nullable();
-            $table->string('owner')->nullable();
+            $table->date('date_check')->nullable()->comment('تاریخ چک، تاریخ کارت به کارت، واریزی به حساب، خرید حواله');
+            $table->string('owner')->nullable()->comment('صاحب چک، کارت مقصد، حساب مقصد، خریدار حواله شن یا سیمان');
             $table->mediumText('description')->nullable();
             $table->timestamps();
         });
