@@ -175,12 +175,12 @@
 }
 
 .valueRow2_Rec {
-    text-align: right;
+    text-align: center;
     padding-right: 6px;
 }
 
 .divCol1Row3_Rec{
-    width: 40%;
+    width: 37%;
     padding-right: 10px;
 }
 
@@ -189,13 +189,14 @@
 }
 
 .divCol3Row3_Rec{
-    width: 25%;
+    width: 28%;
 }
 
 .value_Rec{
     flex-grow: 1;
     padding-right: 6px;
     font-size: 12px;
+    text-align: center;
 }
 
 .labelHB {

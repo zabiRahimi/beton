@@ -61,22 +61,15 @@ const Display
               {handleSetNumberLable(receipt.how_to_pay)}
             </span>
             <span className="value_Rec valueNum_Rec">
-
-
-
-              {receipt.number}
-
+              {handleSetNumberValue()}
             </span>
           </div>
           <div className="divCol2Row3_Rec">
             <span className="label_Rec">
               {handleSetOwnerLable(receipt.how_to_pay)}
-
-
             </span>
             <span className="value_Rec">
-              {receipt.owner}
-
+              {handleSetOwnerValue()}
             </span>
           </div>
           <div className="divCol3Row3_Rec">
@@ -84,8 +77,7 @@ const Display
               {handleSetBankLable(receipt.how_to_pay)}
             </span>
             <span className="value_Rec">
-              {handleSetBankValue(receipt.how_to_pay)}
-
+              {handleSetBankValue()}
             </span>
           </div>
         </div>
@@ -96,45 +88,174 @@ const Display
       let label;
       switch (howToPay) {
         case 'کارت به کارت':
-          label = 'شماره کارت مقصد';
+          label = 'شماره کارت مقصد :';
           break;
         case 'واریز به حساب':
-          label = 'شماره حساب مقصد';
+          label = 'شماره حساب مقصد :';
           break;
         case 'وصول چک':
-          label = 'شماره چک';
+          label = 'شماره چک :';
           break;
         case 'حواله سیمان':
-          label = 'شماره حواله';
+          label = 'شماره حواله :';
           break;
         case 'حواله شن و ماسه':
-          label = 'شماره حواله';
+          label = 'شماره حواله :';
           break;
       }
       return label;
+    }
+
+    const handleSetNumberValue=()=>{
+      let value;
+      switch (receipt.how_to_pay) {
+        case 'کارت به کارت':
+          value = handleSetNumberValueForBankCard();
+          break;
+        case 'واریز به حساب':
+          value = handleSetNumberValueForBankAccount();
+          break;
+        case 'وصول چک':
+          value = handleSetNumberValueForBankCheck();
+          break;
+        case 'حواله سیمان':
+          value = handleSetNumberValueForCementRemittance();
+          break;
+        case 'حواله شن و ماسه':
+          value = handleSetNumberValueForSandRemittance();
+          break;
+      }
+      return value;
+    }
+
+    const handleSetNumberValueForBankCard = () => {
+      let value;
+      value = receipt.number;
+      return value;
+    }
+
+    const handleSetNumberValueForBankAccount = () => {
+      let value;
+      value = receipt.number;
+      return value;
+    }
+
+    const handleSetNumberValueForBankCheck = () => {
+      let value;
+      if (receipt.document_receivable_id) {
+
+      } else {
+        value = receipt.number;
+      }
+      return value;
+    }
+
+    const handleSetNumberValueForCementRemittance = () => {
+      let value;
+      if (receipt.cement_remittance_id) {
+
+      } else {
+        value = receipt.number;
+      }
+      return value;
+    }
+
+    const handleSetNumberValueForSandRemittance = () => {
+      let value;
+      if (receipt.sand_remittance_id) {
+        value = `${receipt.sand_remittance.remittanceNumber}`
+      } else {
+        value = receipt.number;
+      }
+      return value;
     }
 
     const handleSetOwnerLable = (howToPay) => {
       let label;
       switch (howToPay) {
         case 'کارت به کارت':
-          label = 'صاحب کارت مقصد';
+          label = 'صاحب کارت مقصد :';
           break;
         case 'واریز به حساب':
-          label = 'صاحب حساب مقصد';
+          label = 'صاحب حساب مقصد :';
           break;
         case 'وصول چک':
-          label = 'صاحب چک';
+          label = 'صاحب چک :';
           break;
         case 'حواله سیمان':
-          label = 'خریدار حواله';
+          label = 'خریدار حواله :';
           break;
         case 'حواله شن و ماسه':
-          label = 'خریدار حواله';
+          label = 'خریدار حواله :';
           break;
       }
       return label;
     }
+
+    const handleSetOwnerValue = () => {
+      let value;
+      switch (receipt.how_to_pay) {
+        case 'کارت به کارت':
+          value = handleSetOwnerValueForBankCard();
+          break;
+        case 'واریز به حساب':
+          value = handleSetOwnerValueForBankAccount();
+          break;
+        case 'وصول چک':
+          value = handleSetOwnerValueForBankCheck();
+          break;
+        case 'حواله سیمان':
+          value = handleSetOwnerValueForCementRemittance();
+          break;
+        case 'حواله شن و ماسه':
+          value = handleSetOwnerValueForSandRemittance();
+          break;
+      }
+      return value;
+    }
+
+    const handleSetOwnerValueForBankCard = () => {
+      let value;
+      value = receipt.owner;
+      return value;
+    }
+
+    const handleSetOwnerValueForBankAccount = () => {
+      let value;
+      value = receipt.owner;
+      return value;
+    }
+
+    const handleSetOwnerValueForBankCheck = () => {
+      let value;
+      if (receipt.document_receivable_id) {
+
+      } else {
+        value = receipt.owner;
+      }
+      return value;
+    }
+
+    const handleSetOwnerValueForCementRemittance = () => {
+      let value;
+      if (receipt.cement_remittance_id) {
+
+      } else {
+        value = receipt.owner;
+      }
+      return value;
+    }
+
+    const handleSetOwnerValueForSandRemittance = () => {
+      let value;
+      if (receipt.sand_remittance_id) {
+        value = `${receipt.sand_remittance.buyerName} ${receipt.sand_remittance.buyerLastName}`
+      } else {
+        value = receipt.owner;
+      }
+      return value;
+    }
+
 
     /**
      * متد زیر  یا برچسب بانک را بر می گرداند یا برچست تامین کننده را
@@ -143,29 +264,91 @@ const Display
       let label;
       switch (howToPay) {
         case 'کارت به کارت':
-          label = 'بانک';
+          label = 'بانک :';
           break;
         case 'واریز به حساب':
-          label = 'بانک';
+          label = 'بانک :';
 
           break;
         case 'وصول چک':
-          label = 'بانک';
+          label = 'بانک :';
 
           break;
         case 'حواله سیمان':
-          label = 'تامین کننده';
+          label = 'تامین کننده :';
 
           break;
         case 'حواله شن و ماسه':
-          label = 'تامین کننده';
+          label = 'تامین کننده :';
 
           break;
       }
       return label;
     }
 
+    const handleSetBankValue = () => {
+      let value;
+      switch (receipt.how_to_pay) {
+        case 'کارت به کارت':
+          value = handleSetBankValueForBankCard();
+          break;
+        case 'واریز به حساب':
+          value = handleSetBankValueForBankAccount();
+          break;
+        case 'وصول چک':
+          value = handleSetBankValueForBankCheck();
+          break;
+        case 'حواله سیمان':
+          value = handleSetSupplierValueForCementRemittance();
+          break;
+        case 'حواله شن و ماسه':
+          value = handleSetSupplierValueForSandRemittance();
+          break;
+      }
+      return value;
+    }
 
+    const handleSetBankValueForBankCard = () => {
+      let value;
+      value = receipt.bank;
+      return value;
+    }
+
+    const handleSetBankValueForBankAccount = () => {
+      let value;
+      value = receipt.bank;
+      return value;
+    }
+
+    const handleSetBankValueForBankCheck = () => {
+      let value;
+      if (receipt.document_receivable_id) {
+
+      } else {
+        value = receipt.bank;
+      }
+      return value;
+    }
+
+    const handleSetSupplierValueForCementRemittance = () => {
+      let value;
+      if (receipt.cement_remittance_id) {
+
+      } else {
+        value = receipt.bank;
+      }
+      return value;
+    }
+
+    const handleSetSupplierValueForSandRemittance = () => {
+      let value;
+      if (receipt.sand_remittance_id) {
+        value = `${receipt.sand_remittance.factory}`
+      } else {
+        value = receipt.bank;
+      }
+      return value;
+    }
 
     return (
       <div>
