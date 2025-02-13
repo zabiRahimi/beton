@@ -19,13 +19,6 @@ const Display
       }
     }, []);
 
-    // useEffect(() => {
-    //  if (receipt) {
-    //   // handleSetData();
-    //   handleSetPriceWord();
-    //  }
-    // }, [receipt]);
-
     const result = useNumToWordZabi(receipt.price);
 
     const fetchData = async () => {
@@ -45,8 +38,6 @@ const Display
       }
     };
     const paymentMethods = ['کارت به کارت', 'واریز به حساب', 'وصول چک', 'حواله شن و ماسه', 'حواله سیمان'];
-    const paymentMethods2 = ['حواله شن و ماسه', 'حواله سیمان'];
-    // const includesPaymentMethods = paymentMethods.some(method => receipt.how_to_pay.includes(method));
 
     /**
      * چنانچه رسید اطلاعات تکمیلی داشته باشد متد زیر آن را اضافه می کند
@@ -106,7 +97,7 @@ const Display
       return label;
     }
 
-    const handleSetNumberValue=()=>{
+    const handleSetNumberValue = () => {
       let value;
       switch (receipt.how_to_pay) {
         case 'کارت به کارت':
@@ -255,7 +246,6 @@ const Display
       }
       return value;
     }
-
 
     /**
      * متد زیر  یا برچسب بانک را بر می گرداند یا برچست تامین کننده را
@@ -424,55 +414,8 @@ const Display
                 </div>
                 {
                   receipt && handleDditionalInformation(receipt.how_to_pay)
-                  //  (
-                  //   // receipt.how_to_pay == 'کارت به کارت' ||
-                  //   // receipt.how_to_pay == 'واریز به حساب' ||
-                  //   // receipt.how_to_pay == 'وصول چک' ||
-                  //   // receipt.how_to_pay == 'حواله شن و ماسه' ||
-                  //   // receipt.how_to_pay == 'حواله سیمان'
-                  //   paymentMethods.some(method => receipt.how_to_pay.includes(method))
-                  // ) &&
-                  // <div className="divRow_Rec">
-                  //   <div className="divCol1Row3_Rec">
-                  //     <span className="label_Rec">
-                  //       {receipt.how_to_pay == 'وصول چک' && 'شماره چک :'}
-                  //       {receipt.how_to_pay == 'کارت به کارت' && 'شماره کارت مقصد :'}
-                  //       {receipt.how_to_pay == 'واریز به حساب' && 'شماره حساب مقصد :'}
-                  //       {receipt.how_to_pay == 'حواله شن و ماسه' && 'شماره حواله :'}
-                  //       {receipt.how_to_pay == 'حواله سیمان' && 'شماره حواله :'}
-                  //     </span>
-                  //     <span className="value_Rec valueNum_Rec">
-
-                  //       {paymentMethods2.some(method => receipt.how_to_pay.includes(method)) && receipt.number}
-
-                  //       {receipt.number}
-
-                  //     </span>
-                  //   </div>
-                  //   <div className="divCol2Row3_Rec">
-                  //     <span className="label_Rec">
-                  //       {receipt.how_to_pay == 'وصول چک' && 'صاحب چک :'}
-                  //       {receipt.how_to_pay == 'کارت به کارت' && 'صاحب کارت مقصد :'}
-                  //       {receipt.how_to_pay == 'واریز به حساب' && 'صاحب حساب مقصد :'}
-                  //     </span>
-                  //     <span className="value_Rec">
-                  //       {receipt.owner}
-
-                  //     </span>
-                  //   </div>
-                  //   <div className="divCol3Row3_Rec">
-                  //     <span className="label_Rec"> بانک  :</span>
-                  //     <span className="value_Rec">
-                  //       {receipt.bank}
-
-                  //     </span>
-                  //   </div>
-                  // </div>
                 }
-
-
               </section>
-
               <section className="description_Rec textarea-output">
                 {receipt.description}
               </section>
@@ -502,7 +445,6 @@ const Display
             </div>
           </div>
         </div>
-
       </div>
     )
   }
