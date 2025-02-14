@@ -179,6 +179,49 @@ const Add = () => {
         }
     };
 
+   const btn =()=>{
+    MySwal.fire({
+        icon: "success",
+        title: "با موفقیت ثبت شد",
+        showCancelButton:true,
+        showDenyButton:true,
+        cancelButtonText: "  چاپ رسید  ",
+        confirmButtonText: " متوجه شدم ",
+        denyButtonText: " نمایش رسیدها  ",
+        customClass:{
+            confirmButton:'confirmButtonReceiptFB',
+            cancelButton:'cancelButtonReceiptFB',
+            denyButton:'denyButtonReceiptFB',
+        },
+
+        didClose: () => resetForm(
+            setInput,
+            setCustomer_id,
+            customer_idRef.current,
+            setDate,
+            setHow_to_pay,
+            how_to_payRef.current,
+            setDocument_receivable_id,
+            document_receivable_idRef.current,
+            setSand_remittance_id,
+            sand_remittance_idRef.current,
+            setCement_remittance_id,
+            cement_remittance_idRef.current,
+            setDate_check,
+        )
+    ,
+    }).then((result)=>{
+        if (result.isDenied) {
+            console.log('denied');
+        } else if(result.dismiss === Swal.DismissReason.cancel){
+            console.log('cancel');
+            
+        }
+
+    });
+   }
+    
+
     useEffect(() => {
         if (how_to_pay) {
             setDocumentReceivableDisplay(false);
@@ -341,11 +384,15 @@ const Add = () => {
             MySwal.fire({
                 icon: "success",
                 title: "با موفقیت ثبت شد",
-                confirmButtonText: "  متوجه شدم  ",
-                timer: 3000,
-                timerProgressBar: true,
-                customClass: {
-                    timerProgressBar: '--progressBarColorBlue',
+                showCancelButton:true,
+                showDenyButton:true,
+                CancelButtonText: "  متوجه شدم  ",
+                confirmButtonText: " چاپ رسید ",
+                denyButtonText: " نمایش رسیدها  ",
+                customClass:{
+                    confirmButton:'confirmButtonReceiptFB',
+                    cancelButton:'cancelButtonReceiptFB',
+                    denyButton:'denyButtonReceiptFB',
                 },
 
                 didClose: () => resetForm(
@@ -363,6 +410,13 @@ const Add = () => {
                     cement_remittance_idRef.current,
                     setDate_check,
                 ),
+            }).then((result)=>{
+                if (result) {
+                    
+                } else if(result){
+                    
+                }
+
             });
         } catch (error) {
             if (error.response && error.response.status == 422) {
@@ -394,11 +448,11 @@ const Add = () => {
         <div>
             <HeadPage
                 loading={loading}
-                title='ثبت رسید دریافت'
+                title='ثبت رسید دریافت وجه'
                 displayBtnAdd={false}
                 displayBtnShow={true}
             />
-
+<button onClick={btn}>btn</button>
             <div className="continerAddGe">
                 <form className="formBeton" ref={form}>
                     <section className="sectionFB">
